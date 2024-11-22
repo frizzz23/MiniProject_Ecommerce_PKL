@@ -1,7 +1,7 @@
 <!-- resources/views/categories/edit.blade.php -->
-@extends('home')
+@extends('layouts.app')
 
-@section('content')
+@section('main')
 <div class="container">
     <h1>Edit Kategori</h1>
 

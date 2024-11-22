@@ -1,7 +1,7 @@
 <!-- resources/views/categories/create.blade.php -->
-@extends('home')
+@extends('layouts.app')
 
-@section('content')
+@section('main')
 <div class="container">
     <h1>Tambah Kategori Baru</h1>
 
