@@ -31,14 +31,19 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::resource('addresses', AddressController::class);
-    Route::resource('carts', CartController::class);
-    Route::resource('categories', CategoryController::class);
-    Route::resource('orders', OrderController::class);
-    Route::resource('payments', PaymentController::class);
-    Route::resource('products', ProductController::class);
-    Route::resource('product_orders', ProductOrderController::class);
-    Route::resource('reviews', ReviewController::class);
+    Route::middleware('role:admin')->group(function () {
+        Route::resource('categories', CategoryController::class);
+        Route::resource('products', ProductController::class);
+    });
+
+    Route::middleware('role:user')->group(function () {
+        Route::resource('addresses', AddressController::class);
+        Route::resource('carts', CartController::class);
+        Route::resource('orders', OrderController::class);
+        Route::resource('payments', PaymentController::class);
+        Route::resource('product_orders', ProductOrderController::class);
+        Route::resource('reviews', ReviewController::class);
+    });
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
