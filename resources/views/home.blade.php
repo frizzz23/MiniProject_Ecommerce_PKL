@@ -7,12 +7,19 @@
   <title>Modernize Free</title>
   <link rel="shortcut icon" type="image/png" href="{{ asset('style/src/assets/images/logos/favicon.png')}}" />
   <link rel="stylesheet" href="{{ asset('style/src/assets/css/styles.min.css')}}" />
+
+  <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <!-- Scripts -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
 </head>
 
 <body>
   <!--  Body Wrapper -->
-  <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
     data-sidebar-position="fixed" data-header-position="fixed">
+
     <!-- Sidebar Start -->
     <aside class="left-sidebar">
       <!-- Sidebar scroll-->
@@ -40,10 +47,7 @@
                 <span class="hide-menu">Dashboard</span>
               </a>
             </li>
-            <li class="nav-small-cap">
-              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-              <span class="hide-menu">UI COMPONENTS</span>
-            </li>
+          
             <li class="sidebar-item">
               <a class="sidebar-link" href="./ui-buttons.html" aria-expanded="false">
                 <span>
@@ -142,6 +146,7 @@
       <!-- End Sidebar scroll-->
     </aside>
     <!--  Sidebar End -->
+
     <!--  Main wrapper -->
     <div class="body-wrapper">
       <!--  Header Start -->
@@ -162,7 +167,7 @@
           </ul>
           <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
             <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-              <a href="https://adminmart.com/product/modernize-free-bootstrap-admin-dashboard/" target="_blank" class="btn btn-primary">Download Free</a>
+
               <li class="nav-item dropdown">
                 <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
                   aria-expanded="false">
@@ -191,6 +196,7 @@
         </nav>
       </header>
       <!--  Header End -->
+
       <div class="container-fluid">
         <!--  Row 1 -->
         <div class="row">
@@ -335,7 +341,7 @@
                       <span class="timeline-badge border-2 border border-danger flex-shrink-0 my-8"></span>
                       <span class="timeline-badge-border d-block flex-shrink-0"></span>
                     </div>
-                    <div class="timeline-desc fs-3 text-dark mt-n1 fw-semibold">New arrival recorded
+                    <div class="timeline-desc fs-3 text-dark mt-n1 fw-semibold">New arrival recorded 
                     </div>
                   </li>
                   <li class="timeline-item d-flex position-relative overflow-hidden">
@@ -379,7 +385,7 @@
                         <td class="border-bottom-0"><h6 class="fw-semibold mb-0">1</h6></td>
                         <td class="border-bottom-0">
                             <h6 class="fw-semibold mb-1">Sunil Joshi</h6>
-                            <span class="fw-normal">Web Designer</span>
+                            <span class="fw-normal">Web Designer</span>                          
                         </td>
                         <td class="border-bottom-0">
                           <p class="mb-0 fw-normal">Elite Admin</p>
@@ -392,12 +398,12 @@
                         <td class="border-bottom-0">
                           <h6 class="fw-semibold mb-0 fs-4">$3.9</h6>
                         </td>
-                      </tr>
+                      </tr> 
                       <tr>
                         <td class="border-bottom-0"><h6 class="fw-semibold mb-0">2</h6></td>
                         <td class="border-bottom-0">
                             <h6 class="fw-semibold mb-1">Andrew McDownland</h6>
-                            <span class="fw-normal">Project Manager</span>
+                            <span class="fw-normal">Project Manager</span>                          
                         </td>
                         <td class="border-bottom-0">
                           <p class="mb-0 fw-normal">Real Homes WP Theme</p>
@@ -410,12 +416,12 @@
                         <td class="border-bottom-0">
                           <h6 class="fw-semibold mb-0 fs-4">$24.5k</h6>
                         </td>
-                      </tr>
+                      </tr> 
                       <tr>
                         <td class="border-bottom-0"><h6 class="fw-semibold mb-0">3</h6></td>
                         <td class="border-bottom-0">
                             <h6 class="fw-semibold mb-1">Christopher Jamil</h6>
-                            <span class="fw-normal">Project Manager</span>
+                            <span class="fw-normal">Project Manager</span>                          
                         </td>
                         <td class="border-bottom-0">
                           <p class="mb-0 fw-normal">MedicalPro WP Theme</p>
@@ -428,12 +434,12 @@
                         <td class="border-bottom-0">
                           <h6 class="fw-semibold mb-0 fs-4">$12.8k</h6>
                         </td>
-                      </tr>
+                      </tr>      
                       <tr>
                         <td class="border-bottom-0"><h6 class="fw-semibold mb-0">4</h6></td>
                         <td class="border-bottom-0">
                             <h6 class="fw-semibold mb-1">Nirav Joshi</h6>
-                            <span class="fw-normal">Frontend Engineer</span>
+                            <span class="fw-normal">Frontend Engineer</span>                          
                         </td>
                         <td class="border-bottom-0">
                           <p class="mb-0 fw-normal">Hosting Press HTML</p>
@@ -446,7 +452,7 @@
                         <td class="border-bottom-0">
                           <h6 class="fw-semibold mb-0 fs-4">$2.4k</h6>
                         </td>
-                      </tr>
+                      </tr>                       
                     </tbody>
                   </table>
                 </div>
@@ -541,7 +547,7 @@
         </div>
       </div>
     </div>
-  </div>
+</div>
   <script src="{{ asset('style/src/assets/libs/jquery/dist/jquery.min.js')}}"></script>
   <script src="{{ asset('style/src/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>
   <script src="{{ asset('style/src/assets/js/sidebarmenu.js')}}"></script>
