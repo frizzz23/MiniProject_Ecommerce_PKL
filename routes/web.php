@@ -34,7 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:admin')->group(function () {
         Route::resource('categories', CategoryController::class);
         Route::resource('products', ProductController::class);
-    });
+    }); // hanya untuk admin
 
     Route::middleware('role:user')->group(function () {
         Route::resource('addresses', AddressController::class);
@@ -43,7 +43,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('payments', PaymentController::class);
         Route::resource('product_orders', ProductOrderController::class);
         Route::resource('reviews', ReviewController::class);
-    });
+    }); // hanya untuk user
 });
 
 require __DIR__ . '/auth.php';
