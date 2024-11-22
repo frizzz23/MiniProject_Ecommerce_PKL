@@ -5,7 +5,7 @@
 <div class="container">
     <h1>Tambah Produk Pesanan</h1>
 
-    <form action="{{ route('product-orders.store') }}" method="POST">
+    <form action="{{ route('product_orders.store') }}" method="POST">
         @csrf
 
         <div class="mb-3">

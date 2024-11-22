@@ -4,7 +4,7 @@
 @section('content')
 <div class="container">
     <h1>Daftar Produk Pesanan</h1>
-    <a href="{{ route('product-orders.create') }}" class="btn btn-primary mb-3">Tambah Produk Pesanan</a>
+    <a href="{{ route('product_orders.create') }}" class="btn btn-primary mb-3">Tambah Produk Pesanan</a>
     @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
