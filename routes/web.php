@@ -20,6 +20,10 @@ Route::get('/home2', function () {
     return view('home2');
 })->middleware(['auth', 'verified'])->name('home2');
 
+Route::get('/landing-page', function () {
+    return view('landing-page');
+})->middleware(['auth', 'verified'])->name('landing-page');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
