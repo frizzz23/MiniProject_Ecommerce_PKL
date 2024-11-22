@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('product_id')->constrained('products');
             $table->foreignId('user_id')->constrained('users');
-            $table->string('review');
             $table->enum('rating', ['1', '2', '3', '4', '5']);
             $table->text('comment');
             $table->timestamps();

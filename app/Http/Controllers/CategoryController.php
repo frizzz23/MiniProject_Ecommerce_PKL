@@ -12,7 +12,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        // Mendapatkan semua data kategori
+        $categories = Category::all();
+        return view('categories.index', compact('categories'));
     }
 
     /**
@@ -20,7 +22,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        // Menampilkan form untuk menambahkan kategori baru
+        return view('categories.create');
     }
 
     /**
@@ -28,15 +31,16 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        // Validasi input
+        $request->validate([
+            'name_category' => 'required|string|max:255',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Category $category)
-    {
-        //
+        // Simpan data ke database
+        Category::create($request->all());
+
+        // Redirect dengan pesan sukses
+        return redirect()->route('categories.index')->with('success', 'Kategori berhasil ditambahkan.');
     }
 
     /**
@@ -44,7 +48,8 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        // Menampilkan form untuk mengedit kategori
+        return view('categories.edit', compact('category'));
     }
 
     /**
@@ -52,7 +57,16 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        // Validasi input
+        $request->validate([
+            'name_category' => 'required|string|max:255',
+        ]);
+
+        // Update data di database
+        $category->update($request->all());
+
+        // Redirect dengan pesan sukses
+        return redirect()->route('categories.index')->with('success', 'Kategori berhasil diperbarui.');
     }
 
     /**
@@ -60,6 +74,10 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        // Hapus kategori dari database
+        $category->delete();
+
+        // Redirect dengan pesan sukses
+        return redirect()->route('categories.index')->with('success', 'Kategori berhasil dihapus.');
     }
 }

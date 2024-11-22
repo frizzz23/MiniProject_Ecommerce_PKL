@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('order_id')->constrained('orders');
             $table->string('image_payment');
-            $table->string('payment_method');
+            $table->enum('payment_method', ['cash', 'transfer']);
+            $table->enum('status', ['pending', 'paid', 'canceled']);
             $table->timestamps();
         });
     }
