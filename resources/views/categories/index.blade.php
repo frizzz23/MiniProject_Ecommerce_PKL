@@ -30,6 +30,18 @@
                                     </div>
                                 @endif
 
+                                @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>
+                                                    {{ $error }}
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+
                                 <table class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
@@ -64,20 +76,23 @@
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="editModalLabel{{ $category->id }}">Edit Kategori</h5>
+                                                            <h5 class="modal-title" id="editModalLabel{{ $category->id }}">
+                                                                Edit Kategori</h5>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                                 aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
                                                             <!-- Form inside modal -->
-                                                            <form  action="{{ route('categories.update', $category->id) }}" method="POST">
+                                                            <form action="{{ route('categories.update', $category->id) }}"
+                                                                method="POST">
                                                                 @csrf
                                                                 @method('PUT') <!-- Untuk method PUT -->
                                                                 <div class="mb-3">
                                                                     <label for="edit_name_category" class="form-label">Nama
                                                                         Kategori</label>
                                                                     <input type="text" name="name_category"
-                                                                        class="form-control" value="{{ old('name_category') ?? $category->name_category }}"
+                                                                        class="form-control"
+                                                                        value="{{ old('name_category') ?? $category->name_category }}"
                                                                         required>
                                                                 </div>
                                                                 <div class="modal-footer">
