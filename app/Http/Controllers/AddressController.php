@@ -3,63 +3,59 @@
 namespace App\Http\Controllers;
 
 use App\Models\Address;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AddressController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $addresses = Address::with('user')->get(); // Mengambil data dengan relasi user
+        return view('addresses.index', compact('addresses'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $users = User::all(); // Ambil semua data pengguna untuk dropdown
+        return view('addresses.create', compact('users'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'address' => 'required|string|max:255',
+            'no_telepon' => 'required|string|max:15',
+        ]);
+
+        Address::create($request->all());
+
+        return redirect()->route('addresses.index')->with('success', 'Alamat berhasil ditambahkan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Address $address)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Address $address)
     {
-        //
+        $users = User::all(); // Ambil semua pengguna untuk dropdown
+        return view('addresses.edit', compact('address', 'users'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Address $address)
     {
-        //
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'address' => 'required|string|max:255',
+            'no_telepon' => 'required|string|max:15',
+        ]);
+
+        $address->update($request->all());
+
+        return redirect()->route('addresses.index')->with('success', 'Alamat berhasil diperbarui.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Address $address)
     {
-        //
+        $address->delete();
+
+        return redirect()->route('addresses.index')->with('success', 'Alamat berhasil dihapus.');
     }
 }

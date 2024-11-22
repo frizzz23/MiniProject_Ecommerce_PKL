@@ -45,4 +45,18 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Get all of the user's addresses.
+     */
+    public function addresses()
+    {
+        return $this->hasMany(Address::class);
+    }
+
+     // Relasi dengan Review
+     public function reviews()
+     {
+         return $this->hasMany(Review::class);
+     }
 }
