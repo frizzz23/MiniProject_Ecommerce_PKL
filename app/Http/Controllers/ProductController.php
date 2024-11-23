@@ -16,7 +16,7 @@ class ProductController extends Controller
         // Mendapatkan semua produk dengan kategori terkait
         $products = Product::with('category')->get();
         $categories = Category::all();
-        return view('products.index', compact('products','categories'));
+        return view('products.index', compact('products', 'categories'));
     }
 
     /**

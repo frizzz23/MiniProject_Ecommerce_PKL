@@ -27,13 +27,14 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
-     // Relasi dengan Review
-     public function reviews()
-     {
-         return $this->hasMany(Review::class);
-     }
+    // Relasi dengan Review
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 
-    public function order(){
+    public function order()
+    {
         return $this->hasMany(Order::class);
     }
 }
