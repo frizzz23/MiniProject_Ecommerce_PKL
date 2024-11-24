@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payments', function (Blueprint $table) {
+        Schema::create('product_images', function (Blueprint $table) {
             $table->id();
-            $table->foreignUuid('order_id')->constrained('orders');
-            $table->string('image_payment');
-            $table->enum('payment_method', ['cash', 'transfer']);
-            $table->enum('status', ['pending', 'paid', 'canceled']);
+            $table->string('image_product');
+            $table->foreignId('product_id')->constrained('products');
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('payments');
+        Schema::dropIfExists('product_images');
     }
 };

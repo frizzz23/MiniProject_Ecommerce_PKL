@@ -2,21 +2,25 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUuids;
 
     // Menentukan tabel yang digunakan
     protected $table = 'orders';
 
+
     // Menentukan kolom yang dapat diisi
     protected $fillable = [
         'user_id',
+        'promo_code_id',
         'product_id',
-        'total_order',
+        'sub_total_amount',
+        'grand_total_amount',
         'status_order',
     ];
 
@@ -36,7 +40,13 @@ class Order extends Model
         return $this->hasMany(ProductOrder::class);
     }
 
-    public function product(){
-        return $this->belongsTo(Product::class);
+    public function product()
+    {
+        return $this->belongsToMany(Product::class, 'product_orders', 'order_id', 'product_id');
+    }
+
+    public function promoCode()
+    {
+        return $this->belongsTo(PromoCode::class);
     }
 }

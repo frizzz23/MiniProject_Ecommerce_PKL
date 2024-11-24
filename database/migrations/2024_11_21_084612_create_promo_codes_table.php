@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payments', function (Blueprint $table) {
+        Schema::create('promo_codes', function (Blueprint $table) {
             $table->id();
-            $table->foreignUuid('order_id')->constrained('orders');
-            $table->string('image_payment');
-            $table->enum('payment_method', ['cash', 'transfer']);
-            $table->enum('status', ['pending', 'paid', 'canceled']);
+            $table->decimal('discount_amount', 15, 2);
+            $table->string('code')->unique();
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('payments');
+        Schema::dropIfExists('promo_codes');
     }
 };
