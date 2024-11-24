@@ -2,22 +2,33 @@
 
 namespace App\Models;
 
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, Sluggable;
 
     protected $table = 'products';
     protected $fillable = [
         'name_product',
+        'slug',
         'description_product',
-        'image_product',
         'stock_product',
         'price_product',
         'category_id',
     ];
+
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'name_product'
+            ]
+        ];
+    }
+
 
     /**
      * Relasi ke model Category (Many-to-One).
@@ -35,6 +46,11 @@ class Product extends Model
 
     public function order()
     {
-        return $this->hasMany(Order::class);
+        return $this->belongsToMany(Order::class, 'product_orders', 'product_id', 'order_id');
+    }
+
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class);
     }
 }

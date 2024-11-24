@@ -38,7 +38,8 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('categories.index') }}" class="flex items-center p-2 space-x-2 rounded-md hover:bg-gray-100"
+                <a href="{{ route('categories.index') }}"
+                    class="flex items-center p-2 space-x-2 rounded-md hover:bg-gray-100"
                     :class="{ 'justify-center': !isSidebarOpen }">
                     <span>
                         <svg class="w-6 h-6 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -51,7 +52,8 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('products.index') }}" class="flex items-center p-2 space-x-2 rounded-md hover:bg-gray-100"
+                <a href="{{ route('products.index') }}"
+                    class="flex items-center p-2 space-x-2 rounded-md hover:bg-gray-100"
                     :class="{ 'justify-center': !isSidebarOpen }">
                     <span>
                         <svg class="w-6 h-6 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -63,8 +65,8 @@
                     <span :class="{ 'lg:hidden': !isSidebarOpen }">Products</span>
                 </a>
             </li>
-            
-            
+
+
         </ul>
     </nav>
     <!-- Sidebar footer -->
