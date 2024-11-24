@@ -56,7 +56,8 @@
                         </td>
                         <td>
                             <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#editmodal" onclick="openEditModal('{{ $product->id }}')">
+                                data-bs-target="#editmodal_{{ $product->id }}"
+                                onclick="openEditModal('{{ $product->id }}')">
                                 Edit
                             </button>
                             <form action="{{ route('products.destroy', $product->id) }}" method="POST"
@@ -67,7 +68,7 @@
                             </form>
                         </td>
                     </tr>
-                    <div class="modal fade" id="editmodal" tabindex="-1"
+                    <div class="modal fade" id="editmodal_{{ $product->id }}" tabindex="-1"
                         aria-labelledby="editModalLabel{{ $product->id }}" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content" style="padding: 20px;">
