@@ -55,6 +55,7 @@
                 <div class="mb-3">
                     <input type="hidden" name="total_amount" value="{{ $total }}">
                     <input type="hidden" name="grand_total_amount" id="grand_total_amount" value="{{ $total }}">
+                    <p>Total : Rp. <span id='total'>{{ number_format($total, 0, ',', '.') }}</span></p>
                     <p>Diskon : Rp. <span id="diskon_value">0</span></p>
                     <p>Harga Total : Rp. <span id="harga_total">{{ number_format($total, 0, ',', '.') }}</span></p>
                 </div>
@@ -128,10 +129,11 @@
             }
 
             // Update harga total dan diskon
-            const discountedTotal = total - discount;
+            const discountedTotal = total - discount < 0 ? 0 : total - discount;
             document.getElementById('diskon_value').textContent = discount.toLocaleString();
             document.getElementById('harga_total').textContent = discountedTotal.toLocaleString();
             document.getElementById('grand_total_amount').value = discountedTotal;
+            document.getElementById('total').textContent = total;
         }
     </script>
 @endsection
