@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
+use App\Models\Cart;
 use App\Models\User;
+use App\Models\Order;
 use App\Models\Product;
+use App\Models\ProductOrder;
 use App\Models\PromoCode;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -31,6 +35,7 @@ class OrderController extends Controller
         $products = Product::all();
         $promoCodes = PromoCode::all();
         return view('orders.create', compact('users', 'products', 'promoCodes'));
+
     }
 
     /**
@@ -56,7 +61,6 @@ class OrderController extends Controller
             'grand_total_amount' => $request->grand_total_amount,
             'status_order' => $request->status_order,
         ]);
-
 
 
         return redirect()->route('orders.index')->with('success', 'Pesanan berhasil dibuat.');

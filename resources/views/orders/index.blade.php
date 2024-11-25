@@ -2,55 +2,24 @@
 @extends('layouts.app')
 
 @section('main')
-<div class="container">
-    <h1>Daftar Pesanan</h1>
+    <div class="container">
+        <h1>Daftar Pesanan</h1>
 
-    <!-- Tombol untuk memunculkan modal tambah pesanan -->
-    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#orderModal">
-        Tambah Pesanan
-    </button>
+        <!-- Tombol untuk memunculkan modal tambah pesanan -->
+        <a href="{{ route('orders.create') }}" class="btn btn-primary mb-3">Tambah Pesanan</a>
+        @if (session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
 
-    @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Nama Pengguna</th>
-                <th>Nama Produk</th>
-                <th>Subtotal</th>
-                <th>Total</th>
-                <th>Status</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($orders as $order)
+        <table class="table table-bordered">
+            <thead>
                 <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $order->user->name }}</td>
-                    <td>
-                        @foreach ($order->product as $product)
-                            <div>{{ $product->name_product }}</div>
-                        @endforeach
-                    </td>
-                    <td>{{ number_format($order->sub_total_amount, 2) }}</td>
-                    <td>{{ number_format($order->grand_total_amount, 2) }}</td>
-                    <td>{{ ucfirst($order->status_order) }}</td>
-                    <td>
-                        <!-- Tombol untuk memunculkan modal edit -->
-                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editOrderModal{{ $order->id }}">
-                            Edit
-                        </button>
-
-                        <form action="{{ route('orders.destroy', $order->id) }}" method="POST" style="display: inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
-                        </form>
-                    </td>
+                    <th>#</th>
+                    <th>Nama Pengguna</th>
+                    <th>Nama Produk</th>
+                    <th>Subtotal</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
                 </tr>
             @endforeach
         </tbody>
@@ -200,7 +169,4 @@
             </div>
         </div>
     </div>
-</div>
-@endforeach
-
 @endsection
