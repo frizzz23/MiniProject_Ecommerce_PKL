@@ -1,4 +1,4 @@
-<!-- resources/views/carts/create.blade.php -->
+{{-- <!-- resources/views/carts/create.blade.php -->
 @extends('home')
 
 @section('content')
@@ -35,4 +35,4 @@
         <a href="{{ route('carts.index') }}" class="btn btn-secondary">Kembali</a>
     </form>
 </div>
-@endsection
+@endsection --}}
