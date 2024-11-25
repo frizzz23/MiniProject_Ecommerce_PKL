@@ -1,7 +1,7 @@
 <!-- resources/views/product_orders/edit.blade.php -->
-@extends('home')
+@extends('layouts.app')
 
-@section('content')
+@section('main')
 <div class="container">
     <h1>Edit Produk Pesanan</h1>
 
@@ -33,7 +33,7 @@
         </div>
 
         <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-        <a href="{{ route('product-orders.index') }}" class="btn btn-secondary">Kembali</a>
+        <a href="{{ route('product_orders.index') }}" class="btn btn-secondary">Kembali</a>
     </form>
 </div>
 @endsection
