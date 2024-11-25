@@ -33,7 +33,7 @@ class CategoryController extends Controller
     {
         // Validasi input
         $request->validate([
-            'name_category' => 'required|string|max:255',
+            'name_category' => 'required|string|max:255|unique:categories,name_category',
         ]);
 
         // Simpan data ke database
@@ -59,7 +59,7 @@ class CategoryController extends Controller
     {
         // Validasi input
         $request->validate([
-            'name_category' => 'required|string|max:255',
+            'name_category' => 'required|string|max:255|unique:categories,name_category,' . $category->id,
         ]);
 
         // Update data di database

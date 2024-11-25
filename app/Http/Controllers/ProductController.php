@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
 use App\Models\Category;
+use App\Models\Product;
+use App\Models\ProductImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -14,8 +16,9 @@ class ProductController extends Controller
     public function index()
     {
         // Mendapatkan semua produk dengan kategori terkait
-        $products = Product::with('category')->get();
-        return view('products.index', compact('products'));
+        $products = Product::with('category', 'images')->get();
+        $categories = Category::all();
+        return view('products.index', compact('products', 'categories'));
     }
 
     /**
@@ -37,27 +40,31 @@ class ProductController extends Controller
         $request->validate([
             'name_product' => 'required|string|max:255',
             'description_product' => 'required|string',
-            'image_product' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'image_product' => 'nullable|array', // Pastikan image_product adalah array
+            'image_product.*' => 'image|mimes:jpeg,png,jpg|max:2048', // Validasi setiap elemen di array
             'stock_product' => 'required|integer|min:0',
             'price_product' => 'required|numeric|min:0',
             'category_id' => 'required|exists:categories,id',
         ]);
 
-        // Upload gambar jika ada
-        $imagePath = null;
-        if ($request->hasFile('image_product')) {
-            $imagePath = $request->file('image_product')->store('products', 'public');
-        }
-
         // Simpan data produk
-        Product::create([
+        $product =  Product::create([
             'name_product' => $request->name_product,
             'description_product' => $request->description_product,
-            'image_product' => $imagePath,
             'stock_product' => $request->stock_product,
             'price_product' => $request->price_product,
             'category_id' => $request->category_id,
         ]);
+
+        if ($request->hasFile('image_product')) {
+            foreach ($request->image_product as $image) {
+                $path = $image->store('products', 'public');
+                ProductImage::create([
+                    'image_product' => $path,
+                    'product_id' => $product->id,
+                ]);
+            }
+        }
 
         return redirect()->route('products.index')->with('success', 'Produk berhasil ditambahkan.');
     }
@@ -81,27 +88,72 @@ class ProductController extends Controller
         $request->validate([
             'name_product' => 'required|string|max:255',
             'description_product' => 'required|string',
-            'image_product' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'image_product' => 'nullable|array', // Pastikan image_product adalah array
+            'image_product.*' => 'image|mimes:jpeg,png,jpg|max:2048', // Validasi setiap elemen di array
+            'image_edit_product' => 'nullable|array', // Pastikan image_edit_product adalah array
+            'image_edit_product.*' => 'image|mimes:jpeg,png,jpg|max:2048', // Validasi setiap elemen di array
             'stock_product' => 'required|integer|min:0',
             'price_product' => 'required|numeric|min:0',
             'category_id' => 'required|exists:categories,id',
         ]);
 
-        // Upload gambar baru jika ada
-        $imagePath = $product->image_product;
-        if ($request->hasFile('image_product')) {
-            $imagePath = $request->file('image_product')->store('products', 'public');
-        }
-
         // Update data produk
         $product->update([
             'name_product' => $request->name_product,
             'description_product' => $request->description_product,
-            'image_product' => $imagePath,
             'stock_product' => $request->stock_product,
             'price_product' => $request->price_product,
             'category_id' => $request->category_id,
         ]);
+
+
+        // ambil semua image yang ada
+        $images = ProductImage::where('product_id', $product->id)->get();
+
+        // ambil id imagenya
+        $image_id = $images->pluck('id')->toArray();
+
+        // ambil id image yang di submit
+        $request_image_id = $request->image_id ?? [];
+
+        // ambil id image yang tidak sama dengan id yang di submit
+        $delete_image_id = array_diff($image_id, $request_image_id);
+
+        // hapus image yang tidak sama dengan id di db dan di submit
+        if (isset($delete_image_id)) {
+            foreach ($delete_image_id as $id) {
+                $image = ProductImage::findOrFail($id);
+                if (Storage::disk('public')->exists($image->image_product)) {
+                    Storage::disk('public')->delete($image->image_product);
+                }
+                ProductImage::findOrFail($id)->delete();
+            }
+        }
+
+        // simpan image yang di submit
+        if ($request->hasFile('image_product')) {
+            foreach ($request->image_product as $image) {
+                $path = $image->store('products', 'public');
+                ProductImage::create([
+                    'image_product' => $path,
+                    'product_id' => $product->id,
+                ]);
+            }
+        }
+
+        if ($request->hasFile('image_edit_product')) {
+            foreach ($request->image_edit_product as $index => $image) {
+                $image_find = ProductImage::findOrFail($index);
+                if (Storage::disk('public')->exists($image_find->image_product)) {
+                    Storage::disk('public')->delete($image_find->image_product);
+                }
+                $path = $image->store('products', 'public');
+                $image_find->update([
+                    'image_product' => $path,
+                    'product_id' => $product->id,
+                ]);
+            }
+        }
 
         return redirect()->route('products.index')->with('success', 'Produk berhasil diperbarui.');
     }

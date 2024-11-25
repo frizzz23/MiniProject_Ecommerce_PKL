@@ -11,7 +11,8 @@ class AddressController extends Controller
     public function index()
     {
         $addresses = Address::with('user')->get(); // Mengambil data dengan relasi user
-        return view('addresses.index', compact('addresses'));
+        $users = User::all(); // Ambil semua data pengguna untuk dropdown
+        return view('addresses.index', compact('addresses', 'users'));
     }
 
     public function create()

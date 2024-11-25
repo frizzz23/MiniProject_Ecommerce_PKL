@@ -14,12 +14,14 @@ class ReviewController extends Controller
      * Display a listing of the reviews for a product.
      */
     public function index(Product $product)
-    {
-        // Mengambil semua ulasan produk
-        $reviews = Review::with(['product', 'user'])->get();
+{
+    // Mengambil semua ulasan produk beserta informasi produk dan user
+    $reviews = Review::with(['product', 'user'])->get();
+    $products = Product::all(); // Ambil semua produk yang tersedia
+    $users = User::all(); // Ambil semua pengguna
 
-        return view('reviews.index', compact('reviews','product'));
-    }
+    return view('reviews.index', compact('reviews', 'product', 'products', 'users'));
+}
 
     /**
      * Show the form for creating a new review.

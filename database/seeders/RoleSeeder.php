@@ -36,7 +36,7 @@ class RoleSeeder extends Seeder
         //buat Admin
         $admin =  User::create([
             'name' => 'administrator',
-            'email' => 'admin@gmial.com',
+            'email' => 'admin@gmail.com',
             'password' => '12345678',
         ]);
 
