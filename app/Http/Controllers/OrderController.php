@@ -13,11 +13,18 @@ class OrderController extends Controller
      * Display a listing of the orders.
      */
     public function index()
-    {
-        // Mendapatkan semua pesanan
-        $orders = Order::with('user', 'product')->get();
-        return view('orders.index', compact('orders'));
-    }
+{
+    // Mendapatkan semua pesanan dengan relasi user dan product
+    $orders = Order::with('user', 'product')->get();
+
+    // Mendapatkan semua pengguna dan produk untuk dropdown
+    $users = User::all();
+    $products = Product::all();
+
+    // Mengirim data ke tampilan
+    return view('orders.index', compact('orders', 'users', 'products'));
+}
+
 
     /**
      * Show the form for creating a new order.
@@ -34,25 +41,33 @@ class OrderController extends Controller
      * Store a newly created order in storage.
      */
     public function store(Request $request)
-    {
-        // Validasi input
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'product_id' => 'required|exists:products,id',
-            'total_order' => 'required|numeric|min:0',
-            'status_order' => 'required|in:pending,processing,completed',
-        ]);
+{
+    // Validasi input
+    $request->validate([
+        'user_id' => 'required|exists:users,id',
+        'product_id' => 'required|exists:products,id',
+        'sub_total_amount' => 'required|numeric|min:0',
+        'grand_total_amount' => 'required|numeric|min:0',
+        'status_order' => 'required|in:pending,processing,completed',
+    ]);
 
-        // Simpan data pesanan
-        Order::create([
-            'user_id' => $request->user_id,
-            'product_id' => $request->product_id,
-            'total_order' => $request->total_order,
-            'status_order' => $request->status_order,
-        ]);
+    // Simpan data pesanan
+    $order = Order::create([
+        'user_id' => $request->user_id,
+        'product_id' => $request->product_id,   
+        'promo_code_id' => $request->promo_code_id, // Jika promo_code_id digunakan
+        'sub_total_amount' => $request->sub_total_amount,
+        'grand_total_amount' => $request->grand_total_amount,
+        'status_order' => $request->status_order,
+    ]);
 
-        return redirect()->route('orders.index')->with('success', 'Pesanan berhasil dibuat.');
-    }
+    // Simpan produk yang dipesan (relasi Many-to-Many dengan Product)
+    $order->product()->attach($request->product_id);
+
+    return redirect()->route('orders.index')->with('success', 'Pesanan berhasil dibuat.');
+}
+
+
 
     /**
      * Show the form for editing the specified order.
@@ -69,23 +84,30 @@ class OrderController extends Controller
      * Update the specified order in storage.
      */
     public function update(Request $request, Order $order)
-    {
-        // Validasi input
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'total_order' => 'required|numeric|min:0',
-            'status_order' => 'required|in:pending,processing,completed',
-        ]);
+{
+    // Validasi input
+    $request->validate([
+        'user_id' => 'required|exists:users,id',
+        'sub_total_amount' => 'required|numeric|min:0',
+        'grand_total_amount' => 'required|numeric|min:0',
+        'status_order' => 'required|in:pending,processing,completed',
+    ]);
 
-        // Update data pesanan
-        $order->update([
-            'user_id' => $request->user_id,
-            'total_order' => $request->total_order,
-            'status_order' => $request->status_order,
-        ]);
+    // Update data pesanan
+    $order->update([
+        'user_id' => $request->user_id,
+        'promo_code_id' => $request->promo_code_id, // Jika promo_code_id digunakan
+        'sub_total_amount' => $request->sub_total_amount,
+        'grand_total_amount' => $request->grand_total_amount,
+        'status_order' => $request->status_order,
+    ]);
 
-        return redirect()->route('orders.index')->with('success', 'Pesanan berhasil diperbarui.');
-    }
+    // Memperbarui produk yang dipesan (relasi Many-to-Many dengan Product)
+    $order->product()->sync($request->product_id);
+
+    return redirect()->route('orders.index')->with('success', 'Pesanan berhasil diperbarui.');
+}
+
 
     /**
      * Remove the specified order from storage.

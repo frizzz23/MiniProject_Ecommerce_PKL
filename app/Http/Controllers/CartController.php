@@ -14,14 +14,19 @@ class CartController extends Controller
      * Display a listing of the user's cart.
      */
     public function index()
-    {
-        // Mengambil semua produk yang ada di dalam keranjang milik pengguna yang sedang login
-        $carts = Cart::with('product')
-                    ->where('user_id', Auth::id())
-                    ->get();
+{
+    // Mengambil semua produk yang ada di dalam keranjang milik pengguna yang sedang login
+    $carts = Cart::with('product')
+                 ->where('user_id', Auth::id())
+                 ->get();
 
-        return view('carts.index', compact('carts'));
-    }
+    // Ambil semua pengguna dan produk
+    $users = User::all();
+    $products = Product::all();
+
+    // Kirim data ke view
+    return view('carts.index', compact('carts', 'users', 'products'));
+}
 
     /**
      * Show the form for adding a new product to the cart.
