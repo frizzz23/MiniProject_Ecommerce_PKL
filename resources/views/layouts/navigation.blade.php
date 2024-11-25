@@ -39,7 +39,7 @@
             </li>
             <!-- Sidebar Link 2 -->
             <li>
-                <a href="{{ route('home') }}" class="flex items-center p-2 space-x-2 rounded-md hover:bg-gray-100"
+                <a href="{{ route('dashboard') }}" class="flex items-center p-2 space-x-2 rounded-md hover:bg-gray-100"
                     :class="{ 'justify-center': !isSidebarOpen }">
                     <span>
                         <i class="ti ti-layout-dashboard"></i>
