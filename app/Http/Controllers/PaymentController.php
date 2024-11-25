@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Payment;
 use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
@@ -13,12 +14,14 @@ class PaymentController extends Controller
      * Display a listing of the payments.
      */
     public function index()
-    {
-        // Mengambil semua pembayaran
-        $payments = Payment::with('order')->get();
+{
+    // Mengambil semua pembayaran dan pesanan
+    $payments = Payment::with('order')->get();
+    $orders = Order::all(); // Mengambil semua pesanan (orders)
 
-        return view('payments.index', compact('payments'));
-    }
+    return view('payments.index', compact('payments', 'orders')); // Mengirimkan payments dan orders ke view
+}
+
 
     /**
      * Show the form for creating a new payment.

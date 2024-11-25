@@ -80,7 +80,7 @@
 
                     <div class="mb-3">
                         <label for="product_id" class="form-label">Produk</label>
-                        <select name="product_id[]" id="product_id" class="form-select" multiple required>
+                        <select name="product_id" id="product_id" class="form-select" >
                             <option value="">Pilih Produk</option>
                             @foreach ($products as $product)
                                 <option value="{{ $product->id }}">{{ $product->name_product }}</option>

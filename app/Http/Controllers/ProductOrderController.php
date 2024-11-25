@@ -13,11 +13,15 @@ class ProductOrderController extends Controller
      * Display a listing of the product orders.
      */
     public function index()
-    {
-        // Mengambil semua data product orders
-        $productOrders = ProductOrder::with(['product', 'order'])->get();
-        return view('product_orders.index', compact('productOrders'));
-    }
+{
+    // Ambil semua produk dan pesanan
+    $products = Product::all();
+    $orders = Order::all();
+    $productOrders = ProductOrder::all(); // Data produk pesanan
+
+    // Kirim data ke view
+    return view('product_orders.index', compact('products', 'orders', 'productOrders'));
+}
 
     /**
      * Show the form for creating a new product order.
@@ -47,7 +51,7 @@ class ProductOrderController extends Controller
             'order_id' => $request->order_id,
         ]);
 
-        return redirect()->route('product-orders.index')->with('success', 'Produk untuk pesanan berhasil ditambahkan.');
+        return redirect()->route('product_orders.index')->with('success', 'Produk untuk pesanan berhasil ditambahkan.');
     }
 
     /**
@@ -89,6 +93,6 @@ class ProductOrderController extends Controller
         // Hapus data product order
         $productOrder->delete();
 
-        return redirect()->route('product-orders.index')->with('success', 'Produk untuk pesanan berhasil dihapus.');
+        return redirect()->route('product_orders.index')->with('success', 'Produk untuk pesanan berhasil dihapus.');
     }
 }
