@@ -83,23 +83,30 @@ class OrderController extends Controller
      * Update the specified order in storage.
      */
     public function update(Request $request, Order $order)
-    {
-        // Validasi input
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'total_order' => 'required|numeric|min:0',
-            'status_order' => 'required|in:pending,processing,completed',
-        ]);
+{
+    // Validasi input
+    $request->validate([
+        'user_id' => 'required|exists:users,id',
+        'sub_total_amount' => 'required|numeric|min:0',
+        'grand_total_amount' => 'required|numeric|min:0',
+        'status_order' => 'required|in:pending,processing,completed',
+    ]);
 
-        // Update data pesanan
-        $order->update([
-            'user_id' => $request->user_id,
-            'total_order' => $request->total_order,
-            'status_order' => $request->status_order,
-        ]);
+    // Update data pesanan
+    $order->update([
+        'user_id' => $request->user_id,
+        'promo_code_id' => $request->promo_code_id, // Jika promo_code_id digunakan
+        'sub_total_amount' => $request->sub_total_amount,
+        'grand_total_amount' => $request->grand_total_amount,
+        'status_order' => $request->status_order,
+    ]);
 
-        return redirect()->route('orders.index')->with('success', 'Pesanan berhasil diperbarui.');
-    }
+    // Memperbarui produk yang dipesan (relasi Many-to-Many dengan Product)
+    $order->product()->sync($request->product_id);
+
+    return redirect()->route('orders.index')->with('success', 'Pesanan berhasil diperbarui.');
+}
+
 
     /**
      * Remove the specified order from storage.
