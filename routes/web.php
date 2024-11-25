@@ -3,6 +3,7 @@
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
@@ -43,6 +44,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('payments', PaymentController::class);
         Route::resource('product_orders', ProductOrderController::class);
         Route::resource('reviews', ReviewController::class);
+        Route::post('/api/validate-promo', DiscountController::class);
     }); // hanya untuk user
 });
 

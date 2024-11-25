@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
+use App\Models\Cart;
 use App\Models\User;
+use App\Models\Order;
 use App\Models\Product;
+use App\Models\ProductOrder;
+use App\Models\PromoCode;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -15,7 +20,8 @@ class OrderController extends Controller
     public function index()
     {
         // Mendapatkan semua pesanan
-        $orders = Order::with('user', 'product')->get();
+        $orders = Order::with('user', 'productOrders.product')->get();
+        // dd($orders->toArray());
         return view('orders.index', compact('orders'));
     }
 
@@ -25,9 +31,9 @@ class OrderController extends Controller
     public function create()
     {
         // Mendapatkan semua pengguna untuk dropdown
-        $products = Product::all();
+        $carts = Cart::where('user_id', Auth::id())->with(['product'])->get();
         $users = User::all();
-        return view('orders.create', compact('users', 'products'));
+        return view('orders.create', compact('users', 'carts'));
     }
 
     /**
@@ -35,21 +41,29 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         // Validasi input
         $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'product_id' => 'required|exists:products,id',
-            'total_order' => 'required|numeric|min:0',
-            'status_order' => 'required|in:pending,processing,completed',
+            'diskon' => 'nullable|exists:promo_codes,code',
         ]);
+        $diskon = PromoCode::where('code', $request->diskon)->first();
 
         // Simpan data pesanan
-        Order::create([
-            'user_id' => $request->user_id,
-            'product_id' => $request->product_id,
-            'total_order' => $request->total_order,
-            'status_order' => $request->status_order,
+        $order =  Order::create([
+            'user_id' => Auth::id(),
+            'promo_code_id' => $diskon->id ?? null,
+            'sub_total_amount' => $request->total_amount,
+            'grand_total_amount' => $request->grand_total_amount,
         ]);
+
+        foreach ($request->product_id_quantity as $product_id => $quantity) {
+            $product = Product::findOrFail($product_id);
+            ProductOrder::create([
+                'product_id' => $product->id,
+                'order_id' => $order->id,
+                'quantity' => $quantity,
+            ]);
+        }
 
         return redirect()->route('orders.index')->with('success', 'Pesanan berhasil dibuat.');
     }

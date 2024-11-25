@@ -18,7 +18,6 @@ class Order extends Model
     protected $fillable = [
         'user_id',
         'promo_code_id',
-        'product_id',
         'sub_total_amount',
         'grand_total_amount',
         'status_order',
@@ -35,15 +34,11 @@ class Order extends Model
     /**
      * Relasi ke model OrderDetail (One-to-Many).
      */
-    public function productOrder()
+    public function productOrders()
     {
         return $this->hasMany(ProductOrder::class);
     }
 
-    public function product()
-    {
-        return $this->belongsToMany(Product::class, 'product_orders', 'order_id', 'product_id');
-    }
 
     public function promoCode()
     {
