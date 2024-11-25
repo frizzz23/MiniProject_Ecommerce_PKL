@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 
 @section('main')
@@ -9,23 +10,23 @@
         Tambah Keranjang
     </button>
 
-    @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+        @if (session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
 
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Nama Pengguna</th>
-                <th>Nama Produk</th>
-                <th>Jumlah</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse ($carts as $cart)
+        <table class="table table-bordered">
+            <thead>
                 <tr>
+                    <th>#</th>
+                    <th>Nama Pengguna</th>
+                    <th>Nama Produk</th>
+                    <th>Jumlah</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($carts as $cart)
+                    <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $cart->user->name }}</td>
                     <td>{{ $cart->product->name_product }}</td>
@@ -135,5 +136,4 @@
         </div>
     </div>
 </div>
-
 @endsection

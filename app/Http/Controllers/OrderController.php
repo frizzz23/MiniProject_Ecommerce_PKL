@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
+use App\Models\Cart;
 use App\Models\User;
+use App\Models\Order;
 use App\Models\Product;
+use App\Models\ProductOrder;
+use App\Models\PromoCode;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -13,18 +18,12 @@ class OrderController extends Controller
      * Display a listing of the orders.
      */
     public function index()
-{
-    // Mendapatkan semua pesanan dengan relasi user dan product
-    $orders = Order::with('user', 'product')->get();
-
-    // Mendapatkan semua pengguna dan produk untuk dropdown
-    $users = User::all();
-    $products = Product::all();
-
-    // Mengirim data ke tampilan
-    return view('orders.index', compact('orders', 'users', 'products'));
-}
-
+    {
+        // Mendapatkan semua pesanan
+        $orders = Order::with('user', 'productOrders.product')->get();
+        // dd($orders->toArray());
+        return view('orders.index', compact('orders'));
+    }
 
     /**
      * Show the form for creating a new order.
@@ -32,42 +31,42 @@ class OrderController extends Controller
     public function create()
     {
         // Mendapatkan semua pengguna untuk dropdown
-        $products = Product::all();
+        $carts = Cart::where('user_id', Auth::id())->with(['product'])->get();
         $users = User::all();
-        return view('orders.create', compact('users', 'products'));
+        return view('orders.create', compact('users', 'carts'));
     }
 
     /**
      * Store a newly created order in storage.
      */
     public function store(Request $request)
-{
-    // Validasi input
-    $request->validate([
-        'user_id' => 'required|exists:users,id',
-        'product_id' => 'required|exists:products,id',
-        'sub_total_amount' => 'required|numeric|min:0',
-        'grand_total_amount' => 'required|numeric|min:0',
-        'status_order' => 'required|in:pending,processing,completed',
-    ]);
+    {
+        // dd($request->all());
+        // Validasi input
+        $request->validate([
+            'diskon' => 'nullable|exists:promo_codes,code',
+        ]);
+        $diskon = PromoCode::where('code', $request->diskon)->first();
 
-    // Simpan data pesanan
-    $order = Order::create([
-        'user_id' => $request->user_id,
-        'product_id' => $request->product_id,   
-        'promo_code_id' => $request->promo_code_id, // Jika promo_code_id digunakan
-        'sub_total_amount' => $request->sub_total_amount,
-        'grand_total_amount' => $request->grand_total_amount,
-        'status_order' => $request->status_order,
-    ]);
+        // Simpan data pesanan
+        $order =  Order::create([
+            'user_id' => Auth::id(),
+            'promo_code_id' => $diskon->id ?? null,
+            'sub_total_amount' => $request->total_amount,
+            'grand_total_amount' => $request->grand_total_amount,
+        ]);
 
-    // Simpan produk yang dipesan (relasi Many-to-Many dengan Product)
-    $order->product()->attach($request->product_id);
+        foreach ($request->product_id_quantity as $product_id => $quantity) {
+            $product = Product::findOrFail($product_id);
+            ProductOrder::create([
+                'product_id' => $product->id,
+                'order_id' => $order->id,
+                'quantity' => $quantity,
+            ]);
+        }
 
-    return redirect()->route('orders.index')->with('success', 'Pesanan berhasil dibuat.');
-}
-
-
+        return redirect()->route('orders.index')->with('success', 'Pesanan berhasil dibuat.');
+    }
 
     /**
      * Show the form for editing the specified order.

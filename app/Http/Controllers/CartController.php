@@ -14,6 +14,7 @@ class CartController extends Controller
      * Display a listing of the user's cart.
      */
     public function index()
+
 {
     // Mengambil semua produk yang ada di dalam keranjang milik pengguna yang sedang login
     $carts = Cart::with('product')
@@ -45,9 +46,8 @@ class CartController extends Controller
     {
         // Validasi input
         $request->validate([
-            'user_id' => 'required|exists:users,id',
             'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|integer|min:1',
+            'product_id' => 'required|integer|min:1',
         ]);
 
         // Menambahkan produk ke dalam keranjang
