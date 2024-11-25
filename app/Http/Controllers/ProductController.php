@@ -36,7 +36,6 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-
         // Validasi input
         $request->validate([
             'name_product' => 'required|string|max:255',
@@ -85,7 +84,6 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        // dd($request->all());
         // Validasi input
         $request->validate([
             'name_product' => 'required|string|max:255',
