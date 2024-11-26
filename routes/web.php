@@ -3,6 +3,7 @@
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
@@ -19,6 +20,13 @@ Route::get('/landing-page', function () {
     return view('landing-page');
 });
 
+Route::get('/landing-page-2', function () {
+    return view('landing-page-2');
+});
+
+Route::get('/home-page', function () {
+    return view('home-page');
+});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -43,6 +51,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('payments', PaymentController::class);
         Route::resource('product_orders', ProductOrderController::class);
         Route::resource('reviews', ReviewController::class);
+        Route::post('/api/validate-promo', DiscountController::class);
     }); // hanya untuk user
 });
 

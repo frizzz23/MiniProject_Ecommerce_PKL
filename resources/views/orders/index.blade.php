@@ -230,9 +230,7 @@
             </div>
         </div>
     </div>
-
-
-    <script>
+ <script>
         // Fungsi JavaScript tetap sama seperti sebelumnya
         // Fungsi untuk mengurangi jumlah produk
         function kurang(id, price, id_quantity) {

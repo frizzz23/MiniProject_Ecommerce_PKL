@@ -37,6 +37,7 @@ class OrderController extends Controller
 
         $users = User::all();
         return view('orders.create', compact('users', 'carts'));
+
     }
 
     /**
@@ -67,6 +68,7 @@ class OrderController extends Controller
                 'quantity' => $quantity,
             ]);
         }
+
 
         return redirect()->route('orders.index')->with('success', 'Pesanan berhasil dibuat.');
     }

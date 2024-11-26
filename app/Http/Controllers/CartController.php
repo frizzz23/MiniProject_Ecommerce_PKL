@@ -15,7 +15,6 @@ class CartController extends Controller
      */
     public function index()
 
-
     {
         // Mengambil semua produk yang ada di dalam keranjang milik pengguna yang sedang login
         $carts = Cart::with('product')
@@ -57,6 +56,7 @@ class CartController extends Controller
             'product_id' => $request->product_id,
             'quantity' => $request->quantity,
         ]);
+
     }
 
     return redirect()->route('carts.index')->with('success', 'Produk berhasil ditambahkan ke keranjang.');

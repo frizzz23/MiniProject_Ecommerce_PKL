@@ -5,14 +5,16 @@
 <div class="container">
     <h1>Keranjang Belanja</h1>
 
-    <!-- Tombol untuk memunculkan modal tambah keranjang -->
-    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#cartModal">
-        Tambah Keranjang
-    </button>
 
-    @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+        <!-- Tombol untuk memunculkan modal tambah keranjang -->
+        <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#cartModal">
+            Tambah Keranjang
+        </button>
+
+        @if (session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+
 
     <table class="table table-bordered">
         <thead>
@@ -62,10 +64,11 @@
                                             </div>
                                             <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                                         </form>
+
                                     </div>
                                 </div>
                             </div>
-                        </div>
+
 
                         <!-- Form Hapus Produk -->
                         <form action="{{ route('carts.destroy', $cart->id) }}" method="POST" style="display: inline;">
@@ -114,12 +117,14 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Tambahkan</button>
-                </form>
+
+                        <button type="submit" class="btn btn-primary">Tambahkan</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
 
 <script>
     function kurang(target) {
@@ -133,4 +138,5 @@
         jumlah.value = parseInt(jumlah.value) + 1;
     }
 </script>
+
 @endsection

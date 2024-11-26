@@ -42,6 +42,7 @@ class Order extends Model
         return $this->hasMany(ProductOrder::class, 'order_id', 'id');
     }
 
+
     /**
      * Relasi Many-to-Many ke model Product melalui tabel perantara product_orders.
      */
@@ -50,6 +51,7 @@ class Order extends Model
         return $this->belongsToMany(Product::class, 'product_orders', 'order_id', 'product_id')
                     ->withPivot('quantity'); // Menambahkan kolom tambahan dari tabel pivot jika ada.
     }
+
 
     /**
      * Relasi ke model PromoCode (Many-to-One).
