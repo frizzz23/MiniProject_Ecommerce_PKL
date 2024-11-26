@@ -20,10 +20,6 @@ Route::get('/landing-page', function () {
     return view('landing-page');
 });
 
-Route::get('/landing-page-2', function () {
-    return view('landing-page-2');
-});
-
 Route::get('/home-page', function () {
     return view('home-page');
 });
