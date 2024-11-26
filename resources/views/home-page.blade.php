@@ -7,8 +7,9 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet" type="text/css" />
 
 </head>
 <body class="bg-white">
@@ -718,5 +719,9 @@
     </script>
 
 </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+
 </body>
 </html>
