@@ -18,23 +18,25 @@ class OrderController extends Controller
      * Display a listing of the orders.
      */
     public function index()
-{
-    $orders = Order::with('user', 'product', 'promoCode')->get();
-    $users = User::all(); // Get all users
-    $products = Product::all(); // Get all products
-
-    return view('orders.index', compact('orders', 'users', 'products'));
-}
+    {
+        $users = User::all();
+        $products = Product::all();
+        // Mendapatkan semua pesanan
+        $orders = Order::with('user', 'productOrders.product')->get();
+        $carts = Cart::where('user_id', Auth::id())->with(['product'])->get();
+        // dd($orders->toArray());
+        return view('orders.index', compact('orders', 'users', 'products', 'carts'));
+    }
 
     /**
      * Show the form for creating a new order.
      */
     public function create()
     {
+        // Mendapatkan semua pengguna untuk dropdown
+
         $users = User::all();
-        $products = Product::all();
-        $promoCodes = PromoCode::all();
-        return view('orders.create', compact('users', 'products', 'promoCodes'));
+        return view('orders.create', compact('users', 'carts'));
 
     }
 
@@ -43,24 +45,29 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate input
+        // dd($request->all());
+        // Validasi input
         $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'product_id.*' => 'exists:products,id', // Validate each product ID
-            'sub_total_amount' => 'required|numeric|min:0',
-            'grand_total_amount' => 'required|numeric|min:0',
-            'status_order' => 'required|in:pending,processing,completed',
+            'diskon' => 'nullable|exists:promo_codes,code',
+        ]);
+        $diskon = PromoCode::where('code', $request->diskon)->first();
+
+        // Simpan data pesanan
+        $order =  Order::create([
+            'user_id' => Auth::id(),
+            'promo_code_id' => $diskon->id ?? null,
+            'sub_total_amount' => $request->total_amount,
+            'grand_total_amount' => $request->grand_total_amount,
         ]);
 
-        // Create the order
-        $order = Order::create([
-            'user_id' => $request->user_id,
-            'product_id' => $request->product_id,
-            'promo_code_id' => $request->promo_code_id,
-            'sub_total_amount' => $request->sub_total_amount,
-            'grand_total_amount' => $request->grand_total_amount,
-            'status_order' => $request->status_order,
-        ]);
+        foreach ($request->product_id_quantity as $product_id => $quantity) {
+            $product = Product::findOrFail($product_id);
+            ProductOrder::create([
+                'product_id' => $product->id,
+                'order_id' => $order->id,
+                'quantity' => $quantity,
+            ]);
+        }
 
 
         return redirect()->route('orders.index')->with('success', 'Pesanan berhasil dibuat.');
@@ -71,48 +78,48 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
+        // Mendapatkan semua pengguna untuk dropdown
         $users = User::all();
         $products = Product::all();
-        $promoCodes = PromoCode::all();
-        return view('orders.edit', compact('order', 'users', 'products', 'promoCodes'));
+        return view('orders.edit', compact('order', 'users', 'products'));
     }
 
     /**
      * Update the specified order in storage.
      */
     public function update(Request $request, Order $order)
-    {
-        // Validate input
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
 
-            'product_ids.*' => 'exists:products,id', // Validate each product ID
-            'sub_total_amount' => 'required|numeric|min:0',
-            'grand_total_amount' => 'required|numeric|min:0',
-            'status_order' => 'required|in:pending,processing,completed',
-        ]);
+{
+    // Validasi input
+    $request->validate([
+        'user_id' => 'required|exists:users,id',
+        'sub_total_amount' => 'required|numeric|min:0',
+        'grand_total_amount' => 'required|numeric|min:0',
+        'status_order' => 'required|in:pending,processing,completed',
+    ]);
 
-        // Update the order
-        $order->update([
-            'user_id' => $request->user_id,
-            'promo_code_id' => $request->promo_code_id,
-            'sub_total_amount' => $request->sub_total_amount,
-            'grand_total_amount' => $request->grand_total_amount,
-            'status_order' => $request->status_order,
-        ]);
 
-        // Sync products (Many-to-Many relationship)
-        $order->products()->sync($request->product_ids);
+    // Update data pesanan
+    $order->update([
+        'user_id' => $request->user_id,
+        'promo_code_id' => $request->promo_code_id, // Jika promo_code_id digunakan
+        'sub_total_amount' => $request->sub_total_amount,
+        'grand_total_amount' => $request->grand_total_amount,
+        'status_order' => $request->status_order,
+    ]);
+    // Memperbarui produk yang dipesan (relasi Many-to-Many dengan Product)
+    $order->product()->sync($request->product_id);
+    return redirect()->route('orders.index')->with('success', 'Pesanan berhasil diperbarui.');
+}
 
-        return redirect()->route('orders.index')->with('success', 'Pesanan berhasil diperbarui.');
-    }
+
 
     /**
      * Remove the specified order from storage.
      */
     public function destroy(Order $order)
     {
-        $order->products()->detach(); // Detach products before deleting order
+        // Hapus pesanan
         $order->delete();
 
         return redirect()->route('orders.index')->with('success', 'Pesanan berhasil dihapus.');
