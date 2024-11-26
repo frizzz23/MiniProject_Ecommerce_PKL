@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('main')
+
 <div class="container">
     <h1>Keranjang Belanja</h1>
 
@@ -17,7 +18,6 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>Nama Pengguna</th>
                 <th>Nama Produk</th>
                 <th>Jumlah</th>
                 <th>Aksi</th>
@@ -27,48 +27,38 @@
             @forelse ($carts as $cart)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
-                    <td>{{ $cart->user->name }}</td>
                     <td>{{ $cart->product->name_product }}</td>
                     <td>{{ $cart->quantity }}</td>
                     <td>
                         <!-- Tombol Edit Produk -->
-                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $cart->id }}">
+                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#editModal{{ $cart->id }}">
                             Edit
                         </button>
 
                         <!-- Modal Edit Produk -->
-                        <div class="modal fade" id="editModal{{ $cart->id }}" tabindex="-1" aria-labelledby="editModalLabel{{ $cart->id }}" aria-hidden="true">
+                        <div class="modal fade" id="editModal{{ $cart->id }}" tabindex="-1"
+                            aria-labelledby="editModalLabel{{ $cart->id }}" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="editModalLabel{{ $cart->id }}">Edit Produk di Keranjang</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
                                         <form action="{{ route('carts.update', $cart->id) }}" method="POST">
                                             @csrf
                                             @method('PUT')
+                                            <h1 class="text-lg font-bold">{{ $cart->product->name_product }}</h1>
                                             <div class="mb-3">
-                                                <label for="user_id" class="form-label">Nama Pengguna</label>
-                                                <select name="user_id" id="user_id" class="form-select" required>
-                                                    <option value="">Pilih Pengguna</option>
-                                                    @foreach ($users as $user)
-                                                        <option value="{{ $user->id }}" {{ $cart->user_id == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="product_id" class="form-label">Nama Produk</label>
-                                                <select name="product_id" id="product_id" class="form-select" required>
-                                                    <option value="">Pilih Produk</option>
-                                                    @foreach ($products as $product)
-                                                        <option value="{{ $product->id }}" {{ $cart->product_id == $product->id ? 'selected' : '' }}>{{ $product->name_product }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="quantity" class="form-label">Jumlah</label>
-                                                <input type="number" name="quantity" id="quantity" class="form-control" value="{{ $cart->quantity }}" min="1" required>
+                                                <label for="jumlah_{{ $cart->id }}" class="form-label">Jumlah</label>
+                                                <div class="d-flex gap-3">
+                                                    <button type="button" onclick="kurang('jumlah_{{ $cart->id }}')" class="btn btn-sm btn-danger">-</button>
+                                                    <input type="number" class="form-control" name="quantity"
+                                                        id="jumlah_{{ $cart->id }}" required value="{{ $cart->quantity }}">
+                                                    <button type="button" onclick="tambah('jumlah_{{ $cart->id }}')" class="btn btn-sm btn-success">+</button>
+                                                </div>
                                             </div>
                                             <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                                         </form>
@@ -87,7 +77,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="5" class="text-center">Keranjang kosong.</td>
+                    <td colspan="4" class="text-center">Keranjang kosong.</td>
                 </tr>
             @endforelse
         </tbody>
@@ -106,15 +96,6 @@
                 <form action="{{ route('carts.store') }}" method="POST">
                     @csrf
                     <div class="mb-3">
-                        <label for="user_id" class="form-label">Nama Pengguna</label>
-                        <select name="user_id" id="user_id" class="form-select" required>
-                            <option value="">Pilih Pengguna</option>
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}">{{ $user->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="mb-3">
                         <label for="product_id" class="form-label">Nama Produk</label>
                         <select name="product_id" id="product_id" class="form-select" required>
                             <option value="">Pilih Produk</option>
@@ -125,8 +106,12 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="quantity" class="form-label">Jumlah</label>
-                        <input type="number" name="quantity" id="quantity" class="form-control" value="1" min="1" required>
+                        <label for="jumlah" class="form-label">Jumlah</label>
+                        <div class="d-flex gap-3">
+                            <button type="button" onclick="kurang('jumlah')" class="btn btn-sm btn-danger">-</button>
+                            <input type="number" class="form-control" name="quantity" id="jumlah" required value="1">
+                            <button type="button" onclick="tambah('jumlah')" class="btn btn-sm btn-success">+</button>
+                        </div>
                     </div>
 
                     <button type="submit" class="btn btn-primary">Tambahkan</button>
@@ -136,4 +121,16 @@
     </div>
 </div>
 
+<script>
+    function kurang(target) {
+        const jumlah = document.getElementById(target);
+        if (jumlah.value > 1) {
+            jumlah.value = parseInt(jumlah.value) - 1;
+        }
+    }
+    function tambah(target) {
+        const jumlah = document.getElementById(target);
+        jumlah.value = parseInt(jumlah.value) + 1;
+    }
+</script>
 @endsection
