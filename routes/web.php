@@ -13,22 +13,16 @@ use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('landing-page');
 });
 
 Route::get('/landing-page', function () {
     return view('landing-page');
-});
+})->name('landing-page');
 
 Route::get('/home-page', function () {
     return view('home-page');
 });
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -38,6 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:admin')->group(function () {
         Route::resource('categories', CategoryController::class);
         Route::resource('products', ProductController::class);
+        Route::get('/dashboard', function () {return view('dashboard');})->name('dashboard');
     }); // hanya untuk admin
 
     Route::middleware('role:user')->group(function () {

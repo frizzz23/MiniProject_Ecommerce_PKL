@@ -1,0 +1,49 @@
+/* Gaya untuk loader */
+#loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8); /* Latar belakang semi transparan */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* Gaya untuk logo */
+#loader img {
+    width: 150px; /* Ukuran logo yang proporsional */
+    height: auto; /* Menjaga proporsi gambar */
+    animation: blinkAndGrow 2s infinite; /* Animasi berkedip dan membesar/mengecil */
+}
+
+/* Animasi berkedip dan pembesaran/pengecilan */
+@keyframes blinkAndGrow {
+    0% {
+        opacity: 1; /* Tampil penuh */
+        transform: scale(1); /* Ukuran normal */
+    }
+    25% {
+        opacity: 0.5; /* Setengah transparan */
+        transform: scale(1.1); /* Membesar sedikit */
+    }
+    50% {
+        opacity: 1; /* Tampil penuh */
+        transform: scale(1); /* Ukuran normal */
+    }
+    75% {
+        opacity: 0.5; /* Setengah transparan */
+        transform: scale(0.9); /* Mengecil sedikit */
+    }
+    100% {
+        opacity: 1; /* Tampil penuh */
+        transform: scale(1); /* Ukuran normal */
+    }
+}
+
+/* Sembunyikan loader setelah selesai memuat */
+body.loaded #loader {
+    display: none;
+}
