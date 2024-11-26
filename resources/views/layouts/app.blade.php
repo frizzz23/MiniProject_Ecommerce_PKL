@@ -14,12 +14,16 @@
 
     <link rel="shortcut icon" type="image/png" href="{{ asset('style/src/assets/images/logos/favicon.png') }}" />
     <link rel="stylesheet" href="{{ asset('style/src/assets/css/styles.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('loading/loading.css') }}" />
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body>
+    <div id="loader">
+        <img src="{{ asset('loading/emote.png') }}" alt="Loading...">
+    </div>
     <!--  Body Wrapper -->
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
         data-sidebar-position="fixed" data-header-position="fixed">
@@ -73,7 +77,8 @@
 
                                         <form action="{{ route('logout') }}" method="post">
                                             @csrf
-                                            <button type="submit" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</button>
+                                            <button type="submit"
+                                                class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</button>
                                         </form>
 
                                     </div>
@@ -96,6 +101,7 @@
     <script src="{{ asset('style/src/assets/libs/apexcharts/dist/apexcharts.min.js') }}"></script>
     <script src="{{ asset('style/src/assets/libs/simplebar/dist/simplebar.js') }}"></script>
     <script src="{{ asset('style/src/assets/js/dashboard.js') }}"></script>
+    <script src="{{ asset('loading/loading.js') }}"></script>
 </body>
 
 </html>
