@@ -52,7 +52,7 @@ class CartController extends Controller
         $cart = Cart::where('product_id', $request->product_id)->where('user_id', Auth::id())->first();
 
         // Menambahkan produk ke dalam keranjang
-        if ($cart->exists()) {
+        if ($cart) {
             $cart->update([
                 'quantity' => $cart->quantity + $request->quantity,
             ]);
