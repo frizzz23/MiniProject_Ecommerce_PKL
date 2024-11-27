@@ -10,11 +10,14 @@ class Order extends Model
 {
     use HasFactory, HasUuids;
 
-    // Menentukan tabel yang digunakan
+    /**
+     * Menentukan tabel yang digunakan.
+     */
     protected $table = 'orders';
 
-
-    // Menentukan kolom yang dapat diisi
+    /**
+     * Menentukan kolom yang dapat diisi.
+     */
     protected $fillable = [
         'user_id',
         'promo_code_id',
@@ -28,20 +31,33 @@ class Order extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     /**
-     * Relasi ke model OrderDetail (One-to-Many).
+     * Relasi ke model ProductOrder (One-to-Many).
      */
     public function productOrders()
     {
-        return $this->hasMany(ProductOrder::class);
+        return $this->hasMany(ProductOrder::class, 'order_id', 'id');
     }
 
 
+    /**
+     * Relasi Many-to-Many ke model Product melalui tabel perantara product_orders.
+     */
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'product_orders', 'order_id', 'product_id')
+                    ->withPivot('quantity'); // Menambahkan kolom tambahan dari tabel pivot jika ada.
+    }
+
+
+    /**
+     * Relasi ke model PromoCode (Many-to-One).
+     */
     public function promoCode()
     {
-        return $this->belongsTo(PromoCode::class);
+        return $this->belongsTo(PromoCode::class, 'promo_code_id', 'id');
     }
 }

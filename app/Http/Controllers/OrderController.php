@@ -19,10 +19,13 @@ class OrderController extends Controller
      */
     public function index()
     {
+        $users = User::all();
+        $products = Product::all();
         // Mendapatkan semua pesanan
         $orders = Order::with('user', 'productOrders.product')->get();
+        $carts = Cart::where('user_id', Auth::id())->with(['product'])->get();
         // dd($orders->toArray());
-        return view('orders.index', compact('orders'));
+        return view('orders.index', compact('orders', 'users', 'products', 'carts'));
     }
 
     /**
@@ -31,9 +34,10 @@ class OrderController extends Controller
     public function create()
     {
         // Mendapatkan semua pengguna untuk dropdown
-        $carts = Cart::where('user_id', Auth::id())->with(['product'])->get();
+
         $users = User::all();
         return view('orders.create', compact('users', 'carts'));
+
     }
 
     /**
@@ -65,6 +69,7 @@ class OrderController extends Controller
             ]);
         }
 
+
         return redirect()->route('orders.index')->with('success', 'Pesanan berhasil dibuat.');
     }
 
@@ -83,6 +88,7 @@ class OrderController extends Controller
      * Update the specified order in storage.
      */
     public function update(Request $request, Order $order)
+
 {
     // Validasi input
     $request->validate([
@@ -92,6 +98,7 @@ class OrderController extends Controller
         'status_order' => 'required|in:pending,processing,completed',
     ]);
 
+
     // Update data pesanan
     $order->update([
         'user_id' => $request->user_id,
@@ -100,12 +107,11 @@ class OrderController extends Controller
         'grand_total_amount' => $request->grand_total_amount,
         'status_order' => $request->status_order,
     ]);
-
     // Memperbarui produk yang dipesan (relasi Many-to-Many dengan Product)
     $order->product()->sync($request->product_id);
-
     return redirect()->route('orders.index')->with('success', 'Pesanan berhasil diperbarui.');
 }
+
 
 
     /**

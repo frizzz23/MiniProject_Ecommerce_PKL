@@ -4,19 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    @guest
-    <title>Landing Page</title>
-    @endguest
-
-    @auth
     <title>Home Page</title>
-    @endauth
-    
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet" type="text/css" />
@@ -81,68 +72,52 @@
 
             <!-- Login & Register -->
             <div class="flex space-x-4">
-                @guest
-                    <!-- Jika pengguna belum login -->
-                    <a href="{{ route('login') }}" class="text-black hover:text-blue-400">Login</a>
-                    <a href="{{ route('register') }}" class="text-black hover:text-blue-400">Register</a>
-                @endguest
+                <button id="userDropdownButton1" data-dropdown-toggle="userDropdown1" type="button"
+                    class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900 dark:text-white">
+                    <svg class="w-5 h-5 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                        height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-width="2"
+                            d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    </svg>
+                    Account
+                    <svg class="w-4 h-4 text-gray-900 dark:text-white ms-1" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                        viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m19 9-7 7-7-7" />
+                    </svg>
+                </button>
 
-                @auth
-                    <!-- Jika pengguna sudah login -->
-                    <div class="flex space-x-4">
-                        <button id="userDropdownButton1" data-dropdown-toggle="userDropdown1" type="button"
-                            class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900 dark:text-white">
-                            <svg class="w-5 h-5 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                                height="24" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-width="2"
-                                    d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                            </svg>
-                            Account
-                            <svg class="w-4 h-4 text-gray-900 dark:text-white ms-1" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="m19 9-7 7-7-7" />
-                            </svg>
-                        </button>
+                <div id="userDropdown1"
+                    class="hidden z-10 w-56 divide-y divide-gray-100 overflow-hidden overflow-y-auto rounded-lg bg-white antialiased shadow dark:divide-gray-600 dark:bg-gray-700">
+                    <ul class="p-2 text-start text-sm font-medium text-gray-900 dark:text-white">
+                        <li><a href="#" title=""
+                                class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                                My Account </a></li>
+                        <li><a href="#" title=""
+                                class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                                My Orders </a></li>
+                        <li><a href="#" title=""
+                                class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                                Settings </a></li>
+                        <li><a href="#" title=""
+                                class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                                Favourites </a></li>
+                        <li><a href="#" title=""
+                                class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                                Delivery Addresses </a></li>
+                        <li><a href="#" title=""
+                                class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                                Billing Data </a></li>
+                    </ul>
 
-                        <div id="userDropdown1"
-                            class="hidden z-10 w-56 divide-y divide-gray-100 overflow-hidden overflow-y-auto rounded-lg bg-white antialiased shadow dark:divide-gray-600 dark:bg-gray-700">
-                            <ul class="p-2 text-start text-sm font-medium text-gray-900 dark:text-white">
-                                <li><a href="#"
-                                        class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">My
-                                        Account</a></li>
-                                <li><a href="#"
-                                        class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">My
-                                        Orders</a></li>
-                                <li><a href="#"
-                                        class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">Settings</a>
-                                </li>
-                                <li><a href="#"
-                                        class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">Favourites</a>
-                                </li>
-                                <li><a href="#"
-                                        class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">Delivery
-                                        Addresses</a></li>
-                                <li><a href="#"
-                                        class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">Billing
-                                        Data</a></li>
-                            </ul>
-
-                            <div class="p-2 text-sm font-medium text-gray-900 dark:text-white">
-                                <a href="{{ route('logout') }}"
-                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                                    class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">Sign
-                                    Out</a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
-                                    @csrf
-                                </form>
-                            </div>
-                        </div>
+                    <div class="p-2 text-sm font-medium text-gray-900 dark:text-white">
+                        <a href="#" title=""
+                            class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                            Sign Out </a>
                     </div>
-                @endauth
+                </div>
             </div>
-
         </div>
 
         <!-- Bottom Layer -->
@@ -465,21 +440,68 @@
                     </div>
                     <h3 class="text-lg font-medium">Computer Accessories</h3>
                 </div>
+
+                <!-- Category Item 7 -->
+                <div class="bg-gray-800 rounded-lg p-6 flex flex-col items-center justify-center text-white">
+                    <div class="text-4xl mb-4">
+                        <!-- Replace this with actual icons -->
+                        <i class="fas fa-keyboard"></i>
+                    </div>
+                    <h3 class="text-lg font-medium">Computer Accessories</h3>
+                </div>
+
+                <!-- Category Item 8 -->
+                <div class="bg-gray-800 rounded-lg p-6 flex flex-col items-center justify-center text-white">
+                    <div class="text-4xl mb-4">
+                        <!-- Replace this with actual icons -->
+                        <i class="fas fa-keyboard"></i>
+                    </div>
+                    <h3 class="text-lg font-medium">Computer Accessories</h3>
+                </div>
+
+                <!-- Category Item 9 -->
+                <div class="bg-gray-800 rounded-lg p-6 flex flex-col items-center justify-center text-white">
+                    <div class="text-4xl mb-4">
+                        <!-- Replace this with actual icons -->
+                        <i class="fas fa-keyboard"></i>
+                    </div>
+                    <h3 class="text-lg font-medium">Computer Accessories</h3>
+                </div>
+
+                <!-- Category Item 10 -->
+                <div class="bg-gray-800 rounded-lg p-6 flex flex-col items-center justify-center text-white">
+                    <div class="text-4xl mb-4">
+                        <!-- Replace this with actual icons -->
+                        <i class="fas fa-keyboard"></i>
+                    </div>
+                    <h3 class="text-lg font-medium">Computer Accessories</h3>
+                </div>
+
+                <!-- Category Item 11 -->
+                <div class="bg-gray-800 rounded-lg p-6 flex flex-col items-center justify-center text-white">
+                    <div class="text-4xl mb-4">
+                        <!-- Replace this with actual icons -->
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="text-lg font-medium">Security & Wi-Fi</h3>
+                </div>
+
+                <!-- Category Item 12 -->
+                <div class="bg-gray-800 rounded-lg p-6 flex flex-col items-center justify-center text-white">
+                    <div class="text-4xl mb-4">
+                        <!-- Replace this with actual icons -->
+                        <i class="fas fa-tags"></i>
+                    </div>
+                    <h3 class="text-lg font-medium">Deals</h3>
+                </div>
             </div>
 
             <!-- See all categories button -->
             <div class="mt-6 text-center">
-                <div class="flex items-center justify-center">
-                    <!-- Garis Horizontal Sebelah Kiri -->
-                    <hr class="w-32 h-px bg-gray-200 border-0 dark:bg-gray-700">
-                    <!-- Tombol "See all categories" -->
-                    <button
-                        class="mx-4 bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-                        See all categories
-                    </button>
-                    <!-- Garis Horizontal Sebelah Kanan -->
-                    <hr class="w-32 h-px bg-gray-200 border-0 dark:bg-gray-700">
-                </div>
+                <button
+                    class="bg-blue-600 text-white py-2 px-4 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                    See all categories
+                </button>
             </div>
         </div>
         <!-- end category -->
@@ -488,7 +510,7 @@
         <div>
             <h2 class="text-2xl font-semibold text-white mb-8">Promo Sale</h2>
         </div>
-        <div class="carousel carousel-center bg-neutral rounded-box max-w-full space-x-4 p-4 h-96 mb-8">
+        <div class="carousel carousel-center bg-neutral rounded-box max-w-full space-x-4 p-4 h-96">
             <div class="carousel-item space-x-4">
                 <!-- item 1 -->
                 <div
@@ -630,135 +652,12 @@
                         </div>
                     </div>
                 </div>
-                <!-- See More -->
-                <div class="relative w-full max-w-xs">
-                    <!-- Layer Bawah -->
-                    <div
-                        class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                        <span
-                            class="absolute -right-px -top-px rounded-bl-3xl rounded-tr-4xl bg-rose-600 px-6 py-4 font-medium uppercase tracking-widest text-white z-10">
-                            Save 90%
-                        </span>
-                        <a href="#">
-                            <img class="rounded-t-lg object-cover transition duration-500 group-hover:scale-105 mt-7"
-                                src="{{ asset('img/img-carousel-promo/laptop.jpg') }}" alt="product image" />
-                        </a>
-                        <div class="px-5 pb-4 mt-10">
-                            <a href="#">
-                                <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">Laptop
-                                    Gaming</h5>
-                            </a>
-                            <div class="flex items-center justify-between">
-                                <p class="text-gray-700">
-                                    $49.99
-                                    <span class="text-gray-400 line-through">$80</span>
-                                </p>
-                                <a href="#"
-                                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                    Add to cart
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Layer Atas (Blur dengan Tombol) -->
-                    <div
-                        class="absolute inset-0 flex items-center justify-center bg-white/70 backdrop-blur-xs rounded-bl-3xl z-20">
-                        <button
-                            class="bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-                            See More
-                        </button>
-                    </div>
-                </div>
             </div>
         </div>
         </div>
         <!-- end promo -->
 
-        <!-- Informasi E-commerce -->
-        <section class="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
-            <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
-                <div class="mx-auto max-w-5xl">
-                    <h2 class="text-center text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Informasi
-                        E-commerce</h2>
-                    <div class="my-8 xl:mb-16 xl:mt-12">
-                        <img class="w-full dark:hidden"
-                            src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-showcase.svg"
-                            alt="Gambar E-commerce" />
-                        <img class="hidden w-full dark:block"
-                            src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-showcase-dark.svg"
-                            alt="Gambar E-commerce" />
-                    </div>
-                    <div class="mx-auto max-w-2xl space-y-6 text-left">
-                        <p class="text-left font-normal text-gray-500 dark:text-gray-400">
-                            E-commerce, atau perdagangan elektronik, adalah aktivitas jual beli produk atau layanan
-                            secara online melalui platform digital. Dengan e-commerce, pelanggan dapat dengan mudah
-                            menemukan dan membeli produk dari kenyamanan rumah mereka.
-                        </p>
-
-                        <p class="text-base font-normal text-gray-500 dark:text-gray-400">
-                            Sistem e-commerce modern menawarkan fitur canggih seperti pengelolaan inventaris, opsi
-                            pembayaran yang beragam, dan pengiriman yang terintegrasi. Ini memungkinkan bisnis untuk
-                            menjangkau audiens yang lebih luas dan meningkatkan penjualan mereka secara signifikan.
-                        </p>
-
-                        <p class="text-base font-semibold text-gray-900 dark:text-white">Keunggulan Utama E-commerce:
-                        </p>
-                        <ul
-                            class="list-outside list-disc space-y-4 pl-4 text-base font-normal text-gray-500 dark:text-gray-400">
-                            <li>
-                                <span class="font-semibold text-gray-900 dark:text-white">Kemudahan Akses: </span>
-                                Pelanggan dapat berbelanja kapan saja dan di mana saja tanpa terbatas waktu dan lokasi.
-                            </li>
-                            <li>
-                                <span class="font-semibold text-gray-900 dark:text-white">Pilihan Produk Lebih Banyak:
-                                </span>
-                                Menyediakan akses ke berbagai produk dari berbagai penjual dalam satu platform.
-                            </li>
-                            <li>
-                                <span class="font-semibold text-gray-900 dark:text-white">Metode Pembayaran Aman:
-                                </span>
-                                Menawarkan opsi pembayaran digital yang aman, termasuk kartu kredit, e-wallet, dan
-                                transfer bank.
-                            </li>
-                            <li>
-                                <span class="font-semibold text-gray-900 dark:text-white">Efisiensi Operasional:
-                                </span>
-                                Memudahkan manajemen stok, pesanan, dan pengiriman barang secara otomatis.
-                            </li>
-                            <li>
-                                <span class="font-semibold text-gray-900 dark:text-white">Analitik dan Laporan: </span>
-                                Memberikan wawasan berbasis data untuk membantu bisnis meningkatkan strategi pemasaran.
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="my-6 md:my-12">
-                        <iframe class="h-[260px] md:h-[540px] w-full rounded-lg"
-                            src="https://www.youtube.com/embed/KaLxCiilHns" title="Video Pengantar E-commerce"
-                            frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    </div>
-                    <div class="mx-auto mb-6 max-w-3xl space-y-6 text-left md:mb-12">
-                        <p class="text-base font-normal text-gray-500 dark:text-gray-400">
-                            Dengan platform e-commerce, konektivitas meliputi berbagai fitur seperti integrasi dengan
-                            media sosial, alat promosi digital, dan layanan pelanggan yang responsif.
-                        </p>
-
-                        <p class="text-base font-normal text-gray-500 dark:text-gray-400">
-                            Investasi dalam e-commerce dapat memberikan keuntungan jangka panjang bagi bisnis, baik
-                            dalam meningkatkan efisiensi operasional maupun memperluas pasar secara global.
-                        </p>
-                    </div>
-                    <div class="text-left">
-                        <a href="#"
-                            class="mb-2 mr-2 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">Pelajari
-                            lebih lanjut...</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Akhir Informasi -->
+        <!-- P -->
     </main>
     <!-- End Banner -->
 
@@ -890,6 +789,9 @@
         </div>
     </footer>
     <!-- end footer -->
+
+
+
 
 
     <!-- Dropdown Script -->
