@@ -57,6 +57,22 @@ class CartController extends Controller
             'quantity' => $request->quantity,
         ]);
 
+        $cart = Cart::where('product_id', $request->product_id)->where('user_id', Auth::id())->first();
+
+        // Menambahkan produk ke dalam keranjang
+        if ($cart) {
+            $cart->update([
+                'quantity' => $cart->quantity + $request->quantity,
+            ]);
+        } else {
+            Cart::create([
+                'user_id' => Auth::id(),
+                'product_id' => $request->product_id,
+                'quantity' => $request->quantity,
+            ]);
+        }
+
+        return redirect()->route('carts.index')->with('success', 'Produk berhasil ditambahkan ke keranjang.');
     }
 
     return redirect()->route('carts.index')->with('success', 'Produk berhasil ditambahkan ke keranjang.');
