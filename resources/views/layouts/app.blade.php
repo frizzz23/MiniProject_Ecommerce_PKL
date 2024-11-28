@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-    <link rel="shortcut icon" type="image/png" href="{{ asset('style/src/assets/images/logos/favicon.png') }}" />
+    <link rel="shortcut icon" type="image/png" href="{{ asset('loading/logo.png') }}" />
     <link rel="stylesheet" href="{{ asset('style/src/assets/css/styles.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('loading/loading.css') }}" />
 
@@ -22,7 +22,7 @@
 
 <body>
     <div id="loader">
-        <img src="{{ asset('loading/emote.png') }}" alt="Loading...">
+        <img src="{{ asset('loading/logo.png') }}" alt="Loading...">
     </div>
     <!--  Body Wrapper -->
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
@@ -59,7 +59,7 @@
                                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
                                     aria-labelledby="drop2">
                                     <div class="message-body">
-                                        <a href="javascript:void(0)"
+                                        <a href="{{ route('profile.edit') }}"
                                             class="d-flex align-items-center gap-2 dropdown-item">
                                             <i class="ti ti-user fs-6"></i>
                                             <p class="mb-0 fs-3">My Profile</p>
