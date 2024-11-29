@@ -3,6 +3,7 @@
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CodeDiscountController;
 use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
@@ -31,14 +32,17 @@ Route::middleware('auth')->group(function () {
 });
 
 // admin page
-Route::middleware(['auth','role:admin'])->group(function () {
+Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('products', ProductController::class);
-    Route::get('/dashboard', function () {return view('dashboard');})->name('dashboard');
+    Route::resource('code-discount', CodeDiscountController::class);
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
 });
 
 // user page
-Route::middleware(['auth','role:user'])->group(function () {
+Route::middleware(['auth', 'role:user'])->group(function () {
     Route::resource('addresses', AddressController::class);
     Route::resource('carts', CartController::class);
     Route::resource('orders', OrderController::class);
