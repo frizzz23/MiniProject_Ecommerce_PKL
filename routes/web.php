@@ -13,13 +13,12 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductOrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\CartUserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', HomeController::class)->name('home');
+Route::get('/', HomeController::class)->name('landing-page');
 
-Route::get('/landing-page', function () {
-    return view('landing-page');
-})->name('landing-page');
+
 
 Route::get('/home-page', function () {
     return view('home-page');
@@ -36,6 +35,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('products', ProductController::class);
     Route::resource('code-discount', CodeDiscountController::class);
+
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
@@ -50,6 +50,7 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::resource('product_orders', ProductOrderController::class);
     Route::resource('reviews', ReviewController::class);
 
+    // Route::resource('cart1', CartUserController::class);
 
     Route::post('/api/validate-promo', DiscountController::class);
     Route::resource('/api/cart', ApiCartController::class)->only(['index', 'store', 'update', 'destroy']);

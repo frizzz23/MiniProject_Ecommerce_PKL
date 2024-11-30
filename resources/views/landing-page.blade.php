@@ -213,6 +213,7 @@
                                         <a href="#"
                                             class="inline-block w-full py-2 text-center text-sm font-semibold text-white bg-green-600 hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700 rounded-lg">Checkout</a>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -310,17 +311,21 @@
         <div class="max-w-7xl mx-auto py-12">
             <h2 class="text-2xl font-semibold text-white mb-8">Kategori</h2>
 
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
-
-                @foreach ($categories as $category)
-                    <div class="bg-gray-800 rounded-lg p-6 flex flex-col items-center justify-center text-white">
-                        <div class="text-4xl mb-4">
-                            <i class="fas fa-laptop"></i>
-                        </div>
-                        <h3 class="text-lg font-medium">{{ $category->name_category }}</h3>
-                    </div>
-                @endforeach
+            @if(isset($categories) && $categories->count() > 0)
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+        @foreach ($categories as $category)
+            <div class="bg-gray-800 rounded-lg p-6 flex flex-col items-center justify-center text-white">
+                <div class="text-4xl mb-4">
+                    <i class="fas fa-laptop"></i>
+                </div>
+                <h3 class="text-lg font-medium">{{ $category->name_category }}</h3>
             </div>
+        @endforeach
+    </div>
+@else
+    <p class="text-gray-500 text-center">Tidak ada kategori tersedia.</p>
+@endif
+
 
             <!-- See all categories button -->
             <div class="mt-6 text-center">
@@ -344,6 +349,7 @@
             <h2 class="text-2xl font-semibold text-white mb-8">Promo Sale</h2>
         </div>
         <div class="carousel carousel-center bg-neutral rounded-box max-w-full space-x-4 p-4 h-96 mb-8">
+
             <div class="carousel-item space-x-4">
                 @foreach ($products as $product)
                     @if ($loop->iteration != $limit)
@@ -436,9 +442,30 @@ onclick="addToCart('{{ $product->id }}')"
                                 </button>
                             </div>
                         </div>
+
                     @endif
-                @endforeach
+                </a>
+                <h5 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                    {{ $product->name_product }}
+                </h5>
+                <p class="text-gray-700 mb-4">
+                    Rp. {{ number_format($product->price_product, 0, ',', '.') }}
+                </p>
+                <form action="{{ route('carts.store') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                    <input type="hidden" name="quantity" value="1">
+                    <button type="submit" class="btn btn-primary w-full">
+                        Tambahkan ke Keranjang
+                    </button>
+                </form>
             </div>
+        @endforeach
+    </div>
+@else
+    <p class="text-gray-500 text-center">Tidak ada produk tersedia.</p>
+@endif
+
         </div>
         </div>
         <!-- end promo -->
