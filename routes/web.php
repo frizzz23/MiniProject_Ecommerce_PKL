@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\ApiCartController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CodeDiscountController;
@@ -48,7 +49,10 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::resource('payments', PaymentController::class);
     Route::resource('product_orders', ProductOrderController::class);
     Route::resource('reviews', ReviewController::class);
+
+
     Route::post('/api/validate-promo', DiscountController::class);
+    Route::resource('/api/cart', ApiCartController::class)->only(['index', 'store', 'update', 'destroy']);
 });
 
 require __DIR__ . '/auth.php';
