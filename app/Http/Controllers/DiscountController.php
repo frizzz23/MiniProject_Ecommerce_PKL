@@ -20,6 +20,7 @@ class DiscountController extends Controller
                 'status' => 'success',
                 'discount' => $promo->discount_amount, // Kembalikan jumlah diskon
             ]);
+            die();
         }
 
         return response()->json([
