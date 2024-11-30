@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     @guest
-    <title>Landing Page</title>
+        <title>Landing Page</title>
     @endguest
 
     @auth
-    <title>Home Page</title>
+        <title>Home Page</title>
     @endauth
-    
+
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -413,59 +413,15 @@
             <h2 class="text-2xl font-semibold text-white mb-8">Kategori</h2>
 
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
-                <!-- Category Item 1 -->
-                <div class="bg-gray-800 rounded-lg p-6 flex flex-col items-center justify-center text-white">
-                    <div class="text-4xl mb-4">
-                        <!-- Replace this with actual icons -->
-                        <i class="fas fa-laptop"></i>
-                    </div>
-                    <h3 class="text-lg font-medium">Laptops & Computers</h3>
-                </div>
 
-                <!-- Category Item 2 -->
-                <div class="bg-gray-800 rounded-lg p-6 flex flex-col items-center justify-center text-white">
-                    <div class="text-4xl mb-4">
-                        <!-- Replace this with actual icons -->
-                        <i class="fas fa-tv"></i>
+                @foreach ($categories as $category)
+                    <div class="bg-gray-800 rounded-lg p-6 flex flex-col items-center justify-center text-white">
+                        <div class="text-4xl mb-4">
+                            <i class="fas fa-laptop"></i>
+                        </div>
+                        <h3 class="text-lg font-medium">{{ $category->name_category }}</h3>
                     </div>
-                    <h3 class="text-lg font-medium">TV</h3>
-                </div>
-
-                <!-- Category Item 3 -->
-                <div class="bg-gray-800 rounded-lg p-6 flex flex-col items-center justify-center text-white">
-                    <div class="text-4xl mb-4">
-                        <!-- Replace this with actual icons -->
-                        <i class="fas fa-tablet-alt"></i>
-                    </div>
-                    <h3 class="text-lg font-medium">Tablets</h3>
-                </div>
-
-                <!-- Category Item 4 -->
-                <div class="bg-gray-800 rounded-lg p-6 flex flex-col items-center justify-center text-white">
-                    <div class="text-4xl mb-4">
-                        <!-- Replace this with actual icons -->
-                        <i class="fas fa-headphones-alt"></i>
-                    </div>
-                    <h3 class="text-lg font-medium">Audio</h3>
-                </div>
-
-                <!-- Category Item 5 -->
-                <div class="bg-gray-800 rounded-lg p-6 flex flex-col items-center justify-center text-white">
-                    <div class="text-4xl mb-4">
-                        <!-- Replace this with actual icons -->
-                        <i class="fas fa-print"></i>
-                    </div>
-                    <h3 class="text-lg font-medium">Printers</h3>
-                </div>
-
-                <!-- Category Item 6 -->
-                <div class="bg-gray-800 rounded-lg p-6 flex flex-col items-center justify-center text-white">
-                    <div class="text-4xl mb-4">
-                        <!-- Replace this with actual icons -->
-                        <i class="fas fa-keyboard"></i>
-                    </div>
-                    <h3 class="text-lg font-medium">Computer Accessories</h3>
-                </div>
+                @endforeach
             </div>
 
             <!-- See all categories button -->
@@ -474,10 +430,10 @@
                     <!-- Garis Horizontal Sebelah Kiri -->
                     <hr class="w-32 h-px bg-gray-200 border-0 dark:bg-gray-700">
                     <!-- Tombol "See all categories" -->
-                    <button
+                    <a href="#"
                         class="mx-4 bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
                         See all categories
-                    </button>
+                    </a>
                     <!-- Garis Horizontal Sebelah Kanan -->
                     <hr class="w-32 h-px bg-gray-200 border-0 dark:bg-gray-700">
                 </div>
@@ -491,186 +447,91 @@
         </div>
         <div class="carousel carousel-center bg-neutral rounded-box max-w-full space-x-4 p-4 h-96 mb-8">
             <div class="carousel-item space-x-4">
-                <!-- item 1 -->
-                <div
-                    class="w-full max-w-xs bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 relative">
-                    <span
-                        class="absolute -right-px -top-px rounded-bl-3xl rounded-tr-4xl bg-rose-600 px-6 py-4 font-medium uppercase tracking-widest text-white">
-                        Save 10%
-                    </span>
-                    <a href="#">
-                        <img class="rounded-t-lg object-cover transition duration-500 group-hover:scale-105 mt-7"
-                            src="{{ asset('img/img-carousel-promo/laptop.jpg') }}" alt="product image" />
-                    </a>
-                    <div class="px-5 pb-5 mt-10">
-                        <a href="#">
-                            <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">Laptop
-                                Geming</h5>
-                        </a>
-                        <div class="flex items-center justify-between">
-                            <p class="text-gray-700">
-                                $49.99
-                                <span class="text-gray-400 line-through">$80</span>
-                            </p>
-                            <a href="#"
-                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                Add to cart
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <!-- item 2 -->
-                <div
-                    class="w-full max-w-xs bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 relative">
-                    <span
-                        class="absolute -right-px -top-px rounded-bl-3xl rounded-tr-4xl bg-rose-600 px-6 py-4 font-medium uppercase tracking-widest text-white">
-                        Save 10%
-                    </span>
-                    <a href="#">
-                        <img class="rounded-t-lg object-cover transition duration-500 group-hover:scale-105 mt-7"
-                            src="{{ asset('img/img-carousel-promo/laptop.jpg') }}" alt="product image" />
-                    </a>
-                    <div class="px-5 pb-4 mt-10">
-                        <a href="#">
-                            <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">Laptop
-                                Geming</h5>
-                        </a>
-                        <div class="flex items-center justify-between">
-                            <p class="text-gray-700">
-                                $49.99
-                                <span class="text-gray-400 line-through">$80</span>
-                            </p>
-                            <a href="#"
-                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                Add to cart
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <!-- item 3 -->
-                <div
-                    class="w-full max-w-xs bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 relative">
-                    <span
-                        class="absolute -right-px -top-px rounded-bl-3xl rounded-tr-4xl bg-rose-600 px-6 py-4 font-medium uppercase tracking-widest text-white">
-                        Save 10%
-                    </span>
-                    <a href="#">
-                        <img class="rounded-t-lg object-cover transition duration-500 group-hover:scale-105 mt-7"
-                            src="{{ asset('img/img-carousel-promo/laptop.jpg') }}" alt="product image" />
-                    </a>
-                    <div class="px-5 pb-4 mt-10">
-                        <a href="#">
-                            <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">Laptop
-                                Geming</h5>
-                        </a>
-                        <div class="flex items-center justify-between">
-                            <p class="text-gray-700">
-                                $49.99
-                                <span class="text-gray-400 line-through">$80</span>
-                            </p>
-                            <a href="#"
-                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                Add to cart
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <!-- item 4 -->
-                <div
-                    class="w-full max-w-xs bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 relative">
-                    <span
-                        class="absolute -right-px -top-px rounded-bl-3xl rounded-tr-4xl bg-rose-600 px-6 py-4 font-medium uppercase tracking-widest text-white">
-                        Save 10%
-                    </span>
-                    <a href="#">
-                        <img class="rounded-t-lg object-cover transition duration-500 group-hover:scale-105 mt-7"
-                            src="{{ asset('img/img-carousel-promo/laptop.jpg') }}" alt="product image" />
-                    </a>
-                    <div class="px-5 pb-4 mt-10">
-                        <a href="#">
-                            <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">Laptop
-                                Geming</h5>
-                        </a>
-                        <div class="flex items-center justify-between">
-                            <p class="text-gray-700">
-                                $49.99
-                                <span class="text-gray-400 line-through">$80</span>
-                            </p>
-                            <a href="#"
-                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                Add to cart
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <!-- item 5 -->
-                <div
-                    class="w-full max-w-xs bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 relative">
-                    <span
-                        class="absolute -right-px -top-px rounded-bl-3xl rounded-tr-4xl bg-rose-600 px-6 py-4 font-medium uppercase tracking-widest text-white">
-                        Save 10%
-                    </span>
-                    <a href="#">
-                        <img class="rounded-t-lg object-cover transition duration-500 group-hover:scale-105 mt-7"
-                            src="{{ asset('img/img-carousel-promo/laptop.jpg') }}" alt="product image" />
-                    </a>
-                    <div class="px-5 pb-4 mt-10">
-                        <a href="#">
-                            <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">Laptop
-                                Geming</h5>
-                        </a>
-                        <div class="flex items-center justify-between">
-                            <p class="text-gray-700">
-                                $49.99
-                                <span class="text-gray-400 line-through">$80</span>
-                            </p>
-                            <a href="#"
-                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                Add to cart
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <!-- See More -->
-                <div class="relative w-full max-w-xs">
-                    <!-- Layer Bawah -->
-                    <div
-                        class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                        <span
-                            class="absolute -right-px -top-px rounded-bl-3xl rounded-tr-4xl bg-rose-600 px-6 py-4 font-medium uppercase tracking-widest text-white z-10">
-                            Save 90%
-                        </span>
-                        <a href="#">
-                            <img class="rounded-t-lg object-cover transition duration-500 group-hover:scale-105 mt-7"
-                                src="{{ asset('img/img-carousel-promo/laptop.jpg') }}" alt="product image" />
-                        </a>
-                        <div class="px-5 pb-4 mt-10">
+                @foreach ($products as $product)
+                    @if ($loop->iteration != $limit)
+                        <div
+                            class="w-full max-w-xs bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 relative">
+                            {{-- <span
+                                class="absolute -right-px -top-px rounded-bl-3xl rounded-tr-4xl bg-rose-600 px-6 py-4 font-medium uppercase tracking-widest text-white">
+                                Save 10%
+                            </span> --}}
                             <a href="#">
-                                <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">Laptop
-                                    Gaming</h5>
+                                @if ($product->images->count() > 0)
+                                    <img class="rounded-t-lg object-cover transition duration-500 group-hover:scale-105 mt-7"
+                                        src="{{ asset('storage/' . $product->images->first()->image_product) }}"
+                                        alt="product image" />
+                                @else
+                                    <img class="rounded-t-lg object-cover transition duration-500 group-hover:scale-105 mt-7"
+                                        src="{{ asset('img/img-carousel-promo/laptop.jpg') }}" alt="product image" />
+                                @endif
                             </a>
-                            <div class="flex items-center justify-between">
-                                <p class="text-gray-700">
-                                    $49.99
-                                    <span class="text-gray-400 line-through">$80</span>
-                                </p>
-                                <a href="#"
-                                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                    Add to cart
+                            <div class="px-5 pb-5 mt-10">
+                                <a href="#">
+                                    <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                                        {{ $product->name_product }}</h5>
                                 </a>
+                                <div class="flex items-center justify-between">
+                                    <p class="text-gray-700">
+                                        Rp. {{ number_format($product->price, 0, ',', '.') }}
+                                        {{-- <span class="text-gray-400 line-through">$80</span> --}}
+                                    </p>
+                                    <a href="#"
+                                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        Add to cart
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @else
+                        <!-- See More -->
+                        <div class="relative w-full max-w-xs">
+                            <!-- Layer Bawah -->
+                            <div
+                                class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                                {{-- <span
+                                    class="absolute -right-px -top-px rounded-bl-3xl rounded-tr-4xl bg-rose-600 px-6 py-4 font-medium uppercase tracking-widest text-white z-10">
+                                    Save 90%
+                                </span> --}}
+                                <a href="#">
+                                    @if ($product->images->count() > 0)
+                                        <img class="rounded-t-lg object-cover transition duration-500 group-hover:scale-105 mt-7"
+                                            src="{{ asset('storage/' . $product->images->first()->image_product) }}"
+                                            alt="product image" />
+                                    @else
+                                        <img class="rounded-t-lg object-cover transition duration-500 group-hover:scale-105 mt-7"
+                                            src="{{ asset('img/img-carousel-promo/laptop.jpg') }}"
+                                            alt="product image" />
+                                    @endif
+                                </a>
+                                <div class="px-5 pb-4 mt-10">
+                                    <a href="#">
+                                        <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                                            {{ $product->name_product }}</h5>
+                                    </a>
+                                    <div class="flex items-center justify-between">
+                                        <p class="text-gray-700">
+                                            Rp. {{ number_format($product->price, 0, ',', '.') }}
+                                            {{-- <span class="text-gray-400 line-through">$80</span> --}}
+                                        </p>
+                                        <a href="#"
+                                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                            Add to cart
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
 
-                    <!-- Layer Atas (Blur dengan Tombol) -->
-                    <div
-                        class="absolute inset-0 flex items-center justify-center bg-white/70 backdrop-blur-xs rounded-bl-3xl z-20">
-                        <button
-                            class="bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-                            See More
-                        </button>
-                    </div>
-                </div>
+                            <!-- Layer Atas (Blur dengan Tombol) -->
+                            <div
+                                class="absolute inset-0 flex items-center justify-center bg-white/70 backdrop-blur-xs rounded-bl-3xl z-20">
+                                <button
+                                    class="bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                                    See More
+                                </button>
+                            </div>
+                        </div>
+                    @endif
+                @endforeach
             </div>
         </div>
         </div>
