@@ -54,5 +54,6 @@ class RegisteredUserController extends Controller
         }
 
         return redirect()->route('/landing-page'); // User diarahkan ke landing-page
+
     }
 }

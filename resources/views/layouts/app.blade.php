@@ -12,7 +12,8 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-    {{-- font awesome start--}}
+
+    {{-- font awesome start --}}
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
@@ -63,20 +64,22 @@
                                     <img src="{{ asset('style/src/assets/images/profile/user-1.jpg') }}" alt=""
                                         width="35" height="35" class="rounded-circle">
                                 </a>
-                                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up p-2" aria-labelledby="drop2" style="min-width: 250px;">
+                                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up p-2"
+                                    aria-labelledby="drop2" style="min-width: 250px;">
                                     <div class="d-flex align-items-center p-3 border-bottom">
-                                        <img src="{{ asset('style/src/assets/images/profile/user-1.jpg') }}" alt=""
-                                            width="60" height="60" class="rounded-circle me-3">
+                                        <img src="{{ asset('style/src/assets/images/profile/user-1.jpg') }}"
+                                            alt="" width="60" height="60" class="rounded-circle me-3">
                                         <div>
                                             <h6 class="mb-0 fw-semibold">{{ Auth::user()->name }}</h6>
                                             <span class="text-muted">{{ Auth::user()->email }}</span>
                                         </div>
                                     </div>
                                     <div class="message-body">
+
                                         <form action="{{ route('logout') }}" method="POST" class="my-2">
                                             @csrf
-                                            <button type="submit" 
-                                                    class="dropdown-item px-3 py-2 d-flex align-items-center gap-2 text-danger">
+                                            <button type="submit"
+                                                class="dropdown-item px-3 py-2 d-flex align-items-center gap-2 text-danger">
                                                 <i class="ti ti-logout fs-6"></i>
                                                 <p class="mb-0 fs-3">Logout</p>
                                             </button>

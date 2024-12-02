@@ -22,6 +22,9 @@
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet" type="text/css" />
     <link rel="shortcut icon" type="image/png" href="{{ asset('loading/logo.png') }}" />
 
+
+    {{-- swettalert --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="bg-white">
@@ -49,24 +52,17 @@
                     <div id="dropdown"
                         class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
                         <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdown-button">
-                            <li><button type="button"
-                                    class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Mockups</button>
-                            </li>
-                            <li><button type="button"
-                                    class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Templates</button>
-                            </li>
-                            <li><button type="button"
-                                    class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Design</button>
-                            </li>
-                            <li><button type="button"
-                                    class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Logos</button>
-                            </li>
+                            @foreach ($categories as $category)
+                                <li><button type="button"
+                                        class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ $category->name_category }}</button>
+                                </li>
+                            @endforeach
                         </ul>
                     </div>
                     <div class="relative">
                         <input type="search" id="search-dropdown"
                             class="block p-2.5 w-80 z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-[#7AB2D3] focus:ring-[#7AB2D3] focus:border-[#7AB2D3] dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
-                            placeholder="Search Mockups, Logos, Design Templates..." required />
+                            placeholder="Search product" required />
                         <button type="submit"
                             class="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-[#7AB2D3] rounded-e-lg border border-[#7AB2D3] hover:bg-[#7AB2D3] focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -151,23 +147,20 @@
                                 <ul
                                     class="hidden lg:flex items-center justify-start gap-6 md:gap-8 py-3 sm:justify-center">
                                     <li>
-                                        <a href="#"
+                                        <a href="{{ route('home') }}"
                                             class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">Home</a>
                                     </li>
                                     <li class="shrink-0">
-                                        <a href="#"
-                                            class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">Best
-                                            Sellers</a>
+                                        <a href="{{ route('product-page') }}"
+                                            class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">Product</a>
                                     </li>
                                     <li class="shrink-0">
-                                        <a href="#"
-                                            class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">Gift
-                                            Ideas</a>
+                                        <a href="{{ route('category-page') }}"
+                                            class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">Category</a>
                                     </li>
                                     <li class="shrink-0">
-                                        <a href="#"
-                                            class="text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">Today's
-                                            Deals</a>
+                                        <a href="{{ route('about-page') }}"
+                                            class="text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">About</a>
                                     </li>
                                 </ul>
                             </div>
@@ -204,7 +197,7 @@
                                         <a href="{{ route('user.carts.index') }}"
                                             class="inline-block w-full py-2 text-center text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 rounded-lg">See
                                             All</a>
-                                        <a href="#"
+                                        <a href="{{ route('orders.index') }}"
                                             class="inline-block w-full py-2 text-center text-sm font-semibold text-white bg-green-600 hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700 rounded-lg">Checkout</a>
                                     </div>
                                 </div>
@@ -228,17 +221,19 @@
                 <div id="gallery" class="relative w-full" data-carousel="slide">
                     <!-- Carousel wrapper -->
                     <div class="relative h-60 overflow-hidden rounded-lg">
-                        <!-- Item 1 -->
-                        <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                            <img src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg"
-                                class="absolute block w-full h-full object-cover" alt="Image 1">
-                        </div>
-                        <!-- Item 2 -->
-                        <div class="hidden duration-700 ease-in-out" data-carousel-item="active">
-                            <img src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg"
-                                class="absolute block w-full h-full object-cover" alt="Image 2">
-                        </div>
-                        <!-- Add more items as needed -->
+                        @foreach ($products as $product)
+                            @if ($loop->first)
+                                <div class="hidden duration-700 ease-in-out" data-carousel-item="active">
+                                    <img src="{{ asset('storage/' . $product->images->first()->image_product) }}"
+                                        class="absolute block w-full h-full object-cover" alt="Image 2">
+                                </div>
+                            @else
+                                <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                                    <img src="{{ asset('storage/' . $product->images->first()->image_product) }}"
+                                        class="absolute block w-full h-full object-cover" alt="Image 2">
+                                </div>
+                            @endif
+                        @endforeach
                     </div>
                     <!-- Slider controls -->
                     <button type="button"
@@ -350,7 +345,6 @@
                             <a href="#">
                                 @if ($product->image_product)
                                     <img class="rounded-t-lg object-cover transition duration-500 group-hover:scale-105 mt-7"
-                                        src="{{ asset('storage/' . $product->image_product) }}"
                                         alt="product image" />
                                 @else
                                     <img class="rounded-t-lg object-cover transition duration-500 group-hover:scale-105 mt-7"
@@ -411,10 +405,9 @@ onclick="addToCart('{{ $product->id }}')"
                                         </p>
                                         <button type="button"
                                             @auth
-                                                @if (auth()->user()->hasRole('user'))
+@if (auth()->user()->hasRole('user'))
                                             onclick="addToCart('{{ $product->id }}')"
-                                                @endif 
-                                            @endauth
+                                                @endif @endauth
                                             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                             Add to cart
                                         </button>
@@ -542,71 +535,34 @@ onclick="addToCart('{{ $product->id }}')"
             </div>
             <div class="flex-grow flex flex-wrap md:pl-20 -mb-10 md:mt-0 mt-10 md:text-left text-center">
                 <div class="lg:w-1/4 md:w-1/2 w-full px-4">
-                    <h2 class="title-font font-medium text-white tracking-widest text-sm mb-3">CATEGORIES</h2>
+                    <h2 class="title-font font-medium text-white tracking-widest text-sm mb-3">
+                        Feature</h2>
                     <nav class="list-none mb-10">
                         <li>
-                            <a class="text-white hover:text-gray-800">First Link</a>
+                            <a href="{{ route('product-page') }}" class="text-white hover:text-gray-800">product</a>
                         </li>
                         <li>
-                            <a class="text-white hover:text-gray-800">Second Link</a>
-                        </li>
-                        <li>
-                            <a class="text-white hover:text-gray-800">Third Link</a>
-                        </li>
-                        <li>
-                            <a class="text-white hover:text-gray-800">Fourth Link</a>
+                            <a href="{{ route('category-page') }}"
+                                class="text-white hover:text-gray-800">category</a>
                         </li>
                     </nav>
                 </div>
                 <div class="lg:w-1/4 md:w-1/2 w-full px-4">
-                    <h2 class="title-font font-medium text-white tracking-widest text-sm mb-3">CATEGORIES</h2>
+                    <h2 class="title-font font-medium text-white tracking-widest text-sm mb-3">Page</h2>
                     <nav class="list-none mb-10">
                         <li>
-                            <a class="text-white hover:text-gray-800">First Link</a>
-                        </li>
-                        <li>
-                            <a class="text-white hover:text-gray-800">Second Link</a>
-                        </li>
-                        <li>
-                            <a class="text-white hover:text-gray-800">Third Link</a>
-                        </li>
-                        <li>
-                            <a class="text-white hover:text-gray-800">Fourth Link</a>
+                            <a href="{{ route('about-page') }}" class="text-white hover:text-gray-800">About</a>
                         </li>
                     </nav>
                 </div>
                 <div class="lg:w-1/4 md:w-1/2 w-full px-4">
-                    <h2 class="title-font font-medium text-white tracking-widest text-sm mb-3">CATEGORIES</h2>
+                    <h2 class="title-font font-medium text-white tracking-widest text-sm mb-3">Category</h2>
                     <nav class="list-none mb-10">
-                        <li>
-                            <a class="text-white hover:text-gray-800">First Link</a>
-                        </li>
-                        <li>
-                            <a class="text-white hover:text-gray-800">Second Link</a>
-                        </li>
-                        <li>
-                            <a class="text-white hover:text-gray-800">Third Link</a>
-                        </li>
-                        <li>
-                            <a class="text-white hover:text-gray-800">Fourth Link</a>
-                        </li>
-                    </nav>
-                </div>
-                <div class="lg:w-1/4 md:w-1/2 w-full px-4">
-                    <h2 class="title-font font-medium text-white tracking-widest text-sm mb-3">CATEGORIES</h2>
-                    <nav class="list-none mb-10">
-                        <li>
-                            <a class="text-white hover:text-gray-800">First Link</a>
-                        </li>
-                        <li>
-                            <a class="text-white hover:text-gray-800">Second Link</a>
-                        </li>
-                        <li>
-                            <a class="text-white hover:text-gray-800">Third Link</a>
-                        </li>
-                        <li>
-                            <a class="text-white hover:text-gray-800">Fourth Link</a>
-                        </li>
+                        @foreach ($categories as $category)
+                            <li>
+                                <a class="text-white hover:text-gray-800">{{ $category->name_category }}</a>
+                            </li>
+                        @endforeach
                     </nav>
                 </div>
             </div>
@@ -758,6 +714,164 @@ onclick="addToCart('{{ $product->id }}')"
                     listCart(data);
                 } else {
                     alert('error');
+                }
+            })
+        </script>
+    @endauth
+
+
+    <script>
+        function showAlert(icon, message) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: icon,
+                title: message
+            });
+        }
+    </script>
+
+
+    @auth
+        <script>
+            function listCart(data) {
+                let items = ''
+                const cartItems = document.getElementById('cartItems');
+                const totalAmount = document.getElementById('totalAmount');
+                let amount = 0;
+                data.forEach(item => {
+                    amount += item.product.price_product * item.quantity;
+                    items += `
+        <div class="grid grid-cols-2">
+            <div>
+                <a href="#"
+                    class="truncate text-sm font-semibold leading-none text-gray-900 dark:text-white hover:underline">${item.product.name_product}</a>
+                <p class="mt-0.5 truncate text-sm font-normal text-gray-500 dark:text-gray-400">
+                    Rp. ${(item.product.price_product * item.quantity).toLocaleString()}
+                </p>
+            </div>
+            <div class="flex items-center justify-end gap-6">
+                <p class="text-sm font-normal leading-none text-gray-500 dark:text-gray-400">
+                    Qty: ${item.quantity}</p>
+                <button onclick="deleteCart('${item.id}')"
+                    class="text-red-600 hover:text-red-700 dark:text-red-500 dark:hover:text-red-600">
+                    <span class="sr-only"> Remove </span>
+                    <svg class="h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                        viewBox="0 0 24 24">
+                        <path fill-rule="evenodd"
+                            d="M2 12a10 10 0 1 1 20 0 10 10 0 0 1-20 0Zm7.7-3.7a1 1 0 0 0-1.4 1.4l2.3 2.3-2.3 2.3a1 1 0 1 0 1.4 1.4l2.3-2.3 2.3 2.3a1 1 0 0 0 1.4-1.4L13.4 12l2.3-2.3a1 1 0 0 0-1.4-1.4L12 10.6 9.7 8.3Z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </button>
+                <div id="tooltipRemoveItem1a"
+                    class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300 dark:bg-gray-700">
+                    Remove item
+                    <div class="tooltip-arrow" data-popper-arrow></div>
+                </div>
+            </div>
+        </div>
+        `
+                })
+                cartItems.innerHTML = items;
+                totalAmount.innerHTML = `
+                    <!-- Cart Total -->
+     <div class="grid grid-cols-2 py-3">
+         <p class="text-sm font-semibold text-gray-900 dark:text-white">Total</p>
+         <p class="text-sm font-semibold text-gray-900 dark:text-white">Rp. ${amount.toLocaleString()}</p>
+         </div>
+                `
+            }
+        </script>
+        @if (auth()->user()->hasRole('user'))
+            <script>
+                async function addToCart(id_product) {
+                    const api = await fetch('/api/cart', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                                'content')
+                        },
+                        body: JSON.stringify({
+                            id_product: id_product
+                        })
+                    });
+
+                    const response = await api.json();
+                    if (response.status == 'success') {
+                        const data = await response.data;
+                        showAlert('success', 'product ditambahkan ke keranjang')
+                        listCart(data);
+                    } else {
+                        showAlert('error', 'product gagal ditambahkan ke keranjang')
+                    }
+                }
+
+                async function deleteCart(id_cart) {
+                    Swal.fire({
+                        title: "Yakin?",
+                        text: "kamu yakin ingin menghapus keranjang ini?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Ya, Hapus!",
+                        cancelButtonText: "Batal"
+                    }).then(async (result) => {
+                        if (result.isConfirmed) {
+
+                            const api = await fetch('/api/cart/' + id_cart, {
+                                method: 'DELETE',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                        .getAttribute('content')
+                                }
+                            });
+                            const response = await api.json();
+
+                            if (response.status == 'success') {
+                                const data = await response.data;
+                                showAlert('success', 'keranjang berhasil dihapus')
+                                listCart(data);
+                            } else {
+                                showAlert('error', 'keranjang gagal dihapus')
+                            }
+
+                            Swal.fire({
+                                title: "terhapus!",
+                                text: "keranjang berhasil dihapus",
+                                icon: "success",
+                                confirmButtonColor: "#3085d6",
+                                confirmButtonText: "tutup"
+                            });
+                        }
+                    });
+
+                }
+            </script>
+        @endif
+
+        <script>
+            window.addEventListener('DOMContentLoaded', async () => {
+                const api = await fetch('/api/cart', {
+                    method: 'GET',
+                });
+                const response = await api.json();
+                if (response.status == 'success') {
+                    const data = await response.data;
+                    listCart(data);
+                } else {
+                    showAlert('error', 'keranjang gagal diload')
                 }
             })
         </script>

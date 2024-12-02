@@ -29,5 +29,4 @@ class HomeController extends Controller
 
         return view('landing-page', compact('categories', 'products', 'limit', 'carts'));
     }
-
 }
