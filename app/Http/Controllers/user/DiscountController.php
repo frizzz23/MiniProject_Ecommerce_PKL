@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 class DiscountController extends Controller
 {
     // Endpoint untuk mendapatkan diskon berdasarkan kode promo
-    public function __invoke(Request $request)
+    public function validatePromo(Request $request)
     {
         $code = $request->input('code'); // Ambil kode dari parameter request
 

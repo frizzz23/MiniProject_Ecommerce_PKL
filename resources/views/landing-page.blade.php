@@ -193,6 +193,7 @@
                                     class="hidden z-10 mx-auto max-w-sm space-y-4 overflow-hidden rounded-lg bg-white p-4 antialiased shadow-lg dark:bg-gray-800">
                                     <!-- Cart Item 1 -->
                                     <div id="cartItems"></div>
+                                    <div id="totalAmount"></div>
                                     <div class="grid grid-cols-2 py-3">
                                         <a href="{{ route('user.carts.index') }}"
                                             class="inline-block w-full py-2 text-center text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 rounded-lg">See
@@ -345,7 +346,8 @@
                             <a href="#">
                                 @if ($product->image_product)
                                     <img class=" rounded-t-lg object-cover transition duration-500 group-hover:scale-105 mt-7"
-                                        alt="product image"  src="{{ asset('storage/' . $product->image_product) }}"/>
+                                        alt="product image"
+                                        src="{{ asset('storage/' . $product->image_product) }}" />
                                 @else
                                     <img class="rounded-t-lg object-cover transition duration-500 group-hover:scale-105 mt-7"
                                         src="{{ asset('img/img-carousel-promo/laptop.jpg') }}" alt="product image" />
@@ -363,10 +365,9 @@
                                     </p>
                                     <button type="button"
                                         @auth
-                                            @if (auth()->user()->hasRole('user'))
+@if (auth()->user()->hasRole('user'))
                                                 onclick="addToCart('{{ $product->id }}')"
-                                            @endif 
-                                        @endauth
+                                            @endif @endauth
                                         class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                         Add to cart
                                     </button>
@@ -406,10 +407,9 @@
                                         </p>
                                         <button type="button"
                                             @auth
-                                                @if (auth()->user()->hasRole('user'))
+@if (auth()->user()->hasRole('user'))
                                             onclick="addToCart('{{ $product->id }}')"
-                                                @endif 
-                                            @endauth
+                                                @endif @endauth
                                             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                             Add to cart
                                         </button>
