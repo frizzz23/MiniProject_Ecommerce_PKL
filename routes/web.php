@@ -1,10 +1,14 @@
 <?php
 
+use App\Http\Controllers\HomeController;
+
+use App\Http\Controllers\Page\AboutPageController;
+use App\Http\Controllers\Page\CategoryPageController;
+use App\Http\Controllers\Page\ProductPageController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ApiCartController;
-use App\Http\Controllers\ProfileController;
+
 
 
 Route::get('/', HomeController::class)->name('landing-page');
@@ -28,7 +32,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::resource('/api/cart', ApiCartController::class)->only(['index', 'store', 'update', 'destroy']);
 
 
 require __DIR__ . '/auth.php';
