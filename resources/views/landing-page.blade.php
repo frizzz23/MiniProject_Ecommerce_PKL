@@ -147,7 +147,7 @@
                                 <ul
                                     class="hidden lg:flex items-center justify-start gap-6 md:gap-8 py-3 sm:justify-center">
                                     <li>
-                                        <a href="{{ route('home') }}"
+                                        <a href="{{ route('landing-page') }}"
                                             class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">Home</a>
                                     </li>
                                     <li class="shrink-0">
@@ -197,7 +197,7 @@
                                         <a href="{{ route('user.carts.index') }}"
                                             class="inline-block w-full py-2 text-center text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 rounded-lg">See
                                             All</a>
-                                        <a href="{{ route('orders.index') }}"
+                                        <a href="{{ route('user.orders.index') }}"
                                             class="inline-block w-full py-2 text-center text-sm font-semibold text-white bg-green-600 hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700 rounded-lg">Checkout</a>
                                     </div>
                                 </div>
@@ -224,12 +224,12 @@
                         @foreach ($products as $product)
                             @if ($loop->first)
                                 <div class="hidden duration-700 ease-in-out" data-carousel-item="active">
-                                    <img src="{{ asset('storage/' . $product->images->first()->image_product) }}"
+                                    <img src="{{ asset('storage/' . $product->image_product) }}"
                                         class="absolute block w-full h-full object-cover" alt="Image 2">
                                 </div>
                             @else
                                 <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                                    <img src="{{ asset('storage/' . $product->images->first()->image_product) }}"
+                                    <img src="{{ asset('storage/' . $product->image_product) }}"
                                         class="absolute block w-full h-full object-cover" alt="Image 2">
                                 </div>
                             @endif
@@ -383,7 +383,7 @@ onclick="addToCart('{{ $product->id }}')"
                                     Save 90%
                                 </span> --}}
                                 <a href="#">
-                                    @if ($product->images_product)
+                                    @if ($product->image_product)
                                         <img class="rounded-t-lg object-cover transition duration-500 group-hover:scale-105 mt-7"
                                             src="{{ asset('storage/' . $product->image_product) }}"
                                             alt="product image" />

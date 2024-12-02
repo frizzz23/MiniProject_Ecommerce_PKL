@@ -7,11 +7,13 @@ use App\Http\Controllers\ReviewController;
 
 use App\Http\Controllers\PaymentController;
 
-use App\Http\Controllers\DiscountController;
+
 use App\Http\Controllers\ProductOrderController;
+use App\Http\Controllers\user\ApiCartController;
+use App\Http\Controllers\user\DiscountController;
 use App\Http\Controllers\user\CartController as UserCartController;
 use App\Http\Controllers\user\OrderController as UserOrderController;
-use App\Http\Controllers\user\AddressController as UserAddressController ;
+use App\Http\Controllers\user\AddressController as UserAddressController;
 
 Route::middleware(['auth', 'role:user'])->group(function () {
     Route::resource('orders', UserOrderController::class)->names([
@@ -36,4 +38,5 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::resource('product_orders', ProductOrderController::class);
     Route::resource('reviews', ReviewController::class);
     Route::post('/api/validate-promo', [DiscountController::class, 'validatePromo']);
+    Route::resource('/api/cart', ApiCartController::class)->only(['index', 'store', 'update', 'destroy']);
 });
