@@ -13,21 +13,33 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Mendapatkan semua produk beserta kategori
-        $products = Product::with('category')->get();
+        // Ambil data kategori untuk dropdown
         $categories = Category::all();
-        return view('admin.products.index', compact('products','categories'));
+
+        // Ambil kata kunci pencarian dan kategori yang dipilih dari request
+        $search = $request->input('search');
+        $category_id = $request->input('category_id');
+
+        // Query produk dengan filter berdasarkan kategori dan pencarian
+        $products = Product::with('category')
+            ->when($search, function ($query) use ($search) {
+                return $query->where('name_product', 'like', '%' . $search . '%');
+            })
+            ->when($category_id, function ($query) use ($category_id) {
+                return $query->where('category_id', $category_id);
+            })
+            ->get();
+
+        return view('admin.products.index', compact('products', 'categories', 'search', 'category_id'));
     }
+
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
