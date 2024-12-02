@@ -4,15 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @guest
-    <title>Landing Page</title>
+        <title>Landing Page</title>
     @endguest
 
     @auth
-    <title>Home Page</title>
+        <title>Home Page</title>
     @endauth
-    
+
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -20,6 +20,7 @@
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <link rel="shortcut icon" type="image/png" href="{{ asset('loading/logo.png') }}" />
 
 </head>
 
@@ -91,7 +92,7 @@
                     <!-- Jika pengguna sudah login -->
                     <div class="flex space-x-4">
                         <button id="userDropdownButton1" data-dropdown-toggle="userDropdown1" type="button"
-                            class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900 dark:text-white">
+                            class="inline-flex items-center rounded-lg justify-center p-2  bg-gray-700 text-sm font-medium leading-none text-gray-900 dark:text-white">
                             <svg class="w-5 h-5 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                                 height="24" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" stroke-width="2"
@@ -109,24 +110,18 @@
                         <div id="userDropdown1"
                             class="hidden z-10 w-56 divide-y divide-gray-100 overflow-hidden overflow-y-auto rounded-lg bg-white antialiased shadow dark:divide-gray-600 dark:bg-gray-700">
                             <ul class="p-2 text-start text-sm font-medium text-gray-900 dark:text-white">
-                                <li><a href="#"
+                                <li><a href="{{ route('profile.edit') }}"
                                         class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">My
                                         Account</a></li>
-                                <li><a href="#"
+                                <li><a href="{{ route('user.orders.index') }}"
                                         class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">My
                                         Orders</a></li>
-                                <li><a href="#"
-                                        class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">Settings</a>
-                                </li>
-                                <li><a href="#"
-                                        class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">Favourites</a>
-                                </li>
-                                <li><a href="#"
-                                        class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">Delivery
-                                        Addresses</a></li>
-                                <li><a href="#"
-                                        class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">Billing
-                                        Data</a></li>
+                                <li><a href="{{ route('user.carts.index') }}"
+                                        class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">My
+                                        Cart</a></li>
+                                <li><a href="{{ route('user.addresses.index') }}"
+                                        class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">My
+                                        Address</a></li>
                             </ul>
 
                             <div class="p-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -204,111 +199,9 @@
                                 <div id="myCartDropdown1"
                                     class="hidden z-10 mx-auto max-w-sm space-y-4 overflow-hidden rounded-lg bg-white p-4 antialiased shadow-lg dark:bg-gray-800">
                                     <!-- Cart Item 1 -->
-                                    <div class="grid grid-cols-2">
-                                        <div>
-                                            <a href="#"
-                                                class="truncate text-sm font-semibold leading-none text-gray-900 dark:text-white hover:underline">Apple
-                                                iPhone 15</a>
-                                            <p
-                                                class="mt-0.5 truncate text-sm font-normal text-gray-500 dark:text-gray-400">
-                                                $599</p>
-                                        </div>
-                                        <div class="flex items-center justify-end gap-6">
-                                            <p
-                                                class="text-sm font-normal leading-none text-gray-500 dark:text-gray-400">
-                                                Qty: 1</p>
-                                            <button data-tooltip-target="tooltipRemoveItem1a" type="button"
-                                                class="text-red-600 hover:text-red-700 dark:text-red-500 dark:hover:text-red-600">
-                                                <span class="sr-only"> Remove </span>
-                                                <svg class="h-4 w-4" aria-hidden="true"
-                                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path fill-rule="evenodd"
-                                                        d="M2 12a10 10 0 1 1 20 0 10 10 0 0 1-20 0Zm7.7-3.7a1 1 0 0 0-1.4 1.4l2.3 2.3-2.3 2.3a1 1 0 1 0 1.4 1.4l2.3-2.3 2.3 2.3a1 1 0 0 0 1.4-1.4L13.4 12l2.3-2.3a1 1 0 0 0-1.4-1.4L12 10.6 9.7 8.3Z"
-                                                        clip-rule="evenodd" />
-                                                </svg>
-                                            </button>
-                                            <div id="tooltipRemoveItem1a"
-                                                class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300 dark:bg-gray-700">
-                                                Remove item
-                                                <div class="tooltip-arrow" data-popper-arrow></div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Cart Item 2 -->
-                                    <div class="grid grid-cols-2">
-                                        <div>
-                                            <a href="#"
-                                                class="truncate text-sm font-semibold leading-none text-gray-900 dark:text-white hover:underline">Apple
-                                                iPad Air</a>
-                                            <p
-                                                class="mt-0.5 truncate text-sm font-normal text-gray-500 dark:text-gray-400">
-                                                $499</p>
-                                        </div>
-                                        <div class="flex items-center justify-end gap-6">
-                                            <p
-                                                class="text-sm font-normal leading-none text-gray-500 dark:text-gray-400">
-                                                Qty: 1</p>
-                                            <button data-tooltip-target="tooltipRemoveItem2a" type="button"
-                                                class="text-red-600 hover:text-red-700 dark:text-red-500 dark:hover:text-red-600">
-                                                <span class="sr-only"> Remove </span>
-                                                <svg class="h-4 w-4" aria-hidden="true"
-                                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path fill-rule="evenodd"
-                                                        d="M2 12a10 10 0 1 1 20 0 10 10 0 0 1-20 0Zm7.7-3.7a1 1 0 0 0-1.4 1.4l2.3 2.3-2.3 2.3a1 1 0 1 0 1.4 1.4l2.3-2.3 2.3 2.3a1 1 0 0 0 1.4-1.4L13.4 12l2.3-2.3a1 1 0 0 0-1.4-1.4L12 10.6 9.7 8.3Z"
-                                                        clip-rule="evenodd" />
-                                                </svg>
-                                            </button>
-                                            <div id="tooltipRemoveItem2a"
-                                                class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300 dark:bg-gray-700">
-                                                Remove item
-                                                <div class="tooltip-arrow" data-popper-arrow></div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Cart Item 3 -->
-                                    <div class="grid grid-cols-2">
-                                        <div>
-                                            <a href="#"
-                                                class="truncate text-sm font-semibold leading-none text-gray-900 dark:text-white hover:underline">Apple
-                                                Watch SE</a>
-                                            <p
-                                                class="mt-0.5 truncate text-sm font-normal text-gray-500 dark:text-gray-400">
-                                                $598</p>
-                                        </div>
-                                        <div class="flex items-center justify-end gap-6">
-                                            <p
-                                                class="text-sm font-normal leading-none text-gray-500 dark:text-gray-400">
-                                                Qty: 1</p>
-                                            <button data-tooltip-target="tooltipRemoveItem3a" type="button"
-                                                class="text-red-600 hover:text-red-700 dark:text-red-500 dark:hover:text-red-600">
-                                                <span class="sr-only"> Remove </span>
-                                                <svg class="h-4 w-4" aria-hidden="true"
-                                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path fill-rule="evenodd"
-                                                        d="M2 12a10 10 0 1 1 20 0 10 10 0 0 1-20 0Zm7.7-3.7a1 1 0 0 0-1.4 1.4l2.3 2.3-2.3 2.3a1 1 0 1 0 1.4 1.4l2.3-2.3 2.3 2.3a1 1 0 0 0 1.4-1.4L13.4 12l2.3-2.3a1 1 0 0 0-1.4-1.4L12 10.6 9.7 8.3Z"
-                                                        clip-rule="evenodd" />
-                                                </svg>
-                                            </button>
-                                            <div id="tooltipRemoveItem3a"
-                                                class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300 dark:bg-gray-700">
-                                                Remove item
-                                                <div class="tooltip-arrow" data-popper-arrow></div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Cart Total -->
+                                    <div id="cartItems"></div>
                                     <div class="grid grid-cols-2 py-3">
-                                        <p class="text-sm font-semibold text-gray-900 dark:text-white">Total</p>
-                                        <p class="text-sm font-semibold text-gray-900 dark:text-white">$1696</p>
-                                    </div>
-                                    <div class="grid grid-cols-2 py-3">
-                                        <a href="#"
+                                        <a href="{{ route('user.carts.index') }}"
                                             class="inline-block w-full py-2 text-center text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 rounded-lg">See
                                             All</a>
                                         <a href="#"
@@ -412,59 +305,15 @@
             <h2 class="text-2xl font-semibold text-white mb-8">Kategori</h2>
 
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
-                <!-- Category Item 1 -->
-                <div class="bg-gray-800 rounded-lg p-6 flex flex-col items-center justify-center text-white">
-                    <div class="text-4xl mb-4">
-                        <!-- Replace this with actual icons -->
-                        <i class="fas fa-laptop"></i>
-                    </div>
-                    <h3 class="text-lg font-medium">Laptops & Computers</h3>
-                </div>
 
-                <!-- Category Item 2 -->
-                <div class="bg-gray-800 rounded-lg p-6 flex flex-col items-center justify-center text-white">
-                    <div class="text-4xl mb-4">
-                        <!-- Replace this with actual icons -->
-                        <i class="fas fa-tv"></i>
+                @foreach ($categories as $category)
+                    <div class="bg-gray-800 rounded-lg p-6 flex flex-col items-center justify-center text-white">
+                        <div class="text-4xl mb-4">
+                            <i class="fas fa-laptop"></i>
+                        </div>
+                        <h3 class="text-lg font-medium">{{ $category->name_category }}</h3>
                     </div>
-                    <h3 class="text-lg font-medium">TV</h3>
-                </div>
-
-                <!-- Category Item 3 -->
-                <div class="bg-gray-800 rounded-lg p-6 flex flex-col items-center justify-center text-white">
-                    <div class="text-4xl mb-4">
-                        <!-- Replace this with actual icons -->
-                        <i class="fas fa-tablet-alt"></i>
-                    </div>
-                    <h3 class="text-lg font-medium">Tablets</h3>
-                </div>
-
-                <!-- Category Item 4 -->
-                <div class="bg-gray-800 rounded-lg p-6 flex flex-col items-center justify-center text-white">
-                    <div class="text-4xl mb-4">
-                        <!-- Replace this with actual icons -->
-                        <i class="fas fa-headphones-alt"></i>
-                    </div>
-                    <h3 class="text-lg font-medium">Audio</h3>
-                </div>
-
-                <!-- Category Item 5 -->
-                <div class="bg-gray-800 rounded-lg p-6 flex flex-col items-center justify-center text-white">
-                    <div class="text-4xl mb-4">
-                        <!-- Replace this with actual icons -->
-                        <i class="fas fa-print"></i>
-                    </div>
-                    <h3 class="text-lg font-medium">Printers</h3>
-                </div>
-
-                <!-- Category Item 6 -->
-                <div class="bg-gray-800 rounded-lg p-6 flex flex-col items-center justify-center text-white">
-                    <div class="text-4xl mb-4">
-                        <!-- Replace this with actual icons -->
-                        <i class="fas fa-keyboard"></i>
-                    </div>
-                    <h3 class="text-lg font-medium">Computer Accessories</h3>
-                </div>
+                @endforeach
             </div>
 
             <!-- See all categories button -->
@@ -473,10 +322,10 @@
                     <!-- Garis Horizontal Sebelah Kiri -->
                     <hr class="w-32 h-px bg-gray-200 border-0 dark:bg-gray-700">
                     <!-- Tombol "See all categories" -->
-                    <button
+                    <a href="#"
                         class="mx-4 bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
                         See all categories
-                    </button>
+                    </a>
                     <!-- Garis Horizontal Sebelah Kanan -->
                     <hr class="w-32 h-px bg-gray-200 border-0 dark:bg-gray-700">
                 </div>
@@ -490,186 +339,100 @@
         </div>
         <div class="carousel carousel-center bg-neutral rounded-box max-w-full space-x-4 p-4 h-96 mb-8">
             <div class="carousel-item space-x-4">
-                <!-- item 1 -->
-                <div
-                    class="w-full max-w-xs bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 relative">
-                    <span
-                        class="absolute -right-px -top-px rounded-bl-3xl rounded-tr-4xl bg-rose-600 px-6 py-4 font-medium uppercase tracking-widest text-white">
-                        Save 10%
-                    </span>
-                    <a href="#">
-                        <img class="rounded-t-lg object-cover transition duration-500 group-hover:scale-105 mt-7"
-                            src="{{ asset('img/img-carousel-promo/laptop.jpg') }}" alt="product image" />
-                    </a>
-                    <div class="px-5 pb-5 mt-10">
-                        <a href="#">
-                            <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">Laptop
-                                Geming</h5>
-                        </a>
-                        <div class="flex items-center justify-between">
-                            <p class="text-gray-700">
-                                $49.99
-                                <span class="text-gray-400 line-through">$80</span>
-                            </p>
-                            <a href="#"
-                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                Add to cart
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <!-- item 2 -->
-                <div
-                    class="w-full max-w-xs bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 relative">
-                    <span
-                        class="absolute -right-px -top-px rounded-bl-3xl rounded-tr-4xl bg-rose-600 px-6 py-4 font-medium uppercase tracking-widest text-white">
-                        Save 10%
-                    </span>
-                    <a href="#">
-                        <img class="rounded-t-lg object-cover transition duration-500 group-hover:scale-105 mt-7"
-                            src="{{ asset('img/img-carousel-promo/laptop.jpg') }}" alt="product image" />
-                    </a>
-                    <div class="px-5 pb-4 mt-10">
-                        <a href="#">
-                            <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">Laptop
-                                Geming</h5>
-                        </a>
-                        <div class="flex items-center justify-between">
-                            <p class="text-gray-700">
-                                $49.99
-                                <span class="text-gray-400 line-through">$80</span>
-                            </p>
-                            <a href="#"
-                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                Add to cart
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <!-- item 3 -->
-                <div
-                    class="w-full max-w-xs bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 relative">
-                    <span
-                        class="absolute -right-px -top-px rounded-bl-3xl rounded-tr-4xl bg-rose-600 px-6 py-4 font-medium uppercase tracking-widest text-white">
-                        Save 10%
-                    </span>
-                    <a href="#">
-                        <img class="rounded-t-lg object-cover transition duration-500 group-hover:scale-105 mt-7"
-                            src="{{ asset('img/img-carousel-promo/laptop.jpg') }}" alt="product image" />
-                    </a>
-                    <div class="px-5 pb-4 mt-10">
-                        <a href="#">
-                            <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">Laptop
-                                Geming</h5>
-                        </a>
-                        <div class="flex items-center justify-between">
-                            <p class="text-gray-700">
-                                $49.99
-                                <span class="text-gray-400 line-through">$80</span>
-                            </p>
-                            <a href="#"
-                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                Add to cart
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <!-- item 4 -->
-                <div
-                    class="w-full max-w-xs bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 relative">
-                    <span
-                        class="absolute -right-px -top-px rounded-bl-3xl rounded-tr-4xl bg-rose-600 px-6 py-4 font-medium uppercase tracking-widest text-white">
-                        Save 10%
-                    </span>
-                    <a href="#">
-                        <img class="rounded-t-lg object-cover transition duration-500 group-hover:scale-105 mt-7"
-                            src="{{ asset('img/img-carousel-promo/laptop.jpg') }}" alt="product image" />
-                    </a>
-                    <div class="px-5 pb-4 mt-10">
-                        <a href="#">
-                            <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">Laptop
-                                Geming</h5>
-                        </a>
-                        <div class="flex items-center justify-between">
-                            <p class="text-gray-700">
-                                $49.99
-                                <span class="text-gray-400 line-through">$80</span>
-                            </p>
-                            <a href="#"
-                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                Add to cart
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <!-- item 5 -->
-                <div
-                    class="w-full max-w-xs bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 relative">
-                    <span
-                        class="absolute -right-px -top-px rounded-bl-3xl rounded-tr-4xl bg-rose-600 px-6 py-4 font-medium uppercase tracking-widest text-white">
-                        Save 10%
-                    </span>
-                    <a href="#">
-                        <img class="rounded-t-lg object-cover transition duration-500 group-hover:scale-105 mt-7"
-                            src="{{ asset('img/img-carousel-promo/laptop.jpg') }}" alt="product image" />
-                    </a>
-                    <div class="px-5 pb-4 mt-10">
-                        <a href="#">
-                            <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">Laptop
-                                Geming</h5>
-                        </a>
-                        <div class="flex items-center justify-between">
-                            <p class="text-gray-700">
-                                $49.99
-                                <span class="text-gray-400 line-through">$80</span>
-                            </p>
-                            <a href="#"
-                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                Add to cart
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <!-- See More -->
-                <div class="relative w-full max-w-xs">
-                    <!-- Layer Bawah -->
-                    <div
-                        class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                        <span
-                            class="absolute -right-px -top-px rounded-bl-3xl rounded-tr-4xl bg-rose-600 px-6 py-4 font-medium uppercase tracking-widest text-white z-10">
-                            Save 90%
-                        </span>
-                        <a href="#">
-                            <img class="rounded-t-lg object-cover transition duration-500 group-hover:scale-105 mt-7"
-                                src="{{ asset('img/img-carousel-promo/laptop.jpg') }}" alt="product image" />
-                        </a>
-                        <div class="px-5 pb-4 mt-10">
+                @foreach ($products as $product)
+                    @if ($loop->iteration != $limit)
+                        <div
+                            class="w-full max-w-xs bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 relative">
+                            {{-- <span
+                                class="absolute -right-px -top-px rounded-bl-3xl rounded-tr-4xl bg-rose-600 px-6 py-4 font-medium uppercase tracking-widest text-white">
+                                Save 10%
+                            </span> --}}
                             <a href="#">
-                                <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">Laptop
-                                    Gaming</h5>
+                                @if ($product->image_product)
+                                    <img class="rounded-t-lg object-cover transition duration-500 group-hover:scale-105 mt-7"
+                                        src="{{ asset('storage/' . $product->image_product) }}"
+                                        alt="product image" />
+                                @else
+                                    <img class="rounded-t-lg object-cover transition duration-500 group-hover:scale-105 mt-7"
+                                        src="{{ asset('img/img-carousel-promo/laptop.jpg') }}" alt="product image" />
+                                @endif
                             </a>
-                            <div class="flex items-center justify-between">
-                                <p class="text-gray-700">
-                                    $49.99
-                                    <span class="text-gray-400 line-through">$80</span>
-                                </p>
-                                <a href="#"
-                                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                    Add to cart
+                            <div class="px-5 pb-5 mt-10">
+                                <a href="#">
+                                    <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                                        {{ $product->name_product }}</h5>
                                 </a>
+                                <div class="flex items-center justify-between">
+                                    <p class="text-gray-400">
+                                        Rp. {{ number_format($product->price_product, 0, ',', '.') }}
+                                        {{-- <span class="text-gray-400 line-through">$80</span> --}}
+                                    </p>
+                                    <button type="button"
+                                        @auth
+@if (auth()->user()->hasRole('user'))
+onclick="addToCart('{{ $product->id }}')"
+@endif @endauth
+                                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        Add to cart
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @else
+                        <!-- See More -->
+                        <div class="relative w-full max-w-xs">
+                            <!-- Layer Bawah -->
+                            <div
+                                class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                                {{-- <span
+                                    class="absolute -right-px -top-px rounded-bl-3xl rounded-tr-4xl bg-rose-600 px-6 py-4 font-medium uppercase tracking-widest text-white z-10">
+                                    Save 90%
+                                </span> --}}
+                                <a href="#">
+                                    @if ($product->images_product)
+                                        <img class="rounded-t-lg object-cover transition duration-500 group-hover:scale-105 mt-7"
+                                            src="{{ asset('storage/' . $product->image_product) }}"
+                                            alt="product image" />
+                                    @else
+                                        <img class="rounded-t-lg object-cover transition duration-500 group-hover:scale-105 mt-7"
+                                            src="{{ asset('img/img-carousel-promo/laptop.jpg') }}"
+                                            alt="product image" />
+                                    @endif
+                                </a>
+                                <div class="px-5 pb-4 mt-10">
+                                    <a href="#">
+                                        <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                                            {{ $product->name_product }}</h5>
+                                    </a>
+                                    <div class="flex items-center justify-between">
+                                        <p class="text-gray-400">
+                                            Rp. {{ number_format($product->price_product, 0, ',', '.') }}
+                                            {{-- <span class="text-gray-400 line-through">$80</span> --}}
+                                        </p>
+                                        <button type="button"
+                                            @auth
+                                                @if (auth()->user()->hasRole('user'))
+                                            onclick="addToCart('{{ $product->id }}')"
+                                                @endif 
+                                            @endauth
+                                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                            Add to cart
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
 
-                    <!-- Layer Atas (Blur dengan Tombol) -->
-                    <div
-                        class="absolute inset-0 flex items-center justify-center bg-white/70 backdrop-blur-xs rounded-bl-3xl z-20">
-                        <button
-                            class="bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-                            See More
-                        </button>
-                    </div>
-                </div>
+                            <!-- Layer Atas (Blur dengan Tombol) -->
+                            <div
+                                class="absolute inset-0 flex items-center justify-center bg-white/70 backdrop-blur-xs rounded-bl-3xl z-20">
+                                <button
+                                    class="bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                                    See More
+                                </button>
+                            </div>
+                        </div>
+                    @endif
+                @endforeach
             </div>
         </div>
         </div>
@@ -890,6 +653,115 @@
         </div>
     </footer>
     <!-- end footer -->
+
+    {{-- <!-- Cart Total -->
+     <div class="grid grid-cols-2 py-3">
+         <p class="text-sm font-semibold text-gray-900 dark:text-white">Total</p>
+         <p class="text-sm font-semibold text-gray-900 dark:text-white">$1696</p>
+         </div> --}}
+
+
+
+    @auth
+        <script>
+            function listCart(data) {
+                let items = ''
+                const cartItems = document.getElementById('cartItems');
+                data.forEach(item => {
+                    items += `
+        <div class="grid grid-cols-2">
+            <div>
+                <a href="#"
+                    class="truncate text-sm font-semibold leading-none text-gray-900 dark:text-white hover:underline">${item.product.name_product}</a>
+                <p class="mt-0.5 truncate text-sm font-normal text-gray-500 dark:text-gray-400">
+                    Rp. ${(item.product.price_product * item.quantity).toLocaleString()}
+                </p>
+            </div>
+            <div class="flex items-center justify-end gap-6">
+                <p class="text-sm font-normal leading-none text-gray-500 dark:text-gray-400">
+                    Qty: ${item.quantity}</p>
+                <button onclick="return confirm('kamu yakin ingin menghapus keranjang ini?') ? deleteCart('${item.id}') : false;"
+                    class="text-red-600 hover:text-red-700 dark:text-red-500 dark:hover:text-red-600">
+                    <span class="sr-only"> Remove </span>
+                    <svg class="h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                        viewBox="0 0 24 24">
+                        <path fill-rule="evenodd"
+                            d="M2 12a10 10 0 1 1 20 0 10 10 0 0 1-20 0Zm7.7-3.7a1 1 0 0 0-1.4 1.4l2.3 2.3-2.3 2.3a1 1 0 1 0 1.4 1.4l2.3-2.3 2.3 2.3a1 1 0 0 0 1.4-1.4L13.4 12l2.3-2.3a1 1 0 0 0-1.4-1.4L12 10.6 9.7 8.3Z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </button>
+                <div id="tooltipRemoveItem1a"
+                    class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300 dark:bg-gray-700">
+                    Remove item
+                    <div class="tooltip-arrow" data-popper-arrow></div>
+                </div>
+            </div>
+        </div>
+        `
+                })
+                cartItems.innerHTML = items;
+            }
+        </script>
+        @if (auth()->user()->hasRole('user'))
+            <script>
+                async function addToCart(id_product) {
+                    const api = await fetch('/api/cart', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                                'content')
+                        },
+                        body: JSON.stringify({
+                            id_product: id_product
+                        })
+                    });
+
+                    const response = await api.json();
+                    if (response.status == 'success') {
+                        const data = await response.data;
+                        listCart(data);
+                    } else {
+                        alert('error');
+                    }
+                }
+
+                async function deleteCart(id_cart) {
+                    const api = await fetch('/api/cart/' + id_cart, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        }
+                    });
+                    const response = await api.json();
+
+                    if (response.status == 'success') {
+                        const data = await response.data;
+                        listCart(data);
+                    } else {
+                        alert('error');
+                    }
+
+                }
+            </script>
+        @endif
+
+        <script>
+            window.addEventListener('DOMContentLoaded', async () => {
+                const api = await fetch('/api/cart', {
+                    method: 'GET',
+                });
+                const response = await api.json();
+                if (response.status == 'success') {
+                    const data = await response.data;
+                    listCart(data);
+                } else {
+                    alert('error');
+                }
+            })
+        </script>
+    @endauth
 
 
     <!-- Dropdown Script -->

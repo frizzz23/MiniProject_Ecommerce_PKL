@@ -41,12 +41,18 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        $user->assignRole('user');
+        // Tentukan role default, misalnya 'user'
+        $userRole = $request->role ?? 'user';
+        $user->assignRole($userRole);
 
         event(new Registered($user));
-
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        // Redirect berdasarkan role
+        if ($user->hasRole('admin')) {
+            return redirect()->route('admin.dashboard.index'); // Admin diarahkan ke dashboard
+        }
+
+        return redirect()->route('/landing-page'); // User diarahkan ke landing-page
     }
 }

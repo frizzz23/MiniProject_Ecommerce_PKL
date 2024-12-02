@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
+use App\Models\User;
 use App\Models\Review;
 use App\Models\Product;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class ReviewController extends Controller
 {
     /**
-     * Display a listing of the reviews for a product.
+     * Display a listing of the resource.
      */
     public function index(Product $product)
     {
@@ -20,7 +21,7 @@ class ReviewController extends Controller
         $products = Product::all(); // Ambil semua produk yang tersedia
         $users = User::all(); // Ambil semua pengguna
 
-        return view('reviews.index', compact('reviews', 'product', 'products', 'users'));
+        return view('admin.reviews.index', compact('reviews', 'product', 'products', 'users'));
     }
 
     /**
@@ -31,7 +32,7 @@ class ReviewController extends Controller
         $users = User::all();
         $products = Product::all();
 
-        return view('reviews.create', compact('product', 'products', 'users'));
+        return view('admin.reviews.create', compact('product', 'products', 'users'));
     }
 
     /**
@@ -54,7 +55,7 @@ class ReviewController extends Controller
             'comment' => $request->comment,
         ]);
 
-        return redirect()->route('reviews.index', ['product' => $request->product_id])->with('success', 'Ulasan berhasil ditambahkan.');
+        return redirect()->route('admin.reviews.index', ['product' => $request->product_id])->with('success', 'Ulasan berhasil ditambahkan.');
     }
 
 
@@ -66,7 +67,7 @@ class ReviewController extends Controller
     {
         $users = User::all();
         $products = Product::all();
-        return view('reviews.edit', compact('review', 'products', 'users'));
+        return view('admin.reviews.edit', compact('review', 'products', 'users'));
     }
 
     /**
@@ -89,7 +90,7 @@ class ReviewController extends Controller
         $review->comment = $request->comment;
         $review->save();
 
-        return redirect()->route('reviews.index', $review->product_id)->with('success', 'Ulasan berhasil diperbarui.');
+        return redirect()->route('admin.reviews.index', $review->product_id)->with('success', 'Ulasan berhasil diperbarui.');
     }
 
     /**
@@ -100,6 +101,6 @@ class ReviewController extends Controller
         $productId = $review->product_id;
         $review->delete();
 
-        return redirect()->route('reviews.index', $productId)->with('success', 'Ulasan berhasil dihapus.');
+        return redirect()->route('admin.reviews.index', $productId)->with('success', 'Ulasan berhasil dihapus.');
     }
 }

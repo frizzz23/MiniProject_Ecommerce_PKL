@@ -1,29 +1,38 @@
 @extends('layouts.app')
 
-
 @section('main')
+    <div class="container-fluid">
+        <div class="container p-3">
+            <h5 class="card-title fw-semibold mb-4">Profile Settings</h5>
 
-<div class="container-fluid">
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-profile-information-form')
+            <div class="row flex flex-col">
+                <div class="col mb-4">
+                    <div class="card">
+                        <div class="">
+
+                            @include('profile.partials.update-profile-information-form')
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-password-form')
+                <div class="col mb-4">
+                    <div class="card">
+                        <div class="">
+
+                            @include('profile.partials.update-password-form')
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.delete-user-form')
+                <div class="col mb-4">
+                    <div class="card">
+                        <div class="">
+
+                            @include('profile.partials.delete-user-form')
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 @endsection
