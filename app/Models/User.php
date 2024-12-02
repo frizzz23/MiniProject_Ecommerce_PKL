@@ -56,6 +56,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Address::class);
     }
+    public function order()
+    {
+        return $this->hasMany(Order::class);
+    }
 
      // Relasi dengan Review
      public function reviews()

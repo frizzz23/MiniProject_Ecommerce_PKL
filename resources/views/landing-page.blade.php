@@ -106,24 +106,18 @@
                         <div id="userDropdown1"
                             class="hidden z-10 w-56 divide-y divide-gray-100 overflow-hidden overflow-y-auto rounded-lg bg-white antialiased shadow dark:divide-gray-600 dark:bg-gray-700">
                             <ul class="p-2 text-start text-sm font-medium text-gray-900 dark:text-white">
-                                <li><a href="#"
+                                <li><a href="{{ route('profile.edit') }}"
                                         class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">My
                                         Account</a></li>
-                                <li><a href="#"
+                                <li><a href="{{ route('user.orders.index') }}"
                                         class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">My
                                         Orders</a></li>
-                                <li><a href="#"
-                                        class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">Settings</a>
-                                </li>
-                                <li><a href="#"
-                                        class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">Favourites</a>
-                                </li>
-                                <li><a href="#"
-                                        class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">Delivery
-                                        Addresses</a></li>
-                                <li><a href="#"
-                                        class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">Billing
-                                        Data</a></li>
+                                <li><a href="{{ route('user.carts.index') }}"
+                                        class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">My
+                                        Cart</a></li>
+                                <li><a href="{{ route('user.addresses.index') }}"
+                                        class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">My
+                                        Address</a></li>
                             </ul>
 
                             <div class="p-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -199,9 +193,8 @@
                                     class="hidden z-10 mx-auto max-w-sm space-y-4 overflow-hidden rounded-lg bg-white p-4 antialiased shadow-lg dark:bg-gray-800">
                                     <!-- Cart Item 1 -->
                                     <div id="cartItems"></div>
-                                    <div id="totalAmount"></div>
-                                    <div class="flex gap-4">
-                                        <a href="{{ route('carts.index') }}"
+                                    <div class="grid grid-cols-2 py-3">
+                                        <a href="{{ route('user.carts.index') }}"
                                             class="inline-block w-full py-2 text-center text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 rounded-lg">See
                                             All</a>
                                         <a href="{{ route('orders.index') }}"
@@ -324,7 +317,7 @@
                     <!-- Garis Horizontal Sebelah Kiri -->
                     <hr class="w-32 h-px bg-gray-200 border-0 dark:bg-gray-700">
                     <!-- Tombol "See all categories" -->
-                    <a href="{{ route('category-page') }}"
+                    <a href="#"
                         class="mx-4 bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
                         See all categories
                     </a>
@@ -350,9 +343,8 @@
                                 Save 10%
                             </span> --}}
                             <a href="#">
-                                @if ($product->images->count() > 0)
+                                @if ($product->image_product)
                                     <img class="rounded-t-lg object-cover transition duration-500 group-hover:scale-105 mt-7"
-                                        src="{{ asset('storage/' . $product->images->first()->image_product) }}"
                                         alt="product image" />
                                 @else
                                     <img class="rounded-t-lg object-cover transition duration-500 group-hover:scale-105 mt-7"
@@ -391,9 +383,9 @@ onclick="addToCart('{{ $product->id }}')"
                                     Save 90%
                                 </span> --}}
                                 <a href="#">
-                                    @if ($product->images->count() > 0)
+                                    @if ($product->images_product)
                                         <img class="rounded-t-lg object-cover transition duration-500 group-hover:scale-105 mt-7"
-                                            src="{{ asset('storage/' . $product->images->first()->image_product) }}"
+                                            src="{{ asset('storage/' . $product->image_product) }}"
                                             alt="product image" />
                                     @else
                                         <img class="rounded-t-lg object-cover transition duration-500 group-hover:scale-105 mt-7"
@@ -415,7 +407,7 @@ onclick="addToCart('{{ $product->id }}')"
                                             @auth
 @if (auth()->user()->hasRole('user'))
                                             onclick="addToCart('{{ $product->id }}')"
-                                            @endif @endauth
+                                                @endif @endauth
                                             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                             Add to cart
                                         </button>
@@ -426,10 +418,10 @@ onclick="addToCart('{{ $product->id }}')"
                             <!-- Layer Atas (Blur dengan Tombol) -->
                             <div
                                 class="absolute inset-0 flex items-center justify-center bg-white/70 backdrop-blur-xs rounded-bl-3xl z-20">
-                                <a href="{{ route('product-page') }}"
+                                <button
                                     class="bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
                                     See More
-                                </a>
+                                </button>
                             </div>
                         </div>
                     @endif
@@ -617,6 +609,115 @@ onclick="addToCart('{{ $product->id }}')"
         </div>
     </footer>
     <!-- end footer -->
+
+    {{-- <!-- Cart Total -->
+     <div class="grid grid-cols-2 py-3">
+         <p class="text-sm font-semibold text-gray-900 dark:text-white">Total</p>
+         <p class="text-sm font-semibold text-gray-900 dark:text-white">$1696</p>
+         </div> --}}
+
+
+
+    @auth
+        <script>
+            function listCart(data) {
+                let items = ''
+                const cartItems = document.getElementById('cartItems');
+                data.forEach(item => {
+                    items += `
+        <div class="grid grid-cols-2">
+            <div>
+                <a href="#"
+                    class="truncate text-sm font-semibold leading-none text-gray-900 dark:text-white hover:underline">${item.product.name_product}</a>
+                <p class="mt-0.5 truncate text-sm font-normal text-gray-500 dark:text-gray-400">
+                    Rp. ${(item.product.price_product * item.quantity).toLocaleString()}
+                </p>
+            </div>
+            <div class="flex items-center justify-end gap-6">
+                <p class="text-sm font-normal leading-none text-gray-500 dark:text-gray-400">
+                    Qty: ${item.quantity}</p>
+                <button onclick="return confirm('kamu yakin ingin menghapus keranjang ini?') ? deleteCart('${item.id}') : false;"
+                    class="text-red-600 hover:text-red-700 dark:text-red-500 dark:hover:text-red-600">
+                    <span class="sr-only"> Remove </span>
+                    <svg class="h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                        viewBox="0 0 24 24">
+                        <path fill-rule="evenodd"
+                            d="M2 12a10 10 0 1 1 20 0 10 10 0 0 1-20 0Zm7.7-3.7a1 1 0 0 0-1.4 1.4l2.3 2.3-2.3 2.3a1 1 0 1 0 1.4 1.4l2.3-2.3 2.3 2.3a1 1 0 0 0 1.4-1.4L13.4 12l2.3-2.3a1 1 0 0 0-1.4-1.4L12 10.6 9.7 8.3Z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </button>
+                <div id="tooltipRemoveItem1a"
+                    class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300 dark:bg-gray-700">
+                    Remove item
+                    <div class="tooltip-arrow" data-popper-arrow></div>
+                </div>
+            </div>
+        </div>
+        `
+                })
+                cartItems.innerHTML = items;
+            }
+        </script>
+        @if (auth()->user()->hasRole('user'))
+            <script>
+                async function addToCart(id_product) {
+                    const api = await fetch('/api/cart', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                                'content')
+                        },
+                        body: JSON.stringify({
+                            id_product: id_product
+                        })
+                    });
+
+                    const response = await api.json();
+                    if (response.status == 'success') {
+                        const data = await response.data;
+                        listCart(data);
+                    } else {
+                        alert('error');
+                    }
+                }
+
+                async function deleteCart(id_cart) {
+                    const api = await fetch('/api/cart/' + id_cart, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        }
+                    });
+                    const response = await api.json();
+
+                    if (response.status == 'success') {
+                        const data = await response.data;
+                        listCart(data);
+                    } else {
+                        alert('error');
+                    }
+
+                }
+            </script>
+        @endif
+
+        <script>
+            window.addEventListener('DOMContentLoaded', async () => {
+                const api = await fetch('/api/cart', {
+                    method: 'GET',
+                });
+                const response = await api.json();
+                if (response.status == 'success') {
+                    const data = await response.data;
+                    listCart(data);
+                } else {
+                    alert('error');
+                }
+            })
+        </script>
+    @endauth
 
 
     <script>

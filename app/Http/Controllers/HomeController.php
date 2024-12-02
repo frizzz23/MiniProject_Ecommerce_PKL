@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Cart;
@@ -24,7 +25,7 @@ class HomeController extends Controller
         $categories = Category::limit($limit)->get();
 
         // Mengambil produk terbaru dengan gambar
-        $products = Product::with('images')->latest()->limit($limit)->get();
+        $products = Product::latest()->limit($limit)->get();
 
         return view('landing-page', compact('categories', 'products', 'limit', 'carts'));
     }

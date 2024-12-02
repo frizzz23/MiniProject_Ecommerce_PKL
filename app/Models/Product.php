@@ -18,6 +18,7 @@ class Product extends Model
         'stock_product',
         'price_product',
         'category_id',
+        'image_product',
     ];
 
     public function sluggable(): array
@@ -49,8 +50,5 @@ class Product extends Model
         return $this->belongsToMany(Order::class, 'product_orders', 'product_id', 'order_id');
     }
 
-    public function images()
-    {
-        return $this->hasMany(ProductImage::class);
-    }
+    
 }

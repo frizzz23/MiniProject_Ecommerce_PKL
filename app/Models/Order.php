@@ -42,7 +42,6 @@ class Order extends Model
         return $this->hasMany(ProductOrder::class, 'order_id', 'id');
     }
 
-
     /**
      * Relasi Many-to-Many ke model Product melalui tabel perantara product_orders.
      */

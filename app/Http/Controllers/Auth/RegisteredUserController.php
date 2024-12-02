@@ -50,9 +50,10 @@ class RegisteredUserController extends Controller
 
         // Redirect berdasarkan role
         if ($user->hasRole('admin')) {
-            return redirect()->route('dashboard'); // Admin diarahkan ke dashboard
+            return redirect()->route('admin.dashboard.index'); // Admin diarahkan ke dashboard
         }
 
-        return redirect()->route('landing-page'); // User diarahkan ke landing-page
+        return redirect()->route('/landing-page'); // User diarahkan ke landing-page
+
     }
 }

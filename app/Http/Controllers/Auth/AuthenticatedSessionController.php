@@ -32,7 +32,7 @@ class AuthenticatedSessionController extends Controller
         $user = $request->user(); // Ambil data user yang login
 
         if ($user->hasRole('admin')) {
-            return redirect()->route('dashboard'); // Jika admin, arahkan ke dashboard
+            return redirect()->route('dashboard.index'); // Jika admin, arahkan ke dashboard
         }
 
         if ($user->hasRole('user')) {
