@@ -22,6 +22,9 @@
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet" type="text/css" />
     <link rel="shortcut icon" type="image/png" href="{{ asset('loading/logo.png') }}" />
 
+
+    {{-- swettalert --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="bg-white">
@@ -49,24 +52,17 @@
                     <div id="dropdown"
                         class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
                         <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdown-button">
-                            <li><button type="button"
-                                    class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Mockups</button>
-                            </li>
-                            <li><button type="button"
-                                    class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Templates</button>
-                            </li>
-                            <li><button type="button"
-                                    class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Design</button>
-                            </li>
-                            <li><button type="button"
-                                    class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Logos</button>
-                            </li>
+                            @foreach ($categories as $category)
+                                <li><button type="button"
+                                        class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ $category->name_category }}</button>
+                                </li>
+                            @endforeach
                         </ul>
                     </div>
                     <div class="relative">
                         <input type="search" id="search-dropdown"
                             class="block p-2.5 w-80 z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-[#7AB2D3] focus:ring-[#7AB2D3] focus:border-[#7AB2D3] dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
-                            placeholder="Search Mockups, Logos, Design Templates..." required />
+                            placeholder="Search product" required />
                         <button type="submit"
                             class="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-[#7AB2D3] rounded-e-lg border border-[#7AB2D3] hover:bg-[#7AB2D3] focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -157,23 +153,20 @@
                                 <ul
                                     class="hidden lg:flex items-center justify-start gap-6 md:gap-8 py-3 sm:justify-center">
                                     <li>
-                                        <a href="#"
+                                        <a href="{{ route('home') }}"
                                             class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">Home</a>
                                     </li>
                                     <li class="shrink-0">
-                                        <a href="#"
-                                            class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">Best
-                                            Sellers</a>
+                                        <a href="{{ route('product-page') }}"
+                                            class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">Product</a>
                                     </li>
                                     <li class="shrink-0">
-                                        <a href="#"
-                                            class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">Gift
-                                            Ideas</a>
+                                        <a href="{{ route('category-page') }}"
+                                            class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">Category</a>
                                     </li>
                                     <li class="shrink-0">
-                                        <a href="#"
-                                            class="text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">Today's
-                                            Deals</a>
+                                        <a href="{{ route('about-page') }}"
+                                            class="text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">About</a>
                                     </li>
                                 </ul>
                             </div>
@@ -206,11 +199,12 @@
                                     class="hidden z-10 mx-auto max-w-sm space-y-4 overflow-hidden rounded-lg bg-white p-4 antialiased shadow-lg dark:bg-gray-800">
                                     <!-- Cart Item 1 -->
                                     <div id="cartItems"></div>
-                                    <div class="grid grid-cols-2 py-3">
-                                        <a href="#"
+                                    <div id="totalAmount"></div>
+                                    <div class="flex gap-4">
+                                        <a href="{{ route('carts.index') }}"
                                             class="inline-block w-full py-2 text-center text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 rounded-lg">See
                                             All</a>
-                                        <a href="#"
+                                        <a href="{{ route('orders.index') }}"
                                             class="inline-block w-full py-2 text-center text-sm font-semibold text-white bg-green-600 hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700 rounded-lg">Checkout</a>
                                     </div>
                                 </div>
@@ -234,17 +228,19 @@
                 <div id="gallery" class="relative w-full" data-carousel="slide">
                     <!-- Carousel wrapper -->
                     <div class="relative h-60 overflow-hidden rounded-lg">
-                        <!-- Item 1 -->
-                        <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                            <img src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg"
-                                class="absolute block w-full h-full object-cover" alt="Image 1">
-                        </div>
-                        <!-- Item 2 -->
-                        <div class="hidden duration-700 ease-in-out" data-carousel-item="active">
-                            <img src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg"
-                                class="absolute block w-full h-full object-cover" alt="Image 2">
-                        </div>
-                        <!-- Add more items as needed -->
+                        @foreach ($products as $product)
+                            @if ($loop->first)
+                                <div class="hidden duration-700 ease-in-out" data-carousel-item="active">
+                                    <img src="{{ asset('storage/' . $product->images->first()->image_product) }}"
+                                        class="absolute block w-full h-full object-cover" alt="Image 2">
+                                </div>
+                            @else
+                                <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                                    <img src="{{ asset('storage/' . $product->images->first()->image_product) }}"
+                                        class="absolute block w-full h-full object-cover" alt="Image 2">
+                                </div>
+                            @endif
+                        @endforeach
                     </div>
                     <!-- Slider controls -->
                     <button type="button"
@@ -328,7 +324,7 @@
                     <!-- Garis Horizontal Sebelah Kiri -->
                     <hr class="w-32 h-px bg-gray-200 border-0 dark:bg-gray-700">
                     <!-- Tombol "See all categories" -->
-                    <a href="#"
+                    <a href="{{ route('category-page') }}"
                         class="mx-4 bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
                         See all categories
                     </a>
@@ -430,10 +426,10 @@ onclick="addToCart('{{ $product->id }}')"
                             <!-- Layer Atas (Blur dengan Tombol) -->
                             <div
                                 class="absolute inset-0 flex items-center justify-center bg-white/70 backdrop-blur-xs rounded-bl-3xl z-20">
-                                <button
+                                <a href="{{ route('product-page') }}"
                                     class="bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
                                     See More
-                                </button>
+                                </a>
                             </div>
                         </div>
                     @endif
@@ -547,71 +543,34 @@ onclick="addToCart('{{ $product->id }}')"
             </div>
             <div class="flex-grow flex flex-wrap md:pl-20 -mb-10 md:mt-0 mt-10 md:text-left text-center">
                 <div class="lg:w-1/4 md:w-1/2 w-full px-4">
-                    <h2 class="title-font font-medium text-white tracking-widest text-sm mb-3">CATEGORIES</h2>
+                    <h2 class="title-font font-medium text-white tracking-widest text-sm mb-3">
+                        Feature</h2>
                     <nav class="list-none mb-10">
                         <li>
-                            <a class="text-white hover:text-gray-800">First Link</a>
+                            <a href="{{ route('product-page') }}" class="text-white hover:text-gray-800">product</a>
                         </li>
                         <li>
-                            <a class="text-white hover:text-gray-800">Second Link</a>
-                        </li>
-                        <li>
-                            <a class="text-white hover:text-gray-800">Third Link</a>
-                        </li>
-                        <li>
-                            <a class="text-white hover:text-gray-800">Fourth Link</a>
+                            <a href="{{ route('category-page') }}"
+                                class="text-white hover:text-gray-800">category</a>
                         </li>
                     </nav>
                 </div>
                 <div class="lg:w-1/4 md:w-1/2 w-full px-4">
-                    <h2 class="title-font font-medium text-white tracking-widest text-sm mb-3">CATEGORIES</h2>
+                    <h2 class="title-font font-medium text-white tracking-widest text-sm mb-3">Page</h2>
                     <nav class="list-none mb-10">
                         <li>
-                            <a class="text-white hover:text-gray-800">First Link</a>
-                        </li>
-                        <li>
-                            <a class="text-white hover:text-gray-800">Second Link</a>
-                        </li>
-                        <li>
-                            <a class="text-white hover:text-gray-800">Third Link</a>
-                        </li>
-                        <li>
-                            <a class="text-white hover:text-gray-800">Fourth Link</a>
+                            <a href="{{ route('about-page') }}" class="text-white hover:text-gray-800">About</a>
                         </li>
                     </nav>
                 </div>
                 <div class="lg:w-1/4 md:w-1/2 w-full px-4">
-                    <h2 class="title-font font-medium text-white tracking-widest text-sm mb-3">CATEGORIES</h2>
+                    <h2 class="title-font font-medium text-white tracking-widest text-sm mb-3">Category</h2>
                     <nav class="list-none mb-10">
-                        <li>
-                            <a class="text-white hover:text-gray-800">First Link</a>
-                        </li>
-                        <li>
-                            <a class="text-white hover:text-gray-800">Second Link</a>
-                        </li>
-                        <li>
-                            <a class="text-white hover:text-gray-800">Third Link</a>
-                        </li>
-                        <li>
-                            <a class="text-white hover:text-gray-800">Fourth Link</a>
-                        </li>
-                    </nav>
-                </div>
-                <div class="lg:w-1/4 md:w-1/2 w-full px-4">
-                    <h2 class="title-font font-medium text-white tracking-widest text-sm mb-3">CATEGORIES</h2>
-                    <nav class="list-none mb-10">
-                        <li>
-                            <a class="text-white hover:text-gray-800">First Link</a>
-                        </li>
-                        <li>
-                            <a class="text-white hover:text-gray-800">Second Link</a>
-                        </li>
-                        <li>
-                            <a class="text-white hover:text-gray-800">Third Link</a>
-                        </li>
-                        <li>
-                            <a class="text-white hover:text-gray-800">Fourth Link</a>
-                        </li>
+                        @foreach ($categories as $category)
+                            <li>
+                                <a class="text-white hover:text-gray-800">{{ $category->name_category }}</a>
+                            </li>
+                        @endforeach
                     </nav>
                 </div>
             </div>
@@ -659,12 +618,26 @@ onclick="addToCart('{{ $product->id }}')"
     </footer>
     <!-- end footer -->
 
-    {{-- <!-- Cart Total -->
-     <div class="grid grid-cols-2 py-3">
-         <p class="text-sm font-semibold text-gray-900 dark:text-white">Total</p>
-         <p class="text-sm font-semibold text-gray-900 dark:text-white">$1696</p>
-         </div> --}}
 
+    <script>
+        function showAlert(icon, message) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: icon,
+                title: message
+            });
+        }
+    </script>
 
 
     @auth
@@ -672,7 +645,10 @@ onclick="addToCart('{{ $product->id }}')"
             function listCart(data) {
                 let items = ''
                 const cartItems = document.getElementById('cartItems');
+                const totalAmount = document.getElementById('totalAmount');
+                let amount = 0;
                 data.forEach(item => {
+                    amount += item.product.price_product * item.quantity;
                     items += `
         <div class="grid grid-cols-2">
             <div>
@@ -685,7 +661,7 @@ onclick="addToCart('{{ $product->id }}')"
             <div class="flex items-center justify-end gap-6">
                 <p class="text-sm font-normal leading-none text-gray-500 dark:text-gray-400">
                     Qty: ${item.quantity}</p>
-                <button onclick="return confirm('kamu yakin ingin menghapus keranjang ini?') ? deleteCart('${item.id}') : false;"
+                <button onclick="deleteCart('${item.id}')"
                     class="text-red-600 hover:text-red-700 dark:text-red-500 dark:hover:text-red-600">
                     <span class="sr-only"> Remove </span>
                     <svg class="h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
@@ -705,6 +681,13 @@ onclick="addToCart('{{ $product->id }}')"
         `
                 })
                 cartItems.innerHTML = items;
+                totalAmount.innerHTML = `
+                    <!-- Cart Total -->
+     <div class="grid grid-cols-2 py-3">
+         <p class="text-sm font-semibold text-gray-900 dark:text-white">Total</p>
+         <p class="text-sm font-semibold text-gray-900 dark:text-white">Rp. ${amount.toLocaleString()}</p>
+         </div>
+                `
             }
         </script>
         @if (auth()->user()->hasRole('user'))
@@ -725,28 +708,53 @@ onclick="addToCart('{{ $product->id }}')"
                     const response = await api.json();
                     if (response.status == 'success') {
                         const data = await response.data;
+                        showAlert('success', 'product ditambahkan ke keranjang')
                         listCart(data);
                     } else {
-                        alert('error');
+                        showAlert('error', 'product gagal ditambahkan ke keranjang')
                     }
                 }
 
                 async function deleteCart(id_cart) {
-                    const api = await fetch('/api/cart/' + id_cart, {
-                        method: 'DELETE',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    Swal.fire({
+                        title: "Yakin?",
+                        text: "kamu yakin ingin menghapus keranjang ini?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Ya, Hapus!",
+                        cancelButtonText: "Batal"
+                    }).then(async (result) => {
+                        if (result.isConfirmed) {
+
+                            const api = await fetch('/api/cart/' + id_cart, {
+                                method: 'DELETE',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                        .getAttribute('content')
+                                }
+                            });
+                            const response = await api.json();
+
+                            if (response.status == 'success') {
+                                const data = await response.data;
+                                showAlert('success', 'keranjang berhasil dihapus')
+                                listCart(data);
+                            } else {
+                                showAlert('error', 'keranjang gagal dihapus')
+                            }
+
+                            Swal.fire({
+                                title: "terhapus!",
+                                text: "keranjang berhasil dihapus",
+                                icon: "success",
+                                confirmButtonColor: "#3085d6",
+                                confirmButtonText: "tutup"
+                            });
                         }
                     });
-                    const response = await api.json();
-
-                    if (response.status == 'success') {
-                        const data = await response.data;
-                        listCart(data);
-                    } else {
-                        alert('error');
-                    }
 
                 }
             </script>
@@ -762,7 +770,7 @@ onclick="addToCart('{{ $product->id }}')"
                     const data = await response.data;
                     listCart(data);
                 } else {
-                    alert('error');
+                    showAlert('error', 'keranjang gagal diload')
                 }
             })
         </script>
