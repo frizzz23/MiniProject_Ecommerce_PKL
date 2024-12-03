@@ -35,16 +35,27 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ $order->user->name }}</h5>
-                                    <p class="card-text">Produk:
+                                    <p class="card-text">Produk: {{ $order->products->count() }}</p>
+                                    <table>
                                         @foreach ($order->productOrders as $productOrder)
-                                            <span>{{ $productOrder->product->name_product }}</span><br>
+                                            <tr>
+                                                <td>
+                                                    {{ $productOrder->product->name_product }}
+                                                </td>
+                                                <td>
+                                                    Qnt:
+                                                </td>
+                                                <td>{{ $productOrder->quantity }}</td>
+                                            </tr>
                                         @endforeach
-                                    </p>
+                                    </table>
                                     <p class="card-text">Subtotal: Rp.
-                                        {{ number_format($order->sub_total_amount, 2) }}</p>
+                                        {{ number_format($order->sub_total_amount, 0, ',', '.') }}</p>
                                     <p class="card-text">Total: Rp.
-                                        {{ number_format($order->grand_total_amount, 2) }}</p>
-                                    <p class="card-text">Status: {{ ucfirst($order->status_order) }}</p>
+                                        {{ number_format($order->grand_total_amount, 0, ',', '.') }}</p>
+                                    <p class="card-text">Status: {{ ucfirst($order->status_order) }}
+
+                                    </p>
 
                                     <div class="d-flex justify-content-between">
                                         <!-- Tombol Edit -->
@@ -110,7 +121,7 @@
                     @endforeach
                 </div>
             </div>
-            
+
             {{-- tab comleted --}}
 
             <div class="tab-pane fade" id="completed" role="tabpanel" aria-labelledby="completed-tab">

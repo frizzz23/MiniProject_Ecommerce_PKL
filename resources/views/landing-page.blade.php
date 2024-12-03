@@ -192,14 +192,16 @@
                                 <div id="myCartDropdown1"
                                     class="hidden z-10 mx-auto max-w-sm space-y-4 overflow-hidden rounded-lg bg-white p-4 antialiased shadow-lg dark:bg-gray-800">
                                     <!-- Cart Item 1 -->
-                                    <div id="cartItems"></div>
+                                    <div id="cartItems">
+                                        <center>Tidak ada item</center>
+                                    </div>
                                     <div id="totalAmount"></div>
-                                    <div class="grid grid-cols-2 py-3">
+                                    <div class="flex gap-4 w-full">
                                         <a href="{{ route('user.carts.index') }}"
-                                            class="inline-block w-full py-2 text-center text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 rounded-lg">See
+                                            class="inline-block w-full py-2 px-3 text-center text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 rounded-lg">See
                                             All</a>
-                                        <a href="{{ route('user.orders.index') }}"
-                                            class="inline-block w-full py-2 text-center text-sm font-semibold text-white bg-green-600 hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700 rounded-lg">Checkout</a>
+                                        <a href="{{ route('user.checkout.index') }}"
+                                            class="inline-block w-full py-2 px-3 text-center text-sm font-semibold text-white bg-green-600 hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700 rounded-lg">Checkout</a>
                                     </div>
                                 </div>
                             </div>
@@ -363,14 +365,18 @@
                                         Rp. {{ number_format($product->price_product, 0, ',', '.') }}
                                         {{-- <span class="text-gray-400 line-through">$80</span> --}}
                                     </p>
-                                    <button type="button"
-                                        @auth
-@if (auth()->user()->hasRole('user'))
-                                                onclick="addToCart('{{ $product->id }}')"
-                                            @endif @endauth
-                                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                        Add to cart
-                                    </button>
+                                    @auth
+                                        <button type="button"
+                                            @if (auth()->user()->hasRole('user')) onclick="addToCart('{{ $product->id }}')" @endif
+                                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                            Add to cart
+                                        </button>
+                                    @else
+                                        <a href="{{ route('login') }}"
+                                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                            Add to cart
+                                        </a>
+                                    @endauth
                                 </div>
                             </div>
                         </div>
@@ -405,14 +411,18 @@
                                             Rp. {{ number_format($product->price_product, 0, ',', '.') }}
                                             {{-- <span class="text-gray-400 line-through">$80</span> --}}
                                         </p>
-                                        <button type="button"
-                                            @auth
-@if (auth()->user()->hasRole('user'))
-                                            onclick="addToCart('{{ $product->id }}')"
-                                                @endif @endauth
-                                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                            Add to cart
-                                        </button>
+                                        @auth
+                                            <button type="button"
+                                                @if (auth()->user()->hasRole('user')) onclick="addToCart('{{ $product->id }}')" @endif
+                                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                Add to cart
+                                            </button>
+                                        @else
+                                            <a href="{{ route('login') }}"
+                                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                Add to cart
+                                            </a>
+                                        @endauth
                                     </div>
                                 </div>
                             </div>
@@ -612,115 +622,6 @@
     </footer>
     <!-- end footer -->
 
-    {{-- <!-- Cart Total -->
-     <div class="grid grid-cols-2 py-3">
-         <p class="text-sm font-semibold text-gray-900 dark:text-white">Total</p>
-         <p class="text-sm font-semibold text-gray-900 dark:text-white">$1696</p>
-         </div> --}}
-
-
-
-    @auth
-        <script>
-            function listCart(data) {
-                let items = ''
-                const cartItems = document.getElementById('cartItems');
-                data.forEach(item => {
-                    items += `
-        <div class="grid grid-cols-2">
-            <div>
-                <a href="#"
-                    class="truncate text-sm font-semibold leading-none text-gray-900 dark:text-white hover:underline">${item.product.name_product}</a>
-                <p class="mt-0.5 truncate text-sm font-normal text-gray-500 dark:text-gray-400">
-                    Rp. ${(item.product.price_product * item.quantity).toLocaleString()}
-                </p>
-            </div>
-            <div class="flex items-center justify-end gap-6">
-                <p class="text-sm font-normal leading-none text-gray-500 dark:text-gray-400">
-                    Qty: ${item.quantity}</p>
-                <button onclick="return confirm('kamu yakin ingin menghapus keranjang ini?') ? deleteCart('${item.id}') : false;"
-                    class="text-red-600 hover:text-red-700 dark:text-red-500 dark:hover:text-red-600">
-                    <span class="sr-only"> Remove </span>
-                    <svg class="h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                        viewBox="0 0 24 24">
-                        <path fill-rule="evenodd"
-                            d="M2 12a10 10 0 1 1 20 0 10 10 0 0 1-20 0Zm7.7-3.7a1 1 0 0 0-1.4 1.4l2.3 2.3-2.3 2.3a1 1 0 1 0 1.4 1.4l2.3-2.3 2.3 2.3a1 1 0 0 0 1.4-1.4L13.4 12l2.3-2.3a1 1 0 0 0-1.4-1.4L12 10.6 9.7 8.3Z"
-                            clip-rule="evenodd" />
-                    </svg>
-                </button>
-                <div id="tooltipRemoveItem1a"
-                    class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300 dark:bg-gray-700">
-                    Remove item
-                    <div class="tooltip-arrow" data-popper-arrow></div>
-                </div>
-            </div>
-        </div>
-        `
-                })
-                cartItems.innerHTML = items;
-            }
-        </script>
-        @if (auth()->user()->hasRole('user'))
-            <script>
-                async function addToCart(id_product) {
-                    const api = await fetch('/api/cart', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
-                                'content')
-                        },
-                        body: JSON.stringify({
-                            id_product: id_product
-                        })
-                    });
-
-                    const response = await api.json();
-                    if (response.status == 'success') {
-                        const data = await response.data;
-                        listCart(data);
-                    } else {
-                        alert('error');
-                    }
-                }
-
-                async function deleteCart(id_cart) {
-                    const api = await fetch('/api/cart/' + id_cart, {
-                        method: 'DELETE',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                        }
-                    });
-                    const response = await api.json();
-
-                    if (response.status == 'success') {
-                        const data = await response.data;
-                        listCart(data);
-                    } else {
-                        alert('error');
-                    }
-
-                }
-            </script>
-        @endif
-
-        <script>
-            window.addEventListener('DOMContentLoaded', async () => {
-                const api = await fetch('/api/cart', {
-                    method: 'GET',
-                });
-                const response = await api.json();
-                if (response.status == 'success') {
-                    const data = await response.data;
-                    listCart(data);
-                } else {
-                    alert('error');
-                }
-            })
-        </script>
-    @endauth
-
 
     <script>
         function showAlert(icon, message) {
@@ -728,7 +629,7 @@
                 toast: true,
                 position: "top-end",
                 showConfirmButton: false,
-                timer: 3000,
+                timer: 1000,
                 timerProgressBar: true,
                 didOpen: (toast) => {
                     toast.onmouseenter = Swal.stopTimer;
@@ -813,6 +714,8 @@
                         const data = await response.data;
                         showAlert('success', 'product ditambahkan ke keranjang')
                         listCart(data);
+                    } else if (response.status == 'warning') {
+                        showAlert('warning', response.message)
                     } else {
                         showAlert('error', 'product gagal ditambahkan ke keranjang')
                     }
