@@ -30,8 +30,9 @@ class ProductController extends Controller
             ->when($category_id, function ($query) use ($category_id) {
                 return $query->where('category_id', $category_id);
             })
-            ->get();
+            ->paginate(10); // Ubah jumlah data per halaman sesuai kebutuhan
 
+        // Return data ke view dengan data pencarian dan kategori
         return view('admin.products.index', compact('products', 'categories', 'search', 'category_id'));
     }
 
