@@ -9,7 +9,7 @@
             </a>
             @endif
             @if (Auth::user()->hasRole('user'))
-            <a href="{{ route('home-page') }}" class="text-nowrap logo-img">
+            <a href="{{ route('landing-page') }}" class="text-nowrap logo-img">
                 <img src="{{ asset('style/src/assets/images/logos/dark-logo.svg') }}" width="180"
                     alt="" />
             </a>

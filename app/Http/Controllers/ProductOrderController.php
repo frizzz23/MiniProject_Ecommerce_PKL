@@ -13,15 +13,15 @@ class ProductOrderController extends Controller
      * Display a listing of the product orders.
      */
     public function index()
-{
-    // Ambil semua produk dan pesanan
-    $products = Product::all();
-    $orders = Order::all();
-    $productOrders = ProductOrder::all(); // Data produk pesanan
+    {
+        // Ambil semua produk dan pesanan
+        $products = Product::all();
+        $orders = Order::all();
+        $productOrders = ProductOrder::all(); 
 
-    // Kirim data ke view
-    return view('product_orders.index', compact('products', 'orders', 'productOrders'));
-}
+        // Kirim data ke view
+        return view('product_orders.index', compact('products', 'orders', 'productOrders'));
+    }
 
     /**
      * Show the form for creating a new product order.
