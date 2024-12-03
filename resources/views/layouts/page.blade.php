@@ -194,7 +194,7 @@
                                         <a href="{{ route('user.carts.index') }}"
                                             class="inline-block w-full py-2 text-center text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 rounded-lg">See
                                             All</a>
-                                        <a href="{{ route('user.orders.index') }}"
+                                        <a href="{{ route('user.checkout.index') }}"
                                             class="inline-block w-full py-2 text-center text-sm font-semibold text-white bg-green-600 hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700 rounded-lg">Checkout</a>
                                     </div>
                                 </div>
@@ -205,14 +205,14 @@
             </div>
         </div>
     </nav>
-    
+
     <!-- end navbar -->
 
     <!-- Banner Carousel -->
     <main class="container mx-auto px-2 py-16">
         <div class="container">
             @yield('main')
-        </div>    
+        </div>
     </main>
     <!-- End Banner -->
 
