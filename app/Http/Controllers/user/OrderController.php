@@ -20,7 +20,6 @@ class OrderController extends Controller
     {
         // Ambil data pesanan milik user yang sedang login
         $userOrders = Order::where('user_id', Auth::id())->with('productOrders.product')->get();
-
         // Tampilkan view untuk user
         return view('user.orders.index', compact('userOrders',));
     }

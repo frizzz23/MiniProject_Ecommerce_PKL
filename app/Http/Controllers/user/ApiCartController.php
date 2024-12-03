@@ -42,6 +42,10 @@ class ApiCartController extends Controller
         $user = Auth::user();
         $cart = Cart::where('user_id', $user->id)->where('product_id', $product->id)->first();
         if ($cart) {
+            if ($cart->quantity >= $product->stock_product) {
+                return response()->json(['status' => 'warning', 'message' => 'jumlah melebihi stok product']);
+                die();
+            }
             $cart->update([
                 'quantity' => $cart->quantity + 1,
             ]);
