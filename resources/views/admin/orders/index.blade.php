@@ -1,5 +1,5 @@
 <!-- resources/views/orders/index.blade.php -->
-@extends('layouts.user')
+@extends('layouts.admin')
 
 @section('main')
 
