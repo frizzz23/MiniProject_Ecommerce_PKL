@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\user;
+namespace App\Http\Controllers;
 
 use App\Models\PromoCode;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+
 
 class CodeDiscountController extends Controller
 {
