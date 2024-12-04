@@ -3,20 +3,6 @@
 @extends('layouts.admin')
 
 @section('main')
-    <style>
-        /* Ketika checkbox aktif, ubah tampilan label */
-        .form-check-input:checked+.form-check-label {
-            background-color: #007bff;
-            /* Warna biru seperti Shopee */
-            color: white;
-            border-color: #007bff;
-        }
-
-        /* Tambahan efek hover */
-        .form-check-label:hover {
-            background-color: #e9ecef;
-        }
-    </style>
     <div class="container-fluid">
         <div class="container">
             <div class="card w-100">
