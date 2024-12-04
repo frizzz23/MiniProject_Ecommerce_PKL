@@ -153,7 +153,7 @@
             document.getElementById('diskon_value').textContent = discount.toLocaleString();
             document.getElementById('harga_total').textContent = discountedTotal.toLocaleString();
             document.getElementById('grand_total_amount').value = discountedTotal;
-            document.getElementById('total_amount').value = discountedTotal;
+            document.getElementById('total_amount ').value = discountedTotal;
             document.getElementById('total').textContent = total;
         }
     </script>
