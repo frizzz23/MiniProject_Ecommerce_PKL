@@ -12,10 +12,33 @@
                     </div>
                 @endif
                 <div class="card-body p-4">
-                    <h5 class="card-title fw-semibold mb-4">Semua User</h5>
-                   
+                    <div class="container flex justify-between">
+                        <h5 class="card-title fw-semibold mb-4">Semua User</h5>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Filter
+                            </button>
+                            <div class="dropdown-menu my-2 p-3 w-[200px] " aria-labelledby="dropdownMenuButton1">
+                                <form action="{{ route('admin.users.index') }}" method="GET">
+                                    <label for="role" class="my-1"> Role</label>
+                                    <select name="role" id="role" class="form-select my-1 text-center ">
+                                        <option value="">All Role</option>
+                                        @foreach ($roles as $role)
+                                            <option value="{{ $role->name }}"
+                                                {{ request('role') == $role->name ? 'selected' : '' }}>
+                                                {{ $role->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <button type="submit" class="btn btn-primary my-1 ">Filter</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="table-responsive">
-                        <table class="table text-nowrap mb-0 align-middle">
+                        <table class="table text-nowrap text-center mb-0 align-middle">
                             <thead class="text-dark fs-4">
                                 <tr>
                                     <th class="border-bottom-0">No</th>
@@ -33,9 +56,12 @@
                                         <td class="border-bottom-0">{{ $user->email }}</td>
                                         <td class="border-bottom-0">
                                             @foreach ($user->roles as $role)
-                                                <div class="d-flex align-items-center gap-2">
+                                                <div class="d-flex align-items-center justify-center gap-2">
                                                     <span
-                                                        class="badge bg-secondary rounded-1 fw-semibold">{{ $role->name }}</span>
+                                                        class="badge rounded-1 fw-semibold 
+                                                        {{ $role->name == 'admin' ? 'bg-primary' : 'bg-secondary' }}">
+                                                        {{ $role->name }}
+                                                    </span>
                                                 </div>
                                             @endforeach
                                         </td>

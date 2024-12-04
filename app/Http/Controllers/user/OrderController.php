@@ -119,6 +119,6 @@ class OrderController extends Controller
         // Hapus pesanan
         $order->delete();
 
-        return redirect()->route('orders.index')->with('success', 'Pesanan berhasil dihapus.');
+        return redirect()->route('user.orders.index')->with('success', 'Pesanan berhasil dihapus.');
     }
 }
