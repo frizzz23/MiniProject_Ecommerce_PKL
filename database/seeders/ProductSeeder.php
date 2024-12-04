@@ -17,7 +17,7 @@ class ProductSeeder extends Seeder
     public function run(): void
     {
 
-        $image =  file_get_contents('https://p lacehold.co/800x600');
+        $image =  file_get_contents('https://placehold.co/800x600');
         $imageName = Str::random(10) . '.png';
         Storage::disk('public')->put('products/' . $imageName, $image);
 
