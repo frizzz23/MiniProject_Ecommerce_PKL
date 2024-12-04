@@ -161,7 +161,7 @@
                                 </p>
                                 @auth
                                     <button type="button"
-                                        @if (auth()->user()->hasRole('user')) onclick="addToCart('{{ $product->id }}')" @endif
+                                        @if (auth()->user()->hasRole('user')) onclick="addToCart('{{ $product->id }}', this)" @endif
                                         class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                         Add to cart
                                     </button>
@@ -205,7 +205,7 @@
                                     </p>
                                     @auth
                                         <button type="button"
-                                            @if (auth()->user()->hasRole('user')) onclick="addToCart('{{ $product->id }}')" @endif
+                                            @if (auth()->user()->hasRole('user')) onclick="addToCart('{{ $product->id }}', this)" @endif
                                             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                             Add to cart
                                         </button>
@@ -325,37 +325,39 @@
 
 
 
-<script>
-    function showAlert(icon, message) {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 1000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-            }
-        });
-        Toast.fire({
-            icon: icon,
-            title: message
-        });
-    }
-</script>
-
-
-@auth
     <script>
-        function listCart(data) {
-            let items = ''
-            const cartItems = document.getElementById('cartItems');
-            const totalAmount = document.getElementById('totalAmount');
-            let amount = 0;
-            data.forEach(item => {
-                amount += item.product.price_product * item.quantity;
-                items += `
+        function showAlert(icon, message) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 1000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: icon,
+                title: message
+            });
+        }
+    </script>
+
+
+    @auth
+        <script>
+            function listCart(data) {
+                let items = ''
+                const cartItems = document.getElementById('cartItems');
+                const totalAmount = document.getElementById('totalAmount');
+                const cartCount = document.getElementById('cartCount');
+                let amount = 0;
+                let count = data.length;
+                data.forEach(item => {
+                    amount += item.product.price_product * item.quantity;
+                    items += `
         <div class="grid grid-cols-2">
             <div>
                 <a href="#"
@@ -385,174 +387,179 @@
             </div>
         </div>
         `
-            })
-            cartItems.innerHTML = items;
-            totalAmount.innerHTML = `
+                })
+                cartCount.textContent = count;
+                cartItems.innerHTML = items;
+                totalAmount.innerHTML = `
                     <!-- Cart Total -->
      <div class="grid grid-cols-2 py-3">
          <p class="text-sm font-semibold text-gray-900 dark:text-white">Total</p>
          <p class="text-sm font-semibold text-gray-900 dark:text-white">Rp. ${amount.toLocaleString()}</p>
          </div>
                 `
-        }
-    </script>
-    @if (auth()->user()->hasRole('user'))
-        <script>
-            async function addToCart(id_product) {
-                const api = await fetch('/api/cart', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
-                            'content')
-                    },
-                    body: JSON.stringify({
-                        id_product: id_product
-                    })
-                });
+            }
+        </script>
+        @if (auth()->user()->hasRole('user'))
+            <script>
+                async function addToCart(id_product, el) {
+                    el.disabled = true;
+                    const api = await fetch('/api/cart', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                                'content')
+                        },
+                        body: JSON.stringify({
+                            id_product: id_product
+                        })
+                    });
 
+                    const response = await api.json();
+                    if (response.status == 'success') {
+                        const data = await response.data;
+                        showAlert('success', 'product ditambahkan ke keranjang')
+                        listCart(data);
+                        el.disabled = false;
+                    } else if (response.status == 'warning') {
+                        showAlert('warning', response.message)
+                        el.disabled = false;
+                    } else {
+                        showAlert('error', 'product gagal ditambahkan ke keranjang')
+                        el.disabled = false;
+                    }
+                }
+
+                async function deleteCart(id_cart) {
+                    Swal.fire({
+                        title: "Yakin?",
+                        text: "kamu yakin ingin menghapus keranjang ini?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Ya, Hapus!",
+                        cancelButtonText: "Batal"
+                    }).then(async (result) => {
+                        if (result.isConfirmed) {
+
+                            const api = await fetch('/api/cart/' + id_cart, {
+                                method: 'DELETE',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                        .getAttribute('content')
+                                }
+                            });
+                            const response = await api.json();
+
+                            if (response.status == 'success') {
+                                const data = await response.data;
+                                showAlert('success', 'keranjang berhasil dihapus')
+                                listCart(data);
+                            } else {
+                                showAlert('error', 'keranjang gagal dihapus')
+                            }
+
+                            Swal.fire({
+                                title: "terhapus!",
+                                text: "keranjang berhasil dihapus",
+                                icon: "success",
+                                confirmButtonColor: "#3085d6",
+                                confirmButtonText: "tutup"
+                            });
+                        }
+                    });
+
+                }
+            </script>
+        @endif
+
+        <script>
+            window.addEventListener('DOMContentLoaded', async () => {
+                const api = await fetch('/api/cart', {
+                    method: 'GET',
+                });
                 const response = await api.json();
                 if (response.status == 'success') {
                     const data = await response.data;
-                    showAlert('success', 'product ditambahkan ke keranjang')
                     listCart(data);
-                } else if (response.status == 'warning') {
-                    showAlert('warning', response.message)
                 } else {
-                    showAlert('error', 'product gagal ditambahkan ke keranjang')
+                    showAlert('error', 'keranjang gagal diload')
                 }
-            }
-
-            async function deleteCart(id_cart) {
-                Swal.fire({
-                    title: "Yakin?",
-                    text: "kamu yakin ingin menghapus keranjang ini?",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Ya, Hapus!",
-                    cancelButtonText: "Batal"
-                }).then(async (result) => {
-                    if (result.isConfirmed) {
-
-                        const api = await fetch('/api/cart/' + id_cart, {
-                            method: 'DELETE',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                                    .getAttribute('content')
-                            }
-                        });
-                        const response = await api.json();
-
-                        if (response.status == 'success') {
-                            const data = await response.data;
-                            showAlert('success', 'keranjang berhasil dihapus')
-                            listCart(data);
-                        } else {
-                            showAlert('error', 'keranjang gagal dihapus')
-                        }
-
-                        Swal.fire({
-                            title: "terhapus!",
-                            text: "keranjang berhasil dihapus",
-                            icon: "success",
-                            confirmButtonColor: "#3085d6",
-                            confirmButtonText: "tutup"
-                        });
-                    }
-                });
-
-            }
+            })
         </script>
-    @endif
+    @endauth
 
+
+    <!-- Dropdown Script -->
     <script>
-        window.addEventListener('DOMContentLoaded', async () => {
-            const api = await fetch('/api/cart', {
-                method: 'GET',
-            });
-            const response = await api.json();
-            if (response.status == 'success') {
-                const data = await response.data;
-                listCart(data);
-            } else {
-                showAlert('error', 'keranjang gagal diload')
-            }
-        })
+        document.getElementById('cartDropdownButton').addEventListener('click', () => {
+            document.getElementById('cartDropdownMenu').classList.toggle('hidden');
+        });
+
+        document.getElementById('userDropdownButton').addEventListener('click', () => {
+            document.getElementById('userDropdownMenu').classList.toggle('hidden');
+        });
     </script>
-@endauth
 
+    <!-- Carousel Vertical -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const carouselContent = document.getElementById('carousel-content');
+            const items = document.querySelectorAll('.carousel-item');
+            const prevButton = document.getElementById('prev');
+            const nextButton = document.getElementById('next');
+            const itemHeight = items[0].offsetHeight; // Tinggi setiap item
+            let currentIndex = 0;
 
-<!-- Dropdown Script -->
-<script>
-    document.getElementById('cartDropdownButton').addEventListener('click', () => {
-        document.getElementById('cartDropdownMenu').classList.toggle('hidden');
-    });
-
-    document.getElementById('userDropdownButton').addEventListener('click', () => {
-        document.getElementById('userDropdownMenu').classList.toggle('hidden');
-    });
-</script>
-
-<!-- Carousel Vertical -->
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const carouselContent = document.getElementById('carousel-content');
-        const items = document.querySelectorAll('.carousel-item');
-        const prevButton = document.getElementById('prev');
-        const nextButton = document.getElementById('next');
-        const itemHeight = items[0].offsetHeight; // Tinggi setiap item
-        let currentIndex = 0;
-
-        function updateCarousel() {
-            // Perbarui posisi carousel berdasarkan indeks saat ini
-            carouselContent.style.transform = `translateY(-${currentIndex * itemHeight}px)`;
-        }
-
-        nextButton.addEventListener('click', () => {
-            // Jika di item terakhir, langsung reset ke item pertama tanpa transisi
-            if (currentIndex === items.length - 1) {
-                currentIndex = 0;
-                // Setel ulang posisi carousel untuk mencocokkan item pertama tanpa animasi
-                carouselContent.style.transition = 'none';
-                updateCarousel();
-
-                // Setelah sedikit delay, aktifkan transisi lagi untuk seterusnya
-                setTimeout(() => {
-                    carouselContent.style.transition = 'transform 0.5s ease';
-                }, 50);
-            } else {
-                currentIndex++;
-                updateCarousel();
+            function updateCarousel() {
+                // Perbarui posisi carousel berdasarkan indeks saat ini
+                carouselContent.style.transform = `translateY(-${currentIndex * itemHeight}px)`;
             }
-        });
 
-        prevButton.addEventListener('click', () => {
-            // Jika di item pertama, pindah ke item terakhir tanpa transisi
-            if (currentIndex === 0) {
-                currentIndex = items.length - 1;
-                carouselContent.style.transition = 'none';
+            nextButton.addEventListener('click', () => {
+                // Jika di item terakhir, langsung reset ke item pertama tanpa transisi
+                if (currentIndex === items.length - 1) {
+                    currentIndex = 0;
+                    // Setel ulang posisi carousel untuk mencocokkan item pertama tanpa animasi
+                    carouselContent.style.transition = 'none';
+                    updateCarousel();
+
+                    // Setelah sedikit delay, aktifkan transisi lagi untuk seterusnya
+                    setTimeout(() => {
+                        carouselContent.style.transition = 'transform 0.5s ease';
+                    }, 50);
+                } else {
+                    currentIndex++;
+                    updateCarousel();
+                }
+            });
+
+            prevButton.addEventListener('click', () => {
+                // Jika di item pertama, pindah ke item terakhir tanpa transisi
+                if (currentIndex === 0) {
+                    currentIndex = items.length - 1;
+                    carouselContent.style.transition = 'none';
+                    updateCarousel();
+
+                    // Setelah sedikit delay, aktifkan transisi lagi untuk seterusnya
+                    setTimeout(() => {
+                        carouselContent.style.transition = 'transform 0.5s ease';
+                    }, 50);
+                } else {
+                    currentIndex--;
+                    updateCarousel();
+                }
+            });
+
+            // Optional: Auto-scroll setiap 3 detik
+            setInterval(() => {
+                currentIndex = (currentIndex + 1) % items.length;
                 updateCarousel();
-
-                // Setelah sedikit delay, aktifkan transisi lagi untuk seterusnya
-                setTimeout(() => {
-                    carouselContent.style.transition = 'transform 0.5s ease';
-                }, 50);
-            } else {
-                currentIndex--;
-                updateCarousel();
-            }
+            }, 3000); // 3 detik
         });
+    </script>
 
-        // Optional: Auto-scroll setiap 3 detik
-        setInterval(() => {
-            currentIndex = (currentIndex + 1) % items.length;
-            updateCarousel();
-        }, 3000); // 3 detik
-    });
-</script>
-
-</script>
+    </script>
 @endsection
