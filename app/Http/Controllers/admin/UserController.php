@@ -12,13 +12,20 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Mengambil semua pengguna beserta role-nya
-        $users = User::with('roles')->get();
 
-        $roles = Role::all();
-        return view('admin.users.index', compact('users','roles'));
+        $selectedRole = $request->input('role');
+
+        // Query pengguna berdasarkan role yang dipilih
+        $users = User::with('roles')->orderBy('created_at','desc')->when($selectedRole, function ($query, $selectedRole) {
+                return $query->role($selectedRole); 
+            })
+            ->get();
+
+        $roles = Role::all(); // Mendapatkan semua role untuk dropdown filter
+
+        return view('admin.users.index', compact('users', 'roles'));
     }
 
     /**
@@ -63,5 +70,4 @@ class UserController extends Controller
 
         return redirect()->route('admin.users.index')->with('success', 'Pengguna berhasil dihapus.');
     }
-
 }

@@ -34,26 +34,25 @@
                         <div class="col-md-4 mb-4">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">{{ $order->user->name }}</h5>
-                                    <p class="card-text">Produk: {{ $order->products->count() }}</p>
+                                    <h5 class="my-2 card-title">{{ $order->user->name }}</h5>
+                                    <p class="my-2 card-text">Produk: {{ $order->products->count() }}</p>
                                     <table>
                                         @foreach ($order->productOrders as $productOrder)
                                             <tr>
                                                 <td>
-                                                    {{ $productOrder->product->name_product }}
+                                                    Jumlah {{ $productOrder->product->name_product }} : {{ $productOrder->quantity }}
                                                 </td>
-                                                <td>
-                                                    Qnt:
-                                                </td>
-                                                <td>{{ $productOrder->quantity }}</td>
                                             </tr>
                                         @endforeach
                                     </table>
-                                    <p class="card-text">Subtotal: Rp.
+                                    <p class="my-2 card-text">Subtotal: Rp.
                                         {{ number_format($order->sub_total_amount, 0, ',', '.') }}</p>
-                                    <p class="card-text">Total: Rp.
+                                    <p class="my-2 card-text">Total: Rp.
                                         {{ number_format($order->grand_total_amount, 0, ',', '.') }}</p>
-                                    <p class="card-text">Status: {{ ucfirst($order->status_order) }}
+
+                                    <p class="my-2 card-text">Status: <span class="badge rounded-1 fw-semibold bg-primary">
+                                        {{ $order->status_order }}
+                                    </span>
 
                                     </p>
 
