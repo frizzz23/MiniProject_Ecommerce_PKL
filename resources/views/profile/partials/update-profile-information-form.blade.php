@@ -11,7 +11,7 @@
             @csrf
         </form>
 
-        <form method="post" action="{{ route('profile.update') }}" class="mt-4">
+        <form method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="mt-4">
             @csrf
             @method('patch')
 
@@ -66,6 +66,11 @@
                         </div>
                     @endif
                 @endif
+            </div>
+
+            <div class="mb-3">
+                <label for="image" class="form-label">Profile Picture</label>
+                <input type="file" class="form-control" name="image" id="image">
             </div>
 
             <div class="d-flex align-items-center gap-3">

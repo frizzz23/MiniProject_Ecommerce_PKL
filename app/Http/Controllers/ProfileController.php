@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
+use App\Http\Requests\ProfileUpdateRequest;
 
 class ProfileController extends Controller
 {
@@ -26,13 +27,33 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        // Jika ada gambar yang diupload
+        if ($request->hasFile('image')) {
+            // Cek apakah pengguna sudah memiliki gambar sebelumnya
+            if ($user->image && Storage::exists('public/' . $user->image)) {
+                // Hapus gambar lama dari storage
+                Storage::delete('public/' . $user->image);
+            }
+
+            // Simpan gambar baru ke storage (ke folder 'profile_images' dalam 'public' disk)
+            $imagePath = $request->file('image')->store('profile_images', 'public');
+
+            // Update kolom image di database dengan path gambar yang baru
+            $user->image = $imagePath;
         }
 
-        $request->user()->save();
+        // Update data lainnya seperti name dan email
+        $user->fill($request->validated());
+
+        // Jika email berubah, set ulang email_verified_at
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
+
+        // Simpan perubahan ke database
+        $user->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
