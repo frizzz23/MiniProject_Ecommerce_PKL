@@ -12,29 +12,24 @@
                     </div>
                 @endif
                 <div class="card-body p-4">
-                    <div class="container flex justify-between">
-                        <h5 class="card-title fw-semibold mb-4">Semua User</h5>
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Filter
-                            </button>
-                            <div class="dropdown-menu my-2 p-3 w-[200px] " aria-labelledby="dropdownMenuButton1">
-                                <form action="{{ route('admin.users.index') }}" method="GET">
-                                    <label for="role" class="my-1"> Role</label>
-                                    <select name="role" id="role" class="form-select my-1 text-center ">
-                                        <option value="">All Role</option>
-                                        @foreach ($roles as $role)
-                                            <option value="{{ $role->name }}"
-                                                {{ request('role') == $role->name ? 'selected' : '' }}>
-                                                {{ $role->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    <button type="submit" class="btn btn-primary my-1 ">Filter</button>
-                                </form>
-                            </div>
-                        </div>
+                    <div class="fitur container flex justify-start gap-2">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#tambahModal">
+                            Tambah
+                        </button>
+                        <div class="">
+                            <form action="{{ route('admin.users.index') }}" method="GET" id="roleFilterForm">
+                                <select name="role" id="role" class="form-select text-center" onchange="this.form.submit()">
+                                    <option value="">All Role</option>
+                                    @foreach ($roles as $role)
+                                        <option value="{{ $role->name }}"
+                                            {{ request('role') == $role->name ? 'selected' : '' }}>
+                                            {{ $role->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </form>
+                        </div> 
                     </div>
 
                     <div class="table-responsive">
@@ -66,13 +61,6 @@
                                             @endforeach
                                         </td>
                                         <td class="border-bottom-0">
-                                            <!-- Tombol Edit -->
-                                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#editmodal{{ $user->id }}">
-                                                Edit
-                                            </button>
-
-
                                             <!-- Delete Form -->
                                             <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST"
                                                 class="d-inline-block">
@@ -82,65 +70,6 @@
                                             </form>
                                         </td>
                                     </tr>
-
-                                    <!-- Modal Edit -->
-                                    <!-- Modal Edit -->
-                                    <!-- Modal Edit -->
-                                    <div class="modal fade" id="editmodal{{ $user->id }}" tabindex="-1"
-                                        aria-labelledby="editModalLabel{{ $user->id }}" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="editModalLabel{{ $user->id }}">
-                                                        Edit Pengguna</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <!-- Form inside modal -->
-                                                    <form action="{{ route('admin.users.update', $user->id) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        @method('PUT') <!-- Untuk method PUT -->
-
-                                                        <!-- Display Name as Read-Only -->
-                                                        <div class="mb-3">
-                                                            <label for="edit_name" class="form-label">Nama</label>
-                                                            <input type="text" name="name" class="form-control"
-                                                                value="{{ $user->name }}" readonly>
-                                                        </div>
-
-                                                        <!-- Display Email as Read-Only -->
-                                                        <div class="mb-3">
-                                                            <label for="edit_email" class="form-label">Email</label>
-                                                            <input type="email" name="email" class="form-control"
-                                                                value="{{ $user->email }}" readonly>
-                                                        </div>
-
-                                                        <!-- Role Selection Dropdown -->
-                                                        <div class="mb-3">
-                                                            <label for="edit_role" class="form-label">Role</label>
-                                                            <select name="role" class="form-select" required>
-                                                                @foreach ($roles as $role)
-                                                                    <option value="{{ $role->id }}"
-                                                                        {{ $user->roles->contains($role->id) ? 'selected' : '' }}>
-                                                                        {{ $role->name }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-bs-dismiss="modal">Kembali</button>
-                                                            <button type="submit" class="btn btn-primary">Simpan
-                                                                Perubahan</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 @endforeach
                             </tbody>
                         </table>
@@ -149,6 +78,69 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="tambahModal" tabindex="-1" aria-labelledby="tambahModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tambahModalLabel">Tambah Pengguna</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form untuk menambah pengguna -->
+                    <form action="{{ route('admin.users.store') }}" method="POST">
+                        @csrf
+
+                        <!-- Input Nama -->
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Nama</label>
+                            <input type="text" id="name" name="name" class="form-control"
+                                value="{{ old('name') }}" autocomplete="off" required>
+                            @error('name')
+                                <div class="text-danger mt-2">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Input Email -->
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" id="email" name="email" class="form-control"
+                                value="{{ old('email') }}" autocomplete="off" required>
+                            @error('email')
+                                <div class="text-danger mt-2">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Input Password -->
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" id="password" name="password" class="form-control" required>
+                            @error('password')
+                                <div class="text-danger mt-2">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Input Konfirmasi Password -->
+                        <div class="mb-3">
+                            <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
+                            <input type="password" id="password_confirmation" name="password_confirmation"
+                                class="form-control" required>
+                            @error('password_confirmation')
+                                <div class="text-danger mt-2">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Tombol Modal -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
+                            <button type="submit" class="btn btn-primary">Simpan Pengguna</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
     {{-- <button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#tambahmodal">
         Tambah Pengguna

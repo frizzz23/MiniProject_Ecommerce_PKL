@@ -53,7 +53,7 @@ class RegisteredUserController extends Controller
             return redirect()->route('admin.dashboard.index'); // Admin diarahkan ke dashboard
         }
 
-        return redirect()->route('/'); // User diarahkan ke landing-page
+        return redirect()->route('landing-page'); // User diarahkan ke landing-page
 
     }
 }

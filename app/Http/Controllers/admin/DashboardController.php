@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Models\Order;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class DashboardController extends Controller
 {
@@ -12,7 +14,12 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('admin.dashboard.index');
+        $newuser = User::where('created_at', '>=', now()->subMonth())->count();
+        $neworder = Order::where('status_order', 'pending')->count();
+        $Revenue = Order::where('status_order', 'completed')
+                     ->sum('grand_total_amount');
+
+        return view('admin.dashboard.index',compact('newuser','neworder','Revenue'));
     }
 
     /**
