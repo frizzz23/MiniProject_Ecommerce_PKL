@@ -34,7 +34,7 @@ class ProfileController extends Controller
             // Cek apakah pengguna sudah memiliki gambar sebelumnya
             if ($user->image && Storage::exists('public/' . $user->image)) {
                 // Hapus gambar lama dari storage
-                Storage::delete('public/' . $user->image);
+                Storage::delete('public/storage/profile_images' . $user->image);
             }
 
             // Simpan gambar baru ke storage (ke folder 'profile_images' dalam 'public' disk)

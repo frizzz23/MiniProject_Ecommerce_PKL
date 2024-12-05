@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
+use Illuminate\Validation\Rules;
+    use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -18,9 +20,9 @@ class UserController extends Controller
         $selectedRole = $request->input('role');
 
         // Query pengguna berdasarkan role yang dipilih
-        $users = User::with('roles')->orderBy('created_at','desc')->when($selectedRole, function ($query, $selectedRole) {
-                return $query->role($selectedRole); 
-            })
+        $users = User::with('roles')->orderBy('created_at', 'desc')->when($selectedRole, function ($query, $selectedRole) {
+            return $query->role($selectedRole);
+        })
             ->get();
 
         $roles = Role::all(); // Mendapatkan semua role untuk dropdown filter
@@ -31,33 +33,37 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified user.
      */
-    public function edit(string $id)
+    
+    
+    public function store(Request $request)
     {
-        // Mengambil data pengguna berdasarkan id
-        $user = User::findOrFail($id);
-        // Mendapatkan semua role yang tersedia
-        $roles = Role::all();
-
-        return view('admin.users.edit', compact('user', 'roles'));
+        // Validasi input
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
+    
+        // Membuat pengguna baru
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+    
+        // Tetapkan role admin secara otomatis
+        $user->assignRole('admin');
+    
+        return redirect()->route('admin.users.index')->with('success', 'Pengguna berhasil ditambahkan dengan role Admin.');
     }
+    
+
+    public function edit(string $id) {}
 
     /**
      * Update the user's role.
      */
-    public function update(Request $request, string $id)
-    {
-        $request->validate([
-            'role' => 'required|exists:roles,id', // Memastikan role yang dipilih ada di database
-        ]);
-
-        // Mencari pengguna berdasarkan id
-        $user = User::findOrFail($id);
-
-        // Mengupdate role pengguna
-        $user->roles()->sync([$request->role]); // Menggunakan sync untuk mengganti semua role dengan yang baru
-
-        return redirect()->route('admin.users.index')->with('success', 'Role pengguna berhasil diperbarui.');
-    }
+    public function update(Request $request, string $id) {}
 
     /**
      * Remove the specified user from storage (optional).

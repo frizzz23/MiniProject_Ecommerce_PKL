@@ -2,7 +2,70 @@
 
 @section('main')
     <div class="container-fluid">
-        <!--  Row 1 -->
+        <div class="row">
+            <!-- Card 1: Total Pendapatan -->
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="me-3">
+                            <i class="fas fa-dollar-sign fa-3x text-success"></i>
+                        </div>
+                        <div>
+                            <h5 class="card-title">Total Pendapatan</h5>
+                            <p class="card-text">Rp. {{ number_format($Revenue, 0, ',', '.') }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        
+            <!-- Card 2: Order Terbaru -->
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body d-flex align-items-center">
+                        <!-- Ikon -->
+                        <div class="me-3">
+                            <i class="fas fa-box fa-3x text-primary"></i>
+                        </div>
+                        <!-- Teks Konten -->
+                        <div>
+                            <h5 class="card-title">Order Terbaru</h5>
+                            @if($neworder > 0)
+                                <p class="card-text">{{ $neworder }} Orders Pending</p>
+                            @else
+                                <p class="card-text">0</p>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        
+            <!-- Card 4: Pelanggan Baru -->
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body d-flex align-items-center">
+                        <!-- Ikon -->
+                        <div class="me-3">
+                            <i class="fas fa-users fa-3x text-info"></i>
+                        </div>
+                        <!-- Teks Konten -->
+                        <div>
+                            <h5 class="card-title mb-2">Pelanggan Baru</h5>
+                            <p class="card-text mb-0">
+                                <span class="fw-bold fs-5 text-dark">{{ $newuser }}</span> 
+                                <span class="text-muted">/ dalam sebulan terakhir</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+        
+        
+        
         <div class="row">
             <div class="col-lg-8 d-flex align-items-strech">
                 <div class="card w-100">
