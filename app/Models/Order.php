@@ -21,6 +21,7 @@ class Order extends Model
     protected $fillable = [
         'user_id',
         'promo_code_id',
+        'addresses_id',
         'sub_total_amount',
         'grand_total_amount',
         'status_order',
@@ -32,6 +33,10 @@ class Order extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+    public function addresses()
+    {
+        return $this->belongsTo(Address::class, 'addresses_id', 'id');
     }
 
     /**
