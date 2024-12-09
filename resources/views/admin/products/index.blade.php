@@ -183,7 +183,7 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="name_product" class="form-label">Nama Produk</label>
-                            <input type="text" name="name_product" class="form-control" required>
+                            <input type="text" name="name_product" class="form-control" placeholder="cth : Nama Hp / Spesifikasi" required>
                         </div>
                         <div class="mb-3">
                             <label for="description_product" class="form-label">Deskripsi Produk</label>
