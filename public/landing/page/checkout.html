@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>checkout page</title>
+    <link href="../dist/output.css" rel="stylesheet" />
+
+    <!-- font poopins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        font-family: "Poppins", sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid md:grid-cols-2 grid-cols-1">
+      <div class="bg-white min-h-screen">
+        <div class="py-10 px-20">
+          <form action="" method="post">
+            <div class="mb-7">
+              <h1 class="text-xl font-bold mb-1 text-slate-800">Payment</h1>
+              <p class="text-sm text-slate-700 mb-5">
+                All transactions are secure and encrypted
+              </p>
+
+              <div class="border-2 py-3 px-3 rounded-md">
+                <h6 class="text-slate-700 font-semibold text-xl mb-2">
+                  <span class="text-yellow-600">BNI</span>
+                  <span class="text-sm">(bank Negara Indonesia)</span>
+                </h6>
+                <p class="text-sm text-slate-700 font-medium tracking-tighter">
+                  Admin: <span class="text-yellow-600">1122334455</span>
+                </p>
+              </div>
+            </div>
+            <div class="mb-7">
+              <h1 class="text-xl font-bold mb-1 text-slate-800">
+                Your Information
+              </h1>
+              <p class="text-sm text-slate-700 mb-5">
+                provide your information clearly
+              </p>
+
+              <div class="mb-3">
+                <input
+                  type="text"
+                  value="hamzahxou"
+                  name="nama"
+                  placeholder="Name"
+                  class="w-full py-3 px-3 outline-none border border-gray-300 text-slate-700 rounded-lg text-sm"
+                />
+              </div>
+              <div class="mb-3">
+                <input
+                  type="email"
+                  name="email"
+                  value="hamzahxou@gmail.com"
+                  placeholder="Email"
+                  class="w-full py-3 px-3 outline-none border border-gray-300 text-slate-700 rounded-lg text-sm"
+                />
+              </div>
+              <div
+                class="w-full border border-gray-300 rounded-lg overflow-hidden"
+              >
+                <div class="flex gap-5 border-b-2 py-2 px-3">
+                  <input type="radio" name="alamat" id="alamat_1" value="1" />
+                  <label for="alamat_1" class="w-full">
+                    <h6 class="text-lg text-slate-700 font-semibold">Rumah</h6>
+                    <p class="text-sm text-slate-600">
+                      Jl.raya blega bangkalan madura
+                    </p>
+                  </label>
+                </div>
+                <div class="flex gap-5 border-b-2 py-2 px-3">
+                  <input type="radio" name="alamat" id="alamat_2" value="2" />
+                  <label for="alamat_2" class="w-full">
+                    <h6 class="text-lg text-slate-700 font-semibold">Kantor</h6>
+                    <p class="text-sm text-slate-600">Jl.raya Malang</p>
+                  </label>
+                </div>
+                <div class="flex gap-5 border-b-2 py-2 px-3 w-full">
+                  <a
+                    href="#"
+                    class="text-xs text-slate-700 block w-full text-center py-2 px-3"
+                    >Tambahkan Alamat</a
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="mb-7">
+              <h1 class="text-xl font-bold mb-1 text-slate-800">
+                proof of transfer
+              </h1>
+              <p class="text-sm text-slate-700 mb-5">
+                Send proof of transfer according to your order total
+              </p>
+              <div class="flex items-center justify-center w-full">
+                <label
+                  for="dropzone-file"
+                  class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50"
+                >
+                  <div
+                    id="text_area"
+                    class="flex flex-col items-center justify-center pt-5 pb-6"
+                  >
+                    <svg
+                      class="w-10 h-10 mb-3 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                      ></path>
+                    </svg>
+                    <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                      <span class="font-semibold">Upload a file</span>
+                    </p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">
+                      PNG, JPG or JPEG
+                    </p>
+                  </div>
+                  <div
+                    id="bukti_area_preview"
+                    class="h-full w-full overflow-hidden bg-center hidden"
+                  >
+                    <img
+                      id="bukti_area"
+                      src="../image/headset-2.png"
+                      class="w-full h-full object-contain"
+                    />
+                  </div>
+                  <input
+                    id="dropzone-file"
+                    type="file"
+                    class="hidden"
+                    name="bukti_image"
+                    accept="image/png, image/jpeg, image/jpg"
+                    onchange="preview(event)"
+                  />
+                </label>
+              </div>
+            </div>
+
+            <button
+              class="block w-full py-2 px-5 w-full bg-blue-600 text-white rounded-md"
+            >
+              Pay Now
+            </button>
+          </form>
+        </div>
+      </div>
+      <div>
+        <div class="md:fixed static top-0 bg-neutral-100 min-h-screen">
+          <h5 class="px-20 text-2xl font-medium text-slate-800 py-5">
+            4 items
+          </h5>
+          <div class="px-10 h-96 overflow-y-auto">
+            <table class="table-auto w-full">
+              <tr class="sticky top-0 z-10">
+                <th class="text-slate-700 text-sm font-medium">Image</th>
+                <td class="text-slate-700 text-sm font-medium">Product</td>
+                <td class="text-slate-700 text-sm font-medium">Price</td>
+              </tr>
+              <tr class="border-b-2 border-slate-300">
+                <th>
+                  <div
+                    class="w-28 h-28 bg-cover bg-center overflow-hidden flex justify-center items-center p-5"
+                  >
+                    <img src="../image/hp.png" alt="Hp" class="" />
+                  </div>
+                </th>
+                <td class="w-full align-bottom">
+                  <p class="text-sm text-slate-700 mb-5">
+                    Samsung Galaxy A55 5G 8/128 8/256 | 5000mAh
+                  </p>
+                </td>
+                <td class="align-center">
+                  <p class="text-sm text-slate-500 text-nowrap">
+                    Rp. 10.000.000
+                  </p>
+                </td>
+              </tr>
+              <tr class="border-b-2 border-slate-300">
+                <th>
+                  <div
+                    class="w-28 h-28 bg-cover bg-center overflow-hidden flex justify-center items-center p-5"
+                  >
+                    <img src="../image/hp.png" alt="Hp" class="" />
+                  </div>
+                </th>
+                <td class="w-full align-bottom">
+                  <p class="text-sm text-slate-700 mb-5">
+                    Samsung Galaxy A55 5G 8/128 8/256 | 5000mAh
+                  </p>
+                </td>
+                <td class="align-center">
+                  <p class="text-sm text-slate-500 text-nowrap">
+                    Rp. 10.000.000
+                  </p>
+                </td>
+              </tr>
+              <tr class="border-b-2 border-slate-300">
+                <th>
+                  <div
+                    class="w-28 h-28 bg-cover bg-center overflow-hidden flex justify-center items-center p-5"
+                  >
+                    <img src="../image/hp.png" alt="Hp" class="" />
+                  </div>
+                </th>
+                <td class="w-full align-bottom">
+                  <p class="text-sm text-slate-700 mb-5">
+                    Samsung Galaxy A55 5G 8/128 8/256 | 5000mAh
+                  </p>
+                </td>
+                <td class="align-center">
+                  <p class="text-sm text-slate-500 text-nowrap">
+                    Rp. 10.000.000
+                  </p>
+                </td>
+              </tr>
+              <tr class="border-b-2 border-slate-300">
+                <th>
+                  <div
+                    class="w-28 h-28 bg-cover bg-center overflow-hidden flex justify-center items-center p-5"
+                  >
+                    <img src="../image/hp.png" alt="Hp" class="" />
+                  </div>
+                </th>
+                <td class="w-full align-bottom">
+                  <p class="text-sm text-slate-700 mb-5">
+                    Samsung Galaxy A55 5G 8/128 8/256 | 5000mAh
+                  </p>
+                </td>
+                <td class="align-center">
+                  <p class="text-sm text-slate-500 text-nowrap">
+                    Rp. 10.000.000
+                  </p>
+                </td>
+              </tr>
+              <tr class="border-b-2 border-slate-300">
+                <th>
+                  <div
+                    class="w-28 h-28 bg-cover bg-center overflow-hidden flex justify-center items-center p-5"
+                  >
+                    <img src="../image/hp.png" alt="Hp" class="" />
+                  </div>
+                </th>
+                <td class="w-full align-bottom">
+                  <p class="text-sm text-slate-700 mb-5">
+                    Samsung Galaxy A55 5G 8/128 8/256 | 5000mAh
+                  </p>
+                </td>
+                <td class="align-center">
+                  <p class="text-sm text-slate-500 text-nowrap">
+                    Rp. 10.000.000
+                  </p>
+                </td>
+              </tr>
+              <tr class="border-b-2 border-slate-300">
+                <th>
+                  <div
+                    class="w-28 h-28 bg-cover bg-center overflow-hidden flex justify-center items-center p-5"
+                  >
+                    <img src="../image/hp.png" alt="Hp" class="" />
+                  </div>
+                </th>
+                <td class="w-full align-bottom">
+                  <p class="text-sm text-slate-700 mb-5">
+                    Samsung Galaxy A55 5G 8/128 8/256 | 5000mAh
+                  </p>
+                </td>
+                <td class="align-center">
+                  <p class="text-sm text-slate-500 text-nowrap">
+                    Rp. 10.000.000
+                  </p>
+                </td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="py-4 flex justify-between items-center mt-5 px-20">
+            <table class="table-auto w-full">
+              <tr>
+                <td class="text-xs text-slate-600 w-full">Subtotal</td>
+                <td class="text-xs text-slate-800 text-nowrap">
+                  Rp. 10.000.000
+                </td>
+              </tr>
+              <tr>
+                <td class="text-xs text-slate-600">Discount</td>
+                <td class="text-xs text-slate-800 text-nowrap">
+                  -Rp. 1.000.000
+                </td>
+              </tr>
+              <tr>
+                <td class="text-sm text-slate-600">Total</td>
+                <td class="text-sm text-slate-800 text-nowrap">Rp. 900.000</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function preview(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+          const img = document.getElementById("bukti_area");
+          img.src = reader.result;
+          const preview = document.getElementById("bukti_area_preview");
+          preview.classList.remove("hidden");
+          const text_area = document.getElementById("text_area");
+          text_area.classList.add("hidden");
+        };
+      }
+    </script>
+  </body>
+</html>
