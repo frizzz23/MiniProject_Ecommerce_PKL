@@ -86,6 +86,13 @@ class ProductController extends Controller
         return view('admin.products.edit', compact('product', 'categories'));
     }
 
+    public function show(Product $product)
+    {
+        $product = Product::with('category')->findOrFail($product->id);
+        $categories = Category::all();
+        return view('admin.products.show', compact('product', 'categories'));
+    }
+
     /**
      * Update the specified resource in storage.
      */
