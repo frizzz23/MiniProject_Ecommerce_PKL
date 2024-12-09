@@ -61,11 +61,11 @@
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     @if (Auth::user()->image)
                                         <img src="{{ asset('storage/' . Auth::user()->image) }}" alt="Profile Picture"
-                                            width="35" height="35" class="rounded-circle">
+                                            style="width: 48px; height: 48px; object-fit: cover; object-position: center; border-radius: 50%;">
                                     @else
                                         <img src="{{ asset('style/src/assets/images/profile/user-1.jpg') }}"
-                                            alt="Default Profile Picture" width="35" height="35"
-                                            class="rounded-circle">
+                                            alt="Default Profile Picture"
+                                            style="width: 48px; height: 48px; object-fit: cover; object-position: center; border-radius: 50%;">
                                     @endif
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up p-2"
@@ -73,15 +73,13 @@
                                     <div class="d-flex align-items-center p-3 border-bottom">
                                         @if (Auth::user()->image)
                                             <img src="{{ asset('storage/' . Auth::user()->image) }}"
-                                                alt="Profile Picture" width="60" height="60"
-                                                class="rounded-circle me-3">
+                                                alt="Profile Picture"
+                                                style="width: 48px; height: 48px; object-fit: cover; object-position: center; border-radius: 50%; margin-right: 1rem;">
                                         @else
                                             <img src="{{ asset('style/src/assets/images/profile/user-1.jpg') }}"
-                                                alt="Default Profile Picture" width="60" height="60"
-                                                class="rounded-circle me-3">
+                                                alt="Default Profile Picture"
+                                                style="width: 48px; height: 48px; object-fit: cover; object-position: center; border-radius: 50%; margin-right: 1rem;">
                                         @endif
-
-
                                         <div>
                                             <h6 class="mb-0 fw-semibold">{{ Auth::user()->name }}</h6>
                                             <span class="text-muted">{{ Auth::user()->email }}</span>
@@ -91,7 +89,7 @@
                                         <form action="{{ route('logout') }}" method="POST" class="my-2">
                                             @csrf
                                             <button type="submit"
-                                                class="dropdown-item px-3 py-2 d-flex align-items-center gap-2 text-danger">
+                                                class="dropdown-menu-item px-3 py-2 d-flex align-items-center gap-2 text-danger">
                                                 <i class="ti ti-logout fs-6"></i>
                                                 <p class="mb-0 fs-3">Logout</p>
                                             </button>

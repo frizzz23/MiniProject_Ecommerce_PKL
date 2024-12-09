@@ -52,49 +52,49 @@
                     <div class="row">
                         @foreach ($products as $product)
                             <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4">
-                                <a href="{{ route('admin.products.show', $product->id) }}">
-                                    <div
-                                        class="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:-translate-y-2 border border-gray-100">
-                                        <!-- Gambar Produk -->
-                                        <div class="relative overflow-hidden">
+                                <div
+                                    class="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:-translate-y-2 border border-gray-100">
+                                    <!-- Gambar Produk -->
+                                    <div class="relative overflow-hidden">
+                                        <a href="{{ route('admin.products.show', $product->id) }}">
                                             <img src="{{ asset('storage/' . $product->image_product) }}"
                                                 alt="{{ $product->name_product }}"
                                                 class="w-full h-56 object-cover rounded-t-xl transition-transform duration-300 hover:scale-110">
-                                            <div class="absolute top-2 right-2">
-                                                <span
-                                                    class="bg-red-500 text-white text-xs px-2 py-1 rounded-full">New</span>
-                                            </div>
-                                        </div>
+                                        </a>
+                                    </div>
 
-                                        <!-- Informasi Produk -->
-                                        <div class="p-4">
+                                    <!-- Informasi Produk -->
+                                    <div class="p-4">
+                                        <a href="{{ route('admin.products.show', $product->id) }}">
                                             <h3 class="text-xl font-bold text-gray-800 truncate">
-                                                {{ $product->name_product }}</h3>
+                                                {{ $product->name_product }}
+                                            </h3>
                                             <div class="text-m font-extrabold text-blue-600 mb-3">
                                                 Rp. {{ number_format($product->price_product, 0, ',', '.') }}
                                             </div>
+                                        </a>
 
-                                            <!-- Tombol Aksi -->
-                                            <div class="flex justify-between items-center">
-                                                <!-- Tombol Edit -->
-                                                <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                                    data-bs-target="#editModal_{{ $product->id }}">
-                                                    <i class="fa fa-pencil"></i> Edit
+                                        <!-- Tombol Aksi -->
+                                        <div class="flex justify-between items-center">
+                                            <!-- Tombol Edit -->
+                                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#editModal_{{ $product->id }}">
+                                                <i class="fa fa-pencil"></i> Edit
+                                            </button>
+
+                                            <!-- Tombol Hapus -->
+                                            <form action="{{ route('admin.products.destroy', $product->id) }}"
+                                                method="POST" class="d-inline-block"
+                                                onsubmit="return confirm('Yakin ingin menghapus produk ini?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    <i class="fa fa-trash"></i> Hapus
                                                 </button>
-                                                <!-- Tombol Hapus -->
-                                                <form action="{{ route('admin.products.destroy', $product->id) }}"
-                                                    method="POST" class="d-inline-block"
-                                                    onsubmit="return confirm('Yakin ingin menghapus produk ini?');">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm">
-                                                        <i class="fa fa-trash"></i> Hapus
-                                                    </button>
-                                                </form>
-                                            </div>
+                                            </form>
                                         </div>
                                     </div>
-                                </a>
+                                </div>
                             </div>
 
                             <!-- Modal untuk Edit -->
