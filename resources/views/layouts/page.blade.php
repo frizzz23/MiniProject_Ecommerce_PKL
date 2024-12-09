@@ -147,7 +147,7 @@
                                             class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">Home</a>
                                     </li>
                                     <li class="shrink-0">
-                                        <a href="{{ route('product-page') }}"
+                                        <a href=""
                                             class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">Product</a>
                                     </li>
                                     <li class="shrink-0">
@@ -239,7 +239,7 @@
                         Feature</h2>
                     <nav class="list-none mb-10">
                         <li>
-                            <a href="{{ route('product-page') }}" class="text-white hover:text-gray-800">product</a>
+                            <a href="" class="text-white hover:text-gray-800">product</a>
                         </li>
                         <li>
                             <a href="{{ route('category-page') }}"
