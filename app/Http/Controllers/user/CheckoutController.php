@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\user;
 
 use App\Http\Controllers\Controller;
+use App\Models\Address;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\ProductOrder;
@@ -16,7 +17,9 @@ class CheckoutController extends Controller
     {
         // Ambil data keranjang untuk pengguna yang sedang login
         $carts = Cart::where('user_id', Auth::id())->with('product')->get();
-        return view('user.checkout.index', compact('carts'));
+        $addresses = Address::where('user_id', Auth::id())->get();
+
+        return view('user.checkout.index', compact('carts','addresses'));
     }
 
     public function store(Request $request)
@@ -27,6 +30,7 @@ class CheckoutController extends Controller
             'diskon' => 'nullable|exists:promo_codes,code',
             'total_amount' => 'required|numeric|min:0',
             'grand_total_amount' => 'required|numeric|min:0',
+            'addresses_id' => 'required',
         ]);
 
         // Cari promo code jika ada
@@ -36,6 +40,7 @@ class CheckoutController extends Controller
         $order = Order::create([
             'user_id' => Auth::id(),
             'promo_code_id' => $diskon->id ?? null,
+            'addresses_id' => $request->addresses_id,
             'sub_total_amount' => $request->total_amount,
             'grand_total_amount' => $request->grand_total_amount,
         ]);

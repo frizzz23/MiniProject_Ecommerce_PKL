@@ -90,7 +90,7 @@
                                                         </div>
                                                         <div class="modal-body">
                                                             <!-- Form inside modal -->
-                                                            <form action="{{ route('admin.ories.update', $code->id) }}"
+                                                            <form action="{{ route('admin.discount.update', $code->id) }}"
                                                                 method="POST">
                                                                 @csrf
                                                                 @method('PUT') <!-- Untuk method PUT -->

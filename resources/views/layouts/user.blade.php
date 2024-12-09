@@ -18,7 +18,6 @@
 
     {{-- font awesome end --}}
 
-
     <link rel="shortcut icon" type="image/png" href="{{ asset('loading/logo.png') }}" />
     <link rel="stylesheet" href="{{ asset('style/src/assets/css/styles.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('loading/loading.css') }}" />

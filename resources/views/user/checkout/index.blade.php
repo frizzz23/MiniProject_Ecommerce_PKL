@@ -1,6 +1,17 @@
 @extends('layouts.user')
 
 @section('main')
+    <style>
+        .w-100 {
+            overflow-y: scroll;
+            /* Memungkinkan scroll jika konten melebihi 100px */
+        }
+
+        /* Menyembunyikan scrollbar */
+        .w-100::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
     <div class="container-fluid">
         <!-- Menampilkan pesan sukses jika ada -->
         @if (session('success'))
@@ -51,6 +62,70 @@
                         </div>
                     @endforeach
 
+                    @if ($addresses->isEmpty())
+                        <!-- Tampilkan form untuk menambah alamat jika belum ada data alamat -->
+                        <div class="border border-2 rounded-md p-4 mb-4">
+                            <h5>Tambah Alamat Pengiriman</h5>
+                            <form action="{{ route('user.addresses.store') }}" method="POST">
+                                @csrf
+                                <div class="form-group mb-3">
+                                    <label for="mark">Tanda Alamat</label>
+                                    <input type="text" class="form-control" name="mark" id="mark" required>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="address">Alamat Lengkap</label>
+                                    <input type="text" class="form-control" name="address" id="address" required>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="no_telepon">Nomor Telepon</label>
+                                    <input type="text" class="form-control" name="no_telepon" id="no_telepon" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Tambah Alamat</button>
+                            </form>
+                        </div>
+                    @else
+                        <!-- Jika ada alamat, tampilkan pilihan alamat pengiriman -->
+                        <div class="border border-2 rounded-md p-4 mb-4">
+                            <p class="h5">Pilih Alamat Pengiriman</p>
+                            <div class="d-flex justify-content-start align-items-center gap-3 py-3">
+                                <div class="info mx-3">
+                                    <p class="h4 font-bold">{{ Auth::user()->name }}</p>
+                                </div>
+
+                                <!-- Garis Sumbu Y -->
+                                <div class="border-start" style="min-height: 100px;"></div>
+
+                                <div class="w-100" style="max-height: 150px; overflow-y: scroll;">
+                                    @foreach ($addresses as $addr)
+                                        <div
+                                            class="d-flex justify-content-between align-items-center  my-2 p-3 border-2 rounded-lg">
+                                            <!-- Info alamat -->
+                                            <div class="flex-grow-1">
+                                                <label class="form-check-label fs-3 fs-sm-6 fs-md-7 fs-lg-8"
+                                                    for="addresses_{{ $addr->id }}" name="addresses_id">
+                                                     <span class="border border-primary p-1 rounded-md ">{{ $addr->mark }}</span> - {{ $addr->address }} | {{ $addr->no_telepon }}
+                                                </label>
+                                            </div>
+
+                                            <!-- Radio button di sebelah kanan -->
+                                            <div>
+                                                <input type="radio" class="form-check-input" name="addresses_id"
+                                                    id="addresses_{{ $addr->id }}" value="{{ $addr->id }}"
+                                                    required>
+                                            </div>
+                                        </div>
+                                    @endforeach
+
+                                    @error('addresses_id')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
+
+
 
                     <div class="border">
 
@@ -72,7 +147,8 @@
                                 value="{{ $total }}">
                             <p>Total : Rp. <span id='total'>{{ number_format($total, 0, ',', '.') }}</span></p>
                             <p>Diskon : Rp. <span id="diskon_value">0</span></p>
-                            <p>Harga Total : Rp. <span id="harga_total">{{ number_format($total, 0, ',', '.') }}</span></p>
+                            <p>Harga Total : Rp. <span id="harga_total">{{ number_format($total, 0, ',', '.') }}</span>
+                            </p>
                         </div>
 
                         <button type="submit" class="btn btn-primary">Simpan</button>

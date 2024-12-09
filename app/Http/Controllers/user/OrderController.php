@@ -19,7 +19,7 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         // Ambil data pesanan milik user yang sedang login
-        $userOrders = Order::where('user_id', Auth::id())->with('productOrders.product')->get();
+        $userOrders = Order::where('user_id', Auth::id())->with('productOrders.product','addresses')->get();
         // Tampilkan view untuk user
         return view('user.orders.index', compact('userOrders',));
     }
@@ -116,7 +116,7 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        // Hapus pesanan
+        $order->productOrders()->delete();
         $order->delete();
 
         return redirect()->route('user.orders.index')->with('success', 'Pesanan berhasil dihapus.');
