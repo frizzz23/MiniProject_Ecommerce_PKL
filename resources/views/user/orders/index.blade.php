@@ -173,7 +173,7 @@
                                     </p>
                                     <p class="card-text">Subtotal: Rp.
                                         {{ number_format($order->sub_total_amount, 2) }}</p>
-                                    <p class="card-text">Total: Rp.
+                                    <p class="card-text">Total: Rp
                                         {{ number_format($order->grand_total_amount, 2) }}</p>
                                     <p class="card-text">Status: {{ ucfirst($order->status_order) }}</p>
 
