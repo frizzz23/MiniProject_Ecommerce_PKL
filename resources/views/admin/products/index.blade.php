@@ -85,15 +85,10 @@
                                             </button>
 
                                             <!-- Tombol Hapus -->
-                                            <form action="{{ route('admin.products.destroy', $product->id) }}"
-                                                method="POST" class="d-inline-block"
-                                                onsubmit="return confirm('Yakin ingin menghapus produk ini?');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger">
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
-                                            </form>
+                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal_{{ $product->id }}">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -236,7 +231,8 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="name_product" class="form-label">Nama Produk</label>
-                            <input type="text" name="name_product" class="form-control" placeholder="cth : Nama Hp / Spesifikasi" required>
+                            <input type="text" name="name_product" class="form-control"
+                                placeholder="cth : Nama Hp / Spesifikasi" required>
                         </div>
                         <div class="mb-3">
                             <label for="description_product" class="form-label">Deskripsi Produk</label>
@@ -269,6 +265,32 @@
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Konfirmasi Hapus -->
+    <div class="modal fade" id="deleteModal_{{ $product->id }}" tabindex="-1"
+        aria-labelledby="deleteModalLabel_{{ $product->id }}" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel_{{ $product->id }}">
+                        Konfirmasi Hapus Produk
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    Apakah Anda yakin ingin menghapus produk <strong>{{ $product->name_product }}</strong>?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Hapus</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
