@@ -5,17 +5,17 @@
 @section('main')
     <div class="container-fluid">
         <div class="container">
-            <!-- Header Section -->
+            <div class="card w-100">
+                @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
 
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('Daftar Kode Promo') }}
-            </h2>
-
-
-            <div class="container">
-                <!-- Content Section -->
                 <div class="py-12">
                     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                        <h5 class="card-title fw-semibold mb-4">Promo Diskon</h5>
+
                         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                 data-bs-target="#tambahmodal">
@@ -127,8 +127,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
+            </div>
         </div>
     </div>
 

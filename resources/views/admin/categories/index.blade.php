@@ -47,16 +47,14 @@
                                                     onclick="openEditModal('{{ $category->id }}')">
                                                     Edit
                                                 </button>
-                                                <form action="{{ route('admin.categories.destroy', $category->id) }}"
-                                                    method="POST" class="d-inline-block">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
-                                                </form>
+                                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                                    data-bs-target="#hapusmodal{{ $category->id }}">
+                                                    Hapus
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
-                                    {{-- Modal edit --}}
+                                    <!-- Modal edit -->
                                     <div class="modal fade" id="editmodal" tabindex="-1"
                                         aria-labelledby="editModalLabel{{ $category->id }}" aria-hidden="true">
                                         <div class="modal-dialog">
@@ -91,10 +89,37 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- Modal edit -->
+                                    <div class="modal fade" id="hapusmodal{{ $category->id }}" tabindex="-1"
+                                        aria-labelledby="hapusModalLabel{{ $category->id }}" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="hapusModalLabel{{ $category->id }}">
+                                                        Konfirmasi Hapus</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Apakah Anda yakin ingin menghapus kategori
+                                                    <strong>{{ $category->name_category }}</strong>?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Batal</button>
+                                                    <form action="{{ route('admin.categories.destroy', $category->id) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger">Hapus</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 @endforeach
                             </tbody>
                         </table>
-
                     </div>
                 </div>
             </div>
