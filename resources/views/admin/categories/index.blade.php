@@ -89,7 +89,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- Modal edit -->
+                                    <!-- Modal hapus -->
                                     <div class="modal fade" id="hapusmodal{{ $category->id }}" tabindex="-1"
                                         aria-labelledby="hapusModalLabel{{ $category->id }}" aria-hidden="true">
                                         <div class="modal-dialog">
