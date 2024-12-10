@@ -56,25 +56,16 @@
                 <ul>
                     <li>
                         <div class="pt-10 pb-5 border-b-2">
-                            <form action="" class="flex gap-2 flex-1 w-full">
-                                <input type="text"
-                                    class="py-1 px-3 outline-none border border-gray-300 rounded-lg text-sm w-full text-slate-700"
-                                    placeholder="Search" />
+                            <form action="{{ route('page.product') }}" method="GET" class="flex gap-2 flex-1 w-full">
+                                <input type="text" name="search" class="py-1 px-3 outline-none border border-gray-300 rounded-lg text-sm w-full text-slate-700"
+                                    placeholder="Search for products..." value="{{ request()->get('search') }}" />
                                 <button type="submit">
-                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                        class="w-4 h-4">
-                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
-                                        </g>
-                                        <g id="SVGRepo_iconCarrier">
-                                            <path
-                                                d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
-                                                stroke="#000000" stroke-width="2" stroke-linecap="round"
-                                                stroke-linejoin="round"></path>
-                                        </g>
+                                    
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4">
+                                        <path d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                                     </svg>
                                 </button>
-                            </form>
+                            </form>                                                   
                         </div>
                     </li>
                     <li>
@@ -194,81 +185,46 @@
                         Zentech
                     </h5>
                 </a>
-                <form>
+                <form method="GET" action="{{ route('page.product') }}">
                     <div class="ps-3">
-                        <h1 class="font-semibold text-xl text-blue-700 mb-5">
-                            Categories
-                        </h1>
-                        <div class="flex gap-2 items-center mb-2">
-                            <div class="relative w-5 h-5">
-                                <input type="radio" name="Category" id="category_1" value="1"
-                                    class="w-full h-full block peer appearance-none cursor-pointer border-2 border-blue-300 rounded-sm checked:bg-no-repeat checked:bg-center checked:border-blue-500 checked:bg-blue-100" />
-                                <svg class="absolute w-3 h-3 hidden peer-checked:block text-blue-500 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="4" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg>
+                        <h1 class="font-semibold text-xl text-blue-700 mb-5">Categories</h1>
+
+                        @foreach ($categories as $category)
+                            <div class="flex gap-2 items-center mb-2">
+                                <div class="relative w-5 h-5">
+                                    <!-- Menggunakan checkbox untuk multiple selection -->
+                                    <input type="checkbox" name="categories[]" id="category_{{ $category->id }}"
+                                        value="{{ $category->id }}"
+                                        class="w-full h-full block peer appearance-none cursor-pointer border-2 border-blue-300 rounded-sm checked:bg-no-repeat checked:bg-center checked:border-blue-500 checked:bg-blue-100"
+                                        {{ in_array($category->id, request('categories', [])) ? 'checked' : '' }} />
+                                    <svg class="absolute w-3 h-3 hidden peer-checked:block text-blue-500 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="4" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
+                                <label for="category_{{ $category->id }}" class="pointer"
+                                    style="cursor: pointer;">{{ $category->name_category }}</label>
                             </div>
+                        @endforeach
 
-                            <label for="category_1">Handphone</label>
-                        </div>
-                        <div class="flex gap-2 items-center mb-2">
-                            <div class="relative w-5 h-5">
-                                <input type="radio" name="Category" id="category_2" value="2"
-                                    class="w-full h-full block peer appearance-none cursor-pointer border-2 border-blue-300 rounded-sm checked:bg-no-repeat checked:bg-center checked:border-blue-500 checked:bg-blue-100" />
-                                <svg class="absolute w-3 h-3 hidden peer-checked:block text-blue-500 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="4" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg>
-                            </div>
-
-                            <label for="category_2">Laptop</label>
-                        </div>
-                        <div class="flex gap-2 items-center mb-2">
-                            <div class="relative w-5 h-5">
-                                <input type="radio" name="Category" id="category_3" value="3"
-                                    class="w-full h-full block peer appearance-none cursor-pointer border-2 border-blue-300 rounded-sm checked:bg-no-repeat checked:bg-center checked:border-blue-500 checked:bg-blue-100" />
-                                <svg class="absolute w-3 h-3 hidden peer-checked:block text-blue-500 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="4" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg>
-                            </div>
-
-                            <label for="category_3">Headset</label>
-                        </div>
-                        <div class="flex gap-2 items-center mb-2">
-                            <div class="relative w-5 h-5">
-                                <input type="radio" name="Category" id="category_4" value="4"
-                                    class="w-full h-full block peer appearance-none cursor-pointer border-2 border-blue-300 rounded-sm checked:bg-no-repeat checked:bg-center checked:border-blue-500 checked:bg-blue-100" />
-                                <svg class="absolute w-3 h-3 hidden peer-checked:block text-blue-500 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="4" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg>
-                            </div>
-
-                            <label for="category_4">Mouse</label>
-                        </div>
-
-                        <button class="bg-blue-500 text-white px-3 text-xs py-2 block w-auto rounded-md w-full my-3">
+                        <button type="submit"
+                            class="bg-blue-500 text-white px-3 text-xs py-2 block w-auto rounded-md w-full my-3">
                             Apply
                         </button>
                     </div>
                 </form>
+
+
             </div>
         </div>
         <div class="px-5">
             <div class="flex w-full justify-between mb-5 sticky top-0 z-10 bg-white py-3 md:pe-5">
-                <form action="" class="hidden gap-2 flex-1 md:flex w-full">
+                <form action="{{ route('page.product') }}" method="GET" class="hidden gap-2 flex-1 md:flex w-full">
                     <input type="text"
                         class="py-1 px-3 outline-none border border-gray-300 rounded-lg text-sm w-full text-slate-700 w-3/4"
-                        placeholder="Search" />
+                        placeholder="Search" name="search" value="{{ request()->get('search') }}" />
                     <button type="submit">
                         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4">
                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -349,24 +305,42 @@
             </div>
             <div class="flex justify-between items md:pe-5">
                 <div class="flex gap-2 items-center">
-                    <a href="{{ route('landing-page') }}"
-                        class="flex justify-center items-end gap-1 bg-gray-200 text-slate-800 w-auto py-1.5 px-2 rounded-md">
-                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
-                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                            <g id="SVGRepo_iconCarrier">
-                                <path
-                                    d="M6.49996 7C7.96131 5.53865 9.5935 4.41899 10.6975 3.74088C11.5021 3.24665 12.4978 3.24665 13.3024 3.74088C14.4064 4.41899 16.0386 5.53865 17.5 7C20.6683 10.1684 20.5 12 20.5 15C20.5 16.4098 20.3895 17.5988 20.2725 18.4632C20.1493 19.3726 19.3561 20 18.4384 20H17C15.8954 20 15 19.1046 15 18V16C15 15.2043 14.6839 14.4413 14.1213 13.8787C13.5587 13.3161 12.7956 13 12 13C11.2043 13 10.4413 13.3161 9.87864 13.8787C9.31603 14.4413 8.99996 15.2043 8.99996 16V18C8.99996 19.1046 8.10453 20 6.99996 20H5.56152C4.64378 20 3.85061 19.3726 3.72745 18.4631C3.61039 17.5988 3.49997 16.4098 3.49997 15C3.49997 12 3.33157 10.1684 6.49996 7Z"
-                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
-                                    stroke-linejoin="round"></path>
-                            </g>
-                        </svg>
-                        <span class="font-semibold text-xs"> Home</span>
-                    </a>
-                    <a href="#"
-                        class="flex justify-center items-end gap-1 bg-gray-200 text-slate-800 w-auto py-2 px-2 rounded-md">
-                        <span class="font-semibold text-xs">laptop</span>
-                    </a>
+                    <nav class="flex" aria-label="Breadcrumb">
+                        <ol class="flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+                            <li class="flex items-center">
+                                <a href="{{ route('landing-page') }}"
+                                    class="flex justify-center items-end gap-1 bg-gray-200 text-slate-800 w-auto py-1.5 px-2 rounded-md">
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                        class="w-5 h-5">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                                        </g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path
+                                                d="M6.49996 7C7.96131 5.53865 9.5935 4.41899 10.6975 3.74088C11.5021 3.24665 12.4978 3.24665 13.3024 3.74088C14.4064 4.41899 16.0386 5.53865 17.5 7C20.6683 10.1684 20.5 12 20.5 15C20.5 16.4098 20.3895 17.5988 20.2725 18.4632C20.1493 19.3726 19.3561 20 18.4384 20H17C15.8954 20 15 19.1046 15 18V16C15 15.2043 14.6839 14.4413 14.1213 13.8787C13.5587 13.3161 12.7956 13 12 13C11.2043 13 10.4413 13.3161 9.87864 13.8787C9.31603 14.4413 8.99996 15.2043 8.99996 16V18C8.99996 19.1046 8.10453 20 6.99996 20H5.56152C4.64378 20 3.85061 19.3726 3.72745 18.4631C3.61039 17.5988 3.49997 16.4098 3.49997 15C3.49997 12 3.33157 10.1684 6.49996 7Z"
+                                                stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
+                                                stroke-linejoin="round"></path>
+                                        </g>
+                                    </svg>
+                                    <span class="font-semibold text-xs"> Home</span>
+                                </a>
+                            </li>
+                            <li>
+                                <div class="flex items-center">
+                                    <svg class="mx-2 h-4 w-4 text-gray-400 rtl:rotate-180" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="3" d="m9 5 7 7-7 7" />
+                                    </svg>
+                                    <a href="{{ route('page.product') }}"
+                                        class="flex justify-center items-end gap-1 bg-gray-200 text-slate-800 mx-2 w-auto py-2 px-2 rounded-md">
+                                        <span class="font-semibold text-xs">Product</span>
+                                    </a>
+                                </div>
+                            </li>
+                        </ol>
+                    </nav>
                 </div>
                 <div class="flex gap-2 items-center">
                     <button id="filter"
@@ -396,10 +370,10 @@
                             class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-4">
                             @if ($product->image_product)
                                 <img src="{{ asset('storage/' . $product->image_product) }}" alt="Product Image"
-                                    width="100"  />
+                                    width="100" />
                             @else
                                 <img src="{{ asset('img/img-carousel-promo/laptop.jpg') }}" alt="Default Image"
-                                    width="100"   />
+                                    width="100" />
                             @endif
                         </div>
 
@@ -416,6 +390,9 @@
                             <span
                                 class="text-sm text-slate-600">{{ isset($reviewsCount[$product->id]) ? $reviewsCount[$product->id] : 0 }}
                                 reviews</span>
+                        </div>
+                        <div class="text-sm text-gray-600">
+                            Kategori: {{ $product->category->name_category }} <!-- Menampilkan nama kategori produk -->
                         </div>
                         <div class="flex justify-between">
                             <p class="text-xl text-blue-500 font-medium tracking-tight">
@@ -469,19 +446,29 @@
                         </g>
                     </svg>
                 </div>
-                <h4 class="text-md text-blue-500 font-semibold mb-5">Categories</h4>
-                <form action="">
-                    <select name="" id="" class="bg-transparent outline-none text-slate-700">
-                        <option value="Handphone">Handphone</option>
-                        <option value="Laptop">Laptop</option>
-                        <option value="Headset">Headset</option>
-                        <option value="Mouse">Mouse</option>
-                    </select>
+                <form method="GET" action="{{ route('page.product') }}">
+                    <div class="ps-3">
+                        <h1 class="font-semibold text-center text-xl text-blue-700 mb-5">Categories</h1>
 
-                    <button class="bg-blue-500 text-white px-3 text-xs py-2 block w-auto rounded-md w-full my-3">
-                        Apply
-                    </button>
+                        <!-- Dropdown Select untuk memilih kategori -->
+                        <select name="Category" id="category"
+                            class="text-center bg-transparent outline-none text-slate-700 w-full mb-3 border-2 rounded-md">
+                            <option value=""> All Category</option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}"
+                                    {{ request('Category') == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name_category }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                        <button type="submit"
+                            class="bg-blue-500  text-white px-3 text-xs py-2 block w-auto rounded-md w-full my-3">
+                            Apply
+                        </button>
+                    </div>
                 </form>
+
             </div>
         </div>
     </div>
