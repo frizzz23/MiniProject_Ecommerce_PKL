@@ -1,12 +1,13 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProfileController;
 
 use App\Http\Controllers\Page\AboutPageController;
-use App\Http\Controllers\Page\CategoryPageController;
 use App\Http\Controllers\Page\ProductPageController;
-use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Page\CategoryPageController;
 
 
 
@@ -18,11 +19,18 @@ Route::get('/home-page', function () {
     return view('home-page');
 })->name('home');
 
+
 Route::get('/account', function () {
     return view('account');
 })->name('home');
 
-Route::get('/product-page', ProductPageController::class)->name('product-page');
+
+
+Route::get('/product-page', [ProductPageController::class, 'index'])->name('page.product');
+Route::get('/product-page/{id}', [ProductPageController::class, 'show'])->name('page.productshow');
+
+
+
 Route::get('/category-page', CategoryPageController::class)->name('category-page');
 Route::get('/about-page', AboutPageController::class)->name('about-page');
 
