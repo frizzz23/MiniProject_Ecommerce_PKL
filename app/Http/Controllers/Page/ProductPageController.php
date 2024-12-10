@@ -15,8 +15,28 @@ class ProductPageController extends Controller
      */
     public function index(Request $request)
     {
-        $categories = Category::get(); // Get the categories
-        $products = Product::get(); // Get all products
+        // Ambil semua kategori
+        $categories = Category::all();
+
+        // Ambil input pencarian (untuk nama produk)
+        $search = $request->get('search'); // Nama parameter search
+
+        // Ambil kategori yang dipilih dari input
+        $selectedCategory = $request->input('Category'); // select option
+        $selectedCategories = $request->input('categories', []); // Untuk checkbox (multiple)
+
+        // Ambil produk yang difilter berdasarkan kategori yang dipilih
+        $products = Product::with('category')
+            ->when($search, function ($query , $search) {
+                return $query->where('name_product', 'like', '%' . $search . '%'); // Filter berdasarkan nama produk
+            })
+            ->when($selectedCategory, function ($query) use ($selectedCategory) {
+                return $query->where('category_id', $selectedCategory); // Filter berdasarkan single category_id
+            })
+            ->when(!empty($selectedCategories), function ($query) use ($selectedCategories) {
+                return $query->whereIn('category_id', $selectedCategories); // Filter berdasarkan multiple category_id
+            })
+            ->get();
 
         // Menghitung rata-rata rating untuk setiap produk
         foreach ($products as $product) {
@@ -30,8 +50,12 @@ class ProductPageController extends Controller
             $reviewsCount[$product->id] = Review::where('product_id', $product->id)->count();
         }
 
-        return view('page.product', compact('products', 'categories', 'reviewsCount'));
+        // Return ke view dengan data produk, kategori, dan jumlah review
+        return view('page.product', compact('products', 'categories', 'reviewsCount','search'));
     }
+
+
+
 
     /**
      * Display the specified product.
