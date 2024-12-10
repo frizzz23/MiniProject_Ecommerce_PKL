@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->string('mark');
+            $table->string('city_id', 10);
             $table->text('address');
             $table->string('no_telepon')->nullable();
             $table->timestamps();

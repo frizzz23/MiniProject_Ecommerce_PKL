@@ -17,13 +17,15 @@ class Address extends Model
         'user_id',
         'address',
         'no_telepon',
+        'city_id',
         'mark',
     ];
 
     /**
      * Relasi ke model User (Many-to-One).
      */
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
@@ -31,5 +33,4 @@ class Address extends Model
     {
         return $this->hasMany(Order::class,);
     }
-
 }

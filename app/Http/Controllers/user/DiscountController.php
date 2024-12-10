@@ -13,6 +13,14 @@ class DiscountController extends Controller
     {
         $user = $request->user(); // Dapatkan pengguna saat ini (pastikan middleware auth digunakan)
         $code = $request->input('code'); // Ambil kode dari parameter request
+        $total = $request->input('total'); // Ambil kode dari parameter request
+
+        if (!$total) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Total harus diisi',
+            ], 400);
+        }
 
         // Cari promo berdasarkan kode
         $promo = PromoCode::where('code', $code)->first();
@@ -44,16 +52,15 @@ class DiscountController extends Controller
             ], 400);
         }
 
-        // Kurangi kuantitas kode promo
-        $promo->decrement('quantity');
-
-        // Tandai kode promo sebagai digunakan oleh pengguna
-        UsedPromoCode::create([
-            'user_id' => $user->id,
-            'promo_code_id' => $promo->id,
-        ]);
+        if ($total < $promo->minimum_purchase) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Total Minimal ' . number_format($promo->minimum_purchase, 0, ',', '.'),
+            ], 400);
+        }
 
         return response()->json([
+            'id' => $promo->id,
             'status' => 'success',
             'discount' => $promo->discount_amount,
         ]);
