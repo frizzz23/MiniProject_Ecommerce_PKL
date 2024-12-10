@@ -1,26 +1,10 @@
-@section('title')
-    @guest
-
-        Landing Page
-    @endguest
-
-    @auth
-        Home Page
-    @endauth
-@endsection
-
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>home page</title>
-    <link href="{{  asset('landing/dist/output.css')}}" rel="stylesheet" />
-
-    <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-    <script src="{{ asset('style/src/assets/js/animated-button.js') }}"></script>
+    <title>landing page</title>
+    <link href="../dist/output.css" rel="stylesheet" />
 
     <!-- font poopins -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -39,22 +23,9 @@
     <div
       class="flex justify-between items-center px-5 py-3 text-sm absolute w-full absolute top-0 left-0 z-10"
     >
-    <div id="alert-1" class="flex items-center p-2 mb-4 text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert">
-        <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-        </svg>
-        <span class="sr-only">Info</span>
-        <div class="ms-3 text-sm font-medium">
-            Welcome to ZenTech online eCommerce store <a href="#" class="font-semibold underline hover:no-underline">learn more!</a>. Give it a click if you like.
-        </div>
-        <button type="button" onclick="closeAlert('alert-1')" class="ms-auto -mx-1.5 -my-1.5 bg-blue-50 text-blue-500 rounded-lg focus:ring-2 focus:ring-blue-400 p-1.5 hover:bg-blue-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-blue-400 dark:hover:bg-gray-700" aria-label="Close">
-            <span class="sr-only">Close</span>
-            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-            </svg>
-        </button>
-    </div>
-
+      <p class="tracking-tight text-slate-700">
+        Welcome to ZenTech online eCommerce store
+      </p>
       <div class="flex gap-2">
         <form method="get">
           <select
@@ -66,7 +37,7 @@
           </select>
         </form>
       </div>
-    </div>  
+    </div>
 
     <!-- start header -->
     <header
@@ -118,7 +89,7 @@
         </form>
       </div>
 
-      <div class="flex gap-1 items-center cursor-pointer -mr-32 " id="carts">
+      <div class="flex gap-1 items-center cursor-pointer" id="carts">
         <svg
           viewBox="0 0 24 24"
           fill="none"
@@ -169,46 +140,68 @@
       </div>
 
       <!-- Hamburger Menu (untuk tampilan mobile) -->
-        <div class="xl:hidden flex items-center gap-4">
-            <button id="hamburger" class="text-xl">
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                class="w-6 h-6"
+      <div class="xl:hidden flex items-center gap-4">
+        <button id="hamburger" class="text-xl">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            ></path>
+          </svg>
+        </button>
+      </div>
+
+      <div class="hidden gap-1 items-center xl:flex">
+        <svg
+          viewBox="0 0 20 20"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          fill="#000000"
+          class="w-4 h-4"
+        >
+          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+          <g
+            id="SVGRepo_tracerCarrier"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          ></g>
+          <g id="SVGRepo_iconCarrier">
+            <defs></defs>
+            <g
+              id="Page-1"
+              stroke="none"
+              stroke-width="1"
+              fill="none"
+              fill-rule="evenodd"
             >
-                <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4 6h16M4 12h16M4 18h16"
-                ></path>
-            </svg>
-            </button>
-        </div>
-
-        <!-- AUTH USER -->
-        <div class="hidden gap-1 items-center xl:flex">
-            @guest
-                <!-- Jika pengguna belum login -->
-                <a href="{{ route('login') }}" class="text-sm text-slate-700 hover:text-blue-400">Sign in</a>
-                <span>/</span>
-                <a href="{{ route('register') }}" class="text-sm text-slate-700 hover:text-blue-400">Sign up</a>
-            @endguest
-
-            @auth
-                <!-- Jika pengguna sudah login -->
-                <div class="relative">
-                <a href="#" class="inline-flex items-center justify-center gap-2 p-2 bg-[#2da5f3] text-sm font-medium text-white rounded-lg hover:bg-gray-600">
-                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                        <path stroke="currentColor" stroke-width="2" d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                    </svg>
-                    Account
-                </a>
-                </div>
-            @endauth
-        </div>
+              <g
+                id="Dribbble-Light-Preview"
+                transform="translate(-420.000000, -2159.000000)"
+                fill="#000000"
+              >
+                <g id="icons" transform="translate(56.000000, 160.000000)">
+                  <path
+                    d="M374,2009 C371.794,2009 370,2007.206 370,2005 C370,2002.794 371.794,2001 374,2001 C376.206,2001 378,2002.794 378,2005 C378,2007.206 376.206,2009 374,2009 M377.758,2009.673 C379.124,2008.574 380,2006.89 380,2005 C380,2001.686 377.314,1999 374,1999 C370.686,1999 368,2001.686 368,2005 C368,2006.89 368.876,2008.574 370.242,2009.673 C366.583,2011.048 364,2014.445 364,2019 L366,2019 C366,2014 369.589,2011 374,2011 C378.411,2011 382,2014 382,2019 L384,2019 C384,2014.445 381.417,2011.048 377.758,2009.673"
+                    id="profile-[#1335]"
+                  ></path>
+                </g>
+              </g>
+            </g>
+          </g>
+        </svg>
+        <a href="#" class="text-sm text-slate-700">Sign in</a>
+        <span>/</span>
+        <a href="#" class="text-sm text-slate-700">Sign up</a>
+      </div>
     </header>
     <!-- end header -->
 
@@ -374,7 +367,7 @@
                   <div
                     class="w-28 h-28 bg-cover bg-center overflow-hidden flex justify-center items-center p-5"
                   >
-                    <img src="{{  asset('landing/image/hp.png')}}" alt="Hp" class="" />
+                    <img src="../image/hp.png" alt="Hp" class="" />
                   </div>
                 </th>
                 <td class="w-full">
@@ -464,7 +457,7 @@
         </button>
       </div>
       <div class="md:order-1 order-0">
-        <img src="{{  asset('landing/image/produc')}}t.png" alt="banner" width="900" />
+        <img src="../image/product.png" alt="banner" width="900" />
       </div>
     </section>
 
@@ -497,7 +490,7 @@
           <div
             class="w-6/12 h-24 flex justify-center items-center bg-center bg-cover"
           >
-            <img src="{{  asset('landing/image/hp.png')}}" alt="Hp" class="" />
+            <img src="../image/hp.png" alt="Hp" class="" />
           </div>
         </div>
         <div
@@ -526,7 +519,7 @@
           <div
             class="w-6/12 h-24 flex justify-center items-center bg-center bg-cover"
           >
-            <img src="{{  asset('landing/image/hp-2.p')}}ng" alt="Hp" class="" />
+            <img src="../image/hp-2.png" alt="Hp" class="" />
           </div>
         </div>
       </div>
@@ -545,7 +538,7 @@
             Hot
           </div>
           <div class="flex gap-5 justify-center mt-8">
-            <img src="{{  asset('landing/image/headse')}}t.png" alt="Headset" width="160" />
+            <img src="../image/headset.png" alt="Headset" width="160" />
 
             <div class="flex flex-col justify-between">
               <span class="text-red-500 font-semibold">Flas sale</span>
@@ -668,7 +661,7 @@
           <div
             class="w-32 h-32 flex justify-center items-center bg-center bg-cover overflow-hidden mx-auto"
           >
-            <img src="{{  asset('landing/image/hp-3.p')}}ng" alt="Hp" />
+            <img src="../image/hp-3.png" alt="Hp" />
           </div>
           <a href="view-product.html" class="text-sm text-slate-700 mb-4">
             Samsung Galaxy A55 5G 8/128 8/256 | 5000mAh
@@ -781,7 +774,7 @@
           <div
             class="w-32 h-32 flex justify-center items-center bg-center bg-cover overflow-hidden mx-auto"
           >
-            <img src="{{  asset('landing/image/laptop')}}.png" alt="Hp" />
+            <img src="../image/laptop.png" alt="Hp" />
           </div>
           <a href="view-product.html" class="text-sm text-slate-700 mb-4">
             MacBook Air M3 2024 | 13 Inch 128GB | 256GB | 512GB
@@ -902,7 +895,7 @@
           <div
             class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-4"
           >
-            <img src="{{  asset('landing/image/hp-4.p')}}ng" alt="Hp" width="100" />
+            <img src="../image/hp-4.png" alt="Hp" width="100" />
           </div>
 
           <a
@@ -915,7 +908,7 @@
           <div
             class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-4"
           >
-            <img src="{{  asset('landing/image/laptop')}}-2.png" alt="Hp" width="100" />
+            <img src="../image/laptop-2.png" alt="Hp" width="100" />
           </div>
 
           <a
@@ -928,7 +921,7 @@
           <div
             class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-4"
           >
-            <img src="{{  asset('landing/image/headse')}}t-2.png" alt="Hp" width="100" />
+            <img src="../image/headset-2.png" alt="Hp" width="100" />
           </div>
 
           <a
@@ -941,7 +934,7 @@
           <div
             class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-4"
           >
-            <img src="{{  asset('landing/image/mouse.')}}png" alt="Hp" width="100" />
+            <img src="../image/mouse.png" alt="Hp" width="100" />
           </div>
 
           <a
@@ -954,7 +947,7 @@
           <div
             class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-4"
           >
-            <img src="{{  asset('landing/image/mouse.')}}png" alt="Hp" width="100" />
+            <img src="../image/mouse.png" alt="Hp" width="100" />
           </div>
 
           <a
@@ -967,7 +960,7 @@
           <div
             class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-4"
           >
-            <img src="{{  asset('landing/image/mouse.')}}png" alt="Hp" width="100" />
+            <img src="../image/mouse.png" alt="Hp" width="100" />
           </div>
 
           <a
@@ -993,7 +986,7 @@
           <div
             class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-4"
           >
-            <img src="{{  asset('landing/image/hp-3.p')}}ng" alt="Hp" width="100" />
+            <img src="../image/hp-3.png" alt="Hp" width="100" />
           </div>
 
           <div class="flex items-center space-x-1 mb-2">
@@ -1109,7 +1102,7 @@
           <div
             class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-4"
           >
-            <img src="{{  asset('landing/image/laptop')}}.png" alt="Hp" width="100" />
+            <img src="../image/laptop.png" alt="Hp" width="100" />
           </div>
 
           <div class="flex items-center space-x-1 mb-2">
@@ -1225,7 +1218,7 @@
           <div
             class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-4"
           >
-            <img src="{{  asset('landing/image/headse')}}t-2.png" alt="Hp" width="100" />
+            <img src="../image/headset-2.png" alt="Hp" width="100" />
           </div>
 
           <div class="flex items-center space-x-1 mb-2">
@@ -1341,7 +1334,7 @@
           <div
             class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-4"
           >
-            <img src="{{  asset('landing/image/mouse.')}}png" alt="Hp" width="100" />
+            <img src="../image/mouse.png" alt="Hp" width="100" />
           </div>
 
           <div class="flex items-center space-x-1 mb-2">
@@ -1483,7 +1476,7 @@
                   Buy now
                 </button>
               </div>
-              <img src="{{  asset('landing/image/hp-2.p')}}ng" alt="Hp" class="block w-[90rem]" />
+              <img src="../image/hp-2.png" alt="Hp" class="block w-[90rem]" />
             </div>
           </div>
         </div>
@@ -1496,7 +1489,7 @@
           <div
             class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-4"
           >
-            <img src="{{  asset('landing/image/laptop')}}.png" alt="Hp" width="100" />
+            <img src="../image/laptop.png" alt="Hp" width="100" />
           </div>
 
           <div class="flex items-center space-x-1 mb-2">
@@ -1612,7 +1605,7 @@
           <div
             class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-4"
           >
-            <img src="{{  asset('landing/image/mouse.')}}png" alt="Hp" width="100" />
+            <img src="../image/mouse.png" alt="Hp" width="100" />
           </div>
 
           <div class="flex items-center space-x-1 mb-2">
@@ -1722,90 +1715,98 @@
       </div>
     </section>
 
-    <section class="md:px-28 px-5 py-10 bg-[#EAF6FE]">
-  <div class="grid md:grid-cols-5 grid-cols-1 gap-5">
-    <!-- Customer Support Section -->
-    <div>
-      <h6 class="text-sm text-slate-800 font-semibold mb-5">Customer Supports:</h6>
-      <h4 class="text-lg font-semibold text-slate-700 mb-3">(629) 555-0129</h4>
-      <p class="text-sm text-slate-600 mb-5">
-        4517 Washington Ave. <br />
-        Manchester, Kentucky 39495
-      </p>
-      <p class="text-md text-slate-700">info@zentech.com</p>
-    </div>
-
-    <!-- Top Category Section -->
-    <div>
-      <h6 class="text-sm text-slate-800 font-semibold mb-5">Top Category</h6>
-      <ul class="space-y-2">
-        <li><a href="#" class="text-sm text-slate-600 hover:text-slate-800">Computer & Laptop</a></li>
-        <li><a href="#" class="text-sm text-slate-600 hover:text-slate-800">Smartphone</a></li>
-        <li><a href="#" class="text-sm text-slate-600 hover:text-slate-800">Headphone</a></li>
-        <li><a href="#" class="text-sm text-slate-600 hover:text-slate-800">Accessories</a></li>
-        <li><a href="#" class="text-sm text-slate-600 hover:text-slate-800">TV & Homes</a></li>
-        <li>
-          <a href="#" class="text-sm text-blue-500 hover:underline">
-            Browse All Product →
-          </a>
-        </li>
-      </ul>
-    </div>
-
-    <!-- Quick Links Section -->
-    <div>
-      <h6 class="text-sm text-slate-800 font-semibold mb-5">Quick Links</h6>
-      <ul class="space-y-2">
-        <li><a href="#" class="text-sm text-slate-600 hover:text-slate-800">Shop Product</a></li>
-        <li><a href="#" class="text-sm text-slate-600 hover:text-slate-800">Shopping Cart</a></li>
-        <li><a href="#" class="text-sm text-slate-600 hover:text-slate-800">Wishlist</a></li>
-        <li><a href="#" class="text-sm text-slate-600 hover:text-slate-800">Compare</a></li>
-        <li><a href="#" class="text-sm text-slate-600 hover:text-slate-800">Track Order</a></li>
-        <li><a href="#" class="text-sm text-slate-600 hover:text-slate-800">Customer Help</a></li>
-        <li><a href="#" class="text-sm text-slate-600 hover:text-slate-800">About Us</a></li>
-      </ul>
-    </div>
-
-    <!-- Download App Section -->
-    <div>
-      <h6 class="text-sm text-slate-800 font-semibold mb-5">Download App</h6>
-      <div class="space-y-3">
-        <a href="#" class="block w-full max-w-xs">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" 
-               alt="Google Play" 
-               class="w-full" />
-        </a>
-        <a href="#" class="block w-full max-w-xs">
-          <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg
-" 
-               alt="App Store" 
-               class="w-full" />
-        </a>
+    <section class="md:px-28 px-5 py-5 bg-[#EAF6FE] min-h-96">
+      <div class="grid md:grid-cols-5 grid-cols-1 pt-10 gap-5">
+        <div>
+          <h6 class="text-sm text-slate-800 mb-10">Customer Supports:</h6>
+          <h4 class="text-lg text-semibold mb-5">(629) 555-0129</h4>
+          <p class="text-sm text-slate-600 mb-10">
+            4517 Washington Ave. Manchester, Kentucky 39495
+          </p>
+          <p class="text-slate-700 text-md">info@zentech.com</p>
+        </div>
+        <div>
+          <h6 class="text-sm text-slate-800 mb-10">Top Category</h6>
+          <ul>
+            <li><a href="#" class="text-sm text-slate-500">Smartphone</a></li>
+            <li>
+              <a href="#" class="text-sm text-slate-500">Laptop & Computer</a>
+            </li>
+            <li><a href="#" class="text-sm text-slate-500">HeadPhone</a></li>
+            <li><a href="#" class="text-sm text-slate-500">Mouse</a></li>
+          </ul>
+        </div>
+        <div>
+          <h6 class="text-sm text-slate-800 mb-10">Quick links</h6>
+          <ul>
+            <li><a href="#" class="text-sm text-slate-500">Product</a></li>
+            <li><a href="#" class="text-sm text-slate-500">Shoping</a></li>
+            <li><a href="#" class="text-sm text-slate-500">About</a></li>
+          </ul>
+        </div>
+        <div></div>
+        <div></div>
       </div>
-    </div>
+    </section>
 
-    <!-- Popular Tags Section -->
-    <div>
-      <h6 class="text-sm text-slate-800 font-semibold mb-5">Popular Tag</h6>
-      <div class="flex flex-wrap gap-2">
-        <a href="#" class="text-sm px-3 py-1 bg-white border border-gray-300 rounded hover:bg-blue-500 hover:text-white">
-          Game
-        </a>
-        <a href="#" class="text-sm px-3 py-1 bg-white border border-gray-300 rounded hover:bg-blue-500 hover:text-white">
-          iPhone
-        </a>
-        <a href="#" class="text-sm px-3 py-1 bg-white border border-gray-300 rounded hover:bg-blue-500 hover:text-white">
-          TV
-        </a>
-        <a href="#" class="text-sm px-3 py-1 bg-white border border-gray-300 rounded hover:bg-blue-500 hover:text-white">
-          Asus Laptops
-        </a>
-        <!-- Add more tags here -->
-      </div>
-    </div>
-  </div>
-</section>
+    <script>
+      window.addEventListener("scroll", () => {
+        const header = document.getElementById("header");
+        if (window.scrollY >= 40) {
+          header.classList.add("backdrop-blur-xl");
+        } else {
+          header.classList.remove("backdrop-blur-xl");
+        }
+      });
 
-    
+      const carts = document.getElementById("carts");
+      carts.addEventListener("click", () => {
+        const closeCart = document.getElementById("close-cart");
+        const listCart = document.getElementById("list-cart");
+        listCart.classList.remove("hidden");
+
+        closeCart.addEventListener("click", () => {
+          listCart.classList.add("hidden");
+        });
+
+        listCart.addEventListener("click", (e) => {
+          // Periksa apakah target bukan bagian dari 'cart-content' atau tombol 'close-cart'
+          if (!e.target.closest("#cart-content")) {
+            listCart.classList.add("hidden");
+          }
+        });
+      });
+
+      const hamburger = document.getElementById("hamburger");
+      hamburger.addEventListener("click", () => {
+        const closeMenu = document.getElementById("close-menu");
+        const listMenu = document.getElementById("list-menu");
+        listMenu.classList.remove("hidden");
+
+        closeMenu.addEventListener("click", () => {
+          listMenu.classList.add("hidden");
+        });
+
+        listMenu.addEventListener("click", (e) => {
+          if (!e.target.closest("#menu-content")) {
+            listMenu.classList.add("hidden");
+          }
+        });
+      });
+
+      function minus(id) {
+        const input = document.getElementById(id);
+        if (input.value > 1) {
+          input.value = parseInt(input.value) - 1;
+        }
+      }
+
+      function plus(id, max) {
+        const input = document.getElementById(id);
+        if (input.value < max) {
+          input.value = parseInt(input.value) + 1;
+        }
+      }
+    </script>
   </body>
 </html>
