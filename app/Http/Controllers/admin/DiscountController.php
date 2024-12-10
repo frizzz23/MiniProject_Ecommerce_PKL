@@ -22,7 +22,7 @@ class DiscountController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.discount.create');
     }
 
     /**
@@ -30,12 +30,17 @@ class DiscountController extends Controller
      */
     public function store(Request $request)
     {
-        $input =  $request->validate([
+        // Validasi input
+        $input = $request->validate([
             'code' => 'required|unique:promo_codes,code',
-            'discount_amount' => 'required'
+            'discount_amount' => 'required|numeric',
+            'quantity' => 'required|integer',
+            'minimum_purchase' => 'required|numeric|min:0', // Validasi untuk minimal pembelian
         ]);
 
+        // Menambahkan promo code baru ke dalam database
         PromoCode::create($input);
+
         return redirect()->route('admin.discount.index')->with('success', 'Promo berhasil ditambahkan.');
     }
 
@@ -44,7 +49,7 @@ class DiscountController extends Controller
      */
     public function show(string $id)
     {
-        //
+        // Menampilkan detail promo jika diperlukan
     }
 
     /**
@@ -52,7 +57,8 @@ class DiscountController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $promo = PromoCode::findOrFail($id);
+        return view('admin.discount.edit', compact('promo'));
     }
 
     /**
@@ -61,12 +67,18 @@ class DiscountController extends Controller
     public function update(Request $request, string $id)
     {
         $promo = PromoCode::findOrFail($id);
-        $input =  $request->validate([
+
+        // Validasi input
+        $input = $request->validate([
             'code' => 'required|unique:promo_codes,code,' . $id,
-            'discount_amount' => 'required'
+            'discount_amount' => 'required|numeric',
+            'quantity' => 'required|integer',
+            'minimum_purchase' => 'required|numeric|min:0', // Validasi untuk minimal pembelian
         ]);
 
+        // Update promo code
         $promo->update($input);
+
         return redirect()->route('admin.discount.index')->with('success', 'Promo berhasil diperbarui.');
     }
 
@@ -76,7 +88,7 @@ class DiscountController extends Controller
     public function destroy(string $id)
     {
         try {
-            $promo = PromoCode::findorFail($id);
+            $promo = PromoCode::findOrFail($id);
             $promo->delete();
             return redirect()->route('admin.discount.index')->with('success', 'Promo berhasil dihapus.');
         } catch (\Throwable $th) {

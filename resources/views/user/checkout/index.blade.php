@@ -181,56 +181,64 @@
         }
 
         // Fungsi untuk memperbarui harga total dan diskon
-        async function updatePrice() {
-            let total = 0;
+        // Fungsi untuk memperbarui harga total dan diskon
+async function updatePrice() {
+    let total = 0;
 
-            // Update harga total berdasarkan jumlah produk
-            const carts = @json($carts); // Mengambil data carts dari Blade
-            carts.forEach(cart => {
-                const quantity = document.getElementById('jumlah_' + cart.id).value;
-                const price = cart.product.price_product;
-                total += price * quantity;
-            });
+    // Update harga total berdasarkan jumlah produk
+    const carts = @json($carts); // Mengambil data carts dari Blade
+    carts.forEach(cart => {
+        const quantity = document.getElementById('jumlah_' + cart.id).value;
+        const price = cart.product.price_product;
+        total += price * quantity;
+    });
 
-            // Ambil kode diskon
-            const discountCode = document.getElementById('diskon').value;
-            const errorDiscount = document.getElementById('error_diskon');
-            const successDiscount = document.getElementById('success_diskon');
-            let discount = 0;
+    // Ambil kode diskon
+    const discountCode = document.getElementById('diskon').value;
+    const errorDiscount = document.getElementById('error_diskon');
+    const successDiscount = document.getElementById('success_diskon');
+    let discount = 0;
 
-            if (discountCode) {
-                // Lakukan request untuk validasi kode promo
-                const response = await fetch('/api/validate-promo', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
-                            'content')
-                    },
-                    body: JSON.stringify({
-                        code: discountCode
-                    })
-                });
+    if (discountCode) {
+        // Lakukan request untuk validasi kode promo
+        const response = await fetch('/api/validate-promo', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                code: discountCode
+            })
+        });
 
-                const data = await response.json();
-                if (data.status === 'success') {
-                    discount = parseInt(data.discount); // Set diskon berdasarkan response dari server
-                    successDiscount.textContent = 'Kode diskon berhasil digunakan!';
-                    errorDiscount.textContent = '';
-                } else {
-                    document.getElementById('diskon').value = ''; // Hapus kode diskon jika tidak valid
-                    errorDiscount.textContent = 'Kode diskon tidak valid!';
-                    successDiscount.textContent = '';
-                }
-            }
+        const data = await response.json();
 
-            // Update harga total dan diskon
-            const discountedTotal = total - discount < 0 ? 0 : total - discount;
-            document.getElementById('diskon_value').textContent = discount.toLocaleString();
-            document.getElementById('harga_total').textContent = discountedTotal.toLocaleString();
-            document.getElementById('grand_total_amount').value = discountedTotal;
-            document.getElementById('total_amount ').value = discountedTotal;
-            document.getElementById('total').textContent = total;
+        if (data.status === 'success') {
+            discount = parseInt(data.discount); // Set diskon berdasarkan response dari server
+            successDiscount.textContent = 'Kode diskon berhasil digunakan!';
+            errorDiscount.textContent = '';
+        } else if (data.status === 'used') {
+            successDiscount.textContent = '';
+            errorDiscount.textContent = 'Kode promo sudah digunakan.';
+        } else if (data.status === 'expired') {
+            successDiscount.textContent = '';
+            errorDiscount.textContent = 'Kode promo sudah habis.';
+        } else {
+            document.getElementById('diskon').value = ''; // Hapus kode diskon jika tidak valid
+            successDiscount.textContent = '';
+            errorDiscount.textContent = 'Kode promo tidak valid.';
         }
+    }
+
+    // Update harga total dan diskon
+    const discountedTotal = total - discount < 0 ? 0 : total - discount;
+    document.getElementById('diskon_value').textContent = discount.toLocaleString();
+    document.getElementById('harga_total').textContent = discountedTotal.toLocaleString();
+    document.getElementById('grand_total_amount').value = discountedTotal;
+    document.getElementById('total_amount ').value = discountedTotal;
+    document.getElementById('total').textContent = total;
+}
+
     </script>
 @endsection
