@@ -22,7 +22,7 @@ class CartController extends Controller
 
         $products = Product::all();
 
-        return view('user.carts.index', compact('carts','products'));
+        return view('user.carts.index', compact('carts', 'products'));
     }
 
     /**
@@ -74,25 +74,27 @@ class CartController extends Controller
     /**
      * Update the specified product quantity in the cart.
      */
-    public function update(Request $request, Cart $cart)
+    public function update(Request $request, string $cart)
     {
-        // Pastikan keranjang milik user yang sedang login
-        if ($cart->user_id !== Auth::id()) {
-            abort(403, 'Anda tidak memiliki izin untuk memperbarui keranjang ini.');
+        $cart = Cart::find($cart);
+        if (!$cart) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Cart Not Found',
+            ], 404);
         }
-
-        // Validasi input
-        $request->validate([
-            'quantity' => 'required|integer|min:1',
-        ]);
-
-        // Update jumlah produk di dalam keranjang
         $cart->update([
             'quantity' => $request->quantity,
         ]);
-
-        return redirect()->route('user.carts.index')->with('success', 'Jumlah produk di keranjang berhasil diperbarui.');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Cart updated successfully!',
+            'cart_id' => $cart,
+            'quantity' => $cart->quantity,
+        ]);
     }
+
+
 
     /**
      * Remove the specified product from the cart.
