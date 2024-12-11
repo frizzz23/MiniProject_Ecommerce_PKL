@@ -350,7 +350,7 @@
                 input.value = parseInt(input.value) + 1;
                 document.getElementById("total_" + id.split("_")[1]).innerHTML = 'loading..';
                 total.innerHTML = 'loading..';
-                
+
                 const response = await fetch('/carts/' + id.split("_")[1], {
                     method: 'PUT',
                     headers: {
