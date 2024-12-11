@@ -1,32 +1,43 @@
 <?php
 
-namespace App\Http\Controllers\user;
-
-use App\Http\Controllers\Controller;
+namespace App\Http\Controllers\User;
 use App\Models\Address;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
+
+use App\Models\City;
 
 class AddressController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        // Ambil semua alamat milik user yang sedang login
-        $addresses = Address::where('user_id', Auth::id())->get();
+    public function index(Request $request)
+{
+    // Ambil data alamat milik user yang sedang login
+    $addresses = Address::where('user_id', Auth::id())->get();
+// dd($addresses);
+    // Ambil data provinsi dengan filter jika ada
+    $cities = City::relatedData();
 
-        return view('user.addresses.index', compact('addresses'));
-    }
+
+
+    return view('user.addresses.index', compact('addresses', 'cities'));
+}
+
+
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        // Form untuk menambahkan alamat (user_id otomatis diambil dari Auth)
-        return view('user.addresses.create');
+        // Ambil data provinsi dari RajaOngkirController
+        $provinces = $this->getProvinces(); // Ambil provinsi
+
+        return view('user.addresses.create', compact('provinces'));
     }
 
     /**
@@ -37,14 +48,16 @@ class AddressController extends Controller
         $request->validate([
             'address' => 'required|string|max:255',
             'no_telepon' => 'required|string|max:15',
+            'city_id' => 'required|integer', // Validasi city_id
         ]);
 
         // Buat alamat baru untuk user yang sedang login
         Address::create([
-            'user_id' => Auth::id(), // Hubungkan dengan user yang sedang login
+            'user_id' => Auth::id(),
             'mark' => $request->mark,
             'address' => $request->address,
             'no_telepon' => $request->no_telepon,
+            'city_id' => $request->city_id,
         ]);
 
         return redirect()->route('user.addresses.index')->with('success', 'Alamat berhasil ditambahkan.');
@@ -60,7 +73,11 @@ class AddressController extends Controller
             abort(403, 'Anda tidak diizinkan untuk mengedit alamat ini.');
         }
 
-        return view('user.addresses.edit', compact('address'));
+        // Ambil data provinsi dari RajaOngkirController
+        $provinces = $this->getProvinces();
+        $cities = $this->getCities($address->city_id); // Ambil kota berdasarkan city_id yang sudah ada
+
+        return view('user.addresses.edit', compact('address', 'provinces', 'cities'));
     }
 
     /**
@@ -76,12 +93,14 @@ class AddressController extends Controller
         $request->validate([
             'address' => 'required|string|max:255',
             'no_telepon' => 'required|string|max:15',
+            'city_id' => 'required|integer', // Validasi city_id
         ]);
 
         $address->update([
             'mark' => $request->mark,
             'address' => $request->address,
             'no_telepon' => $request->no_telepon,
+            'city_id' => $request->city_id,
         ]);
 
         return redirect()->route('user.addresses.index')->with('success', 'Alamat berhasil diperbarui.');
@@ -100,5 +119,23 @@ class AddressController extends Controller
         $address->delete();
 
         return redirect()->route('user.addresses.index')->with('success', 'Alamat berhasil dihapus.');
+    }
+
+    /**
+     * Mendapatkan daftar provinsi dari RajaOngkirController
+     */
+    private function getProvinces()
+    {
+        $response = Http::get(route('api.raja-ongkir.province'));
+        return $response->json();
+    }
+
+    /**
+     * Mendapatkan daftar kota berdasarkan provinsi
+     */
+    private function getCities($city_id = null)
+    {
+        $response = Http::get(route('api.raja-ongkir.city', ['province_id' => $city_id]));
+        return $response->json();
     }
 }
