@@ -20,10 +20,16 @@ class CheckoutController extends Controller
     {
         $product = false;
         $carts = false;
-        if ($request->product_id) {
-            $product = Product::find($request->product_id);
+        if ($request->slug) {
+            $product = Product::where('slug', $request->product_id)->first();
+            if (!$product) {
+                return redirect()->route('landing-page');
+            }
         } else {
             $carts = Cart::where('user_id', Auth::id())->with('product')->get();
+            if (count($carts) <= 0) {
+                return redirect()->route('landing-page');
+            }
         }
         $addresses = Address::where('user_id', Auth::id())->get();
 
