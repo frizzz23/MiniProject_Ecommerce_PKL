@@ -299,7 +299,8 @@
             const input = document.getElementById(id);
             if (input.value > 1) {
                 input.value = parseInt(input.value) - 1;
-
+                document.getElementById("total_" + id.split("_")[1]).innerHTML = 'loading..';
+                total.innerHTML = 'loading..';
 
                 const response = await fetch('/carts/' + id.split("_")[1], {
                     method: 'PUT',
@@ -347,7 +348,9 @@
             const input = document.getElementById(id);
             if (input.value < max) {
                 input.value = parseInt(input.value) + 1;
-
+                document.getElementById("total_" + id.split("_")[1]).innerHTML = 'loading..';
+                total.innerHTML = 'loading..';
+                
                 const response = await fetch('/carts/' + id.split("_")[1], {
                     method: 'PUT',
                     headers: {
