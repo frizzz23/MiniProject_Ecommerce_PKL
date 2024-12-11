@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+     <!-- carousel -->
+     <div class="carousel">
+        <!-- list item -->
+        <div class="list">
+            <div class="item">
+                <img src="img/mountain.jpg" alt="">
+                <div class="content">
+                    <div class="author"></div>
+                    <div class="title"></div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="img/autumn.jpg" alt="">
+                <div class="content">
+                    <div class="author"></div>
+                    <div class="title"></div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="img/winter.jpg" alt="">
+                <div class="content">
+                    <div class="author"></div>
+                    <div class="title"></div>
+                </div>
+            </div>
+        </div>
+        <div class="thumbnail">
+            <div class="item">
+                <img src="img/autumn.jpg">
+                <div class="content">
+                    <div class="title">
+                        Autumn
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="img/winter.jpg">
+                <div class="content">
+                    <div class="title">
+                        Winter
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="img/mountain.jpg">
+                <div class="content">
+                    <div class="title">
+                        Spring
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="arrows">
+            <button id="prev"><</button>
+            <button id="next">></button>
+        </div>
+        <div class="time"></div>
+
+        <section class="container">
+            <div class="form-box login">
+                <form action="">
+                    <h1>Login</h1>
+                    <div class="input-box">
+                        <input type="text" placeholder="Username" required>
+                        <i class='bx bxs-user'></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" placeholder="Password" required>
+                        <i class='bx bxs-lock-alt'></i>
+                    </div>
+                    <div class="bottom">
+                        <div class="checkbox">
+                            <input type="checkbox" id="remember-device">
+                            <label for="remember-device">Remember this device</label>
+                        </div>
+                        <div class="forgot-link">
+                            <a href="#">Forgot Password?</a>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn">Login</button>
+                </form>
+            </div>
+            <div class="form-box register">
+                <form method="POST" action="{{ route('register') }}" >
+                    <h1>Registration</h1>
+                    <div class="input-box">
+                        <input type="text" placeholder="Username" required>
+                        <i class='bx bxs-user'></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="email" placeholder="Email" required>
+                        <i class='bx bxs-envelope' ></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" placeholder="Password" required>
+                        <i class='bx bxs-lock-alt'></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" placeholder="Confirm Password" required>
+                        <i class='bx bxs-lock-alt'></i>
+                    </div>
+                    <button type="submit" class="btn" >Register</button>
+                </form>
+            </div>
+    
+            <div class="toggle-box">
+                <div class="toggle-panel toggle-left">
+                    <h1>Hello, Welcome</h1>
+                    <br>
+                    <p>Don't have an Account?</p>
+                    <button class="btn register-btn">Register</button>
+                </div>
+                <div class="toggle-panel toggle-right">
+                    <h1>Welcome Back!</h1>
+                    <br>
+                    <p>Already have an Account?</p>
+                    <button class="btn login-btn">Login</button>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
