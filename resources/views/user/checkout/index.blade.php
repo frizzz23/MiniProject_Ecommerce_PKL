@@ -22,18 +22,6 @@
 </head>
 
 <body>
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>
-                        {{ $error }}
-                    </li>
-                @endforeach
-
-            </ul>
-        </div>
-    @endif
     <form action="{{ route('user.checkout.store') }}" method="post" enctype="multipart/form-data">
         @csrf
         <input type="hidden" name="addresses_id" id="addresses_id">
@@ -42,6 +30,11 @@
             <div class="bg-white min-h-screen">
                 <div class="py-10 px-20">
 
+                    @if (session('success'))
+                        <div class="bg-green-300 mb-5 text-xs text-white py-5 px-3 rounded-md">
+                            {{ session('success') }}
+                        </div>
+                    @endif
 
                     <div class="mb-7">
                         <h1 class="text-xl font-bold mb-1 text-slate-800">Payment</h1>
@@ -107,12 +100,14 @@
                                 </div>
                             @endforelse
                             <div class="flex gap-5 border-b-2 py-2 px-3 w-full">
-                                <a href="#"
+                                <button type="button" onclick="ShowAddAddress()"
                                     class="text-xs text-slate-700 block w-full text-center py-2 px-3">Tambahkan
-                                    Alamat</a>
+                                    Alamat</button>
                             </div>
                         </div>
                     </div>
+
+
 
                     <div class="mb-7">
                         <h1 class="text-xl font-bold mb-1 text-slate-800">Delivery</h1>
@@ -129,7 +124,13 @@
                                 <option value="tiki">Citra Van Titipan Kilat (TIKI)</option>
                             </select>
                         </div>
+                        @error('courier')
+                            <p class="text-red-500 text-xs">{{ $message }}</p>
+                        @enderror
                         <div id="costs" class="mb-3"></div>
+                        @error('cost')
+                            <p class="text-red-500 text-xs">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div class="mb-7">
@@ -184,6 +185,9 @@
                                     accept="image/png, image/jpeg, image/jpg" onchange="preview(event)" />
                             </label>
                         </div>
+                        @error('bukti_image')
+                            <p class="text-red-500 text-xs">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <button type="submit" class="block w-full py-2 px-5 w-full bg-blue-600 text-white rounded-md">
@@ -362,6 +366,78 @@
         </div>
     </form>
 
+
+    <!-- start address-->
+    <div id="show_add_address"
+        class="hidden w-full h-screen overflow-hidden fixed top-0 right-0 left-0 bottom-0 z-20 backdrop-brightness-50 flex justify-center p-5">
+        <div id="address-content" class="relative bg-white shadow-xl h-full w-full rounded-md md:w-2/5">
+            <div class="absolute top-0 right-0 cursor-pointer m-3" id="close-address">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-7 h-7">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <path
+                            d="M10.0303 8.96965C9.73741 8.67676 9.26253 8.67676 8.96964 8.96965C8.67675 9.26255 8.67675 9.73742 8.96964 10.0303L10.9393 12L8.96966 13.9697C8.67677 14.2625 8.67677 14.7374 8.96966 15.0303C9.26255 15.3232 9.73743 15.3232 10.0303 15.0303L12 13.0607L13.9696 15.0303C14.2625 15.3232 14.7374 15.3232 15.0303 15.0303C15.3232 14.7374 15.3232 14.2625 15.0303 13.9696L13.0606 12L15.0303 10.0303C15.3232 9.73744 15.3232 9.26257 15.0303 8.96968C14.7374 8.67678 14.2625 8.67678 13.9696 8.96968L12 10.9393L10.0303 8.96965Z"
+                            fill="#1C274C"></path>
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M12 1.25C6.06294 1.25 1.25 6.06294 1.25 12C1.25 17.9371 6.06294 22.75 12 22.75C17.9371 22.75 22.75 17.9371 22.75 12C22.75 6.06294 17.9371 1.25 12 1.25ZM2.75 12C2.75 6.89137 6.89137 2.75 12 2.75C17.1086 2.75 21.25 6.89137 21.25 12C21.25 17.1086 17.1086 21.25 12 21.25C6.89137 21.25 2.75 17.1086 2.75 12Z"
+                            fill="#1C274C"></path>
+                    </g>
+                </svg>
+            </div>
+            <div class="p-5 pt-12 overflow-y-auto">
+                <form action="{{ route('user.addresses.store') }}" method="post">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="mark" class="text-slate-700 font-medium text-sm">
+                            Mark
+                        </label>
+                        <input type="text" id="mark" name="mark"
+                            class="w-full py-3 px-3 outline-none border border-gray-300 text-slate-700 rounded-lg text-sm"
+                            placeholder="Rumah, Kantor, Kosan, ...">
+                    </div>
+                    <div class="mb-3">
+                        <label for="city_id" class="text-slate-700 font-medium text-sm">
+                            City
+                        </label>
+                        <select name="city_id" id="city_id"
+                            class="w-full py-3 px-3 outline-none border border-gray-300 text-slate-700 rounded-lg text-sm">
+                            <option value="" selected disabled>Select City</option>
+                            @foreach ($cities as $city)
+                                <option value="{{ $city['city_id'] }}">{{ $city['city_name'] }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="no_telp" class="text-slate-700 font-medium text-sm">
+                            No Telp
+                        </label>
+                        <input type="number" name="no_telepon"
+                            class="w-full py-3 px-3 outline-none border border-gray-300 text-slate-700 rounded-lg text-sm"
+                            placeholder="628**********">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="address" class="text-slate-700 font-medium text-sm">
+                            Alamat
+                        </label>
+                        <textarea name="address" id="address" rows="5"
+                            class="w-full py-3 px-3 outline-none border border-gray-300 text-slate-700 rounded-lg text-sm"
+                            placeholder="Jalan 123, Kota ..., ...."></textarea>
+                    </div>
+
+                    <button type="submit"
+                        class="bg-blue-500 text-white px-5 py-2 text-sm text-slate-700 rounded-md w-full">
+                        Save Address
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- end address-->
+
     <script>
         const subtotal_input = document.getElementById("subtotal_input");
         const discount_input = document.getElementById("discount_input");
@@ -381,6 +457,25 @@
         let courier = false
         let city_id = false
         let weight = 0;
+
+        function ShowAddAddress() {
+            const show_add_address = document.getElementById('show_add_address')
+            const close_address = document.getElementById('close-address')
+
+            show_add_address.classList.remove('hidden');
+            close_address.addEventListener('click', function() {
+                show_add_address.classList.add('hidden');
+            })
+
+
+            show_add_address.addEventListener("click", (e) => {
+                if (!e.target.closest("#address-content")) {
+                    show_add_address.classList.add("hidden");
+                }
+            });
+        }
+
+
 
         function preview(event) {
             const file = event.target.files[0];
@@ -475,7 +570,7 @@
             totalAmount += parseInt(subtotal_input.value);
 
             // ongkir
-            const input_courier = document.querySelector("input[name='courier']:checked")
+            const input_courier = document.querySelector("input[name='cost']:checked")
             let cek_courier = 0;
             if (input_courier) {
                 cek_courier = parseInt(input_courier.value);
@@ -579,7 +674,7 @@
                     '<label for="courier" class="text-slate-700 font-medium text-sm">Courier & Cost</label><div class="w-full border border-gray-300 rounded-lg overflow-hidden">';
                 costs.forEach(cost => {
                     elementChild += `<div class="flex gap-5 border-b-2 py-2 px-3">
-                    <input onchange="setTotal()" type="radio" name="courier" id="courier_${cost.service}" value="${(cost.cost[0].value)}"  />
+                    <input onchange="setTotal()" type="radio" name="cost" id="courier_${cost.service}" value="${(cost.cost[0].value)}"  />
                     <label for="courier_${cost.service}" class="w-full">
                             <h6 class="text-md text-slate-700 font-semibold">${cost.service}</h6>
                             <p class="text-sm text-slate-600 mb-3">${cost.description}</p>

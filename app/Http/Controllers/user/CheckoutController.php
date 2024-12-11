@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\user;
 
-use App\Http\Controllers\Controller;
-use App\Models\Address;
 use App\Models\Cart;
+use App\Models\City;
 use App\Models\Order;
+use App\Models\Address;
 use App\Models\Payment;
 use App\Models\Product;
-use App\Models\ProductOrder;
 use App\Models\PromoCode;
-use App\Models\UsedPromoCode;
+use App\Models\ProductOrder;
 use Illuminate\Http\Request;
+use App\Models\UsedPromoCode;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class CheckoutController extends Controller
@@ -32,19 +33,19 @@ class CheckoutController extends Controller
             }
         }
         $addresses = Address::where('user_id', Auth::id())->get();
+        $cities = City::relatedData();
 
-        return view('user.checkout.index', compact('carts', 'product', 'addresses'));
+        return view('user.checkout.index', compact('carts', 'product', 'addresses', 'cities'));
     }
 
     public function store(Request $request)
     {
-
-        // dd($request->all());
-        // Cari promo code jika ada
-        $diskon = PromoCode::findOrFail($request->id_discount);
+        $request->validate([
+            'image_payment' => 'required|image|mimes:jpeg,png,jpg',
+        ]);
+        $diskon = PromoCode::find($request->id_discount);
 
         if ($request->order_form == 'cart') {
-            // Validasi data input
             $request->validate([
                 'product_id_quantity' => 'required|array',
                 'id_discount' => 'nullable|exists:promo_codes,id',
@@ -78,15 +79,17 @@ class CheckoutController extends Controller
         Cart::where('user_id', Auth::id())->delete();
 
         $user = Auth::user();
-        // Kurangi kuantitas kode promo
-        $diskon->update([
-            'quantity' => $diskon->quantity - 1
-        ]);
-        // Tandai kode promo sebagai digunakan oleh pengguna
-        UsedPromoCode::create([
-            'user_id' => $user->id,
-            'promo_code_id' => $diskon->id,
-        ]);
+        if ($diskon) {
+            // Kurangi kuantitas kode promo
+            $diskon->update([
+                'quantity' => $diskon->quantity - 1
+            ]);
+            // Tandai kode promo sebagai digunakan oleh pengguna
+            UsedPromoCode::create([
+                'user_id' => $user->id,
+                'promo_code_id' => $diskon->id,
+            ]);
+        }
 
         $path = $request->file('bukti_image')->store('images/payments', 'public');
 

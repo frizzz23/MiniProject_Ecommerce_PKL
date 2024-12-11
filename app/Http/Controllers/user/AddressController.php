@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\User;
+
 use App\Models\Address;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -15,17 +16,17 @@ class AddressController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-{
-    // Ambil data alamat milik user yang sedang login
-    $addresses = Address::where('user_id', Auth::id())->get();
-// dd($addresses);
-    // Ambil data provinsi dengan filter jika ada
-    $cities = City::relatedData();
+    {
+        // Ambil data alamat milik user yang sedang login
+        $addresses = Address::where('user_id', Auth::id())->get();
+        // dd($addresses);
+        // Ambil data provinsi dengan filter jika ada
+        $cities = City::relatedData();
 
 
 
-    return view('user.addresses.index', compact('addresses', 'cities'));
-}
+        return view('user.addresses.index', compact('addresses', 'cities'));
+    }
 
 
 
@@ -60,7 +61,7 @@ class AddressController extends Controller
             'city_id' => $request->city_id,
         ]);
 
-        return redirect()->route('user.addresses.index')->with('success', 'Alamat berhasil ditambahkan.');
+        return redirect()->back()->with('success', 'Alamat berhasil ditambahkan.');
     }
 
     /**
