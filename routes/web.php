@@ -26,8 +26,9 @@ Route::get('/account', function () {
 
 
 
-Route::get('/product-page', [ProductPageController::class, 'index'])->name('page.product');
-Route::get('/product-page/{id}', [ProductPageController::class, 'show'])->name('page.productshow');
+Route::get('/product', [ProductPageController::class, 'index'])->name('page.product');
+Route::get('/product-show/{slug}', [ProductPageController::class, 'show'])->name('page.productshow');
+
 
 
 
