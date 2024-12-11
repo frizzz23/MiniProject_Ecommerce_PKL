@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\RajaOngkirController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,6 +13,7 @@ class Address extends Model
     // Menentukan tabel yang digunakan
     protected $table = 'addresses';
 
+    protected $appends = ['city'];
     // Menentukan kolom yang dapat diisi
     protected $fillable = [
         'user_id',
@@ -32,5 +34,9 @@ class Address extends Model
     public function order()
     {
         return $this->hasMany(Order::class,);
+    }
+
+    public function getCityAttribute(){
+        return City::findByCityId($this->city_id);
     }
 }
