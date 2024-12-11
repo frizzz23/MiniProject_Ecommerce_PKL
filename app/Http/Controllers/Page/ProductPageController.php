@@ -27,7 +27,7 @@ class ProductPageController extends Controller
 
         // Ambil produk yang difilter berdasarkan kategori yang dipilih
         $products = Product::with('category')
-            ->when($search, function ($query , $search) {
+            ->when($search, function ($query, $search) {
                 return $query->where('name_product', 'like', '%' . $search . '%'); // Filter berdasarkan nama produk
             })
             ->when($selectedCategory, function ($query) use ($selectedCategory) {
@@ -51,7 +51,7 @@ class ProductPageController extends Controller
         }
 
         // Return ke view dengan data produk, kategori, dan jumlah review
-        return view('page.product', compact('products', 'categories', 'reviewsCount','search'));
+        return view('page.product', compact('products', 'categories', 'reviewsCount', 'search'));
     }
 
 
@@ -60,16 +60,28 @@ class ProductPageController extends Controller
     /**
      * Display the specified product.
      */
-    public function show($id)
+    /**
+     * Display the specified product.
+     */
+    public function show($slug)
     {
-        // Find the product by ID or return 404 if not found
-        $product = Product::findOrFail($id);
+        // Gunakan slug untuk mencari produk
+        $product = Product::with('reviews.user')->where('slug', $slug)->firstOrFail();
 
-        // Retrieve categories for the sidebar or other uses
-        $categories = Category::all();
+        // Menghitung rata-rata rating untuk produk yang dipilih
+        $averageRating = Review::where('product_id', $product->id)
+            ->avg('rating') ?: 0; // Set default rating 0 jika tidak ada review
 
-        return view('page.product_show', compact('product', 'categories'));
+        // Menghitung jumlah review per produk
+        $reviewsCount = Review::where('product_id', $product->id)->count();
+
+
+        $reviews = Review::where('product_id', $product->id)->get();
+
+        // Tampilkan view dengan data produk, rating, jumlah review, dan review
+        return view('page.productshow', compact('product', 'reviews', 'averageRating', 'reviewsCount'));
     }
+
 
     /**
      * Handle the incoming request (used as a fallback).

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>landing page</title>
+    <title>Product</title>
     <link href="{{ asset('landing/dist/output.css') }}" rel="stylesheet" />
 
     <!-- font poopins -->
@@ -15,7 +15,7 @@
         rel="stylesheet" />
     <style>
         * {
-            font-family: "Poppins", sans-serif;
+            font-family: "Poppins" , sans-serif;
         }
     </style>
 </head>
@@ -396,7 +396,7 @@
                         </div>
                         <div class="flex justify-between">
                             <p class="text-xl text-blue-500 font-medium tracking-tight">
-                                Rp.{{ number_format($product->price_product, 0, ',', '.') }}
+                                Rp {{ number_format($product->price_product, 0, ',', '.') }}
                             </p>
                             <button class="w-10 h-10 bg-blue-500 flex justify-center items-center rounded-md">
                                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -420,6 +420,9 @@
                                 </svg>
                             </button>
                         </div>
+                        <a href="{{ route('page.productshow', $product->slug) }}" class="btn btn-info btn-sm">
+                            <i class="fas fa-eye"></i> Show
+                        </a>
                     </div>
                 @endforeach
             </div>

@@ -56,9 +56,14 @@
                                     class="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:-translate-y-2 border border-gray-100">
                                     <!-- Gambar Produk -->
                                     <div class="relative overflow-hidden">
-                                        <img src="{{ asset('storage/' . $product->image_product) }}"
-                                            alt="{{ $product->name_product }}"
-                                            class="w-full h-56 object-cover rounded-t-xl transition-transform duration-300 hover:scale-110">
+                                        @if ($product->image_product)
+                                            <img src="{{ asset('storage/' . $product->image_product) }}"
+                                                alt="{{ $product->name_product }}"
+                                                class="w-full h-56 object-cover rounded-t-xl transition-transform duration-300 hover:scale-110">
+                                        @else
+                                            <img src="{{ asset('img/img-carousel-promo/laptop.jpg') }}" alt="Default Image"
+                                                class="w-full h-56 object-cover rounded-t-xl transition-transform duration-300 hover:scale-110">
+                                        @endif
                                     </div>
 
                                     <!-- Informasi Produk -->
