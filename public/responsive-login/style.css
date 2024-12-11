@@ -149,12 +149,12 @@ form{
 
 .forgot-link a{
     font-size: 13px;
-    color: #333;
+    color: #fff;
     text-decoration: none;
 }
 
 .forgot-link a:hover{
-    color: #fff;
+    color: #7494ec;
     text-decoration: none;
 }
 
