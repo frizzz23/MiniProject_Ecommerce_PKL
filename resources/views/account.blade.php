@@ -107,7 +107,7 @@
         <div class="flex-1 flex flex-col overflow-hidden">
 
             <!-- Scrollable Main Content -->
-            <main class="flex-1 overflow-y-auto p-6 bg-gray-100">
+            <main class="flex-1 overflow-y-auto p-8 bg-gray-100">
                 <!-- Breadcrumbs -->
                 <nav class="mb-4 flex" aria-label="Breadcrumb">
                     <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
@@ -207,7 +207,7 @@
                 <!-- Account Data -->
                 <div class="bg-white p-6 rounded-lg mb-10 shadow">
                     <!-- Mobile Hamburger Button -->
-                    <button id="mobileSidebarToggle" class="fixed top-7 left-0 z-0 md:hidden w-full ml-1    ">
+                    <button id="mobileSidebarToggle" class="fixed top-7 left-0 z-0 md:hidden w-5 h-10 ml-1 rounded-r-lg bg-white shadow-md">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-800" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
