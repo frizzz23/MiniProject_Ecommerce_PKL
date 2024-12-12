@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html>
 
@@ -18,6 +16,7 @@
     <style>
         * {
             font-family: "Poppins", sans-serif;
+            /* border: 1px solid black; */
         }
     </style>
 </head>
@@ -38,18 +37,18 @@
     </div>
 
     <!-- start header -->
-    <header id="header" class="w-full py-4 px-10 flex justify-between items-center sticky top-0 z-10 mt-10">
-        <h5 class="font-semibold text-2xl text-slate-700">Zentech</h5>
+    <header id="header" class="w-full py-4 px-10 flex justify-between items-center sticky top-0 z-10 mt-10 ">
+        <h5 class="font-semibold text-2xl text-slate-700 hidden xl:flex">Zentech</h5>
 
-        <div class="md:flex py-2 px-5 xl:ps-10 bg-white rounded-[20px] hidden gap-4 items-center md:w-auto">
+        <div class="py-2 px-5 xl:ps-10 bg-white rounded-[20px] hidden gap-4 items-center md:w-auto hidden gap-1 items-center xl:flex">
             <div class="hidden md:flex gap-4">
-                <a href="#" class="text-sm text-slate-700">Home</a>
-                <a href="list-product.html" class="text-sm text-slate-700">Product</a>
+                <a href="{{ route('landing-page') }}" class="text-sm text-slate-700">Home</a>
+                <a href="{{ route('page.product') }}" class="text-sm text-slate-700">Product</a>
                 <a href="#" class="text-sm text-slate-700">About</a>
                 <a href="#" class="text-sm text-slate-700">Contact</a>
             </div>
 
-            <form action="" class="flex gap-2 flex-1 md:flex-none">
+            <form action="" class=" gap-2 flex-1 md:flex-none hidden gap-1 items-center xl:flex">
                 <input type="text"
                     class="py-1 px-3 outline-none border border-gray-300 rounded-lg text-sm w-full text-slate-700 md:w-80"
                     placeholder="Search" />
@@ -68,32 +67,89 @@
             </form>
         </div>
 
-        <div class="flex gap-1 items-center cursor-pointer" id="carts">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                    <path
-                        d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H19"
-                        stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
-                    <path
-                        d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z"
-                        stroke="#1C274C" stroke-width="1.5"></path>
-                    <path
-                        d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z"
-                        stroke="#1C274C" stroke-width="1.5"></path>
-                    <path
-                        d="M5 6H16.4504C18.5054 6 19.5328 6 19.9775 6.67426C20.4221 7.34853 20.0173 8.29294 19.2078 10.1818L18.7792 11.1818C18.4013 12.0636 18.2123 12.5045 17.8366 12.7523C17.4609 13 16.9812 13 16.0218 13H5"
-                        stroke="#1C274C" stroke-width="1.5"></path>
-                </g>
-            </svg>
-            <span class="text-sm text-slate-700">Carts</span>
+        {{-- auth --}}
+{{-- 
+        <div class="hidden gap-1 items-center xl:flex">
+        </div> --}}
 
-            <span class="relative flex h-4 w-4 -translate-y-2 -translate-x-1">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                <span
-                    class="relative inline-flex rounded-full h-4 w-4 bg-red-500 text-white text-[10px] flex items-center justify-center">1</span>
-            </span>
+        <div class="flex gap-3 items-center cursor-pointer" >
+            <div class="hidden gap-1 items-center xl:flex">
+                @guest
+                    <svg viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" class="w-4 h-4">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <defs></defs>
+                            <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <g id="Dribbble-Light-Preview" transform="translate(-420.000000, -2159.000000)"
+                                    fill="#000000">
+                                    <g id="icons" transform="translate(56.000000, 160.000000)">
+                                        <path
+                                            d="M374,2009 C371.794,2009 370,2007.206 370,2005 C370,2002.794 371.794,2001 374,2001 C376.206,2001 378,2002.794 378,2005 C378,2007.206 376.206,2009 374,2009 M377.758,2009.673 C379.124,2008.574 380,2006.89 380,2005 C380,2001.686 377.314,1999 374,1999 C370.686,1999 368,2001.686 368,2005 C368,2006.89 368.876,2008.574 370.242,2009.673 C366.583,2011.048 364,2014.445 364,2019 L366,2019 C366,2014 369.589,2011 374,2011 C378.411,2011 382,2014 382,2019 L384,2019 C384,2014.445 381.417,2011.048 377.758,2009.673"
+                                            id="profile-[#1335]"></path>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </svg>
+                    <!-- Jika pengguna belum login -->
+                    <a href="{{ route('login') }}" class="text-sm text-slate-700 hover:text-blue-400">Sign in</a>
+                    <span>/</span>
+                    <a href="{{ route('register') }}" class="text-sm text-slate-700 hover:text-blue-400">Sign up</a>
+                @endguest
+                @auth
+                    <div class="tooltip">
+                        <a href="{{ route('profile.edit') }}"
+                            class="flex justify-start items-center gap-1 text-md py-2 bg-gray-200 text-slate-800 w-auto  px-2 rounded-full">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <!-- Lingkaran untuk kepala -->
+                                    <circle cx="12" cy="8" r="4" stroke="#1C274C" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round"></circle>
+                                    <!-- Kurva untuk tubuh -->
+                                    <path d="M4 20C4 16 8 14 12 14C16 14 20 16 20 20" stroke="#1C274C" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round"></path>
+                                </g>
+                            </svg>
+                            <span class="tooltiptext">My Account</span>
+                        </a>
+
+                    </div>
+                @endauth
+            </div>
+
+            <div class="flex gap-1" id="carts" >
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <path
+                            d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H19"
+                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
+                        <path
+                            d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z"
+                            stroke="#1C274C" stroke-width="1.5"></path>
+                        <path
+                            d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z"
+                            stroke="#1C274C" stroke-width="1.5"></path>
+                        <path
+                            d="M5 6H16.4504C18.5054 6 19.5328 6 19.9775 6.67426C20.4221 7.34853 20.0173 8.29294 19.2078 10.1818L18.7792 11.1818C18.4013 12.0636 18.2123 12.5045 17.8366 12.7523C17.4609 13 16.9812 13 16.0218 13H5"
+                            stroke="#1C274C" stroke-width="1.5"></path>
+                    </g>
+                </svg>
+                <span class="text-sm text-slate-700">Carts</span>
+
+                <span class="relative flex h-4 w-4 -translate-y-2 -translate-x-1">
+                    <span
+                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span
+                        class="relative inline-flex rounded-full h-4 w-4 bg-red-500 text-white text-[10px] flex items-center justify-center">1</span>
+                </span>
+            </div>
+
         </div>
 
         <!-- Hamburger Menu (untuk tampilan mobile) -->
@@ -101,66 +157,20 @@
             <button id="hamburger" class="text-xl">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                     class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 6h16M4 12h16M4 18h16">
                     </path>
                 </svg>
             </button>
         </div>
 
-        {{-- auth --}}
 
-        <div class="hidden gap-1 items-center xl:flex">
-            @guest
-                <svg viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" class="w-4 h-4">
-                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                    <g id="SVGRepo_iconCarrier">
-                        <defs></defs>
-                        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                            <g id="Dribbble-Light-Preview" transform="translate(-420.000000, -2159.000000)"
-                                fill="#000000">
-                                <g id="icons" transform="translate(56.000000, 160.000000)">
-                                    <path
-                                        d="M374,2009 C371.794,2009 370,2007.206 370,2005 C370,2002.794 371.794,2001 374,2001 C376.206,2001 378,2002.794 378,2005 C378,2007.206 376.206,2009 374,2009 M377.758,2009.673 C379.124,2008.574 380,2006.89 380,2005 C380,2001.686 377.314,1999 374,1999 C370.686,1999 368,2001.686 368,2005 C368,2006.89 368.876,2008.574 370.242,2009.673 C366.583,2011.048 364,2014.445 364,2019 L366,2019 C366,2014 369.589,2011 374,2011 C378.411,2011 382,2014 382,2019 L384,2019 C384,2014.445 381.417,2011.048 377.758,2009.673"
-                                        id="profile-[#1335]"></path>
-                                </g>
-                            </g>
-                        </g>
-                    </g>
-                </svg>
-                <!-- Jika pengguna belum login -->
-                <a href="{{ route('login') }}" class="text-sm text-slate-700 hover:text-blue-400">Sign in</a>
-                <span>/</span>
-                <a href="{{ route('register') }}" class="text-sm text-slate-700 hover:text-blue-400">Sign up</a>
-            @endguest
-            @auth
-                <!-- Jika pengguna sudah login -->
-                <a href="{{ route('profile.edit') }}"
-                    class="flex justify-start items-center gap-1 text-md py-2 bg-gray-200 text-slate-800 w-auto  px-2 rounded-full">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
-                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                        <g id="SVGRepo_iconCarrier">
-                            <!-- Lingkaran untuk kepala -->
-                            <circle cx="12" cy="8" r="4" stroke="#1C274C" stroke-width="1.5"
-                                stroke-linecap="round" stroke-linejoin="round"></circle>
-                            <!-- Kurva untuk tubuh -->
-                            <path d="M4 20C4 16 8 14 12 14C16 14 20 16 20 20" stroke="#1C274C" stroke-width="1.5"
-                                stroke-linecap="round" stroke-linejoin="round"></path>
-                        </g>
-                    </svg>
-                    
-                </a>
-            @endauth
-        </div>
-        </div>
     </header>
     <!-- end header -->
 
     <!-- start menu-->
 
-    <div id="list-menu"
+    <div id="list-menu" 
         class="hidden w-full h-screen overflow-hidden fixed top-0 right-0 left-0 bottom-0 z-20 backdrop-brightness-50 flex justify-center p-5">
         <div id="menu-content" class="relative bg-white shadow-xl h-full w-full rounded-md md:w-2/5">
             <div class="absolute top-0 right-0 cursor-pointer m-3" id="close-menu">
@@ -203,10 +213,10 @@
                         </div>
                     </li>
                     <li>
-                        <a href="#" class="text-md text-slate-700 py-2 block px-2">Home</a>
+                        <a href="{{ route('landing-page') }}" class="text-md text-slate-700 py-2 block px-2">Home</a>
                     </li>
                     <li>
-                        <a href="list-product.html" class="text-md text-slate-700 py-2 block px-2">Product</a>
+                        <a href="{{ route('page.product') }}" class="text-md text-slate-700 py-2 block px-2">Product</a>
                     </li>
                     <li>
                         <a href="#" class="text-md text-slate-700 py-2 block px-2">Category</a>
@@ -344,7 +354,7 @@
     </div>
     <!-- end list cart -->
 
-    <section
+    <section style="padding-top: 80px"
         class="-translate-y-[7.5rem] bg-gradient-to-r from-[#EAF6FE] to-[#FCDEDE] px-10 min-h-screen flex gap-2 flex-col md:flex-row md:justify-between justify-center items-center">
         <div class="xl:w-1/2 md:order-0 order-1 md:py-0 py-10">
             <h1 class="text-3xl font-bold mb-5 text-slate-700">
@@ -355,9 +365,13 @@
                 Deleniti sint aliquid aperiam. Architecto earum eius omnis,
                 inventore nostrum hic repudiandae consectetur
             </p>
-            <button class="bg-white rounded-lg px-5 py-3 text-sm text-slate-700">
-                Shop now
-            </button>
+
+            <a href="{{ route('page.product') }}">
+                <button class="bg-white rounded-lg px-5 py-3 text-sm text-slate-700">
+                    Shop Now
+                </button>
+            </a>
+            
         </div>
         <div class="md:order-1 order-0">
             <img src="{{ asset('desainmini-main/image/product.png') }}" alt="banner" width="900" />
@@ -498,6 +512,7 @@
                     </div>
                 </div>
             </div>
+            
             <div class="border-2 py-3 px-5 relative">
                 <div class="w-32 h-32 flex justify-center items-center bg-center bg-cover overflow-hidden mx-auto">
                     <img src="{{ asset('desainmini-main/image/hp-3.png') }}" alt="Hp" />
@@ -638,48 +653,15 @@
             Top <span class="text-blue-500">Categories</span>
         </h1>
         <div class="grid md:grid-cols-6 grid-cols-3 gap-4">
-            <div class="border-2 py-3 px-1 flex flex-col justify-between">
-                <div class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-4">
-                    <img src="{{ asset('desainmini-main/image/hp-4.png') }}" alt="Hp" width="100" />
-                </div>
+            @foreach (  $categories as $category)
+                <div class="border-2 py-3 px-1 flex flex-col justify-between">
+                    <div class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-4">
+                        <img src="{{ asset('desainmini-main/image/hp-4.png') }}" alt="Hp" width="100" />
+                    </div>
 
-                <a href="#" class="font-medium text-slate-700 text-md text-center block">SmartPhone</a>
-            </div>
-            <div class="border-2 py-3 px-1 flex flex-col justify-between">
-                <div class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-4">
-                    <img src="{{ asset('desainmini-main/image/laptop-2.png') }}" alt="Hp" width="100" />
+                    <a href="#" class="font-medium text-slate-700 text-md text-center block">{{ $category->name_category }}</a>
                 </div>
-
-                <a href="#" class="font-medium text-slate-700 text-md text-center block">Laptop & Computer</a>
-            </div>
-            <div class="border-2 py-3 px-1 flex flex-col justify-between">
-                <div class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-4">
-                    <img src="{{ asset('desainmini-main/image/headset-2.png') }}" alt="Hp" width="100" />
-                </div>
-
-                <a href="#" class="font-medium text-slate-700 text-md text-center block">HeadPhone</a>
-            </div>
-            <div class="border-2 py-3 px-1 flex flex-col justify-between">
-                <div class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-4">
-                    <img src="{{ asset('desainmini-main/image/mouse.png') }}" alt="Hp" width="100" />
-                </div>
-
-                <a href="#" class="font-medium text-slate-700 text-md text-center block">Mouse</a>
-            </div>
-            <div class="border-2 py-3 px-1 flex flex-col justify-between">
-                <div class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-4">
-                    <img src="{{ asset('desainmini-main/image/mouse.png') }}" alt="Hp" width="100" />
-                </div>
-
-                <a href="#" class="font-medium text-slate-700 text-md text-center block">Mouse</a>
-            </div>
-            <div class="border-2 py-3 px-1 flex flex-col justify-between">
-                <div class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-4">
-                    <img src="{{ asset('desainmini-main/image/mouse.png') }}" alt="Hp" width="100" />
-                </div>
-
-                <a href="#" class="font-medium text-slate-700 text-md text-center block">Mouse</a>
-            </div>
+            @endforeach
         </div>
     </section>
 
@@ -1170,14 +1152,14 @@
             </div>
 
             <!-- Download App Section -->
-            <div>
+            <div class="gap-3">
                 <h6 class="text-sm text-slate-800 font-semibold mb-5">Download App</h6>
                 <div class="space-y-3">
-                    <a href="#" class="block w-full max-w-xs">
+                    <a href="#" class="block  w-28 xl:max-w-xs xl:w-full">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
                             alt="Google Play" class="w-full" />
                     </a>
-                    <a href="#" class="block w-full max-w-xs">
+                    <a href="#" class="block  w-28 xl:max-w-xs xl:w-full">
                         <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg
   "
                             alt="App Store" class="w-full" />
@@ -1273,4 +1255,3 @@
 </body>
 
 </html>
-
