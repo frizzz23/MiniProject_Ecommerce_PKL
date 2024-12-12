@@ -5,7 +5,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Product Detail </title>
-    <link href="{{ asset('landing/dist/output.css') }}" rel="stylesheet" />
+    <!-- gunakan ini jika pakai laravel breeze -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <!-- font poopins -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -114,7 +116,7 @@
                 <div class="flex justify-between items-center sticky top-0 z-10 bg-white py-3">
                     <h1 class="text-3xl font-semibold text-slate-800">
                         Cart
-                        <span class="text-sm text-slate-700 font-medium">2 items</span>
+                        <span class="text-sm text-slate-700 font-medium"><span id="cartCount">0</span> items</span>
                     </h1>
                     <div class="cursor-pointer" id="close-cart">
                         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-7 h-7">
@@ -132,36 +134,8 @@
                     </div>
                 </div>
 
-                <table class="table-auto w-full">
-                    <tr class="border-b-2 border-slate-200 pb-4">
-                        <th>
-                            <div
-                                class="w-28 h-28 bg-cover bg-center overflow-hidden flex justify-center items-center p-5">
-                                <img src="{{ asset('landing/image/hp.png') }}" alt="Hp" class="" />
-                            </div>
-                        </th>
-                        <td class="w-full">
-                            <p class="text-sm text-slate-700 mb-5">
-                                Samsung Galaxy A55 5G 8/128 8/256 | 5000mAh
-                            </p>
-                            <p class="text-sm text-slate-500">Rp. 10.000.000</p>
-                        </td>
-                        <td>
-                            <div class="flex border-2 border-blue-200 rounded-md mb-4">
-                                <button type="button" class="p-2" onclick="minus('quantity_1')">
-                                    -
-                                </button>
-                                <input type="text" class="w-10 outline-none p-2" value="1"
-                                    id="quantity_1" />
-                                <button type="button" class="p-2" onclick="plus('quantity_1', 20)">
-                                    +
-                                </button>
-                            </div>
-                            <button type="button" class="text-red-500 text-xs block text-end w-full">
-                                Remove
-                            </button>
-                        </td>
-                    </tr>
+                <table class="table-auto w-full" id="cartItems">
+
                 </table>
                 <div class="bg-gray-100 border-b-2 border-slate-200 pb-4 flex justify-between items-center mt-2 p-5">
                     <div class="w-1/2">
@@ -170,14 +144,16 @@
                             Tax included and Shipping and taxes calculated at checkout.
                         </p>
                     </div>
-                    <p class="text-md text-slate-800 text-nowrap">Rp. 10.000.000</p>
+                    <p class="text-md text-slate-800 text-nowrap" id="totalAmount"></p>
                 </div>
 
                 <div class="flex justify-center items-center flex-col gap-3 mt-10">
-                    <button class="bg-blue-500 text-white text-sm px-5 py-2 rounded-md w-full">
+                    <a href="{{ route('user.checkout.index') }}"
+                        class="text-center bg-blue-500 text-white text-sm px-5 py-2 rounded-md w-full">
                         Checkout
-                    </button>
-                    <a href="#" class="text-sm text-slate-500 text-center mt-5 border-b-2 font-medium">View
+                    </a>
+                    <a href="{{ route('user.carts.index') }}"
+                        class="text-sm text-slate-500 text-center mt-5 border-b-2 font-medium">View
                         cart</a>
                 </div>
             </div>
@@ -231,7 +207,8 @@
                         <span
                             class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                         <span
-                            class="relative inline-flex rounded-full h-4 w-4 bg-red-500 text-white text-[10px] flex items-center justify-center">1</span>
+                            class="relative inline-flex rounded-full h-4 w-4 bg-red-500 text-white text-[10px] flex items-center justify-center"
+                            id="cartCountItem">0</span>
                     </span>
                 </div>
 
@@ -399,7 +376,7 @@
                     </div> --}}
 
                     <div class="flex gap-5 items-center w-full">
-                        <button
+                        <button onclick="addToCart({{ $product->id }}, this)" type="button"
                             class="py-3 px-3 bg-blue-500 flex justify-center items-center rounded-sm text-white text-sm gap-2">
                             ADD TO CART
                             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -560,20 +537,253 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        const formatRupiah = (number) => {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                maximumFractionDigits: 0
+            }).format(number);
+        }
+
+        function showAlert(icon, message) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 1000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: icon,
+                title: message
+            });
+        }
+        @auth
+
+        let amount = 0;
+
+        function listCart(data) {
+            let items = ''
+            const cartItems = document.getElementById('cartItems');
+            data.forEach(item => {
+                amount += item.product.price_product * item.quantity;
+                items += `
+                  <tr class="border-b-2 border-slate-200 pb-4">
+                        <th>
+                            <div
+                                class="w-28 h-28 bg-cover bg-center overflow-hidden flex justify-center items-center p-5">
+                                <img src="{{ url('') }}/storage/${item.product.image_product}" alt="Hp" class="" />
+                            </div>
+                        </th>
+                        <td class="w-full">
+                            <p class="text-sm text-slate-700 mb-5">
+                                ${item.product.name_product}
+                            </p>
+                            <p class="text-sm text-slate-500">${formatRupiah(item.product.price_product * item.quantity)}</p>
+                        </td>
+                        <td>
+                            <div class="flex border-2 border-blue-200 rounded-md mb-4">
+                                <button type="button" class="p-2" onclick="minus('quantity_${item.id}', ${item.product.price_product}, this)">
+                                    -
+                                </button>
+                                <input type="text" class="w-10 outline-none p-2 text-center" value="${item.quantity}"
+                                    id="quantity_${item.id}" />
+                                <button type="button" class="p-2" onclick="plus('quantity_${item.id}', ${item.product.stock_product}, ${item.product.price_product}, this)">
+                                    +
+                                </button>
+                            </div>
+                            <button onclick="deleteCart('${item.id}')" type="button" class="text-red-500 text-xs block text-end w-full">
+                                Remove
+                            </button>
+                        </td>
+                    </tr>
+
+                `
+            })
+            cartItems.innerHTML = items;
+            document.getElementById('cartCount').textContent = data.length
+            document.getElementById('cartCountItem').textContent = data.length
+            setTotal()
+        }
+
+        function setTotal() {
+            const totalAmount = document.getElementById('totalAmount');
+            totalAmount.textContent = formatRupiah(amount)
+        }
+
+        @if (auth()->user()->hasRole('user'))
+            async function addToCart(id_product, el) {
+                el.disabled = true;
+                const api = await fetch('/api/cart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            'content')
+                    },
+                    body: JSON.stringify({
+                        id_product: id_product
+                    })
+                });
+
+                const response = await api.json();
+                if (response.status == 'success') {
+                    const data = await response.data;
+                    listCart(data);
+                    el.disabled = false;
+                } else if (response.status == 'warning') {
+                    alert(response.message)
+                    el.disabled = false;
+                } else {
+                    showAlert('error', response.message)
+                    el.disabled = false;
+                }
+            }
+
+            async function deleteCart(id_cart) {
+                Swal.fire({
+                    title: "Yakin?",
+                    text: "kamu yakin ingin menghapus keranjang ini?",
+                    icon: "warning",
+                    iconColor: "#334155",
+                    width: 400,
+                    background: "#fff",
+                    showCancelButton: true,
+                    confirmButtonColor: "#334155",
+                    cancelButtonColor: "#b91c1c",
+                    confirmButtonText: "Ya, Hapus!",
+                    cancelButtonText: "Batal"
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+
+                        const api = await fetch('/api/cart/' + id_cart, {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                    .getAttribute('content')
+                            }
+                        });
+                        const response = await api.json();
+
+                        if (response.status == 'success') {
+                            const data = await response.data;
+                            showAlert('success', 'keranjang berhasil dihapus')
+                            listCart(data);
+                        } else {
+                            showAlert('error', 'keranjang gagal dihapus')
+                        }
+
+                        Swal.fire({
+                            title: "terhapus!",
+                            text: "keranjang berhasil dihapus",
+                            icon: "success",
+                            confirmButtonColor: "#334155",
+                            confirmButtonText: "tutup"
+                        });
+                    }
+                });
+
+            }
+        @endif
+        window.addEventListener('DOMContentLoaded', async () => {
+            const api = await fetch('/api/cart', {
+                method: 'GET',
+            });
+            const response = await api.json();
+            if (response.status == 'success') {
+                const data = await response.data;
+                listCart(data);
+            } else {
+                alert('keranjang gagal diload')
+            }
+        })
+
+
+
+
+        async function minus(id, price, el) {
+            el.disabled = true
+            const input = document.getElementById(id);
+            if (input.value > 1) {
+                input.value = parseInt(input.value) - 1;
+
+                const response = await fetch('/carts/' + id.split("_")[1], {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            'content')
+                    },
+                    body: JSON.stringify({
+                        quantity: input.value
+                    })
+                });
+
+                // Cek jika respons JSON
+                if (response.ok) {
+                    const data = await response.json();
+
+                    amount = parseInt(amount) - parseInt(price);
+                    setTotal()
+                } else {
+                    console.error('Server error or invalid response:', response.status);
+                    const text = await response.text();
+                    console.error('Response text:', text);
+                }
+                el.disabled = false;
+
+            }
+        }
+
+        async function plus(id, max, price, el) {
+            el.disabled = true;
+            console.log(max);
+            const input = document.getElementById(id);
+            if (input.value < max) {
+                input.value = parseInt(input.value) + 1;
+
+                const response = await fetch('/carts/' + id.split("_")[1], {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            'content')
+                    },
+                    body: JSON.stringify({
+                        quantity: input.value
+                    })
+                });
+
+                // Cek jika respons JSON
+                if (response.ok) {
+                    const data = await response.json();
+
+                    amount = parseInt(amount) + parseInt(price);
+                    setTotal()
+                } else {
+                    console.error('Server error or invalid response:', response.status);
+                    const text = await response.text();
+                    console.error('Response text:', text);
+                }
+                el.disabled = false;
+            } else {
+                showAlert('error', 'stok product sudah habis')
+                el.disabled = false;
+
+            }
+        }
+        @endauth
+    </script>
 
 
     <script>
-        window.addEventListener("scroll", () => {
-            const sidebar = document.getElementById("sidebar-left");
-            if (window.scrollY >= 50) {
-                sidebar.classList.remove("mt-16");
-                sidebar.classList.add("pt-10");
-            } else {
-                sidebar.classList.remove("pt-10");
-                sidebar.classList.add("mt-16");
-            }
-        });
-
         const carts = document.getElementById("carts");
         carts.addEventListener("click", () => {
             const closeCart = document.getElementById("close-cart");
@@ -608,20 +818,6 @@
                 }
             });
         });
-
-        function minus(id) {
-            const input = document.getElementById(id);
-            if (input.value > 1) {
-                input.value = parseInt(input.value) - 1;
-            }
-        }
-
-        function plus(id, max) {
-            const input = document.getElementById(id);
-            if (input.value < max) {
-                input.value = parseInt(input.value) + 1;
-            }
-        }
     </script>
 
     <script>
