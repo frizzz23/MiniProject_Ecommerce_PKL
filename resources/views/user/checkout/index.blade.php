@@ -22,6 +22,18 @@
 </head>
 
 <body>
+
+    @if ($errors->any())
+        <div class="bg-red-500 text-white p-5 text-sm">
+            <ul class="list-disc list-inside">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+
+    @endif
+
     <form action="{{ route('user.checkout.store') }}" method="post" enctype="multipart/form-data">
         @csrf
         <input type="hidden" name="addresses_id" id="addresses_id">
@@ -199,7 +211,7 @@
                 @php
                     $total = 0;
                 @endphp
-                @if (count($carts) > 0)
+                @if ($carts && count($carts) > 0)
                     <div class="md:fixed static top-0 bg-neutral-100 min-h-screen">
                         <h5 class="px-20 text-2xl font-medium text-slate-800 py-5">
                             {{ count($carts) }} items
@@ -214,7 +226,6 @@
                                 @foreach ($carts as $cart)
                                     @php
                                         $total += $cart->product->price_product * $cart->quantity;
-                                        $weight = 0;
                                     @endphp
                                     <input type="hidden" name="product_id_quantity[{{ $cart->product->id }}]"
                                         id="product_id_quantity_{{ $cart->id }}" value="{{ $cart->quantity }}">
@@ -238,8 +249,8 @@
                                                 </button>
                                                 <input type="text"
                                                     class="w-10 outline-none px-2 py-1 text-center text-slate-800"
-                                                    value="{{ $cart->quantity }}"
-                                                    id="quantity_{{ $cart->id }}" />
+                                                    value="{{ $cart->quantity }}" id="quantity_{{ $cart->id }}"
+                                                    readonly />
                                                 <button type="button" class="px-2 py-1 text-slate-800"
                                                     onclick="plus('quantity_{{ $cart->id }}', {{ $cart->product->stock_product }}, '{{ $cart->product->price_product }}', 'product_id_quantity_{{ $cart->id }}')">
                                                     +
@@ -289,9 +300,12 @@
                     <input type="hidden" name="subtotal" id="subtotal_input" value="{{ $total }}" />
                     <input type="hidden" name="discount" id="discount_input" value="0" />
                     <input type="hidden" name="total" id="total_input" value="{{ $total }}" />
-                    <input type="hidden" name="weight" id="weight_input" value="{{ $weight }}" />
+                    <input type="hidden" name="weight" id="weight_input" value="{{ $weight ?? 100 }}" />
                     <input type="hidden" name="order_form" value="cart">
                 @else
+                    @php
+                        $total += $product->price_product;
+                    @endphp
                     <div class="md:fixed static top-0 bg-neutral-100 min-h-screen">
                         <h5 class="px-20 text-2xl font-medium text-slate-800 py-5">
                             1 items
@@ -307,19 +321,31 @@
                                     <th>
                                         <div
                                             class="w-28 h-28 bg-cover bg-center overflow-hidden flex justify-center items-center p-5">
-                                            <img src="{{ asset('storage/') }}" alt="">
+                                            <img src="{{ asset('storage/' . $product->image_product) }}"
+                                                alt="">
                                         </div>
                                     </th>
                                     <td class="w-full align-bottom">
-                                        <p class="text-sm text-slate-700 mb-5">
-                                            hp samsung galaxy a55 5g 8/128 8/256 | 5000mAh
-                                            <br />
-                                            <span class="text-xs text-slate-700">x1</span>
-                                        </p>
+                                        <div class="text-sm text-slate-700 mb-5">
+                                            {{ $product->name_product }}
+                                        </div>
+                                        <div class="w-24 bg-white flex border-2 border-blue-200 rounded-md mb-4">
+                                            <button type="button" class="px-2 py-1 text-slate-800"
+                                                onclick="minus('quantity_checkout', '{{ $product->price_product }}', 'input_quantity_checkout')">
+                                                -
+                                            </button>
+                                            <input type="text"
+                                                class="w-10 outline-none px-2 py-1 text-center text-slate-800"
+                                                value="1" id="quantity_checkout" readonly />
+                                            <button type="button" class="px-2 py-1 text-slate-800"
+                                                onclick="plus('quantity_checkout', {{ $product->stock_product }}, '{{ $product->price_product }}', 'input_quantity_checkout')">
+                                                +
+                                            </button>
+                                        </div>
                                     </td>
                                     <td class="align-center">
                                         <p class="text-sm text-slate-500 text-nowrap">
-                                            Rp. 10.000.000
+                                            Rp. {{ number_format($product->price_product, 0, ',', '.') }}
                                         </p>
                                     </td>
                                 </tr>
@@ -330,8 +356,8 @@
                             <table class="table-auto w-full">
                                 <tr>
                                     <td class="text-xs text-slate-600 w-full">Subtotal</td>
-                                    <td class="text-xs text-slate-800 text-right text-nowrap">
-                                        Rp. 10.000.000
+                                    <td class="text-xs text-slate-800 text-right text-nowrap flex justify-end">
+                                        Rp. <div id="subtotal">{{ number_format($total, 0, ',', '.') }}</div>
                                     </td>
                                 </tr>
                                 <tr>
@@ -350,17 +376,19 @@
                                     <td class="text-sm text-slate-600">Total</td>
                                     <td class="text-sm text-slate-800 text-right text-nowrap flex">
                                         Rp.
-                                        <div id="total">10.000.000</div>
+                                        <div id="total">{{ number_format($total, 0, ',', '.') }}</div>
                                     </td>
                                 </tr>
                             </table>
                         </div>
                     </div>
-                    <input type="hidden" name="subtotal" id="subtotal_input" value="10000000" />
+                    <input type="hidden" name="subtotal" id="subtotal_input" value="{{ $total }}" />
                     <input type="hidden" name="discount" id="discount_input" value="0" />
-                    <input type="hidden" name="total" id="total_input" value="10000000" />
-                    <input type="hidden" name="weight" id="weight_input" value="0" />
+                    <input type="hidden" name="total" id="total_input" value="{{ $total }}" />
+                    <input type="hidden" name="weight" id="weight_input" value="{{ $weight ?? 100 }}" />
                     <input type="hidden" name="order_form" value="product">
+                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                    <input type="hidden" name="quantity_checkout" id="input_quantity_checkout" value="1">
                 @endif
             </div>
         </div>

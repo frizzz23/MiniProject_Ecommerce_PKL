@@ -388,7 +388,7 @@
                         </p>
                     </div>
 
-                    <div class="flex items-center gap-2 ">
+                    {{-- <div class="flex items-center gap-2 ">
                         <span class="text-slate-800 text-md font-medium">Kuantitas</span>
                         <div class="flex items-center border-2 border-blue-200 rounded-md mb-4 w-32">
                             <button class="p-2" onclick="minus('quantity')">-</button>
@@ -396,7 +396,7 @@
                                 id="quantity" readonly />
                             <button class="p-2" onclick="plus('quantity', 20)">+</button>
                         </div>
-                    </div>
+                    </div> --}}
 
                     <div class="flex gap-5 items-center w-full">
                         <button
@@ -422,10 +422,10 @@
                                 </g>
                             </svg>
                         </button>
-                        <button
+                        <a href="{{ route('user.checkout.index', ['product' => $product->slug]) }}"
                             class="py-2 px-4 border-2 border-blue-500 flex justify-center items-center rounded-sm text-blue-500 text-sm gap-2">
                             BUY NOW
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
