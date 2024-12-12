@@ -16,7 +16,7 @@ class ApiCartController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $cart = Cart::where('user_id', $user->id)->with(['product:id,name_product,price_product,stock_product'])->get();
+        $cart = Cart::where('user_id', $user->id)->with(['product:id,name_product,price_product,stock_product,image_product'])->get();
         return response()->json(['status' => 'success', 'data' =>  $cart]);
     }
 
@@ -37,6 +37,10 @@ class ApiCartController extends Controller
         $product = Product::find($request->id_product);
         if (empty($product)) {
             return response()->json(['status' => 'error', 'message' => 'Product tidak ditemukan'], 404);
+            die();
+        }
+        if ($product->stock_product <= 0) {
+            return response()->json(['status' => 'error', 'message' => 'stok product sudah habis']);
             die();
         }
         $user = Auth::user();
