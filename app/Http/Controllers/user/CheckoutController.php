@@ -21,8 +21,9 @@ class CheckoutController extends Controller
     {
         $product = false;
         $carts = false;
-        if ($request->slug) {
-            $product = Product::where('slug', $request->product_id)->first();
+        if ($request->input('product')) {
+            $slug = $request->input('product');
+            $product = Product::where('slug', $slug)->first();
             if (!$product) {
                 return redirect()->route('landing-page');
             }
@@ -40,28 +41,31 @@ class CheckoutController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->all());
         $request->validate([
-            'image_payment' => 'required|image|mimes:jpeg,png,jpg',
+            'bukti_image' => 'required|image|mimes:jpeg,png,jpg',
         ]);
         $diskon = PromoCode::find($request->id_discount);
+
+        $request->validate([
+            'id_discount' => 'nullable|exists:promo_codes,id',
+            'total' => 'required|numeric|min:0',
+            'subtotal' => 'required|numeric|min:0',
+            'addresses_id' => 'required|exists:addresses,id',
+        ]);
+
+        // Buat data pesanan di tabel `orders`
+        $order = Order::create([
+            'user_id' => Auth::id(),
+            'promo_code_id' => $diskon->id ?? null,
+            'addresses_id' => $request->addresses_id,
+            'sub_total_amount' => $request->subtotal,
+            'grand_total_amount' => $request->total,
+        ]);
 
         if ($request->order_form == 'cart') {
             $request->validate([
                 'product_id_quantity' => 'required|array',
-                'id_discount' => 'nullable|exists:promo_codes,id',
-                'total' => 'required|numeric|min:0',
-                'subtotal' => 'required|numeric|min:0',
-                'addresses_id' => 'required|exists:addresses,id',
-            ]);
-
-
-            // Buat data pesanan di tabel `orders`
-            $order = Order::create([
-                'user_id' => Auth::id(),
-                'promo_code_id' => $diskon->id ?? null,
-                'addresses_id' => $request->addresses_id,
-                'sub_total_amount' => $request->total,
-                'grand_total_amount' => $request->subtotal,
             ]);
 
             // Pindahkan item dari keranjang ke tabel `product_orders`
@@ -71,12 +75,27 @@ class CheckoutController extends Controller
                     'order_id' => $order->id,
                     'quantity' => $quantity,
                 ]);
+                $stok =   Product::where('id', $product_id)->first();
+                $stok->decrement('stock_product', $quantity);
             }
+            // Hapus data keranjang setelah checkout
+            Cart::where('user_id', Auth::id())->delete();
         } else if ($request->order_form == 'product') {
+            $request->validate([
+                'product_id' => 'required|exists:products,id',
+                'quantity_checkout' => 'required|numeric|min:1',
+            ]);
+            $p =  ProductOrder::create([
+                'product_id' => $request->product_id,
+                'order_id' => $order->id,
+                'quantity' => $request->quantity_checkout,
+            ]);
+            $stok = Product::where('id', $request->product_id)->first();
+            $stok->decrement('stock_product', $request->quantity_checkout);
+        } else {
+            return redirect()->route('landing-page');
         }
 
-        // Hapus data keranjang setelah checkout
-        Cart::where('user_id', Auth::id())->delete();
 
         $user = Auth::user();
         if ($diskon) {
@@ -96,7 +115,7 @@ class CheckoutController extends Controller
         Payment::create([
             'order_id' => $order->id,
             'image_payment' => $path,
-            'payment_method' => 'cash',
+            'payment_method' => 'transfer',
             'status' => 'pending',
         ]);
 
