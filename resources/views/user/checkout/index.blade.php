@@ -370,7 +370,7 @@
     <!-- start address-->
     <div id="show_add_address"
         class="hidden w-full h-screen overflow-hidden fixed top-0 right-0 left-0 bottom-0 z-20 backdrop-brightness-50 flex justify-center p-5">
-        <div id="address-content" class="relative bg-white shadow-xl h-full w-full rounded-md md:w-2/5">
+        <div id="address-content" class="relative bg-white shadow-xl w-full overflow-y-auto rounded-md md:w-2/5">
             <div class="absolute top-0 right-0 cursor-pointer m-3" id="close-address">
                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-7 h-7">
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -385,7 +385,7 @@
                     </g>
                 </svg>
             </div>
-            <div class="p-5 pt-12 overflow-y-auto">
+            <div class="p-5 pt-12">
                 <form action="{{ route('user.addresses.store') }}" method="post">
                     @csrf
                     <div class="mb-3">
@@ -397,17 +397,20 @@
                             placeholder="Rumah, Kantor, Kosan, ...">
                     </div>
                     <div class="mb-3">
-                        <label for="city_id" class="text-slate-700 font-medium text-sm">
-                            City
+                        <label for="province_id" class="text-slate-700 font-medium text-sm">
+                            Province
                         </label>
-                        <select name="city_id" id="city_id"
+                        <select name="province_id" id="province_id"
+                            onchange="setCityProvince(this.value, 'city_area')"
                             class="w-full py-3 px-3 outline-none border border-gray-300 text-slate-700 rounded-lg text-sm">
-                            <option value="" selected disabled>Select City</option>
-                            @foreach ($cities as $city)
-                                <option value="{{ $city['city_id'] }}">{{ $city['city_name'] }}
+                            <option value="" selected disabled>Select Province</option>
+                            @foreach ($provinces as $province)
+                                <option value="{{ $province['province_id'] }}">{{ $province['province'] }}
                                 </option>
                             @endforeach
                         </select>
+                    </div>
+                    <div id="city_area">
                     </div>
 
                     <div class="mb-3">
@@ -416,7 +419,7 @@
                         </label>
                         <input type="number" name="no_telepon"
                             class="w-full py-3 px-3 outline-none border border-gray-300 text-slate-700 rounded-lg text-sm"
-                            placeholder="628**********">
+                            placeholder="08**********">
                     </div>
 
                     <div class="mb-3">
@@ -689,7 +692,40 @@
                 alert('error')
             }
         }
+
+
+        async function setCityProvince(province_id, area) {
+            const city_area = document.getElementById(area)
+            city_area.innerHTML = `<p class="text-slate-700 text-sm my-3"> Loading...</p>`
+            const response = await fetch('/api/raja-ongkir/city?province_id=' + province_id, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const data = await response.json();
+            if (data) {
+                let elementChild = `
+            <div class="mb-3">
+                <label for="city_id" class="text-slate-700 font-medium text-sm">City</label>
+                 <select name="city_id" id="city_id"
+                    class="w-full py-3 px-3 outline-none border border-gray-300 text-slate-700 rounded-lg text-sm">
+                <option value="" selected disabled>Select City</option>
+            `;
+                Object.values(data).forEach(city => {
+                    elementChild += `<option value="${city['city_id']}">${city['city_name']}</option>`
+                })
+                elementChild += `
+                </select>
+            </div>`
+                city_area.innerHTML = elementChild
+            } else {
+                alert('error')
+            }
+
+        }
     </script>
+
 </body>
 
 </html>

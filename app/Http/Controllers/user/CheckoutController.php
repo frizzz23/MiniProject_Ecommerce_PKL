@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\user;
 
 use App\Models\Cart;
-use App\Models\City;
 use App\Models\Order;
 use App\Models\Address;
 use App\Models\Payment;
@@ -13,6 +12,7 @@ use App\Models\ProductOrder;
 use Illuminate\Http\Request;
 use App\Models\UsedPromoCode;
 use App\Http\Controllers\Controller;
+use App\Models\Province;
 use Illuminate\Support\Facades\Auth;
 
 class CheckoutController extends Controller
@@ -33,9 +33,9 @@ class CheckoutController extends Controller
             }
         }
         $addresses = Address::where('user_id', Auth::id())->get();
-        $cities = City::relatedData();
+        $provinces = Province::relatedData();
 
-        return view('user.checkout.index', compact('carts', 'product', 'addresses', 'cities'));
+        return view('user.checkout.index', compact('carts', 'product', 'addresses', 'provinces'));
     }
 
     public function store(Request $request)
