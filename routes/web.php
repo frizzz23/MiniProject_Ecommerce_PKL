@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\Page\HomePageController;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\HomeController;
+
 use App\Http\Controllers\ProfileController;
+
 
 use App\Http\Controllers\Page\AboutPageController;
 use App\Http\Controllers\Page\ProductPageController;
@@ -11,9 +13,8 @@ use App\Http\Controllers\Page\CategoryPageController;
 
 
 
+Route::get('/', [HomePageController::class,'index'])->name('landing-page');
 
-Route::get('/', HomeController::class)->name('landing-page');
-Route::get('/landing-page2', HomeController::class)->name('landing-page2');
 
 Route::get('/home-page', function () {
     return view('home-page');
@@ -28,9 +29,6 @@ Route::get('/account', function () {
 
 Route::get('/product', [ProductPageController::class, 'index'])->name('page.product');
 Route::get('/product-show/{slug}', [ProductPageController::class, 'show'])->name('page.productshow');
-
-
-
 
 Route::get('/category-page', CategoryPageController::class)->name('category-page');
 Route::get('/about-page', AboutPageController::class)->name('about-page');

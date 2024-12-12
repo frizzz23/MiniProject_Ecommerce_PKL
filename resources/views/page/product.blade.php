@@ -16,6 +16,7 @@
     <style>
         * {
             font-family: "Poppins" , sans-serif;
+            /* border: 1px solid black; */
         }
     </style>
 </head>
@@ -366,16 +367,15 @@
                         <a href="" class="font-medium text-slate-800 text-sm tracking-tighter">
                             {{ $product->name_product }} <!-- Tampilkan nama produk -->
                         </a>
-                        <div
-                            class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-4">
+                        <div class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-4">
                             @if ($product->image_product)
                                 <img src="{{ asset('storage/' . $product->image_product) }}" alt="Product Image"
-                                    width="100" />
+                                     class="object-cover w-32 h-32" />
                             @else
                                 <img src="{{ asset('img/img-carousel-promo/laptop.jpg') }}" alt="Default Image"
-                                    width="100" />
+                                     class="object-cover w-32 h-32" />
                             @endif
-                        </div>
+                        </div>                        
 
                         <div class="flex items-center space-x-1 mb-2">
                             @for ($i = 0; $i < 5; $i++)
