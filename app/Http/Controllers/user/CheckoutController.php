@@ -57,9 +57,7 @@ class CheckoutController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request->all());
         $diskon = PromoCode::find($request->id_discount);
-        // return response()->json($request->all());
 
         $request->validate([
             'alamat' => 'required',
@@ -99,6 +97,7 @@ class CheckoutController extends Controller
                     'order_id' => $order->id,
                     'quantity' => $quantity,
                 ]);
+
                 $product =   Product::where('id', $product_id)->first();
                 $product->decrement('stock_product', $quantity);
 
@@ -167,8 +166,6 @@ class CheckoutController extends Controller
         }
 
         // $path = $request->file('bukti_image')->store('images/payments', 'public');
-
-
 
         // Buat transaksi ke midtrans kemudian save snap tokennya.
         $payload = [

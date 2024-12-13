@@ -17,7 +17,8 @@ return new class extends Migration
             $table->foreignId('promo_code_id')->nullable()->constrained('promo_codes');
             $table->decimal('sub_total_amount', 15, 2);
             $table->decimal('grand_total_amount', 15, 2);
-            $table->enum('status_order', ['pending', 'processing', 'completed']);
+            // $table->enum('status_order', ['pending', 'processing', 'completed']);
+            $table->enum('status_order', ['pending', 'failed', 'success', 'expired'])->default('pending');
             $table->string('snap_token')->nullable();
             $table->timestamps();
         });

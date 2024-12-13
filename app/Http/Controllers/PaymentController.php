@@ -49,41 +49,41 @@ class PaymentController extends Controller
         $fraud = $notif->fraud_status;
         $order = Order::findOrFail($orderId);
         $status = 'pending';
-        $status_order = 'pending';
+        // $status_order = 'pending';
         if ($transaction == 'capture') {
             if ($type == 'credit_card') {
 
                 if ($fraud == 'challenge') {
                     $status = 'pending';
-                    $status_order = 'pending';
+                    // $status_order = 'pending';
                 } else {
                     $status = 'success';
-                    $status_order = 'completed';
+                    // $status_order = 'completed';
                 }
             }
         } elseif ($transaction == 'settlement') {
             $status = 'success';
-            $status_order = 'completed';
+            // $status_order = 'completed';
         } elseif ($transaction == 'pending') {
             $status = 'pending';
-            $status_order = 'pending';
+            // $status_order = 'pending';
         } elseif ($transaction == 'deny') {
             $status = 'failed';
-            $status_order = 'pending';
+            // $status_order = 'pending';
         } elseif ($transaction == 'expire') {
             $status = 'expired';
-            $status_order = 'pending';
+            // $status_order = 'pending';
         } elseif ($transaction == 'cancel') {
             $status = 'failed';
-            $status_order = 'pending';
+            // $status_order = 'pending';
         }
         $order->update([
-            'status_order' => $status_order,
+            'status_order' => $status,
         ]);
 
-        $order->payment->update([
-            'status' => $status,
-        ]);
+        // $order->payment->update([
+        //     'status' => $status,
+        // ]);
     }
 
     // /**
