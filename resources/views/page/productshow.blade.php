@@ -421,71 +421,43 @@
                             Reviews
                         </h2>
                     </div>
-                    <form class="mb-6">
+                    <form action="{{ route('reviews.store') }}" method="POST">
+                        @csrf <!-- Tambahkan CSRF token untuk keamanan -->
+
+                        <!-- Pilih Bintang -->
                         <div class="mb-5 flex gap-1">
-                            <label for="start_1">
-                                <input type="radio" name="bintang" id="start_1" class="hidden peer" />
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                    class="w-5 h-5 fill-gray-300 peer-checked:fill-yellow-500" viewBox="0 0 24 24"
-                                    stroke="none">
-                                    <path
-                                        d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
-                                    </path>
-                                </svg>
-                            </label>
-                            <label for="start_2">
-                                <input type="radio" name="bintang" id="start_2" class="hidden peer" />
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                    class="w-5 h-5 fill-gray-300 peer-checked:fill-yellow-500" viewBox="0 0 24 24"
-                                    stroke="none">
-                                    <path
-                                        d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
-                                    </path>
-                                </svg>
-                            </label>
-                            <label for="start_3">
-                                <input type="radio" name="bintang" id="start_3" class="hidden peer" />
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                    class="w-5 h-5 fill-gray-300 peer-checked:fill-yellow-500" viewBox="0 0 24 24"
-                                    stroke="none">
-                                    <path
-                                        d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
-                                    </path>
-                                </svg>
-                            </label>
-                            <label for="start_4">
-                                <input type="radio" name="bintang" id="start_4" class="hidden peer" />
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                    class="w-5 h-5 fill-gray-300 peer-checked:fill-yellow-500" viewBox="0 0 24 24"
-                                    stroke="none">
-                                    <path
-                                        d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
-                                    </path>
-                                </svg>
-                            </label>
-                            <label for="start_5">
-                                <input type="radio" name="bintang" id="start_5" class="hidden peer" />
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                    class="w-5 h-5 fill-gray-300 peer-checked:fill-yellow-500" viewBox="0 0 24 24"
-                                    stroke="none">
-                                    <path
-                                        d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
-                                    </path>
-                                </svg>
-                            </label>
+                            @for ($i = 1; $i <= 5; $i++)
+                                <label for="star_{{ $i }}">
+                                    <input type="radio" name="rating" id="star_{{ $i }}" value="{{ $i }}" class="hidden peer" required />
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                        class="w-5 h-5 fill-gray-300 peer-checked:fill-yellow-500" viewBox="0 0 24 24" stroke="none">
+                                        <path
+                                            d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
+                                        </path>
+                                    </svg>
+                                </label>
+                            @endfor
                         </div>
 
-                        <div class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200">
+                        <!-- Komentar -->
+                        <div class="py-2 px-4 mb-4 bg-white rounded-lg border border-gray-200">
                             <label for="comment" class="sr-only">Your comment</label>
-                            <textarea id="comment" rows="6"
+                            <textarea id="comment" name="comment" rows="6" required
                                 class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none"
-                                placeholder="Write a comment..." required></textarea>
+                                placeholder="Write a comment..."></textarea>
                         </div>
+
+                        <!-- ID Produk -->
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+
+                        <!-- Kirim -->
                         <button type="submit"
                             class="inline-flex items-center py-2.5 px-4 text-xs border font-medium text-center text-slate-500 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-800">
                             Send
                         </button>
                     </form>
+
+
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                         @forelse ($reviews as $review)

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.user')
 
 @section('main')
     <div class="container">
@@ -65,7 +65,7 @@
                                             <label for="product_id">Produk</label>
                                             <select name="product_id" id="product_id" class="form-select" required>
                                                 <!-- Menandai produk yang sudah dipilih -->
-                                              
+
                                                 @foreach ($products as $product)
                                                     <option value="{{ $product->id }}" @if ($product->id == $review->product->id) selected @endif>
                                                         {{ $product->name_product }}
