@@ -80,10 +80,10 @@
         data.forEach(item => {
             amount += item.product.price_product * item.quantity;
             items += `
-              <tr class="border-b-2 border-slate-200 pb-4">
+              <tr class="border-b-2 border-slate-200">
                     <th>
                         <div
-                            class="w-28 h-28 bg-cover bg-center overflow-hidden flex justify-center items-center p-5">
+                            class="w-20 h-20 bg-cover bg-center overflow-hidden flex justify-center items-center p-1 mb-2">
                             <img src="{{ url('') }}/storage/${item.product.image_product}" alt="Hp" class="object-cover" loading="lazy"/>
                         </div>
                     </th>

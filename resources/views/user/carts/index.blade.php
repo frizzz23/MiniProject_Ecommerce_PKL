@@ -179,7 +179,7 @@
                         @php
                             $total += $cart->product->price_product * $cart->quantity;
                         @endphp
-                        <tr class="border-b-2">
+                        <tr class="border-b-2" id="cart_{{ $cart->id }}">
                             <input type="hidden" name="total_input_{{ $cart->id }}"
                                 id="total_input_{{ $cart->id }}"
                                 value="{{ $cart->product->price_product * $cart->quantity }}" />
@@ -222,7 +222,7 @@
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="text-red-500 text-xs"
-                                        onclick="confirmDelete(event)">
+                                        onclick="confirmDelete(event, '{{ $cart->id }}')">
                                         Remove
                                     </button>
                                 </form>
@@ -263,8 +263,28 @@
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
+        function showAlert(icon, message) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 1000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: icon,
+                title: message
+            });
+        }
+
+
         const hamburger = document.getElementById("hamburger");
         hamburger.addEventListener("click", () => {
             const closeMenu = document.getElementById("close-menu");
@@ -383,10 +403,13 @@
                 }
                 el.disabled = false;
 
+            } else {
+                showAlert('error', 'stok product sudah habis')
+                el.disabled = false;
             }
         }
 
-        function confirmDelete(event) {
+        function confirmDelete(event, id) {
             event.preventDefault();
             const form = event.target.closest('form');
 
@@ -404,16 +427,12 @@
                 cancelButtonText: "Batal"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    Swal.fire({
-                        title: "Terhapus!",
-                        text: "Item berhasil dihapus dari keranjang!",
-                        icon: "success",
-                        width: 400,
-                        showConfirmButton: false,
-                    });
+                    showAlert('success', 'Item dihapus')
+                    total.innerHTML = 'loading..';
+                    document.getElementById("cart_" + id).classList.add("hidden");
                     setTimeout(() => {
                         form.submit();
-                    }, 200);
+                    }, 500);
                 }
             });
 
