@@ -40,7 +40,7 @@ class CheckoutController extends Controller
         if ($request->input('product')) {
             $slug = $request->input('product');
             $product = Product::where('slug', $slug)->first();
-            if (!$product) {
+            if (!$product || $product->stock_product <= 0) {
                 return redirect()->route('landing-page');
             }
         } else {
@@ -188,6 +188,13 @@ class CheckoutController extends Controller
         $snapToken = Snap::getSnapToken($payload);
         $order->snap_token = $snapToken;
         $order->save();
+
+        Payment::create([
+            'order_id' => $order->id,
+            'image_payment' => null,
+            'payment_method' => 'transfer',
+            'status' => 'pending',
+        ]);
 
         return response()->json(['status' => 'success', 'snap_token' => $snapToken]);
 
