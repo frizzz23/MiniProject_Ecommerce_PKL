@@ -112,7 +112,7 @@
                 <nav class="mb-4 flex" aria-label="Breadcrumb">
                     <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
                         <li class="inline-flex items-center">
-                            <a href="{{ route('landing-page2') }}"
+                            <a href="{{ route('landing-page') }}"
                                 class="inline-flex items-center text-sm font-medium text-gray-600 hover:text-blue-600">
                                 <svg class="me-2 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                     width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -131,7 +131,7 @@
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                         stroke-width="2" d="m9 5 7 7-7 7" />
                                 </svg>
-                                <a href="{{ route('landing-page2') }}"
+                                <a href="{{ route('landing-page') }}"
                                     class="ms-1 text-sm font-medium text-gray-600 hover:text-blue-600 md:ms-2">My
                                     account</a>
                             </div>

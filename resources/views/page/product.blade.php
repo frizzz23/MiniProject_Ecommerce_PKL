@@ -89,15 +89,39 @@
                         <a href="#" class="text-md text-slate-700 py-2 block">About</a>
                     </li>
 
-                    <li>
-                        <a href="#"
-                            class="text-sm block py-2 w-full rounded-lg bg-blue-500 text-white text-center mb-3">Sign
-                            in</a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-sm block py-2 w-full rounded-lg text-blue-500 text-center">Sign
-                            up</a>
-                    </li>
+                    @guest
+                        <li>
+                            <a href="{{ route('login') }}"
+                                class="text-sm block px-2 py-2 w-full rounded-lg bg-blue-500 text-white text-center mb-3">Sign
+                                in</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('register') }}"
+                                class="text-sm block px-2 py-2 w-full rounded-lg text-blue-500 text-center">Sign
+                                up</a>
+                        </li>
+                    @endguest
+                    @auth
+
+                        <li>
+                            <a href="{{ route('profile.edit') }}"
+                                class="flex justify-start items-center gap-1 text-md py-2 bg-gray-200 text-slate-800 w-auto  px-2 rounded-md">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <!-- Lingkaran untuk kepala -->
+                                        <circle cx="12" cy="8" r="4" stroke="#1C274C" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round"></circle>
+                                        <!-- Kurva untuk tubuh -->
+                                        <path d="M4 20C4 16 8 14 12 14C16 14 20 16 20 20" stroke="#1C274C"
+                                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </g>
+                                </svg>
+                                <span class="font-semibold text-xs"> My Account</span>
+                            </a>
+                        </li>
+                    @endauth
                 </ul>
             </div>
         </div>
@@ -105,83 +129,7 @@
     <!-- end menu-->
 
     <!-- start list cart -->
-    <div id="list-cart"
-        class="hidden w-full h-screen overflow-hidden fixed top-0 right-0 left-0 bottom-0 z-20 backdrop-brightness-50 flex justify-end p-5">
-        <div id="cart-content"
-            class="relative bg-white shadow-xl overflow-y-auto min-h-full w-full rounded-md md:w-2/5">
-            <div class="p-5">
-                <div class="flex justify-between items-center sticky top-0 z-10 bg-white py-3">
-                    <h1 class="text-3xl font-semibold text-slate-800">
-                        Cart
-                        <span class="text-sm text-slate-700 font-medium">2 items</span>
-                    </h1>
-                    <div class="cursor-pointer" id="close-cart">
-                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-7 h-7">
-                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                            <g id="SVGRepo_iconCarrier">
-                                <path
-                                    d="M10.0303 8.96965C9.73741 8.67676 9.26253 8.67676 8.96964 8.96965C8.67675 9.26255 8.67675 9.73742 8.96964 10.0303L10.9393 12L8.96966 13.9697C8.67677 14.2625 8.67677 14.7374 8.96966 15.0303C9.26255 15.3232 9.73743 15.3232 10.0303 15.0303L12 13.0607L13.9696 15.0303C14.2625 15.3232 14.7374 15.3232 15.0303 15.0303C15.3232 14.7374 15.3232 14.2625 15.0303 13.9696L13.0606 12L15.0303 10.0303C15.3232 9.73744 15.3232 9.26257 15.0303 8.96968C14.7374 8.67678 14.2625 8.67678 13.9696 8.96968L12 10.9393L10.0303 8.96965Z"
-                                    fill="#1C274C"></path>
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M12 1.25C6.06294 1.25 1.25 6.06294 1.25 12C1.25 17.9371 6.06294 22.75 12 22.75C17.9371 22.75 22.75 17.9371 22.75 12C22.75 6.06294 17.9371 1.25 12 1.25ZM2.75 12C2.75 6.89137 6.89137 2.75 12 2.75C17.1086 2.75 21.25 6.89137 21.25 12C21.25 17.1086 17.1086 21.25 12 21.25C6.89137 21.25 2.75 17.1086 2.75 12Z"
-                                    fill="#1C274C"></path>
-                            </g>
-                        </svg>
-                    </div>
-                </div>
-
-                <table class="table-auto w-full">
-                    <tr class="border-b-2 border-slate-200 pb-4">
-                        <th>
-                            <div
-                                class="w-28 h-28 bg-cover bg-center overflow-hidden flex justify-center items-center p-5">
-                                <img src="{{ asset('landing/image/hp.png') }}" alt="Hp" class="" />
-                            </div>
-                        </th>
-                        <td class="w-full">
-                            <p class="text-sm text-slate-700 mb-5">
-                                Samsung Galaxy A55 5G 8/128 8/256 | 5000mAh
-                            </p>
-                            <p class="text-sm text-slate-500">Rp. 10.000.000</p>
-                        </td>
-                        <td>
-                            <div class="flex border-2 border-blue-200 rounded-md mb-4">
-                                <button type="button" class="p-2" onclick="minus('quantity_1')">
-                                    -
-                                </button>
-                                <input type="text" class="w-10 outline-none p-2" value="1"
-                                    id="quantity_1" />
-                                <button type="button" class="p-2" onclick="plus('quantity_1', 20)">
-                                    +
-                                </button>
-                            </div>
-                            <button type="button" class="text-red-500 text-xs block text-end w-full">
-                                Remove
-                            </button>
-                        </td>
-                    </tr>
-                </table>
-                <div class="bg-gray-100 border-b-2 border-slate-200 pb-4 flex justify-between items-center mt-2 p-5">
-                    <div class="w-1/2">
-                        <h4 class="text-md text-slate-600">Subtotal</h4>
-                        <p class="text-xs text-slate-500">
-                            Tax included and Shipping and taxes calculated at checkout.
-                        </p>
-                    </div>
-                    <p class="text-md text-slate-800 text-nowrap">Rp. 10.000.000</p>
-                </div>
-
-                <div class="flex justify-center items-center flex-col gap-3 mt-10">
-                    <button class="bg-blue-500 text-white text-sm px-5 py-2 rounded-md w-full">
-                        Checkout
-                    </button>
-                    <a href="#" class="text-sm text-slate-500 text-center mt-5 border-b-2 font-medium">View
-                        cart</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    <x-list-cart-modal />
     <!-- end list cart -->
 
     <div class="grid md:grid-cols-[0.5fr_2fr] grid-cols-1 mt-10">
@@ -339,7 +287,8 @@
                             <span
                                 class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                             <span
-                                class="relative inline-flex rounded-full h-4 w-4 bg-red-500 text-white text-[10px] flex items-center justify-center">1</span>
+                                class="relative inline-flex rounded-full h-4 w-4 bg-red-500 text-white text-[10px] flex items-center justify-center"
+                                id="cartCountItem"></span>
                         </span>
                     </div>
                 </div>
@@ -483,7 +432,8 @@
                             <p class="text-xl text-blue-500 font-medium tracking-tight">
                                 Rp {{ number_format($product->price_product, 0, ',', '.') }}
                             </p>
-                            <button class="w-10 h-10 bg-blue-500 flex justify-center items-center rounded-md">
+                            <button onclick="addToCart({{ $product->id }}, this)" type="button"
+                                class="w-10 h-10 bg-blue-500 flex justify-center items-center rounded-md">
                                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                                     class="w-5 h-5">
                                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -561,6 +511,8 @@
         </div>
     </div>
     <!-- end filter view -->
+
+    <x-list-cart-script />
 
     <script>
         window.addEventListener("scroll", () => {
