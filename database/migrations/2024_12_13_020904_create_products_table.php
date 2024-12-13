@@ -20,6 +20,7 @@ return new class extends Migration
             $table->decimal('price_product', 10, 2);
             $table->string('image_product')->nullable();
             $table->foreignId('category_id')->constrained('categories');
+            $table->foreignId('brand_id')->constrained('brands');
             $table->timestamps();
         });
     }

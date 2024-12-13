@@ -103,7 +103,7 @@
                         </div>
 
                         <!-- Forgot Password link -->
-                        <div class="forgot-link" style="color:">
+                        <div class="forgot-link">
                             @if (Route::has('password.request'))
                                 <a href="{{ route('password.request') }}">Forgot Password?</a>
                             @endif

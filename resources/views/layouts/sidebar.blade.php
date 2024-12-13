@@ -57,6 +57,14 @@
                     </a>
                 </li>
                 <li class="sidebar-item my-2">
+                    <a class="sidebar-link" href="{{ route('admin.brands.index') }}" aria-expanded="false">
+                        <span>
+                            <i class="fa-solid fa-tag"></i>
+                        </span>
+                        <span class="hide-menu">Brand</span>
+                    </a>
+                </li>
+                <li class="sidebar-item my-2">
                     <a class="sidebar-link" href="{{ route('admin.categories.index') }}" aria-expanded="false">
                         <span>
                             <i class="fa-solid fa-list"></i>

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 
 use App\Http\Controllers\admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\admin\BrandController as AdminBrandController;
 use App\Http\Controllers\admin\UserController as AdminUserController;
 use App\Http\Controllers\admin\OrderController as AdminOrderController;
 use App\Http\Controllers\admin\ProductController as AdminProductController;
@@ -19,6 +20,12 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
         'store' => 'admin.categories.store',
         'update' => 'admin.categories.update',
         'destroy' => 'admin.categories.destroy',
+    ]);
+    Route::resource('brands', AdminBrandController::class)->names([
+        'index' => 'admin.brands.index',
+        'store' => 'admin.brands.store',
+        'update' => 'admin.brands.update',
+        'destroy' => 'admin.brands.destroy',
     ]);
     Route::resource('users', AdminUserController::class)->names([
         'index' => 'admin.users.index',

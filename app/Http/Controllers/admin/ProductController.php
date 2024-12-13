@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Brand;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
@@ -17,18 +18,31 @@ class ProductController extends Controller
     {
         // Ambil data kategori untuk dropdown
         $categories = Category::all();
+        $brands = Brand::all();
 
         // Ambil kata kunci pencarian dan kategori yang dipilih dari request
         $search = $request->input('search');
         $category_id = $request->input('category_id');
+        $stock_product = $request->input('stock_product');
+        $price_product = $request->input('price_product');
+        $brand_id = $request->input('brand_id');
 
         // Query produk dengan filter berdasarkan kategori dan pencarian
-        $products = Product::with('category')
+        $products = Product::with('category', 'stock', 'brand')
             ->when($search, function ($query) use ($search) {
                 return $query->where('name_product', 'like', '%' . $search . '%');
             })
             ->when($category_id, function ($query) use ($category_id) {
                 return $query->where('category_id', $category_id);
+            })
+            ->when($stock_product, function ($query) use ($stock_product) {
+                return $query->where('stock_product', $stock_product);
+            })
+            ->when($price_product, function ($query) use ($price_product) {
+                return $query->where('price_product', $price_product);
+            })
+            ->when($brand_id, function ($query) use ($brand_id) {
+                return $query->where('brand_id', $brand_id);
             })
             ->paginate(5); 
 
@@ -54,9 +68,10 @@ class ProductController extends Controller
             'stock_product' => 'required|integer|min:0',
             'price_product' => 'required|numeric|min:0',
             'category_id' => 'required|exists:categories,id',
+            'brand_id' => 'required|exists:brands,id',
         ]);
 
-        // Proses penyimpanan gambar jika ada
+        // Proses penyimpanan gambar product
         $imagePath = null;
         if ($request->hasFile('image_product')) {
             $imagePath = $request->file('image_product')->store('products', 'public');
@@ -69,6 +84,7 @@ class ProductController extends Controller
             'stock_product' => $request->stock_product,
             'price_product' => $request->price_product,
             'category_id' => $request->category_id,
+            'brand_id' => $request->brand_id,
             'image_product' => $imagePath,  // Simpan gambar jika ada
         ]);
 
@@ -101,10 +117,12 @@ class ProductController extends Controller
         $request->validate([
             'name_product' => 'required|string|max:255',
             'description_product' => 'required|string',
+            'brand_product' => 'required|string',
             'image_product' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'stock_product' => 'required|integer|min:0',
             'price_product' => 'required|numeric|min:0',
             'category_id' => 'required|exists:categories,id',
+            'brand_id' => 'required|exists:brands,id',
         ]);
 
         // Proses penyimpanan gambar baru jika ada
@@ -122,9 +140,11 @@ class ProductController extends Controller
         $product->update([
             'name_product' => $request->name_product,
             'description_product' => $request->description_product,
+            'brand_product' => $request->brand_product,
             'stock_product' => $request->stock_product,
             'price_product' => $request->price_product,
             'category_id' => $request->category_id,
+            'brand_id' => $request->brand_id,
             'image_product' => $imagePath,  // Simpan gambar yang baru (atau gambar lama jika tidak ada perubahan)
         ]);
 

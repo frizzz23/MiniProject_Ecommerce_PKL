@@ -76,4 +76,16 @@ class UserController extends Controller
 
         return redirect()->route('admin.users.index')->with('success', 'Pengguna berhasil dihapus.');
     }
+
+    public function deleteMultiple(Request $request)
+    {
+        $userIds = $request->input('selected_users');
+        if (!empty($userIds)) {
+            User::whereIn('id', $userIds)->delete();
+            return redirect()->route('admin.users.index')->with('success', 'Selected users have been deleted.');
+        }
+
+        return redirect()->route('admin.users.index')->with('error', 'No users selected for deletion.');
+    }
+
 }
