@@ -61,9 +61,26 @@ class User extends Authenticatable
         return $this->hasMany(Order::class);
     }
 
-     // Relasi dengan Review
-     public function reviews()
-     {
-         return $this->hasMany(Review::class);
-     }
+    // Relasi dengan Review
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    /**
+     * Relasi ke promo codes melalui used_promo_codes.
+     */
+    public function promoCodes()
+    {
+        return $this->belongsToMany(PromoCode::class, 'used_promo_codes', 'user_id', 'promo_code_id')
+            ->withTimestamps();
+    }
+
+    /**
+     * Relasi langsung ke tabel pivot (used_promo_codes).
+     */
+    public function usedPromoCodes()
+    {
+        return $this->hasMany(UsedPromoCode::class);
+    }
 }

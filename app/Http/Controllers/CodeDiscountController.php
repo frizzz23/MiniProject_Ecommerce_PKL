@@ -13,7 +13,7 @@ class CodeDiscountController extends Controller
      */
     public function index()
     {
-        $codes = PromoCode::all();
+        $codes = PromoCode::with('users')->get();
         return view('code-discount.index', compact('codes'));
     }
 

@@ -51,9 +51,9 @@
                 <li class="sidebar-item my-2">
                     <a class="sidebar-link" href="{{ route('admin.discount.index') }}" aria-expanded="false">
                         <span>
-                            <i class="fa-solid fa-shop"></i>
+                            <i class="fa-solid fa-ticket"></i>
                         </span>
-                        <span class="hide-menu">Discount</span>
+                        <span class="hide-menu">Voucher</span>
                     </a>
                 </li>
                 <li class="sidebar-item my-2">
