@@ -19,22 +19,52 @@ class ProductPageController extends Controller
         $categories = Category::all();
 
         // Ambil input pencarian (untuk nama produk)
-        $search = $request->get('search'); // Nama parameter search
+        $search = $request->get('search');
 
         // Ambil kategori yang dipilih dari input
-        $selectedCategory = $request->input('Category'); // select option
-        $selectedCategories = $request->input('categories', []); // Untuk checkbox (multiple)
+        $selectedCategory = $request->input('Category');
+        $selectedCategories = $request->input('categories', []);
 
-        // Ambil produk yang difilter berdasarkan kategori yang dipilih
+        // Ambil filter harga
+        $minPrice = $request->input('min_price');
+        $maxPrice = $request->input('max_price');
+
+        // Ambil filter pengurutan (terlama/terbaru)
+        $sortOrder = $request->input('sort_order', 'terbaru');
+
+        // Ambil filter pengurutan harga
+        $sortPrice = $request->input('sort_price'); // menambahkan filter harga
+
+        // Ambil produk yang difilter berdasarkan kategori, harga, dan pengurutan
         $products = Product::with('category')
             ->when($search, function ($query, $search) {
-                return $query->where('name_product', 'like', '%' . $search . '%'); // Filter berdasarkan nama produk
+                return $query->where('name_product', 'like', '%' . $search . '%');
             })
             ->when($selectedCategory, function ($query) use ($selectedCategory) {
-                return $query->where('category_id', $selectedCategory); // Filter berdasarkan single category_id
+                return $query->where('category_id', $selectedCategory);
             })
             ->when(!empty($selectedCategories), function ($query) use ($selectedCategories) {
-                return $query->whereIn('category_id', $selectedCategories); // Filter berdasarkan multiple category_id
+                return $query->whereIn('category_id', $selectedCategories);
+            })
+            ->when($minPrice, function ($query) use ($minPrice) {
+                return $query->where('price_product', '>=', $minPrice);
+            })
+            ->when($maxPrice, function ($query) use ($maxPrice) {
+                return $query->where('price_product', '<=', $maxPrice);
+            })
+            ->when($sortOrder, function ($query) use ($sortOrder) {
+                if ($sortOrder === 'terlama') {
+                    return $query->orderBy('created_at', 'asc');
+                }
+                return $query->orderBy('created_at', 'desc');
+            })
+            ->when($sortPrice, function ($query) use ($sortPrice) {
+                if ($sortPrice === 'rendah') {
+                    return $query->orderBy('price_product', 'asc'); // Harga Rendah ke Tinggi
+                } elseif ($sortPrice === 'tinggi') {
+                    return $query->orderBy('price_product', 'desc'); // Harga Tinggi ke Rendah
+                }
+                return $query; // Default jika tidak ada filter harga
             })
             ->get();
 
@@ -51,10 +81,8 @@ class ProductPageController extends Controller
         }
 
         // Return ke view dengan data produk, kategori, dan jumlah review
-        return view('page.product', compact('products', 'categories', 'reviewsCount', 'search'));
+        return view('page.product', compact('products', 'categories', 'reviewsCount', 'search', 'minPrice', 'maxPrice', 'sortOrder', 'sortPrice'));
     }
-
-
 
 
     /**
