@@ -16,51 +16,35 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        // Ambil data kategori untuk dropdown
         $categories = Category::all();
         $brands = Brand::all();
 
-        // Ambil kata kunci pencarian dan kategori yang dipilih dari request
-        $search = $request->input('search');
-        $category_id = $request->input('category_id');
-        $stock_product = $request->input('stock_product');
-        $price_product = $request->input('price_product');
-        $brand_id = $request->input('brand_id');
+        $products = Product::with('category', 'brand')
+            ->when($request->input('search'), function ($query, $search) {
+                $query->where('name_product', 'like', '%' . $search . '%');
+            })
+            ->when($request->input('category_id'), function ($query, $category_id) {
+                $query->where('category_id', $category_id);
+            })
+            ->when($request->input('stock_product'), function ($query, $stock_product) {
+                $query->where('stock_product', $stock_product);
+            })
+            ->when($request->input('price_product'), function ($query, $price_product) {
+                $query->where('price_product', $price_product);
+            })
+            ->when($request->input('brand_id'), function ($query, $brand_id) {
+                $query->where('brand_id', $brand_id);
+            })
+            ->paginate(5);
 
-        // Query produk dengan filter berdasarkan kategori dan pencarian
-        $products = Product::with('category', 'stock', 'brand')
-            ->when($search, function ($query) use ($search) {
-                return $query->where('name_product', 'like', '%' . $search . '%');
-            })
-            ->when($category_id, function ($query) use ($category_id) {
-                return $query->where('category_id', $category_id);
-            })
-            ->when($stock_product, function ($query) use ($stock_product) {
-                return $query->where('stock_product', $stock_product);
-            })
-            ->when($price_product, function ($query) use ($price_product) {
-                return $query->where('price_product', $price_product);
-            })
-            ->when($brand_id, function ($query) use ($brand_id) {
-                return $query->where('brand_id', $brand_id);
-            })
-            ->paginate(5); 
-
-        // Return data ke view dengan data pencarian dan kategori
-        return view('admin.products.index', compact('products', 'categories', 'search', 'category_id'));
+        return view('admin.products.index', compact('products', 'categories', 'brands'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create() {}
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        // Validasi input
         $request->validate([
             'name_product' => 'required|string|max:255',
             'description_product' => 'required|string',
@@ -71,22 +55,11 @@ class ProductController extends Controller
             'brand_id' => 'required|exists:brands,id',
         ]);
 
-        // Proses penyimpanan gambar product
-        $imagePath = null;
-        if ($request->hasFile('image_product')) {
-            $imagePath = $request->file('image_product')->store('products', 'public');
-        }
+        $imagePath = $request->file('image_product')
+            ? $request->file('image_product')->store('products', 'public')
+            : null;
 
-        // Simpan data produk
-        Product::create([
-            'name_product' => $request->name_product,
-            'description_product' => $request->description_product,
-            'stock_product' => $request->stock_product,
-            'price_product' => $request->price_product,
-            'category_id' => $request->category_id,
-            'brand_id' => $request->brand_id,
-            'image_product' => $imagePath,  // Simpan gambar jika ada
-        ]);
+        Product::create($request->except('image_product') + ['image_product' => $imagePath]);
 
         return redirect()->route('admin.products.index')->with('success', 'Produk berhasil ditambahkan.');
     }
@@ -96,16 +69,18 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        // Mendapatkan semua kategori untuk dropdown
         $categories = Category::all();
-        return view('admin.products.edit', compact('product', 'categories'));
+        $brands = Brand::all();
+
+        return view('admin.products.edit', compact('product', 'categories', 'brands'));
     }
 
+    /**
+     * Display the specified resource.
+     */
     public function show(Product $product)
     {
-        $product = Product::with('category')->findOrFail($product->id);
-        $categories = Category::all();
-        return view('admin.products.show', compact('product', 'categories'));
+        return view('admin.products.show', compact('product'));
     }
 
     /**
@@ -113,11 +88,9 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        // Validasi input
         $request->validate([
             'name_product' => 'required|string|max:255',
             'description_product' => 'required|string',
-            'brand_product' => 'required|string',
             'image_product' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'stock_product' => 'required|integer|min:0',
             'price_product' => 'required|numeric|min:0',
@@ -125,28 +98,15 @@ class ProductController extends Controller
             'brand_id' => 'required|exists:brands,id',
         ]);
 
-        // Proses penyimpanan gambar baru jika ada
-        if ($request->hasFile('image_product')) {
-            // Hapus gambar lama jika ada
-            if ($product->image_product && Storage::disk('public')->exists($product->image_product)) {
-                Storage::disk('public')->delete($product->image_product);
-            }
-            $imagePath = $request->file('image_product')->store('products', 'public');
-        } else {
-            $imagePath = $product->image_product; // Jika gambar tidak diupload, gunakan gambar lama
+        $imagePath = $request->file('image_product')
+            ? $request->file('image_product')->store('products', 'public')
+            : $product->image_product;
+
+        if ($request->file('image_product') && $product->image_product) {
+            Storage::disk('public')->delete($product->image_product);
         }
 
-        // Update data produk
-        $product->update([
-            'name_product' => $request->name_product,
-            'description_product' => $request->description_product,
-            'brand_product' => $request->brand_product,
-            'stock_product' => $request->stock_product,
-            'price_product' => $request->price_product,
-            'category_id' => $request->category_id,
-            'brand_id' => $request->brand_id,
-            'image_product' => $imagePath,  // Simpan gambar yang baru (atau gambar lama jika tidak ada perubahan)
-        ]);
+        $product->update($request->except('image_product') + ['image_product' => $imagePath]);
 
         return redirect()->route('admin.products.index')->with('success', 'Produk berhasil diperbarui.');
     }
@@ -156,12 +116,10 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        // Hapus gambar produk dari storage
-        if ($product->image_product && Storage::disk('public')->exists($product->image_product)) {
+        if ($product->image_product) {
             Storage::disk('public')->delete($product->image_product);
         }
 
-        // Hapus produk
         $product->delete();
 
         return redirect()->route('admin.products.index')->with('success', 'Produk berhasil dihapus.');
