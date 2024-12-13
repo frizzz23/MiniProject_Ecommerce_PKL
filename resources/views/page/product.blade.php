@@ -61,12 +61,12 @@
                                 <input type="text" name="search" class="py-1 px-3 outline-none border border-gray-300 rounded-lg text-sm w-full text-slate-700"
                                     placeholder="Search for products..." value="{{ request()->get('search') }}" />
                                 <button type="submit">
-                                    
+
                                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4">
                                         <path d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                                     </svg>
                                 </button>
-                            </form>                                                   
+                            </form>
                         </div>
                     </li>
                     <li>
@@ -375,7 +375,7 @@
                                 <img src="{{ asset('img/img-carousel-promo/laptop.jpg') }}" alt="Default Image"
                                      class="object-cover w-32 h-32" />
                             @endif
-                        </div>                        
+                        </div>
 
                         <div class="flex items-center space-x-1 mb-2">
                             @for ($i = 0; $i < 5; $i++)
