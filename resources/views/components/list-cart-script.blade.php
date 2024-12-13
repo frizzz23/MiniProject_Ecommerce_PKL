@@ -75,35 +75,52 @@
     */
 
     function listCart(data) {
-        let items = ''
-        const cartItems = document.getElementById('cartItems');
-        data.forEach(item => {
-            amount += item.product.price_product * item.quantity;
-            items += `
-              <tr class="border-b-2 border-slate-200">
-                    <th>
-                        <div
-                            class="w-20 h-20 bg-cover bg-center overflow-hidden flex justify-center items-center p-1 mb-2">
-                            <img src="{{ url('') }}/storage/${item.product.image_product}" alt="Hp" class="object-cover" loading="lazy"/>
-                        </div>
-                    </th>
-                    <td class="w-full">
-                        <a href="{{ url('') }}/product-show/${item.product.slug}" class="text-sm text-slate-700 mb-5">
-                            ${item.product.name_product}
-                        </a>
-                        <p class="text-sm text-slate-500">${formatRupiah(item.product.price_product * item.quantity)}</p>
-                    </td>
-                     <td>
-                        <p class="text-sm text-slate-500">x${item.quantity}</p>
-                    </td>
-                </tr>
+        let items = '';
+        let amount = 0; // Inisialisasi total amount
+        const cartItems = document.getElementById('cartItems'); // Elemen untuk menampilkan item di keranjang
 
-            `
-        })
+        data.forEach(item => {
+            // Cek apakah produk memiliki gambar, jika tidak gunakan gambar default
+            const imageSrc = item.product.image_product ?
+                `{{ url('') }}/storage/${item.product.image_product}` :
+                `{{ asset('img/img-carousel-promo/laptop.jpg') }}`; // Gambar default
+
+            // Hitung total harga berdasarkan kuantitas produk
+            amount += item.product.price_product * item.quantity;
+
+            // Tambahkan item ke dalam tabel
+            items +=
+                `<tr class="border-b-2 border-slate-200">
+                <th>
+                    <div
+                        class="w-20 h-20 bg-cover bg-center overflow-hidden flex justify-center items-center p-1 mb-2">
+                        <img src="${imageSrc}" alt="Product Image"
+                            width="80" height="80" 
+                            style="object-fit: cover; border-radius: 5px;" 
+                            loading="lazy"/>
+                    </div>
+                </th>
+                <td class="w-full">
+                    <a href="{{ url('') }}/product-show/${item.product.slug}" class="text-sm text-slate-700 mb-5">
+                        ${item.product.name_product}
+                    </a>
+                    <p class="text-sm text-slate-500">${formatRupiah(item.product.price_product * item.quantity)}</p>
+                </td>
+                <td>
+                    <p class="text-sm text-slate-500">x${item.quantity}</p>
+                </td>
+            </tr>`;
+        });
+
+        // Update isi keranjang
         cartItems.innerHTML = items;
-        document.getElementById('cartCount').textContent = data.length
-        document.getElementById('cartCountItem').textContent = data.length
-        setTotal()
+
+        // Update jumlah item di keranjang
+        document.getElementById('cartCount').textContent = data.length;
+        document.getElementById('cartCountItem').textContent = data.length;
+
+        // Update total
+        setTotal(amount);
     }
 
     const totalAmount = document.getElementById('totalAmount');
