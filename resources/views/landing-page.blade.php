@@ -354,8 +354,8 @@
     </div>
     <!-- end list cart -->
 
-    <section style="padding-top: 80px"
-        class="-translate-y-[7.5rem] bg-gradient-to-r from-[#EAF6FE] to-[#FCDEDE] px-10 min-h-screen flex gap-2 flex-col md:flex-row md:justify-between justify-center items-center">
+    <section style="padding-top: 80px;background: linear-gradient(90deg, #EAF6FE 24.42%, #FCDEDE 100%);"
+        class="-translate-y-[7.5rem] px-10 min-h-screen flex gap-2 flex-col md:flex-row md:justify-between justify-center items-center">
         <div class="xl:w-1/2 md:order-0 order-1 md:py-0 py-10">
             <h1 class="text-3xl font-bold mb-5 text-slate-700">
                 Welcome to ZenTech
