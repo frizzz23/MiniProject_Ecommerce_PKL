@@ -13,10 +13,13 @@ class ApiCartController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    protected $ambil = 5;
+
     public function index()
     {
         $user = Auth::user();
-        $cart = Cart::where('user_id', $user->id)->with(['product:id,name_product,price_product,stock_product,image_product'])->get();
+        $cart = Cart::where('user_id', $user->id)->with(['product'])->latest()->take($this->ambil)->get();
         return response()->json(['status' => 'success', 'data' =>  $cart]);
     }
 
@@ -46,8 +49,8 @@ class ApiCartController extends Controller
         $user = Auth::user();
         $cart = Cart::where('user_id', $user->id)->where('product_id', $product->id)->first();
         if ($cart) {
-            if ($cart->quantity >= $product->stock_product) {
-                return response()->json(['status' => 'warning', 'message' => 'jumlah melebihi stok product']);
+            if ($cart->quantity > $product->stock_product) {
+                return response()->json(['status' => 'warning', 'message' => 'jumlah melebihi stok product'], 400);
                 die();
             }
             $cart->update([
@@ -60,8 +63,8 @@ class ApiCartController extends Controller
                 'quantity' => 1,
             ]);
         }
-        $cart = Cart::where('user_id', $user->id)->with(['product:id,name_product,price_product,stock_product'])->get();
-        return response()->json(['status' => 'success', 'data' =>  $cart]);
+        $cart = Cart::where('user_id', $user->id)->with(['product'])->latest()->take($this->ambil)->get();
+        return response()->json(['status' => 'success', 'data' =>  $cart], 200);
     }
 
     /**
