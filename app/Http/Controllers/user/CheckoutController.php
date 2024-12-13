@@ -15,8 +15,24 @@ use App\Http\Controllers\Controller;
 use App\Models\Province;
 use Illuminate\Support\Facades\Auth;
 
+use Midtrans\Config;
+use Midtrans\Snap;
+
+
 class CheckoutController extends Controller
 {
+
+    public function __construct(Request $request)
+    {
+        // Set midtrans configuration
+        Config::$serverKey = config('services.midtrans.serverKey');
+        Config::$isProduction = config('services.midtrans.isProduction');
+        Config::$isSanitized = config('services.midtrans.isSanitized');
+        Config::$is3ds = config('services.midtrans.is3ds');
+    }
+
+
+
     public function index(Request $request)
     {
         $product = false;
@@ -42,17 +58,22 @@ class CheckoutController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
-        $request->validate([
-            'bukti_image' => 'required|image|mimes:jpeg,png,jpg',
-        ]);
         $diskon = PromoCode::find($request->id_discount);
+        // return response()->json($request->all());
 
         $request->validate([
+            'alamat' => 'required',
+            'name' => 'required',
+            'email' => 'required',
+            // 'bukti_image' => 'required|image|mimes:jpeg,png,jpg',
             'id_discount' => 'nullable|exists:promo_codes,id',
             'total' => 'required|numeric|min:0',
             'subtotal' => 'required|numeric|min:0',
             'addresses_id' => 'required|exists:addresses,id',
+            'courier' => 'required',
+            'cost' => 'required',
         ]);
+
 
         // Buat data pesanan di tabel `orders`
         $order = Order::create([
@@ -62,6 +83,9 @@ class CheckoutController extends Controller
             'sub_total_amount' => $request->subtotal,
             'grand_total_amount' => $request->total,
         ]);
+
+
+        $item_details = [];
 
         if ($request->order_form == 'cart') {
             $request->validate([
@@ -75,8 +99,15 @@ class CheckoutController extends Controller
                     'order_id' => $order->id,
                     'quantity' => $quantity,
                 ]);
-                $stok =   Product::where('id', $product_id)->first();
-                $stok->decrement('stock_product', $quantity);
+                $product =   Product::where('id', $product_id)->first();
+                $product->decrement('stock_product', $quantity);
+
+                $item_details[] =  [
+                    'id'       => $product_id,
+                    'price'    => $product->price_product,
+                    'quantity' => $quantity,
+                    'name'     => $product->name_product,
+                ];
             }
             // Hapus data keranjang setelah checkout
             Cart::where('user_id', Auth::id())->delete();
@@ -85,17 +116,35 @@ class CheckoutController extends Controller
                 'product_id' => 'required|exists:products,id',
                 'quantity_checkout' => 'required|numeric|min:1',
             ]);
-            $p =  ProductOrder::create([
+            $product = Product::where('id', $request->product_id)->first();
+            if ($product->stock_product <= 0) {
+                return redirect()->route('landing-page');
+            }
+            ProductOrder::create([
                 'product_id' => $request->product_id,
                 'order_id' => $order->id,
                 'quantity' => $request->quantity_checkout,
             ]);
-            $stok = Product::where('id', $request->product_id)->first();
-            $stok->decrement('stock_product', $request->quantity_checkout);
+            $product->decrement('stock_product', $request->quantity_checkout);
+
+
+            $item_details[] =  [
+                'id'       => $product->id,
+                'price'    => $product->price_product,
+                'quantity' => $request->quantity_checkout,
+                'name'     => $product->name_product,
+            ];
         } else {
             return redirect()->route('landing-page');
         }
 
+
+        $item_details[] = [
+            'id'       => 'Ongkir',
+            'price'    => $request->cost, // Nilai diskon negatif
+            'quantity' => 1,
+            'name'     => 'ongkir',
+        ];
 
         $user = Auth::user();
         if ($diskon) {
@@ -108,18 +157,41 @@ class CheckoutController extends Controller
                 'user_id' => $user->id,
                 'promo_code_id' => $diskon->id,
             ]);
+
+            $item_details[] = [
+                'id'       => 'promo_discount',
+                'price'    => -$diskon->discount_amount, // Nilai diskon negatif
+                'quantity' => 1,
+                'name'     => 'Promo Discount',
+            ];
         }
 
-        $path = $request->file('bukti_image')->store('images/payments', 'public');
+        // $path = $request->file('bukti_image')->store('images/payments', 'public');
 
-        Payment::create([
-            'order_id' => $order->id,
-            'image_payment' => $path,
-            'payment_method' => 'transfer',
-            'status' => 'pending',
-        ]);
+
+
+        // Buat transaksi ke midtrans kemudian save snap tokennya.
+        $payload = [
+            'transaction_details' => [
+                'order_id'      => $order->id,
+                'gross_amount'  => $request->total,
+            ],
+            'customer_details' => [
+                'first_name'    => $request->name,
+                'email'         => $request->email,
+                'phone'         => $order->addresses->no_telepon,
+                'address'       => $order->addresses->address,
+            ],
+            'item_details' => $item_details,
+        ];
+
+        $snapToken = Snap::getSnapToken($payload);
+        $order->snap_token = $snapToken;
+        $order->save();
+
+        return response()->json(['status' => 'success', 'snap_token' => $snapToken]);
 
         // Redirect ke halaman pesanan dengan pesan sukses
-        return redirect()->route('user.orders.index')->with('success', 'Checkout berhasil! Pesanan Anda telah dibuat.');
+        // return redirect()->route('user.orders.index')->with('success', 'Checkout berhasil! Pesanan Anda telah dibuat.');
     }
 }
