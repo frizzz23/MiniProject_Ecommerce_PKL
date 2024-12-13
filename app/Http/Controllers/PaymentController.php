@@ -7,11 +7,21 @@ use App\Models\Order;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
+use Midtrans\Config;
 use Midtrans\Notification;
 
 class PaymentController extends Controller
 {
 
+
+    public function __construct(Request $request)
+    {
+        // Set midtrans configuration
+        Config::$serverKey = config('services.midtrans.serverKey');
+        Config::$isProduction = config('services.midtrans.isProduction');
+        Config::$isSanitized = config('services.midtrans.isSanitized');
+        Config::$is3ds = config('services.midtrans.is3ds');
+    }
 
     // /**
     //  * Display a listing of the payments.
@@ -29,7 +39,7 @@ class PaymentController extends Controller
     /**
      * Show the form for creating a new payment.
      */
-    public function create(string $order)
+    public function create()
     {
         $notif = new Notification();
 
@@ -71,10 +81,7 @@ class PaymentController extends Controller
             'status_order' => $status_order,
         ]);
 
-        Payment::create([
-            'order_id' => $order->id,
-            'image_payment' => null,
-            'payment_method' => 'transfer',
+        $order->payment->update([
             'status' => $status,
         ]);
     }

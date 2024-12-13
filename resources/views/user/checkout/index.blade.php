@@ -118,7 +118,7 @@
                                 </div>
                             @endforelse
                             <div class="flex gap-5 border-b-2 py-2 px-3 w-full">
-                                <button type="button" onclick="ShowAddAddress(this)"
+                                <button type="button" onclick="ShowAddAddress(this)" id="tambah_alamat"
                                     class="text-xs text-slate-700 block w-full text-center py-2 px-3">Tambahkan
                                     Alamat</button>
                             </div>
@@ -482,6 +482,9 @@
 
 
     <script>
+        let snap_token = "";
+        const name_input = document.querySelector("input[name='name']");
+        const email_input = document.querySelector("input[name='email']");
         const subtotal_input = document.getElementById("subtotal_input");
         const discount_input = document.getElementById("discount_input");
         const total_input = document.getElementById("total_input");
@@ -536,59 +539,63 @@
         }
 
         async function checkVoucher(el) {
-            el.disabled = true;
-            const vocher = vocher_input.value;
-            const total = total_input.value;
-            let message = document.getElementById("voucher-status");
-            message.innerHTML = `<span class="text-xs text-slate-700 font-medium">Checking voucher...</span>`;
+            if (!snap_token) {
+                el.disabled = true;
+                const vocher = vocher_input.value;
+                const total = total_input.value;
+                let message = document.getElementById("voucher-status");
+                message.innerHTML = `<span class="text-xs text-slate-700 font-medium">Checking voucher...</span>`;
 
-            if (vocher.trim() === '') {
-                setTimeout(() => {
-                    message.innerHTML =
-                        `<span class="text-xs text-yellow-700 font-medium">Vocher Not Found</span>`;
+                if (vocher.trim() === '') {
+                    setTimeout(() => {
+                        message.innerHTML =
+                            `<span class="text-xs text-yellow-700 font-medium">Vocher Not Found</span>`;
+                        el.disabled = false;
+                    }, 1000);
+                    return;
+
+                };
+
+                const response = await fetch('/api/validate-promo', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            'content')
+                    },
+                    body: JSON.stringify({
+                        code: vocher,
+                        total: total
+                    })
+                });
+                const data = await response.json();
+                if (data.status === 'success') {
+                    message.innerHTML = `<span class="text-xs text-green-500 font-medium">Voucher code is valid</span>`;
+                    id_discount_input.value = data.id;
+                    discount_input.value = data.discount;
+                    discount.textContent = `-Rp. ${parseInt(data.discount).toLocaleString("id-ID")}`;
+                    setTotal();
                     el.disabled = false;
-                }, 1000);
-                return;
 
-            };
+                } else if (data.status === 'error') {
+                    message.innerHTML = `<span class="text-xs text-red-500 font-medium">${data.message}</span>`;
+                    id_discount_input.value = "";
+                    discount_input.value = 0;
+                    discount.textContent = 0;
+                    setTotal('clear');
+                    el.disabled = false;
 
-            const response = await fetch('/api/validate-promo', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
-                        'content')
-                },
-                body: JSON.stringify({
-                    code: vocher,
-                    total: total
-                })
-            });
-            const data = await response.json();
-            if (data.status === 'success') {
-                message.innerHTML = `<span class="text-xs text-green-500 font-medium">Voucher code is valid</span>`;
-                id_discount_input.value = data.id;
-                discount_input.value = data.discount;
-                discount.textContent = `-Rp. ${parseInt(data.discount).toLocaleString("id-ID")}`;
-                setTotal();
-                el.disabled = false;
+                } else {
+                    message.innerHTML = `<span class="text-xs text-green-500 font-medium">Error</span>`;
+                    id_discount_input.value = "";
+                    discount_input.value = 0;
+                    discount.textContent = 0;
+                    setTotal('clear');
+                    el.disabled = false;
 
-            } else if (data.status === 'error') {
-                message.innerHTML = `<span class="text-xs text-red-500 font-medium">${data.message}</span>`;
-                id_discount_input.value = "";
-                discount_input.value = 0;
-                discount.textContent = 0;
-                setTotal('clear');
-                el.disabled = false;
-
+                }
             } else {
-                message.innerHTML = `<span class="text-xs text-green-500 font-medium">Error</span>`;
-                id_discount_input.value = "";
-                discount_input.value = 0;
-                discount.textContent = 0;
-                setTotal('clear');
-                el.disabled = false;
-
+                return false;
             }
         }
 
@@ -635,56 +642,70 @@
 
 
         function minus(id, price, product_id_quantity = false) {
-            const input = document.getElementById(id);
-            if (input.value > 1) {
-                const quantity = input.value = parseInt(input.value) - 1;
-                if (product_id_quantity) {
-                    document.getElementById(product_id_quantity).value = quantity;
+            if (!snap_token) {
+                const input = document.getElementById(id);
+                if (input.value > 1) {
+                    const quantity = input.value = parseInt(input.value) - 1;
+                    if (product_id_quantity) {
+                        document.getElementById(product_id_quantity).value = quantity;
+                    }
+
+                    const sti = parseInt(subtotal_input.value) - parseInt(price);
+                    subtotal_input.value = sti;
+                    sub_total.textContent = sti.toLocaleString('id-ID');
+
+                    const ti = parseInt(total_input.value) - parseInt(price);
+                    total_input.value = ti;
+                    total.textContent = ti.toLocaleString('id-ID');
                 }
-
-                const sti = parseInt(subtotal_input.value) - parseInt(price);
-                subtotal_input.value = sti;
-                sub_total.textContent = sti.toLocaleString('id-ID');
-
-                const ti = parseInt(total_input.value) - parseInt(price);
-                total_input.value = ti;
-                total.textContent = ti.toLocaleString('id-ID');
+            } else {
+                return false;
             }
 
         }
 
         function plus(id, max, price, product_id_quantity = false) {
-            const input = document.getElementById(id);
-            if (input.value < max) {
-                const quantity = input.value = parseInt(input.value) + 1;
-                if (product_id_quantity) {
-                    document.getElementById(product_id_quantity).value = quantity;
+            if (!snap_token) {
+                const input = document.getElementById(id);
+                if (input.value < max) {
+                    const quantity = input.value = parseInt(input.value) + 1;
+                    if (product_id_quantity) {
+                        document.getElementById(product_id_quantity).value = quantity;
+                    }
+
+                    const sti = parseInt(subtotal_input.value) + parseInt(price);
+                    subtotal_input.value = sti;
+                    sub_total.textContent = sti.toLocaleString('id-ID');
+
+                    const ti = parseInt(total_input.value) + parseInt(price);
+                    total_input.value = ti;
+                    total.textContent = ti.toLocaleString('id-ID');
                 }
-
-                const sti = parseInt(subtotal_input.value) + parseInt(price);
-                subtotal_input.value = sti;
-                sub_total.textContent = sti.toLocaleString('id-ID');
-
-                const ti = parseInt(total_input.value) + parseInt(price);
-                total_input.value = ti;
-                total.textContent = ti.toLocaleString('id-ID');
-
-
-
+            } else {
+                return false;
             }
         }
 
         function setAddress(event) {
-            city_id = document.querySelector("input[name='alamat']:checked").value
-            addresses_id.value = document.querySelector("input[name='alamat']:checked").getAttribute("data-addresses_id")
+            if (!snap_token) {
+                city_id = document.querySelector("input[name='alamat']:checked").value
+                addresses_id.value = document.querySelector("input[name='alamat']:checked").getAttribute(
+                    "data-addresses_id")
 
-            if (!courier) return false;
-            setCity()
+                if (!courier) return false;
+                setCity()
+            } else {
+                return false;
+            }
         }
 
         function setCourier(value) {
-            courier = value
-            setCity()
+            if (!snap_token) {
+                courier = value
+                setCity()
+            } else {
+                return false;
+            }
         }
 
         async function setCity() {
@@ -735,32 +756,36 @@
 
 
         async function setCityProvince(province_id, area) {
-            const city_area = document.getElementById(area)
-            city_area.innerHTML = `<p class="text-slate-700 text-sm my-3"> Loading...</p>`
-            const response = await fetch('/api/raja-ongkir/city?province_id=' + province_id, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            const data = await response.json();
-            if (data) {
-                let elementChild = `
+            if (!snap_token) {
+                const city_area = document.getElementById(area)
+                city_area.innerHTML = `<p class="text-slate-700 text-sm my-3"> Loading...</p>`
+                const response = await fetch('/api/raja-ongkir/city?province_id=' + province_id, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const data = await response.json();
+                if (data) {
+                    let elementChild = `
             <div class="mb-3">
                 <label for="city_id" class="text-slate-700 font-medium text-sm">City</label>
                  <select name="city_id" id="city_id"
                     class="w-full py-3 px-3 outline-none border border-gray-300 text-slate-700 rounded-lg text-sm">
                 <option value="" selected disabled>Select City</option>
             `;
-                Object.values(data).forEach(city => {
-                    elementChild += `<option value="${city['city_id']}">${city['city_name']}</option>`
-                })
-                elementChild += `
+                    Object.values(data).forEach(city => {
+                        elementChild += `<option value="${city['city_id']}">${city['city_name']}</option>`
+                    })
+                    elementChild += `
                 </select>
             </div>`
-                city_area.innerHTML = elementChild
+                    city_area.innerHTML = elementChild
+                } else {
+                    alert('error')
+                }
             } else {
-                alert('error')
+                return false;
             }
 
         }
@@ -768,7 +793,6 @@
 
 
     <script type="text/javascript">
-        let snap_token = "";
         async function checkoutButton(event, el) {
             event.preventDefault();
             const form = event.target.closest('form');
@@ -785,6 +809,7 @@
 
             el.disabled = true;
             el.textContent = 'Loading...';
+
 
             if (
                 (!alamat || !alamat.value) ||
@@ -848,19 +873,21 @@
                         body: JSON.stringify(dataInputan)
                     });
                     const data = await response.json();
-                    console.log(data)
                     if (data.status == 'success') {
                         // snap.pay("2437b43c-59df-4fcf-ad2e-329ea9e1223a");
                         snap_token = data.snap_token;
                         snap.pay(snap_token, {
                             onSuccess: function(result) {
-                                // Tangani jika pembayaran berhasil
+                                // Tangani jika pembayaran success
+                                window.location.href = "{{ route('user.orders.index') }}";
                             },
                             onPending: function(result) {
                                 // Tangani jika pembayaran pending
+                                window.location.href = "{{ route('user.orders.index') }}";
                             },
                             onError: function(result) {
                                 // Tangani jika pembayaran gagal
+                                window.location.href = "{{ route('user.orders.index') }}";
                             }
                         });
                     } else {
@@ -873,6 +900,19 @@
             } else {
                 snap.pay(snap_token)
             }
+
+            name.disabled = true;
+            email.disabled = true;
+            courier.disabled = true;
+            vocher_input.disabled = true;
+            document.querySelectorAll("input[name='alamat']").forEach(input => {
+                input.disabled = true;
+            });
+            document.querySelectorAll("input[name='cost']").forEach(input => {
+                input.disabled = true;
+            });
+            document.getElementById("tambah_alamat").disabled = true;
+            cost.disabled = true
 
             el.disabled = false;
             el.textContent = "Pay Now";

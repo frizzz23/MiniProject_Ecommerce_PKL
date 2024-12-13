@@ -47,7 +47,6 @@ Route::middleware(['auth', 'role:user'])->group(function () {
 
     // Route::resource('payments', PaymentController::class);
     Route::post('/create-snap-token', [PaymentController::class, 'CreateSnapToken'])->name('craete.snap.token');
-    Route::post('/notification/handler', [PaymentController::class, 'create'])->name('notification.handler');
     Route::resource('product_orders', ProductOrderController::class);
     Route::resource('reviews', ReviewController::class);
     Route::post('/api/validate-promo', [DiscountController::class, 'validatePromo']);
