@@ -25,6 +25,7 @@ class Order extends Model
         'sub_total_amount',
         'grand_total_amount',
         'status_order',
+        'snap_token'
     ];
 
     /**
@@ -53,7 +54,7 @@ class Order extends Model
     public function products()
     {
         return $this->belongsToMany(Product::class, 'product_orders', 'order_id', 'product_id')
-                    ->withPivot('quantity'); // Menambahkan kolom tambahan dari tabel pivot jika ada.
+            ->withPivot('quantity'); // Menambahkan kolom tambahan dari tabel pivot jika ada.
     }
 
 

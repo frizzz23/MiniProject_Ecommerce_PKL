@@ -19,6 +19,12 @@
             font-family: "Poppins", sans-serif;
         }
     </style>
+
+
+    {{-- midtrans --}}
+    <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
+        data-client-key="{{ config('services.midtrans.clientKey') }}"></script>
+    </script>
 </head>
 
 <body>
@@ -48,7 +54,7 @@
                         </div>
                     @endif
 
-                    <div class="mb-7">
+                    {{-- <div class="mb-7">
                         <h1 class="text-xl font-bold mb-1 text-slate-800">Payment</h1>
                         <p class="text-sm text-slate-700 mb-5">
                             All transactions are secure and encrypted
@@ -74,7 +80,7 @@
                                 </p>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="mb-7">
                         <h1 class="text-xl font-bold mb-1 text-slate-800">
                             Your Information
@@ -84,7 +90,7 @@
                         </p>
 
                         <div class="mb-3">
-                            <input type="text" value="{{ auth()->user()->name }}" name="nama" placeholder="Name"
+                            <input type="text" value="{{ auth()->user()->name }}" name="name" placeholder="Name"
                                 class="w-full py-3 px-3 outline-none border border-gray-300 text-slate-700 rounded-lg text-sm" />
                         </div>
                         <div class="mb-3">
@@ -112,11 +118,14 @@
                                 </div>
                             @endforelse
                             <div class="flex gap-5 border-b-2 py-2 px-3 w-full">
-                                <button type="button" onclick="ShowAddAddress()"
+                                <button type="button" onclick="ShowAddAddress(this)"
                                     class="text-xs text-slate-700 block w-full text-center py-2 px-3">Tambahkan
                                     Alamat</button>
                             </div>
                         </div>
+                        @error('alamat')
+                            <p class="text-red-500 text-xs">{{ $message }}</p>
+                        @enderror
                     </div>
 
 
@@ -165,7 +174,7 @@
                         <p id="voucher-status" class="mt-1"></p>
                     </div>
 
-                    <div class="mb-7">
+                    {{-- <div class="mb-7">
                         <h1 class="text-xl font-bold mb-1 text-slate-800">
                             proof of transfer
                         </h1>
@@ -190,8 +199,7 @@
                                     </p>
                                 </div>
                                 <div id="bukti_area_preview" class="h-full w-full overflow-hidden bg-center hidden">
-                                    <img id="bukti_area" src="../image/headset-2.png"
-                                        class="w-full h-full object-contain" />
+                                    <img id="bukti_area" class="w-full h-full object-contain" />
                                 </div>
                                 <input id="dropzone-file" type="file" class="hidden" name="bukti_image"
                                     accept="image/png, image/jpeg, image/jpg" onchange="preview(event)" />
@@ -200,9 +208,10 @@
                         @error('bukti_image')
                             <p class="text-red-500 text-xs">{{ $message }}</p>
                         @enderror
-                    </div>
+                    </div> --}}
 
-                    <button type="submit" class="block w-full py-2 px-5 w-full bg-blue-600 text-white rounded-md">
+                    <button type="submit" onclick="checkoutButton(event, this)"
+                        class="block w-full py-2 px-5 w-full bg-blue-600 text-white rounded-md">
                         Pay Now
                     </button>
                 </div>
@@ -301,7 +310,7 @@
                     <input type="hidden" name="discount" id="discount_input" value="0" />
                     <input type="hidden" name="total" id="total_input" value="{{ $total }}" />
                     <input type="hidden" name="weight" id="weight_input" value="{{ $weight ?? 100 }}" />
-                    <input type="hidden" name="order_form" value="cart">
+                    <input type="hidden" name="order_form" id="order_form" value="cart">
                 @else
                     @php
                         $total += $product->price_product;
@@ -386,7 +395,7 @@
                     <input type="hidden" name="discount" id="discount_input" value="0" />
                     <input type="hidden" name="total" id="total_input" value="{{ $total }}" />
                     <input type="hidden" name="weight" id="weight_input" value="{{ $weight ?? 100 }}" />
-                    <input type="hidden" name="order_form" value="product">
+                    <input type="hidden" name="order_form" id="order_form" value="product">
                     <input type="hidden" name="product_id" value="{{ $product->id }}">
                     <input type="hidden" name="quantity_checkout" id="input_quantity_checkout" value="1">
                 @endif
@@ -468,6 +477,9 @@
         </div>
     </div>
     <!-- end address-->
+
+
+
 
     <script>
         const subtotal_input = document.getElementById("subtotal_input");
@@ -750,6 +762,120 @@
             } else {
                 alert('error')
             }
+
+        }
+    </script>
+
+
+    <script type="text/javascript">
+        let snap_token = "";
+        async function checkoutButton(event, el) {
+            event.preventDefault();
+            const form = event.target.closest('form');
+            // form.submit();
+            const alamat = document.querySelector("input[name='alamat']:checked");
+            const cost = document.querySelector("input[name='cost']:checked"); // Sesuaikan jika berbeda
+            const name = document.querySelector("input[name='name']");
+            const email = document.querySelector("input[name='email']");
+            const total = document.querySelector("input[name='total']");
+            const subtotal = document.querySelector("input[name='subtotal']");
+            const addresses_id = document.querySelector("input[name='addresses_id']");
+            const courier = document.getElementById('courier');
+            // const dropzone_file = document.getElementById('dropzone-file');
+
+            el.disabled = true;
+            el.textContent = 'Loading...';
+
+            if (
+                (!alamat || !alamat.value) ||
+                (!cost || !cost.value) ||
+                (!name || !name.value) ||
+                (!email || !email.value) ||
+                (!courier || !courier.value) ||
+                (!total || !total.value) ||
+                (!subtotal || !subtotal.value) ||
+                (!addresses_id || !addresses_id.value)
+            ) {
+                console.log('error');
+                form.submit();
+                return false;
+            }
+
+            // console.log('tes')
+
+            if (!snap_token) {
+
+                const formData = new FormData(form);
+                // Ubah FormData langsung menjadi objekconst formData = new FormData(form);
+                const dataInputan = {};
+                @if ($carts && count($carts) > 0)
+
+                    const productIdQuantity = {};
+                    formData.forEach((value, key) => {
+                        if (key.startsWith('product_id_quantity[')) {
+                            // Ambil ID produk dari nama input seperti 'product_id_quantity[1]'
+                            const productId = key.match(/\[([^\]]+)]/)[1];
+                            productIdQuantity[productId] = value;
+                        } else {
+                            dataInputan[key] = value; // Tambahkan key lain selain product_id_quantity
+                        }
+                    });
+
+                    dataInputan.product_id_quantity = productIdQuantity;
+                @else
+                    formData.forEach((value, key) => {
+                        if (key.endsWith('[]')) {
+                            const normalizedKey = key.slice(0, -2); // Hapus '[]'
+                            if (!dataInputan[normalizedKey]) {
+                                dataInputan[normalizedKey] = [];
+                            }
+                            dataInputan[normalizedKey].push(value);
+                        } else {
+                            dataInputan[key] = value;
+                        }
+                    });
+                @endif
+
+
+                try {
+                    const response = await fetch('/checkout', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                                'content')
+                        },
+                        body: JSON.stringify(dataInputan)
+                    });
+                    const data = await response.json();
+                    console.log(data)
+                    if (data.status == 'success') {
+                        // snap.pay("2437b43c-59df-4fcf-ad2e-329ea9e1223a");
+                        snap_token = data.snap_token;
+                        snap.pay(snap_token, {
+                            onSuccess: function(result) {
+                                // Tangani jika pembayaran berhasil
+                            },
+                            onPending: function(result) {
+                                // Tangani jika pembayaran pending
+                            },
+                            onError: function(result) {
+                                // Tangani jika pembayaran gagal
+                            }
+                        });
+                    } else {
+                        return false;
+                    }
+                } catch (e) {
+                    console.log(e)
+
+                }
+            } else {
+                snap.pay(snap_token)
+            }
+
+            el.disabled = false;
+            el.textContent = "Pay Now";
 
         }
     </script>

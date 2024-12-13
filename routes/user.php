@@ -41,7 +41,13 @@ Route::middleware(['auth', 'role:user'])->group(function () {
         'update' => 'user.carts.update',
         'destroy' => 'user.carts.destroy',
     ]);
-    Route::resource('payments', PaymentController::class);
+
+
+
+
+    // Route::resource('payments', PaymentController::class);
+    Route::post('/create-snap-token', [PaymentController::class, 'CreateSnapToken'])->name('craete.snap.token');
+    Route::post('/notification/handler', [PaymentController::class, 'create'])->name('notification.handler');
     Route::resource('product_orders', ProductOrderController::class);
     Route::resource('reviews', ReviewController::class);
     Route::post('/api/validate-promo', [DiscountController::class, 'validatePromo']);

@@ -20,6 +20,8 @@
             font-family: "Poppins", sans-serif;
         }
     </style>
+
+
 </head>
 
 <body class="bg-neutral-100">
