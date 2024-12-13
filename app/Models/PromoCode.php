@@ -17,6 +17,16 @@ class PromoCode extends Model
         'minimum_purchase',  // Minimal pembelian untuk mendapatkan diskon
     ];
 
+    public function usedPromoCodes()
+    {
+        return $this->hasMany(UsedPromoCode::class);
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'used_promo_codes', 'promo_code_id', 'user_id');
+    }
+
     /**
      * Kurangi jumlah kode jika tersedia
      *

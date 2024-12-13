@@ -42,7 +42,8 @@
                                             <th>Kode Diskon</th>
                                             <th>Diskon</th>
                                             <th>Kuantitas</th>
-                                            <th>Minimal Pembelian</th> <!-- Menambahkan kolom minimal pembelian -->
+                                            <th>Minimal Pembelian</th>
+                                            <th>Pengguna</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -54,7 +55,17 @@
                                                 <td>Rp. {{ number_format($code->discount_amount, 0, ',', '.') }}</td>
                                                 <td>{{ $code->quantity }}</td>
                                                 <td>Rp. {{ number_format($code->minimum_purchase, 0, ',', '.') }}</td>
-                                                <!-- Menampilkan minimal pembelian -->
+                                                <td>
+                                                    @if ($code->users->count() > 0)
+                                                        <button type="button" class="btn btn-info btn-sm"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#usermodal{{ $code->id }}">
+                                                            Lihat Pengguna
+                                                        </button>
+                                                    @else
+                                                        Belum digunakan
+                                                    @endif
+                                                </td>
                                                 <td>
                                                     <!-- Tombol Edit -->
                                                     <button type="button" class="btn btn-warning btn-sm"
@@ -72,6 +83,36 @@
                                                 </td>
                                             </tr>
 
+                                            <!-- Modal Lihat Pengguna -->
+                                            <div class="modal fade" id="usermodal{{ $code->id }}" tabindex="-1"
+                                                aria-labelledby="userModalLabel{{ $code->id }}" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="userModalLabel{{ $code->id }}">
+                                                                Pengguna Yang Sudah Menggunakan Voucher {{ $code->code }}</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body" style="color: black;">
+                                                            @if ($code->users->count() > 0)
+                                                                <ul>
+                                                                    @foreach ($code->users as $user)
+                                                                        <li><strong>Nama:</strong>{{ $user->name }} <br> <strong>Email:</strong> ({{ $user->email }}) <br> <br> </li>
+                                                                    @endforeach
+                                                                </ul>
+                                                            @else
+                                                                <p>Belum ada pengguna yang memakai voucher ini.</p>
+                                                            @endif
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Tutup</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                             <!-- Modal Hapus -->
                                             <div class="modal fade" id="hapusmodal{{ $code->id }}" tabindex="-1"
                                                 aria-labelledby="hapusModalLabel{{ $code->id }}" aria-hidden="true">
@@ -83,7 +124,7 @@
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                                 aria-label="Close"></button>
                                                         </div>
-                                                        <div class="modal-body" style="color: gray;">
+                                                        <div class="modal-body" style="color: black;">
                                                             Apakah Anda yakin ingin menghapus diskon
                                                             <strong>{{ $code->code }}</strong>?
                                                         </div>
