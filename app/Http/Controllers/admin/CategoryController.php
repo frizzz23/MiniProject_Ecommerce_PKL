@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -32,15 +33,21 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        // Validasi input
         $request->validate([
             'name_category' => 'required|string|max:255|unique:categories,name_category',
+            'image_category' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        // Simpan data ke database
-        Category::create($request->all());
+        $imagePath = null;
+        if ($request->hasFile('image_category')) {
+            $imagePath = $request->file('image_category')->store('categories', 'public');
+        }
 
-        // Redirect dengan pesan sukses
+        Category::create([
+            'name_category' => $request->name_category,
+            'image_category' => $imagePath,
+        ]);
+
         return redirect()->route('admin.categories.index')->with('success', 'Kategori berhasil ditambahkan.');
     }
 
@@ -58,15 +65,25 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        // Validasi input
         $request->validate([
             'name_category' => 'required|string|max:255|unique:categories,name_category,' . $category->id,
+            'image_category' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        // Update data di database
-        $category->update($request->all());
+        if ($request->hasFile('image_category')) {
+            if ($category->image_category && Storage::disk('public')->exists($category->image_category)) {
+                Storage::disk('public')->delete($category->image_category);
+            }
+            $imagePath = $request->file('image_category')->store('categories', 'public');
+        } else {
+            $imagePath = $category->image_category;
+        }
 
-        // Redirect dengan pesan sukses
+        $category->update([
+            'name_category' => $request->name_category,
+            'image_category' => $imagePath,
+        ]);
+
         return redirect()->route('admin.categories.index')->with('success', 'Kategori berhasil diperbarui.');
     }
 

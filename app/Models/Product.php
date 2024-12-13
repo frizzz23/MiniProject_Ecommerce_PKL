@@ -18,6 +18,7 @@ class Product extends Model
         'stock_product',
         'price_product',
         'category_id',
+        'brand_id',
         'image_product',
     ];
 
@@ -37,6 +38,11 @@ class Product extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
     }
 
     // Relasi dengan Review
