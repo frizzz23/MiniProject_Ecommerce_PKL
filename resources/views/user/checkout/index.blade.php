@@ -756,38 +756,33 @@
 
 
         async function setCityProvince(province_id, area) {
-            if (!snap_token) {
-                const city_area = document.getElementById(area)
-                city_area.innerHTML = `<p class="text-slate-700 text-sm my-3"> Loading...</p>`
-                const response = await fetch('/api/raja-ongkir/city?province_id=' + province_id, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-                const data = await response.json();
-                if (data) {
-                    let elementChild = `
+            const city_area = document.getElementById(area)
+            city_area.innerHTML = `<p class="text-slate-700 text-sm my-3"> Loading...</p>`
+            const response = await fetch('/api/raja-ongkir/city?province_id=' + province_id, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const data = await response.json();
+            if (data) {
+                let elementChild = `
             <div class="mb-3">
                 <label for="city_id" class="text-slate-700 font-medium text-sm">City</label>
                  <select name="city_id" id="city_id"
                     class="w-full py-3 px-3 outline-none border border-gray-300 text-slate-700 rounded-lg text-sm">
                 <option value="" selected disabled>Select City</option>
             `;
-                    Object.values(data).forEach(city => {
-                        elementChild += `<option value="${city['city_id']}">${city['city_name']}</option>`
-                    })
-                    elementChild += `
+                Object.values(data).forEach(city => {
+                    elementChild += `<option value="${city['city_id']}">${city['city_name']}</option>`
+                })
+                elementChild += `
                 </select>
             </div>`
-                    city_area.innerHTML = elementChild
-                } else {
-                    alert('error')
-                }
+                city_area.innerHTML = elementChild
             } else {
-                return false;
+                alert('error')
             }
-
         }
     </script>
 
