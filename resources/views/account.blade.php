@@ -207,13 +207,7 @@
                 <!-- Account Data -->
                 <div class="bg-white p-6 rounded-lg mb-10 shadow">
                     <!-- Mobile Hamburger Button -->
-                    <button id="mobileSidebarToggle" class="fixed top-7 left-0 z-0 md:hidden w-5 h-10 ml-1 rounded-r-lg bg-white shadow-md">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-800" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                    </button>
+                   
 
                     <h2 class="flex text-2xl justify-center font-semibold text-gray-800 mb-4">Account data</h2>
                     <span class="flex items-center mb-4">
@@ -246,7 +240,7 @@
                                     Address</span><br>{{ Auth::user()->address ?? '-' }}</p>
                             <p class="text-gray-600 mb-2"><span class="font-bold text-gray-800">Phone
                                     Number</span><br>{{ Auth::user()->no_telepon ?? '-' }}</p>
-                            <a href="{{ route('profile.edit') }}"
+                            <a href=""
                                 class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400 inline-block">
                                 Edit your data
                             </a>
@@ -265,6 +259,14 @@
 
             </main>
         </div>
+
+        <button id="mobileSidebarToggle" class="fixed top-7 left-0 z-0 md:hidden w-5 h-10 ml-1 rounded-r-lg bg-white shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-800" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
 
         <!-- Sidebar Overlay -->
         <div id="sidebarOverlay" class="hidden fixed inset-0 bg-black bg-opacity-50 z-40">
