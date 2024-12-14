@@ -1,5 +1,5 @@
 <aside id="sidebar"
-    class="fixed md:sticky top-0 left-0 w-64 md:w-72  overflow-y-auto max-h-screen md:h-screen  bg-white shadow p-4 z-50 md:z-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out"
+    class="fixed md:sticky top-0 left-0 w-64 md:w-72  overflow-y-auto max-h-screen md:h-screen  bg-white shadow-sm p-4 z-50 md:z-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out"
     style="scrollbar-width: none;
             -ms-overflow-style: none; 
             ::-webkit-scrollbar { display: none; }">
@@ -7,11 +7,11 @@
         <div class="flex justify-center items-center mb-4">
             @if (Auth::user()->image)
                 <img src="{{ asset('storage/' . Auth::user()->image) }}" alt="Profile Picture"
-                    style="width: 120px; height: 120px; object-fit: cover; object-position: center; border-radius: 50%;"
+                    style="width: 85px; height: 85px; object-fit: cover; object-position: center; border-radius: 50%;"
                     class="rounded-full">
             @else
                 <img src="{{ asset('style/src/assets/images/profile/user-1.jpg') }}" alt="Default Profile Picture"
-                    style="width: 120px; height: 120px; object-fit: cover; object-position: center; border-radius: 50%;"
+                    style="width: 85px; height: 85px; object-fit: cover; object-position: center; border-radius: 50%;"
                     class="rounded-full">
             @endif
         </div>
@@ -110,9 +110,9 @@
             <span>Reviews</span>
         </a>
         <a href="{{ route('user.addresses.index') }}"
-            class="flex items-center text-gray-600 hover:text-blue-600 space-x-2">
+            class="flex items-center {{ request()->routeIs('user.addresses.index') ? 'text-blue-600' : 'text-gray-600' }} hover:text-blue-600 space-x-2 ">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                style="fill: rgba(102, 110, 241, 1);">
+                style="fill:{{ request()->routeIs('user.addresses.index') ? 'rgba(37, 99, 235, 1)' : 'rgba(102, 110, 241, 1)' }};">
                 <path
                     d="M19.15 8a2 2 0 0 0-1.72-1H15V5a1 1 0 0 0-1-1H4a2 2 0 0 0-2 2v10a2 2 0 0 0 1 1.73 3.49 3.49 0 0 0 7 .27h3.1a3.48 3.48 0 0 0 6.9 0 2 2 0 0 0 2-2v-3a1.07 1.07 0 0 0-.14-.52zM15 9h2.43l1.8 3H15zM6.5 19A1.5 1.5 0 1 1 8 17.5 1.5 1.5 0 0 1 6.5 19zm10 0a1.5 1.5 0 1 1 1.5-1.5 1.5 1.5 0 0 1-1.5 1.5z">
                 </path>
@@ -158,3 +158,5 @@
         </form>
     </nav>
 </aside>
+
+
