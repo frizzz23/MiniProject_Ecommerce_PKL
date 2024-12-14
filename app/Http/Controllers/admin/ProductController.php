@@ -88,6 +88,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
+        // Validasi input
         $request->validate([
             'name_product' => 'required|string|max:255',
             'description_product' => 'required|string',
@@ -98,18 +99,31 @@ class ProductController extends Controller
             'brand_id' => 'required|exists:brands,id',
         ]);
 
-        $imagePath = $request->file('image_product')
-            ? $request->file('image_product')->store('products', 'public')
-            : $product->image_product;
+        // Jika ada file gambar baru yang diunggah
+        if ($request->hasFile('image_product')) {
+            // Hapus gambar lama jika ada
+            if ($product->image_product && Storage::disk('public')->exists($product->image_product)) {
+                Storage::disk('public')->delete($product->image_product);
+            }
 
-        if ($request->file('image_product') && $product->image_product) {
-            Storage::disk('public')->delete($product->image_product);
+            // Simpan gambar baru dan perbarui path-nya
+            $imagePath = $request->file('image_product')->store('products', 'public');
+            $product->image_product = $imagePath;
         }
 
-        $product->update($request->except('image_product') + ['image_product' => $imagePath]);
+        // Perbarui data produk lainnya
+        $product->update($request->except('image_product'));
 
+        // Simpan gambar baru jika ada
+        if (isset($imagePath)) {
+            $product->image_product = $imagePath;
+            $product->save();
+        }
+
+        // Redirect kembali ke halaman produk
         return redirect()->route('admin.products.index')->with('success', 'Produk berhasil diperbarui.');
     }
+
 
     /**
      * Remove the specified resource from storage.
