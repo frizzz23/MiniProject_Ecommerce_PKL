@@ -44,9 +44,9 @@ class ProfileController extends Controller
         // Jika ada gambar yang diupload
         if ($request->hasFile('image')) {
             // Cek apakah pengguna sudah memiliki gambar sebelumnya
-            if ($user->image && Storage::exists('public/' . $user->image)) {
+            if ($user->image && Storage::disk('public')->exists($user->image)) {
                 // Hapus gambar lama dari storage
-                Storage::delete('public/' . $user->image);
+                Storage::disk('public')->delete($user->image);
             }
 
             // Simpan gambar baru ke storage (ke folder 'profile_images' dalam 'public' disk)
@@ -69,6 +69,7 @@ class ProfileController extends Controller
 
         return Redirect::route('user.profile.profile')->with('status', 'profile-updated');
     }
+
 
     /**
      * Delete the user's account.
