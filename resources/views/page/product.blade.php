@@ -104,7 +104,7 @@
                     @auth
 
                         <li>
-                            <a href="{{ route('profile.edit') }}"
+                            <a href="{{ route('user.profile.profile') }}"
                                 class="flex justify-start items-center gap-1 text-md py-2 bg-gray-200 text-slate-800 w-auto  px-2 rounded-md">
                                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
                                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -239,7 +239,7 @@
                         @endguest
                         @auth
                             <div class="tooltip">
-                                <a href="{{ route('profile.edit') }}"
+                                <a href="{{ route('user.profile.profile') }}"
                                     class="flex justify-start items-center gap-1 text-md py-2 bg-gray-200 text-slate-800 w-auto  px-2 rounded-full">
                                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                                         class="w-5 h-5">
