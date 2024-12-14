@@ -2,18 +2,12 @@
     <!-- Sidebar scroll-->
     <div>
         <div class="brand-logo d-flex align-items-center justify-content-between">
-            @if (Auth::user()->hasRole('admin'))
+           
             <a href="{{ route('dashboard.index') }}" class="text-nowrap logo-img">
                 <img src="{{ asset('style/src/assets/images/logos/dark-logo.svg') }}" width="180"
                     alt="" />
             </a>
-            @endif
-            @if (Auth::user()->hasRole('user'))
-            <a href="{{ route('landing-page') }}" class="text-nowrap logo-img">
-                <img src="{{ asset('style/src/assets/images/logos/dark-logo.svg') }}" width="180"
-                    alt="" />
-            </a>
-            @endif
+           
             <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
                 <i class="ti ti-x fs-8"></i>
             </div>
@@ -22,7 +16,7 @@
         <!-- Sidebar navigation-->
         <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
             <ul id="sidebarnav">
-                @if (Auth::user()->hasRole('admin'))
+               
                 <li class="sidebar-item my-2">
                     <a class="sidebar-link " href="{{ route('dashboard.index') }}" aria-expanded="false">
                         <span>
@@ -89,51 +83,6 @@
                         <span class="hide-menu">Review</span>
                     </a>
                 </li>
-                <li class="sidebar-item my-2">
-                    <a class="sidebar-link" href="{{ route('profile.edit') }}" aria-expanded="false">
-                        <span>
-                            <i class="fa-regular fa-address-card"></i>
-                        </span>
-                        <span class="hide-menu">My Profile</span>
-                    </a>
-                </li>
-                @endif
-                @if (Auth::user()->hasRole('user'))
-                <li class="sidebar-item my-2">
-                    <a class="sidebar-link" href="{{ route('profile.edit') }}" aria-expanded="false">
-                        <span>
-                            <i class="fa-regular fa-address-card"></i>
-                        </span>
-                        <span class="hide-menu">My Profile</span>
-                    </a>
-                </li>
-                <li class="sidebar-item my-2">
-                    <a class="sidebar-link" href="{{ route('user.carts.index') }}" aria-expanded="false">
-                        <span>
-                            <i class="fa-solid fa-cart-shopping"></i>
-                        </span>
-                        <span class="hide-menu">My Cart</span>
-                    </a>
-                </li>
-                <li class="sidebar-item my-2">
-                    <a class="sidebar-link" href="{{ route('user.orders.index') }}" aria-expanded="false">
-                        <span>
-                            <i class="fa-solid fa-shop"></i>
-                        </span>
-                        <span class="hide-menu">My Order</span>
-                    </a>
-                </li>
-                <li class="sidebar-item my-2">
-                    <a class="sidebar-link" href="{{ route('user.addresses.index') }}" aria-expanded="false">
-                        <span>
-                            <i class="fa-solid fa-map-location-dot"></i>
-                        </span>
-                        <span class="hide-menu">My Address</span>
-                    </a>
-                </li>
-                
-                @endif
-                
             </ul>
         </nav>
         <!-- End Sidebar navigation -->

@@ -4,9 +4,6 @@ use App\Http\Controllers\Page\HomePageController;
 use Illuminate\Support\Facades\Route;
 
 
-use App\Http\Controllers\ProfileController;
-
-
 use App\Http\Controllers\Page\AboutPageController;
 use App\Http\Controllers\Page\ProductPageController;
 use App\Http\Controllers\Page\CategoryPageController;
@@ -34,11 +31,6 @@ Route::get('/category-page', CategoryPageController::class)->name('category-page
 Route::get('/about-page', AboutPageController::class)->name('about-page');
 
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
 
 
