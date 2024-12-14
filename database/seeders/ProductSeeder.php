@@ -20,8 +20,9 @@ class ProductSeeder extends Seeder
                 'description_product' => 'HP flagship dari Apple dengan layar Super Retina XDR.',
                 'stock_product' => 20,
                 'price_product' => 15000000,
-                
+
                 'category_id' => 1, // ID kategori HP
+                'brand_id' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -31,8 +32,9 @@ class ProductSeeder extends Seeder
                 'description_product' => 'HP Android premium dengan kamera 200MP.',
                 'stock_product' => 15,
                 'price_product' => 14000000,
-                
+
                 'category_id' => 1,
+                'brand_id' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -44,8 +46,9 @@ class ProductSeeder extends Seeder
                 'description_product' => 'Kamera DSLR profesional dengan sensor full-frame.',
                 'stock_product' => 10,
                 'price_product' => 35000000,
-                
+
                 'category_id' => 2, // ID kategori Kamera
+                'brand_id' => 2,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -55,8 +58,9 @@ class ProductSeeder extends Seeder
                 'description_product' => 'Kamera mirrorless dengan kemampuan video 4K.',
                 'stock_product' => 8,
                 'price_product' => 28000000,
-                
+
                 'category_id' => 2,
+                'brand_id' => 2,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -68,8 +72,9 @@ class ProductSeeder extends Seeder
                 'description_product' => 'Laptop high-end dari Apple dengan chip M2 Pro.',
                 'stock_product' => 12,
                 'price_product' => 28000000,
-                
+
                 'category_id' => 3, // ID kategori Laptop
+                'brand_id' => 3,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -79,8 +84,9 @@ class ProductSeeder extends Seeder
                 'description_product' => 'Laptop gaming dengan prosesor AMD Ryzen 9.',
                 'stock_product' => 5,
                 'price_product' => 24000000,
-              
+
                 'category_id' => 3,
+                'brand_id' => 3,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
