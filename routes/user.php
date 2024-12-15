@@ -19,7 +19,7 @@ use App\Http\Controllers\user\OrderController as UserOrderController;
 use App\Http\Controllers\user\AddressController as UserAddressController;
 
 
-Route::prefix('user')->middleware(['auth', 'role:user'])->group(function () {
+Route::middleware(['auth', 'role:user'])->group(function () {
     Route::resource('checkout', CheckoutController::class)->only(['index', 'store'])->names([
         'index' => 'user.checkout.index',
         'store' => 'user.checkout.store',
@@ -44,9 +44,9 @@ Route::prefix('user')->middleware(['auth', 'role:user'])->group(function () {
     ]);
 
     // profile route
-    Route::get('akun/profile', [ProfileController::class, 'profile'])->name('user.profile.profile');
-    Route::get('akun/password', [ProfileController::class, 'password'])->name('user.profile.password');
-    Route::get('akun/delete', [ProfileController::class, 'delete'])->name('user.profile.delete');
+    Route::get('user/akun/profile', [ProfileController::class, 'profile'])->name('user.profile.profile');
+    Route::get('user/akun/password', [ProfileController::class, 'password'])->name('user.profile.password');
+    Route::get('user/akun/delete', [ProfileController::class, 'delete'])->name('user.profile.delete');
 
     Route::patch('/profile', [ProfileController::class, 'update'])->name('user.profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('user.profile.destroy');
