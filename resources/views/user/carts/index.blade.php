@@ -137,22 +137,23 @@
 
 
         const hamburger = document.getElementById("hamburger");
-        hamburger.addEventListener("click", () => {
-            const closeMenu = document.getElementById("close-menu");
-            const listMenu = document.getElementById("list-menu");
-            listMenu.classList.remove("hidden");
+        if (hamburger) {
+            hamburger.addEventListener("click", () => {
+                const closeMenu = document.getElementById("close-menu");
+                const listMenu = document.getElementById("list-menu");
+                listMenu.classList.remove("hidden");
 
-            closeMenu.addEventListener("click", () => {
-                listMenu.classList.add("hidden");
-            });
-
-            listMenu.addEventListener("click", (e) => {
-                if (!e.target.closest("#menu-content")) {
+                closeMenu.addEventListener("click", () => {
                     listMenu.classList.add("hidden");
-                }
-            });
-        });
+                });
 
+                listMenu.addEventListener("click", (e) => {
+                    if (!e.target.closest("#menu-content")) {
+                        listMenu.classList.add("hidden");
+                    }
+                });
+            });
+        }
         const formatRupiah = (number) => {
             return new Intl.NumberFormat('id-ID', {
                 style: 'currency',
@@ -208,16 +209,16 @@
 
 
 
-                el.disabled = false;
 
 
             }
+            el.disabled = false;
         }
 
         async function plus(id, max, price, el) {
             el.disabled = true;
             const input = document.getElementById(id);
-            if (input.value < max) {
+            if (input.value <= max) {
                 input.value = parseInt(input.value) + 1;
                 document.getElementById("total_" + id.split("_")[1]).innerHTML = 'loading..';
                 total.innerHTML = 'loading..';
@@ -252,12 +253,11 @@
                     const text = await response.text();
                     console.error('Response text:', text);
                 }
-                el.disabled = false;
 
             } else {
                 showAlert('error', 'stok product sudah habis')
-                el.disabled = false;
             }
+            el.disabled = false;
         }
 
         function confirmDelete(event, id) {
