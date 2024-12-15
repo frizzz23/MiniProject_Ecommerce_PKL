@@ -95,8 +95,8 @@
                     <div
                         class="w-20 h-20 bg-cover bg-center overflow-hidden flex justify-center items-center p-1 mb-2">
                         <img src="${imageSrc}" alt="Product Image"
-                            width="80" height="80" 
-                            style="object-fit: cover; border-radius: 5px;" 
+                            width="80" height="80"
+                            style="object-fit: cover; border-radius: 5px;"
                             loading="lazy"/>
                     </div>
                 </th>
@@ -203,6 +203,7 @@
                         title: "terhapus!",
                         text: "keranjang berhasil dihapus",
                         icon: "success",
+                        width: 400,
                         confirmButtonColor: "#334155",
                         confirmButtonText: "tutup"
                     });
