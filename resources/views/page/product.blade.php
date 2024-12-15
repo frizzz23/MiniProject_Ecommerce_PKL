@@ -288,7 +288,7 @@
                                 class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                             <span
                                 class="relative inline-flex rounded-full h-4 w-4 bg-red-500 text-white text-[10px] flex items-center justify-center"
-                                id="cartCountItem"></span>
+                                id="cartCountItem"> 0</span>
                         </span>
                     </div>
                 </div>

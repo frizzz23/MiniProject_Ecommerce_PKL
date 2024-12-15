@@ -1,5 +1,13 @@
+<style>
+    @media (min-width: 200px) and (max-width: 767px) {
+        #sidebar {
+            min-height: 100vh;
+            /* Tetap tinggi penuh */
+        }
+    }
+</style>
 <aside id="sidebar"
-    class="fixed md:sticky top-0 left-0 w-64 md:w-72  overflow-y-auto max-h-screen md:h-screen  bg-white shadow-sm p-4 z-50 md:z-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out"
+    class="fixed md:sticky top-0 left-0 w-64   md:w-72  overflow-y-auto xl:max-h-scrren md:h-screen  bg-white shadow-sm p-4 z-50 md:z-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out"
     style="scrollbar-width: none;
             -ms-overflow-style: none; 
             ::-webkit-scrollbar { display: none; }">
@@ -92,22 +100,26 @@
             class="flex items-center {{ request()->routeIs('user.orders.index') ? 'text-blue-600' : 'text-gray-600' }} hover:text-blue-600 space-x-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                 style="fill: {{ request()->routeIs('user.orders.index') ? 'rgba(37, 99, 235, 1)' : 'rgba(102, 110, 241, 1)' }};">
+                <!-- Clipboard Background -->
+                <path
+                    d="M6 2C5.447 2 5 2.447 5 3v18c0 .553.447 1 1 1h12c.553 0 1-.447 1-1V3c0-.553-.447-1-1-1H6zm10 2H8v-.5C8 3.224 8.224 3 8.5 3h7c.276 0 .5.224.5.5V4z">
+                </path>
+                <!-- Lines Representing Orders -->
+                <path d="M8 7h8v2H8zm0 4h8v2H8zm0 4h5v2H8z"></path>
+            </svg>
+            <span>My orders</span>
+        </a>
+        <a href="{{ route('user.carts.index') }}"
+            class="flex items-center {{ request()->routeIs('user.carts.index') ? 'text-blue-600' : 'text-gray-600' }} hover:text-blue-600 space-x-2 ">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                style="fill: {{ request()->routeIs('user.carts.index') ? 'rgba(37, 99, 235, 1)' : 'rgba(102, 110, 241, 1)' }};">
                 <path
                     d="M21 4H2v2h2.3l3.521 9.683A2.004 2.004 0 0 0 9.7 17H18v-2H9.7l-.728-2H18c.4 0 .762-.238.919-.606l3-7A.998.998 0 0 0 21 4z">
                 </path>
                 <circle cx="10.5" cy="19.5" r="1.5"></circle>
                 <circle cx="16.5" cy="19.5" r="1.5"></circle>
             </svg>
-            <span>My orders</span>
-        </a>
-        <a href="#" class="flex items-center text-gray-600 hover:text-blue-600 space-x-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                style="fill: rgba(102, 110, 241, 1);">
-                <path
-                    d="m6.516 14.323-1.49 6.452a.998.998 0 0 0 1.529 1.057L12 18.202l5.445 3.63a1.001 1.001 0 0 0 1.517-1.106l-1.829-6.4 4.536-4.082a1 1 0 0 0-.59-1.74l-5.701-.454-2.467-5.461a.998.998 0 0 0-1.822 0L8.622 8.05l-5.701.453a1 1 0 0 0-.619 1.713l4.214 4.107zm2.853-4.326a.998.998 0 0 0 .832-.586L12 5.43l1.799 3.981a.998.998 0 0 0 .832.586l3.972.315-3.271 2.944c-.284.256-.397.65-.293 1.018l1.253 4.385-3.736-2.491a.995.995 0 0 0-1.109 0l-3.904 2.603 1.05-4.546a1 1 0 0 0-.276-.94l-3.038-2.962 4.09-.326z">
-                </path>
-            </svg>
-            <span>Reviews</span>
+            <span>Carts</span>
         </a>
         <a href="{{ route('user.addresses.index') }}"
             class="flex items-center {{ request()->routeIs('user.addresses.index') ? 'text-blue-600' : 'text-gray-600' }} hover:text-blue-600 space-x-2 ">
@@ -117,27 +129,7 @@
                     d="M19.15 8a2 2 0 0 0-1.72-1H15V5a1 1 0 0 0-1-1H4a2 2 0 0 0-2 2v10a2 2 0 0 0 1 1.73 3.49 3.49 0 0 0 7 .27h3.1a3.48 3.48 0 0 0 6.9 0 2 2 0 0 0 2-2v-3a1.07 1.07 0 0 0-.14-.52zM15 9h2.43l1.8 3H15zM6.5 19A1.5 1.5 0 1 1 8 17.5 1.5 1.5 0 0 1 6.5 19zm10 0a1.5 1.5 0 1 1 1.5-1.5 1.5 1.5 0 0 1-1.5 1.5z">
                 </path>
             </svg>
-            <span>Delivery addresses</span>
-        </a>
-        <a href="#" class="flex items-center text-gray-600 hover:text-blue-600 space-x-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                style="fill: rgba(102, 110, 241, 1)">
-                <path d="M12 9a3.02 3.02 0 0 0-3 3c0 1.642 1.358 3 3 3 1.641 0 3-1.358 3-3 0-1.641-1.359-3-3-3z">
-                </path>
-                <path
-                    d="M12 5c-7.633 0-9.927 6.617-9.948 6.684L1.946 12l.105.316C2.073 12.383 4.367 19 12 19s9.927-6.617 9.948-6.684l.106-.316-.105-.316C21.927 11.617 19.633 5 12 5zm0 12c-5.351 0-7.424-3.846-7.926-5C4.578 10.842 6.652 7 12 7c5.351 0 7.424 3.846 7.926 5-.504 1.158-2.578 5-7.926 5z">
-                </path>
-            </svg>
-            <span>Recently viewed</span>
-        </a>
-        <a href="#" class="flex items-center text-gray-600 hover:text-blue-600 space-x-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                style="fill: rgba(102, 110, 241, 1);">
-                <path
-                    d="M20.205 4.791a5.938 5.938 0 0 0-4.209-1.754A5.906 5.906 0 0 0 12 4.595a5.904 5.904 0 0 0-3.996-1.558 5.942 5.942 0 0 0-4.213 1.758c-2.353 2.363-2.352 6.059.002 8.412L12 21.414l8.207-8.207c2.354-2.353 2.355-6.049-.002-8.416z">
-                </path>
-            </svg>
-            <span>Favorite items</span>
+            <span> Addresses</span>
         </a>
         <hr class="border-gray-700 my-4">
         <a href="#" class="flex items-center text-red-400 hover:text-red-600 space-x-2"
@@ -156,7 +148,8 @@
             @csrf
             <button type="submit" class="hidden">Logout</button>
         </form>
+
+
     </nav>
+
 </aside>
-
-

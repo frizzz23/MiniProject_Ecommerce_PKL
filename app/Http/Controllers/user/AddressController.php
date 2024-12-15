@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Models\City;
 use App\Models\Address;
-use App\Http\Controllers\Controller;
+use App\Models\Province;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
-
-use App\Models\City;
 
 class AddressController extends Controller
 {
@@ -22,10 +23,11 @@ class AddressController extends Controller
         // dd($addresses);
         // Ambil data provinsi dengan filter jika ada
         $cities = City::relatedData();
+        $provinces = Province::relatedData();
 
 
 
-        return view('user.addresses.index', compact('addresses', 'cities'));
+        return view('user.addresses.index', compact('addresses', 'cities','provinces'));
     }
 
 
