@@ -91,11 +91,13 @@
 
                         <div class="mb-3">
                             <input type="text" value="{{ auth()->user()->name }}" name="name" placeholder="Name"
-                                class="w-full py-3 px-3 outline-none border border-gray-300 text-slate-700 rounded-lg text-sm" />
+                                class="w-full py-3 px-3 outline-none bg-gray-100 border border-gray-300 text-slate-700 rounded-lg text-sm"
+                                readonly />
                         </div>
                         <div class="mb-3">
                             <input type="email" name="email" value="{{ auth()->user()->email }}" placeholder="Email"
-                                class="w-full py-3 px-3 outline-none border border-gray-300 text-slate-700 rounded-lg text-sm" />
+                                class="w-full py-3 px-3 outline-none bg-gray-100 border border-gray-300 text-slate-700 rounded-lg text-sm"
+                                readonly />
                         </div>
                         <div class="w-full border border-gray-300 rounded-lg overflow-hidden">
                             @forelse($addresses as $address)
@@ -166,7 +168,7 @@
                             <input type="text" id="vocher"
                                 class="w-full px-3 outline-none text-slate-700 text-md rounded-lg font-medium"
                                 placeholder="Voucher Code" />
-                            <button type="button" onclick="checkVoucher(this)"
+                            <button type="button" id="checkVoucherButton" onclick="checkVoucher(this)"
                                 class="bg-blue-500 text-white px-3 py-2 text-md block w-auto">
                                 Check
                             </button>
@@ -480,7 +482,19 @@
 
 
 
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function showAlert(icon, message) {
+            Swal.fire({
+                title: "Pesan",
+                text: message,
+                icon: icon,
+                width: 400,
+                confirmButtonColor: "#334155",
+                confirmButtonText: "tutup"
+            });
+        }
+    </script>
     <script>
         let snap_token = "";
         const name_input = document.querySelector("input[name='name']");
@@ -869,19 +883,25 @@
                     });
                     const data = await response.json();
                     if (data.status == 'success') {
-                        // snap.pay("2437b43c-59df-4fcf-ad2e-329ea9e1223a");
                         snap_token = data.snap_token;
+
                         snap.pay(snap_token, {
                             onSuccess: function(result) {
                                 // Tangani jika pembayaran success
+                                showAlert('success', 'Pembayaran berhasil!')
+                                // console.log(result)
                                 window.location.href = "{{ route('user.orders.index') }}";
                             },
                             onPending: function(result) {
                                 // Tangani jika pembayaran pending
+                                showAlert('warning', 'Pembayaran sedang dalam proses!')
+                                // console.log(result)
                                 window.location.href = "{{ route('user.orders.index') }}";
                             },
                             onError: function(result) {
                                 // Tangani jika pembayaran gagal
+                                showAlert('error', 'Pembayaran gagal!')
+                                // console.log(result)
                                 window.location.href = "{{ route('user.orders.index') }}";
                             }
                         });
@@ -907,6 +927,7 @@
                 input.disabled = true;
             });
             document.getElementById("tambah_alamat").disabled = true;
+            document.getElementById("checkVoucherButton").disabled = true;
             cost.disabled = true
 
             el.disabled = false;

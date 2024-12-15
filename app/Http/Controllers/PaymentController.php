@@ -81,9 +81,9 @@ class PaymentController extends Controller
             'status_order' => $status,
         ]);
 
-        // $order->payment->update([
-        //     'status' => $status,
-        // ]);
+        $order->payment->update([
+            'payment_method' => $type,
+        ]);
     }
 
     // /**

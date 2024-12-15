@@ -140,7 +140,7 @@ class CheckoutController extends Controller
 
         $item_details[] = [
             'id'       => 'Ongkir',
-            'price'    => $request->cost, // Nilai diskon negatif
+            'price'    => $request->cost,
             'quantity' => 1,
             'name'     => 'ongkir',
         ];
@@ -188,8 +188,6 @@ class CheckoutController extends Controller
 
         Payment::create([
             'order_id' => $order->id,
-            'image_payment' => null,
-            'payment_method' => 'transfer',
             'status' => 'pending',
         ]);
 
