@@ -5,7 +5,7 @@
         <ol class="flex items-center  rtl:space-x-reverse">
             <li class="flex items-center">
                 <a href="{{ route('landing-page') }}"
-                    class="flex justify-center items-end gap-1 bg-gray-200 text-slate-800 w-auto py-1.5 px-2 rounded-md">
+                    class="flex justify-center items-end gap-1 bg-white sahdoew-sm text-slate-800 w-auto py-1.5 px-2 rounded-md">
                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
@@ -27,7 +27,7 @@
                             d="m9 5 7 7-7 7" />
                     </svg>
                     <a href=""
-                        class="flex justify-center items-end gap-1 bg-gray-200 text-slate-800  w-auto py-2 px-2 rounded-md">
+                        class="flex justify-center items-end gap-1 bg-white sahdoew-sm text-slate-800  w-auto py-2 px-2 rounded-md">
                         <span class="font-semibold text-xs">Account</span>
                     </a>
                 </div>
@@ -40,7 +40,7 @@
                             d="m9 5 7 7-7 7" />
                     </svg>
                     <a href=""
-                        class="flex justify-center items-end gap-1 bg-gray-200 text-slate-800  w-auto py-2 px-2 rounded-md">
+                        class="flex justify-center items-end gap-1 bg-white sahdoew-sm text-slate-800  w-auto py-2 px-2 rounded-md">
                         <span class="font-semibold text-xs">Address</span>
                     </a>
                 </div>
@@ -69,10 +69,10 @@
                             <p class="text-gray-600">{{ $address->no_telepon }}</p>
                         </div>
                         <p class="text-gray-600 text-sm mb-2">
-                            {{ $address->address }} , {{ $address->city['city_name'] }}
+                            {{ $address->address }} , {{ $address->city['city_name'] }} 
                         </p>
                         <div
-                            class="inline-block px-3 py-1 border border-blue-500 text-blue-500 text-xs font-semibold rounded-lg">
+                            class="inline-block px-3 py-1 border-1 border-blue-500 text-blue-500 text-xs font-semibold rounded-lg">
                             {{ $address->mark }}
                         </div>
                     </div>
@@ -166,10 +166,6 @@
                                 placeholder="cth rumah/kantor/gedung/dll" required>
                         </div>
                         <div class="mb-3">
-                            <label for="address">Alamat</label>
-                            <textarea name="address" id="address" class="form-control" rows="3" required></textarea>
-                        </div>
-                        <div class="mb-3">
                             <label for="city_id">Kota</label>
                             <select name="city_id" id="city_id" class="form-control" required>
                                 <option value="">Pilih Kota</option>
@@ -179,8 +175,12 @@
                             </select>
                         </div>
                         <div class="mb-3">
+                            <label for="address">Alamat</label>
+                            <textarea name="address" id="address" class="form-control" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
                             <label for="no_telepon">No Telepon</label>
-                            <input type="text" name="no_telepon" id="no_telepon" class="form-control" required>
+                            <input type="text" name="no_telepon" id="no_telepon" class="form-control" placeholder="+62-8000-0000-000" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Simpan</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
