@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\user;
 
 use App\Models\City;
 use App\Models\Address;
@@ -22,7 +22,7 @@ class AddressController extends Controller
         // dd($addresses);
         // Ambil data provinsi dengan filter jika ada
         $cities = City::relatedData();
-        
+
 
 
 

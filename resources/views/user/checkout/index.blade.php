@@ -882,6 +882,7 @@
                         body: JSON.stringify(dataInputan)
                     });
                     const data = await response.json();
+                    console.log(data)
                     if (data.status == 'success') {
                         snap_token = data.snap_token;
 
@@ -914,21 +915,21 @@
                 }
             } else {
                 snap.pay(snap_token)
+                name.disabled = true;
+                email.disabled = true;
+                courier.disabled = true;
+                vocher_input.disabled = true;
+                document.querySelectorAll("input[name='alamat']").forEach(input => {
+                    input.disabled = true;
+                });
+                document.querySelectorAll("input[name='cost']").forEach(input => {
+                    input.disabled = true;
+                });
+                document.getElementById("tambah_alamat").disabled = true;
+                document.getElementById("checkVoucherButton").disabled = true;
+                cost.disabled = true
             }
 
-            name.disabled = true;
-            email.disabled = true;
-            courier.disabled = true;
-            vocher_input.disabled = true;
-            document.querySelectorAll("input[name='alamat']").forEach(input => {
-                input.disabled = true;
-            });
-            document.querySelectorAll("input[name='cost']").forEach(input => {
-                input.disabled = true;
-            });
-            document.getElementById("tambah_alamat").disabled = true;
-            document.getElementById("checkVoucherButton").disabled = true;
-            cost.disabled = true
 
             el.disabled = false;
             el.textContent = "Pay Now";

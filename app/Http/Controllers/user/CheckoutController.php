@@ -117,7 +117,7 @@ class CheckoutController extends Controller
             ]);
             $product = Product::where('id', $request->product_id)->first();
             if ($product->stock_product <= 0) {
-                return redirect()->route('landing-page');
+                return response()->json(['status' => 'error', 'message' => 'Stock Product habis']);
             }
             ProductOrder::create([
                 'product_id' => $request->product_id,
@@ -134,7 +134,7 @@ class CheckoutController extends Controller
                 'name'     => $product->name_product,
             ];
         } else {
-            return redirect()->route('landing-page');
+            return response()->json(['status' => 'error', 'message' => 'Product tidak ditemukan']);
         }
 
 
@@ -188,7 +188,6 @@ class CheckoutController extends Controller
 
         Payment::create([
             'order_id' => $order->id,
-            'status' => 'pending',
         ]);
 
         return response()->json(['status' => 'success', 'snap_token' => $snapToken]);
