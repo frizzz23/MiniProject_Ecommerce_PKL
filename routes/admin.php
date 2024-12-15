@@ -9,7 +9,7 @@ use App\Http\Controllers\admin\UserController as AdminUserController;
 use App\Http\Controllers\admin\OrderController as AdminOrderController;
 use App\Http\Controllers\admin\ProductController as AdminProductController;
 use App\Http\Controllers\admin\DashboardController as AdminDashboardController;
-use App\Http\Controllers\Admin\DiscountController as AdminDiscountController;
+use App\Http\Controllers\admin\DiscountController as AdminDiscountController;
 use App\Http\Controllers\admin\ReviewController as AdminReviewController;
 
 Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
