@@ -16,28 +16,41 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $categories = Category::all();
-        $brands = Brand::all();
+        $categories = Category::all(); // Mendapatkan semua kategori
+        $brands = Brand::all(); // Mendapatkan semua merek
 
         $products = Product::with('category', 'brand')
             ->when($request->input('search'), function ($query, $search) {
+                // Filter berdasarkan nama produk
                 $query->where('name_product', 'like', '%' . $search . '%');
             })
             ->when($request->input('category_id'), function ($query, $category_id) {
+                // Filter berdasarkan kategori
                 $query->where('category_id', $category_id);
             })
             ->when($request->input('stock_product'), function ($query, $stock_product) {
-                $query->where('stock_product', $stock_product);
+                // Pastikan stok dalam bentuk string, karena form mengirimkan string ('1' atau '0')
+                if ($stock_product === '1' || $stock_product === '0') {
+                    $query->where('stock_product', $stock_product);
+                }
             })
             ->when($request->input('price_product'), function ($query, $price_product) {
-                $query->where('price_product', $price_product);
+                // Filter berdasarkan harga (terendah ke tertinggi atau sebaliknya)
+                if ($price_product == 'asc') {
+                    $query->orderBy('price_product', 'asc');
+                } elseif ($price_product == 'desc') {
+                    $query->orderBy('price_product', 'desc');
+                }
             })
             ->when($request->input('brand_id'), function ($query, $brand_id) {
+                // Filter berdasarkan merek
                 $query->where('brand_id', $brand_id);
             })
-            ->paginate(5);
+            ->paginate(5); // Menampilkan 5 produk per halaman
 
+        // Mengirim data ke view
         return view('admin.products.index', compact('products', 'categories', 'brands'));
+
     }
 
     /**
