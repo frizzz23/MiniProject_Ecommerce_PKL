@@ -25,8 +25,7 @@
 </head>
 
 <body>
-    <div
-        class=" flex justify-between items-center px-5 py-3 text-sm absolute w-full absolute top-0 left-0 z-10">
+    <div class=" flex justify-between items-center px-5 py-3 text-sm absolute w-full absolute top-0 left-0 z-10">
         <p class="tracking-tight text-slate-700">
             Welcome to ZenTech online eCommerce store
         </p>
@@ -576,7 +575,12 @@
             @foreach ($categories as $category)
                 <div class="border-2 py-3 px-1 flex flex-col justify-between">
                     <div class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-4">
-                        <img src="{{ asset('desainmini-main/image/hp-4.png') }}" alt="Hp" width="100" />
+                        @if ($category->image_category)
+                            <img src="{{ asset('storage/' . $category->image_category) }}" alt="Gambar Brand"
+                                class="img-thumbnail" style="width: 100px; height: auto;">
+                        @else
+                            <span class="text-gray-500">Tidak ada gambar</span>
+                        @endif
                     </div>
 
                     <a href="#"

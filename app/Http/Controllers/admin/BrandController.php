@@ -56,8 +56,8 @@ class BrandController extends Controller
      */
     public function edit(Brand $brand)
     {
-         // Menampilkan form untuk mengedit brand
-         return view('admin.brands.edit', compact('brand'));
+        // Menampilkan form untuk mengedit brand
+        return view('admin.brands.edit', compact('brand'));
     }
 
     /**
@@ -68,26 +68,34 @@ class BrandController extends Controller
         // Validasi input
         $request->validate([
             'name_brand' => 'required|string|max:255|unique:brands,name_brand,' . $brand->id,
-            'image_brand' => 'nullable|image|mimes:jpeg,png,jpg|max:2048,' . $brand->id,
+            'image_brand' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-         // Proses penyimpanan gambar baru jika ada
-         if ($request->hasFile('image_brand')) {
+        // Variabel untuk menyimpan path gambar baru jika ada
+        $imagePath = $brand->image_brand; // Default ke gambar lama
+
+        // Jika ada file gambar baru yang diunggah
+        if ($request->hasFile('image_brand')) {
             // Hapus gambar lama jika ada
             if ($brand->image_brand && Storage::disk('public')->exists($brand->image_brand)) {
                 Storage::disk('public')->delete($brand->image_brand);
             }
+
+            // Simpan gambar baru dan perbarui path-nya
             $imagePath = $request->file('image_brand')->store('brand', 'public');
-        } else {
-            $imagePath = $brand->image_product; // Jika gambar tidak diupload, gunakan gambar lama
         }
 
-        // Update data di database
-        $brand->update($request->all());
+        // Perbarui data brand lainnya, kecuali gambar
+        $brand->update($request->except('image_brand'));
+
+        // Simpan gambar baru jika ada
+        $brand->image_brand = $imagePath;
+        $brand->save();
 
         // Redirect dengan pesan sukses
         return redirect()->route('admin.brands.index')->with('success', 'Brand berhasil diperbarui.');
     }
+
 
     /**
      * Remove the specified resource from storage.

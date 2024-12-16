@@ -13,14 +13,14 @@ use App\Http\Controllers\Page\CategoryPageController;
 Route::get('/', [HomePageController::class,'index'])->name('landing-page');
 
 
-Route::get('/home-page', function () {
-    return view('home-page');
-})->name('home');
+// Route::get('/home-page', function () {
+//     return view('home-page');
+// })->name('home');
 
 
-Route::get('/account', function () {
-    return view('account');
-})->name('home');
+// Route::get('/account', function () {
+//     return view('account');
+// })->name('home');
 
 
 
