@@ -205,10 +205,10 @@
                                     </button>
                                     <input type="text" class="w-full text-center outline-none p-2"
                                         value="{{ $cart->quantity }}" id="quantity_{{ $cart->id }}" readonly />
-                                    <button type="button" class="p-2"
+                                    <!-- <button type="button" class="p-2"
                                         onclick="plus('quantity_{{ $cart->id }}', {{ $cart->product->stock_product }}, '{{ $cart->product->price_product }}', this)">
                                         +
-                                    </button>
+                                    </button> -->
                                 </div>
                             </td>
                             <td class="text-slate-700 text-sm text-medium py-2">
