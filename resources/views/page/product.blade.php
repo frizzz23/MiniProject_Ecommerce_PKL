@@ -5,10 +5,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Product</title>
-    <link href="{{ asset('desainmini-main/dist/output.css') }}" rel="stylesheet" />
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link href="{{ asset('desainmini-main/dist/output.css') }}" rel="stylesheet" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -24,19 +24,6 @@
 </head>
 
 <body>
-    <div class="flex justify-between items-center px-5 py-3 text-sm absolute w-full absolute top-0 left-0 z-10">
-        <p class="tracking-tight text-slate-700">
-            Welcome to ZenTech online eCommerce store
-        </p>
-        <div class="flex gap-2">
-            <form method="get">
-                <select name="lang" onchange="this.form.submit()" class="bg-transparent outline-none text-slate-700">
-                    <option value="id">ID</option>
-                </select>
-            </form>
-        </div>
-    </div>
-
     <!-- start menu-->
     <div id="list-menu"
         class="hidden w-full h-screen overflow-hidden fixed top-0 right-0 left-0 bottom-0 z-20 backdrop-brightness-50 flex justify-center p-5">
@@ -132,12 +119,11 @@
     <x-list-cart-modal />
     <!-- end list cart -->
 
-    <div class="grid md:grid-cols-[0.5fr_2fr] grid-cols-1 mt-10">
-        <div class="py-3 md:block hidden">
+    <div class="grid md:grid-cols-[0.5fr_2fr] grid-cols-1">
+        <div class=" md:block hidden">
             <div id="sidebar-left"
-                class="fixed mt-16 top-0 z-10 bg-white border-e-2 h-screen ps-5 pe-16 overflow-y-auto">
+                class="fixed top-0 z-10 py-5 bg-white border-e-2 h-screen ps-5 pe-16 overflow-y-auto">
                 <a href="{{ route('landing-page') }}">
-
                     <h5 class="font-semibold text-xl text-slate-700 mb-5 text-center">
                         Zentech
                     </h5>
@@ -190,11 +176,12 @@
         </div>
         <div class="px-5">
             <div class="flex w-full justify-between gap-5 mb-5 sticky top-0 z-10 bg-white py-3 md:pe-5">
+
                 <form action="{{ route('page.product') }}" method="GET"
-                    class="hidden gap-2 flex-1 xl:flex w-full">
-                    <input type="text"
-                        class="py-1 px-3 outline-none border border-gray-300 rounded-lg text-sm w-full text-slate-700 w-3/4"
-                        placeholder="Search" name="search" value="{{ request()->get('search') }}" />
+                    class=" gap-2 flex-1 md:flex-none hidden gap-1 bg-gray-100 rounded-full items-center xl:flex py-2 px-5">
+                    <input type="text" name="search" value="{{ request()->get('search') }}"
+                        class=" outline-none text-sm w-full text-slate-800 md:w-80 bg-transparent"
+                        placeholder="Search" />
                     <button type="submit">
                         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4">
                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -202,14 +189,45 @@
                             <g id="SVGRepo_iconCarrier">
                                 <path
                                     d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
-                                    stroke="#000000" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round"></path>
+                                    stroke="#333333" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                </path>
                             </g>
                         </svg>
                     </button>
                 </form>
 
                 <div class="flex gap-1 items-center cursor-pointer">
+                    <div class="flex gap-1" id="carts">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <path
+                                    d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H19"
+                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
+                                <path
+                                    d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z"
+                                    stroke="#1C274C" stroke-width="1.5"></path>
+                                <path
+                                    d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z"
+                                    stroke="#1C274C" stroke-width="1.5"></path>
+                                <path
+                                    d="M5 6H16.4504C18.5054 6 19.5328 6 19.9775 6.67426C20.4221 7.34853 20.0173 8.29294 19.2078 10.1818L18.7792 11.1818C18.4013 12.0636 18.2123 12.5045 17.8366 12.7523C17.4609 13 16.9812 13 16.0218 13H5"
+                                    stroke="#1C274C" stroke-width="1.5"></path>
+                            </g>
+                        </svg>
+                        <span class="text-sm text-slate-700">Keranjang</span>
+
+                        <span class="relative flex h-4 w-4 -translate-y-2 -translate-x-1">
+                            <span
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                            <span
+                                class="relative inline-flex rounded-full h-4 w-4 bg-red-500 text-white text-[10px] flex items-center justify-center"
+                                id="cartCountItem"> 0</span>
+                        </span>
+                    </div>
+
                     <div class="hidden gap-1 items-center xl:flex">
                         @guest
                             <svg viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
@@ -262,35 +280,7 @@
                         @endauth
                     </div>
 
-                    <div class="flex gap-1" id="carts">
-                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6">
-                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                            <g id="SVGRepo_iconCarrier">
-                                <path
-                                    d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H19"
-                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
-                                <path
-                                    d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z"
-                                    stroke="#1C274C" stroke-width="1.5"></path>
-                                <path
-                                    d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z"
-                                    stroke="#1C274C" stroke-width="1.5"></path>
-                                <path
-                                    d="M5 6H16.4504C18.5054 6 19.5328 6 19.9775 6.67426C20.4221 7.34853 20.0173 8.29294 19.2078 10.1818L18.7792 11.1818C18.4013 12.0636 18.2123 12.5045 17.8366 12.7523C17.4609 13 16.9812 13 16.0218 13H5"
-                                    stroke="#1C274C" stroke-width="1.5"></path>
-                            </g>
-                        </svg>
-                        <span class="text-sm text-slate-700">Carts</span>
 
-                        <span class="relative flex h-4 w-4 -translate-y-2 -translate-x-1">
-                            <span
-                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                            <span
-                                class="relative inline-flex rounded-full h-4 w-4 bg-red-500 text-white text-[10px] flex items-center justify-center"
-                                id="cartCountItem"> 0</span>
-                        </span>
-                    </div>
                 </div>
 
                 <!-- Hamburger Menu (untuk tampilan mobile) -->
@@ -397,10 +387,11 @@
             <div class="mt-5 grid md:grid-cols-4 grid-cols-2 gap-5 pe-5 md:mb-10">
                 @foreach ($products as $product)
                     <div class="border-2 py-3 px-2 flex flex-col justify-between">
-                        <a href="" class="font-medium text-slate-800 text-sm tracking-tighter">
+                        <a href="{{ route('page.productshow', $product->slug) }}"
+                            class="font-medium text-slate-800 text-sm tracking-tighter">
                             {{ $product->name_product }} <!-- Tampilkan nama produk -->
                         </a>
-                        <div
+                        <a href="{{ route('page.productshow', $product->slug) }}"
                             class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-4">
                             @if ($product->image_product)
                                 <img src="{{ asset('storage/' . $product->image_product) }}" alt="Product Image"
@@ -409,7 +400,7 @@
                                 <img src="{{ asset('img/img-carousel-promo/laptop.jpg') }}" alt="Default Image"
                                     class="object-cover w-32 h-32" />
                             @endif
-                        </div>
+                        </a>
 
                         <div class="flex items-center space-x-1 mb-2">
                             @for ($i = 0; $i < 5; $i++)
@@ -428,36 +419,58 @@
                         <div class="text-sm text-gray-600">
                             Kategori: {{ $product->category->name_category }} <!-- Menampilkan nama kategori produk -->
                         </div>
-                        <div class="flex justify-between">
+                        <div class="md:flex justify-between">
                             <p class="text-xl text-blue-500 font-medium tracking-tight">
                                 Rp {{ number_format($product->price_product, 0, ',', '.') }}
                             </p>
-                            <button onclick="addToCart({{ $product->id }}, this)" type="button"
-                                class="w-10 h-10 bg-blue-500 flex justify-center items-center rounded-md">
-                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                    class="w-5 h-5">
-                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                    <g id="SVGRepo_iconCarrier">
-                                        <path
-                                            d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H19"
-                                            stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
-                                        <path
-                                            d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z"
-                                            stroke="#ffffff" stroke-width="1.5"></path>
-                                        <path
-                                            d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z"
-                                            stroke="#ffffff" stroke-width="1.5"></path>
-                                        <path
-                                            d="M5 6H16.4504C18.5054 6 19.5328 6 19.9775 6.67426C20.4221 7.34853 20.0173 8.29294 19.2078 10.1818L18.7792 11.1818C18.4013 12.0636 18.2123 12.5045 17.8366 12.7523C17.4609 13 16.9812 13 16.0218 13H5"
-                                            stroke="#ffffff" stroke-width="1.5"></path>
-                                    </g>
-                                </svg>
-                            </button>
+                            @auth
+                                <button onclick="addToCart({{ $product->id }}, this)" type="button"
+                                    class="w-10 h-10 bg-blue-500 flex justify-center items-center rounded-md">
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                        class="w-5 h-5">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path
+                                                d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H19"
+                                                stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
+                                            <path
+                                                d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z"
+                                                stroke="#ffffff" stroke-width="1.5"></path>
+                                            <path
+                                                d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z"
+                                                stroke="#ffffff" stroke-width="1.5"></path>
+                                            <path
+                                                d="M5 6H16.4504C18.5054 6 19.5328 6 19.9775 6.67426C20.4221 7.34853 20.0173 8.29294 19.2078 10.1818L18.7792 11.1818C18.4013 12.0636 18.2123 12.5045 17.8366 12.7523C17.4609 13 16.9812 13 16.0218 13H5"
+                                                stroke="#ffffff" stroke-width="1.5"></path>
+                                        </g>
+                                    </svg>
+                                </button>
+                            @else
+                                <a href="{{ route('login') }}"
+                                    class="w-10 h-10 bg-blue-500 flex justify-center items-center rounded-md">
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                        class="w-5 h-5">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path
+                                                d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H19"
+                                                stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
+                                            <path
+                                                d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z"
+                                                stroke="#ffffff" stroke-width="1.5"></path>
+                                            <path
+                                                d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z"
+                                                stroke="#ffffff" stroke-width="1.5"></path>
+                                            <path
+                                                d="M5 6H16.4504C18.5054 6 19.5328 6 19.9775 6.67426C20.4221 7.34853 20.0173 8.29294 19.2078 10.1818L18.7792 11.1818C18.4013 12.0636 18.2123 12.5045 17.8366 12.7523C17.4609 13 16.9812 13 16.0218 13H5"
+                                                stroke="#ffffff" stroke-width="1.5"></path>
+                                        </g>
+                                    </svg>
+                                </a>
+                            @endauth
                         </div>
-                        <a href="{{ route('page.productshow', $product->slug) }}" class="btn btn-info btn-sm">
-                            <i class="fas fa-eye"></i> Show
-                        </a>
                     </div>
                 @endforeach
             </div>
@@ -515,17 +528,6 @@
     <x-list-cart-script />
 
     <script>
-        window.addEventListener("scroll", () => {
-            const sidebar = document.getElementById("sidebar-left");
-            if (window.scrollY >= 50) {
-                sidebar.classList.remove("mt-16");
-                sidebar.classList.add("pt-10");
-            } else {
-                sidebar.classList.remove("pt-10");
-                sidebar.classList.add("mt-16");
-            }
-        });
-
         const carts = document.getElementById("carts");
         carts.addEventListener("click", () => {
             const closeCart = document.getElementById("close-cart");

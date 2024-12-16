@@ -83,10 +83,10 @@
                     </div> --}}
                     <div class="mb-7">
                         <h1 class="text-xl font-bold mb-1 text-slate-800">
-                            Your Information
+                            Informasi Anda
                         </h1>
                         <p class="text-sm text-slate-700 mb-5">
-                            provide your information clearly
+                            berikan informasi Anda dengan jelas
                         </p>
 
                         <div class="mb-3">
@@ -116,7 +116,7 @@
                                 </div>
                             @empty
                                 <div class="flex gap-5 border-b-2 py-2 px-3">
-                                    <p class="text-slate-700 text-xs text-center"> Address not found</p>
+                                    <p class="text-slate-700 text-xs text-center">Alamat Tidak Ditemukan</p>
                                 </div>
                             @endforelse
                             <div class="flex gap-5 border-b-2 py-2 px-3 w-full">
@@ -133,15 +133,16 @@
 
 
                     <div class="mb-7">
-                        <h1 class="text-xl font-bold mb-1 text-slate-800">Delivery</h1>
+                        <h1 class="text-xl font-bold mb-1 text-slate-800">
+                            Pengiriman</h1>
                         <p class="text-sm text-slate-700 mb-5">
-                            Select the sender option below
+                            Pilih opsi pengirim di bawah ini
                         </p>
                         <div class="mb-3">
-                            <label for="courier" class="text-slate-700 font-medium text-sm">Courier</label>
+                            <label for="courier" class="text-slate-700 font-medium text-sm">Kurir</label>
                             <select onchange="setCourier(this.value)" name="courier" id="courier"
                                 class="w-full py-3 px-3 outline-none border border-gray-300 text-slate-700 rounded-lg text-sm">
-                                <option value="" selected disabled>select courier</option>
+                                <option value="" selected disabled>pilih kurir</option>
                                 <option value="jne">Jalur Nugraha Ekakurir (JNE)</option>
                                 <option value="pos">POS Indonesia (POS)</option>
                                 <option value="tiki">Citra Van Titipan Kilat (TIKI)</option>
@@ -159,15 +160,15 @@
                     <div class="mb-7">
                         <h1 class="text-xl font-bold mb-1 text-slate-800">Voucher</h1>
                         <p class="text-sm text-slate-700 mb-1">
-                            enter the voucher code if you have it
+                            masukkan kode voucher jika ada
                             <br />
-                            <span class="text-red-500 text-[10px]"> Optinal </span>
+                            <span class="text-red-500 text-[10px]"> optimal </span>
                         </p>
 
                         <div class="flex items-center justify-center w-full border rounded-md overflow-hidden">
                             <input type="text" id="vocher"
                                 class="w-full px-3 outline-none text-slate-700 text-md rounded-lg font-medium"
-                                placeholder="Voucher Code" />
+                                placeholder="Kode Voucher" />
                             <button type="button" id="checkVoucherButton" onclick="checkVoucher(this)"
                                 class="bg-blue-500 text-white px-3 py-2 text-md block w-auto">
                                 Check
@@ -214,7 +215,7 @@
 
                     <button type="submit" onclick="checkoutButton(event, this)"
                         class="block w-full py-2 px-5 w-full bg-blue-600 text-white rounded-md">
-                        Pay Now
+                        Bayar Sekarang
                     </button>
                 </div>
             </div>
@@ -230,9 +231,9 @@
                         <div class="px-10 h-96 overflow-y-auto">
                             <table class="table-auto w-full">
                                 <tr class="sticky top-0 z-10">
-                                    <th class="text-slate-700 text-sm font-medium">Image</th>
-                                    <td class="text-slate-700 text-sm font-medium">Product</td>
-                                    <td class="text-slate-700 text-sm font-medium">Price</td>
+                                    <th class="text-slate-700 text-sm font-medium">Gambar</th>
+                                    <td class="text-slate-700 text-sm font-medium">Produk</td>
+                                    <td class="text-slate-700 text-sm font-medium">Harga</td>
                                 </tr>
                                 @foreach ($carts as $cart)
                                     @php
@@ -287,13 +288,13 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="text-xs text-slate-600">Postage</td>
+                                    <td class="text-xs text-slate-600">Ongkos kirim</td>
                                     <td class="text-xs text-slate-800 text-right text-nowrap">
                                         <div id="ongkir-cek">+</div>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="text-xs text-slate-600">Discount</td>
+                                    <td class="text-xs text-slate-600">Diskon</td>
                                     <td class="text-xs text-slate-800 text-right text-nowrap">
                                         <div id="discount">-</div>
                                     </td>

@@ -10,9 +10,9 @@
                 </div>
             @endif
             <div class="card-body p-4">
-                <h5 class="card-title fw-semibold mb-4">Daftar Brand</h5>
+                <h5 class="card-title fw-semibold mb-4">Daftar Merek</h5>
                 <button type="button" class="btn btn-primary mb-4" data-bs-toggle="modal" data-bs-target="#tambahmodal">
-                    Tambah Brand
+                    Tambah Merek
                 </button>
                 <div class="table-responsive">
                     <table class="table text-nowrap mb-0 align-middle">
@@ -20,7 +20,7 @@
                             <tr>
                                 <th class="border-bottom-0" style="width: 10%;">No</th>
                                 <th class="border-bottom-0" style="width: 20%;">Gambar</th>
-                                <th class="border-bottom-0" style="width: 40%;">Nama Brand</th>
+                                <th class="border-bottom-0" style="width: 40%;">Nama Merek</th>
                                 <th class="border-bottom-0" style="width: 30%;">Aksi</th>
                             </tr>
                         </thead>
@@ -55,12 +55,12 @@
                                                 @csrf
                                                 @method('PUT')
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title">Edit Brand</h5>
+                                                    <h5 class="modal-title">Edit Merek</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
                                                     <div class="mb-3">
-                                                        <label for="edit_name_brand" class="form-label">Nama Brand</label>
+                                                        <label for="edit_name_brand" class="form-label">Nama Merek</label>
                                                         <input type="text" name="name_brand" class="form-control" value="{{ $brand->name_brand }}" required>
                                                     </div>
                                                     <div class="mb-3">
@@ -89,7 +89,7 @@
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    Apakah Anda yakin ingin menghapus brand <strong>{{ $brand->name_brand }}</strong>?
+                                                    Apakah Anda yakin ingin menghapus merek <strong>{{ $brand->name_brand }}</strong>?
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -112,7 +112,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="formModalLabel">Tambah Brand</h5>
+                    <h5 class="modal-title" id="formModalLabel">Tambah Merek</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -120,11 +120,11 @@
                     <form action="{{ route('admin.brands.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-3">
-                            <label for="name_brand" class="form-label">Nama Brand</label>
+                            <label for="name_brand" class="form-label">Nama Merek</label>
                             <input type="text" name="name_brand" class="form-control" id="name_brand" required>
                         </div>
                         <div class="mb-3">
-                            <label for="image_brand" class="form-label">Gambar Brand</label>
+                            <label for="image_brand" class="form-label">Gambar Merek</label>
                             <input type="file" name="image_brand" class="form-control" id="image_brand" accept="image/*">
                         </div>
                         <div class="modal-footer">

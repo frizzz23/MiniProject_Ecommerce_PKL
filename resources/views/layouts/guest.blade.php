@@ -9,11 +9,24 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    {{-- <link rel="preconnect" href="https://fonts.bunny.net"> --}}
+    {{-- <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" /> --}}
 
     <link rel="shortcut icon" type="image/png" href="{{ asset('loading/logo.png') }}" />
-    <link rel="stylesheet" href="{{ asset('style/src/assets/css/styles.min.css') }}" />
+    {{-- <link rel="stylesheet" href="{{ asset('style/src/assets/css/styles.min.css') }}" /> --}}
+
+    <!-- font poopins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet" />
+    <style>
+        * {
+            font-family: "Poppins", sans-serif;
+            /* border: 1px solid black; */
+        }
+    </style>
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -23,10 +36,10 @@
 
 <body>
     <!--  Body Wrapper -->
-    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
-        data-sidebar-position="fixed" data-header-position="fixed">
-        @yield('content')
-    </div>
+    {{-- <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+        data-sidebar-position="fixed" data-header-position="fixed"> --}}
+    @yield('content')
+    {{-- </div> --}}
     <script src="{{ asset('style/src/assets/libs/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('style/src/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
 </body>

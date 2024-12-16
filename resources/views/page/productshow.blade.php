@@ -5,11 +5,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Product Detail </title>
-    <!-- gunakan ini jika pakai laravel breeze -->
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link href="{{ asset('desainmini-main/dist/output.css') }}" rel="stylesheet" />
 
-    <!-- font poopins -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -18,23 +18,12 @@
     <style>
         * {
             font-family: "Poppins", sans-serif;
+            /* border: 1px solid black; */
         }
     </style>
 </head>
 
 <body class="px-5">
-    <div class="flex justify-between items-center px-5 py-3 text-sm absolute w-full absolute top-0 left-0 z-10">
-        <h5 class="font-semibold text-xl text-slate-700 mb-5 text-center">
-            Zentech
-        </h5>
-        <div class="flex gap-2">
-            <form method="get">
-                <select name="lang" onchange="this.form.submit()" class="bg-transparent outline-none text-slate-700">
-                    <option value="id">ID</option>
-                </select>
-            </form>
-        </div>
-    </div>
 
     <!-- start menu-->
     <div id="list-menu"
@@ -109,12 +98,18 @@
 
     <x-list-cart-modal />
 
-    <div style="margin-top: 50px">
+    <div style="">
         <div class="px-5">
-            <div class="flex w-full justify-between mb-5 sticky top-0 z-10 bg-white py-3 md:pe-5">
-                <form action="" class="hidden gap-2 flex-1 md:flex w-full">
-                    <input type="text"
-                        class="py-1 px-3 outline-none border border-gray-300 rounded-lg text-sm w-full text-slate-700 w-3/4"
+            <div class="flex w-full justify-between gap-5 mb-5 sticky top-0 z-10 bg-white py-3 md:pe-5">
+                <a href="{{ route('landing-page') }}">
+                    <h5 class="font-semibold text-xl text-slate-700 mb-5 text-center">
+                        Zentech
+                    </h5>
+                </a>
+                <form action="{{ route('page.product') }}" method="GET"
+                    class=" gap-2 flex-1 md:flex-none hidden gap-1 bg-gray-100 rounded-full items-center xl:flex py-2 px-5">
+                    <input type="text" name="search" value="{{ request()->get('search') }}"
+                        class=" outline-none text-sm w-full text-slate-800 md:w-80 bg-transparent"
                         placeholder="Search" />
                     <button type="submit">
                         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4">
@@ -123,41 +118,97 @@
                             <g id="SVGRepo_iconCarrier">
                                 <path
                                     d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
-                                    stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    stroke="#333333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 </path>
                             </g>
                         </svg>
                     </button>
                 </form>
 
-                <div class="flex gap-1 items-center cursor-pointer" id="carts">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6">
-                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                        <g id="SVGRepo_iconCarrier">
-                            <path
-                                d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H19"
-                                stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
-                            <path
-                                d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z"
-                                stroke="#1C274C" stroke-width="1.5"></path>
-                            <path
-                                d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z"
-                                stroke="#1C274C" stroke-width="1.5"></path>
-                            <path
-                                d="M5 6H16.4504C18.5054 6 19.5328 6 19.9775 6.67426C20.4221 7.34853 20.0173 8.29294 19.2078 10.1818L18.7792 11.1818C18.4013 12.0636 18.2123 12.5045 17.8366 12.7523C17.4609 13 16.9812 13 16.0218 13H5"
-                                stroke="#1C274C" stroke-width="1.5"></path>
-                        </g>
-                    </svg>
-                    <span class="text-sm text-slate-700">Carts</span>
+                <div class="flex gap-1 items-center cursor-pointer">
+                    <div class="flex gap-1" id="carts">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <path
+                                    d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H19"
+                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
+                                <path
+                                    d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z"
+                                    stroke="#1C274C" stroke-width="1.5"></path>
+                                <path
+                                    d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z"
+                                    stroke="#1C274C" stroke-width="1.5"></path>
+                                <path
+                                    d="M5 6H16.4504C18.5054 6 19.5328 6 19.9775 6.67426C20.4221 7.34853 20.0173 8.29294 19.2078 10.1818L18.7792 11.1818C18.4013 12.0636 18.2123 12.5045 17.8366 12.7523C17.4609 13 16.9812 13 16.0218 13H5"
+                                    stroke="#1C274C" stroke-width="1.5"></path>
+                            </g>
+                        </svg>
+                        <span class="text-sm text-slate-700">Keranjang</span>
 
-                    <span class="relative flex h-4 w-4 -translate-y-2 -translate-x-1">
-                        <span
-                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                        <span
-                            class="relative inline-flex rounded-full h-4 w-4 bg-red-500 text-white text-[10px] flex items-center justify-center"
-                            id="cartCountItem">0</span>
-                    </span>
+                        <span class="relative flex h-4 w-4 -translate-y-2 -translate-x-1">
+                            <span
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                            <span
+                                class="relative inline-flex rounded-full h-4 w-4 bg-red-500 text-white text-[10px] flex items-center justify-center"
+                                id="cartCountItem"> 0</span>
+                        </span>
+                    </div>
+
+                    <div class="hidden gap-1 items-center xl:flex">
+                        @guest
+                            <svg viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" class="w-4 h-4">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <defs></defs>
+                                    <g id="Page-1" stroke="none" stroke-width="1" fill="none"
+                                        fill-rule="evenodd">
+                                        <g id="Dribbble-Light-Preview" transform="translate(-420.000000, -2159.000000)"
+                                            fill="#000000">
+                                            <g id="icons" transform="translate(56.000000, 160.000000)">
+                                                <path
+                                                    d="M374,2009 C371.794,2009 370,2007.206 370,2005 C370,2002.794 371.794,2001 374,2001 C376.206,2001 378,2002.794 378,2005 C378,2007.206 376.206,2009 374,2009 M377.758,2009.673 C379.124,2008.574 380,2006.89 380,2005 C380,2001.686 377.314,1999 374,1999 C370.686,1999 368,2001.686 368,2005 C368,2006.89 368.876,2008.574 370.242,2009.673 C366.583,2011.048 364,2014.445 364,2019 L366,2019 C366,2014 369.589,2011 374,2011 C378.411,2011 382,2014 382,2019 L384,2019 C384,2014.445 381.417,2011.048 377.758,2009.673"
+                                                    id="profile-[#1335]"></path>
+                                            </g>
+                                        </g>
+                                    </g>
+                                </g>
+                            </svg>
+                            <!-- Jika pengguna belum login -->
+                            <a href="{{ route('login') }}" class="text-sm text-slate-700 hover:text-blue-400">Sign in</a>
+                            <span>/</span>
+                            <a href="{{ route('register') }}" class="text-sm text-slate-700 hover:text-blue-400">Sign
+                                up</a>
+                        @endguest
+                        @auth
+                            <div class="tooltip">
+                                <a href="{{ route('user.profile.profile') }}"
+                                    class="flex justify-start items-center gap-1 text-md py-2 bg-gray-200 text-slate-800 w-auto  px-2 rounded-full">
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                        class="w-5 h-5">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <!-- Lingkaran untuk kepala -->
+                                            <circle cx="12" cy="8" r="4" stroke="#1C274C"
+                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                            </circle>
+                                            <!-- Kurva untuk tubuh -->
+                                            <path d="M4 20C4 16 8 14 12 14C16 14 20 16 20 20" stroke="#1C274C"
+                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                        </g>
+                                    </svg>
+                                    <span class="tooltiptext">My Account</span>
+                                </a>
+
+                            </div>
+                        @endauth
+                    </div>
+
+
                 </div>
 
                 <!-- Hamburger Menu (untuk tampilan mobile) -->
@@ -171,30 +222,8 @@
                     </button>
                 </div>
 
-                <div class="hidden gap-1 items-center xl:flex">
-                    <svg viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" class="w-4 h-4">
-                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                        <g id="SVGRepo_iconCarrier">
-                            <defs></defs>
-                            <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <g id="Dribbble-Light-Preview" transform="translate(-420.000000, -2159.000000)"
-                                    fill="#000000">
-                                    <g id="icons" transform="translate(56.000000, 160.000000)">
-                                        <path
-                                            d="M374,2009 C371.794,2009 370,2007.206 370,2005 C370,2002.794 371.794,2001 374,2001 C376.206,2001 378,2002.794 378,2005 C378,2007.206 376.206,2009 374,2009 M377.758,2009.673 C379.124,2008.574 380,2006.89 380,2005 C380,2001.686 377.314,1999 374,1999 C370.686,1999 368,2001.686 368,2005 C368,2006.89 368.876,2008.574 370.242,2009.673 C366.583,2011.048 364,2014.445 364,2019 L366,2019 C366,2014 369.589,2011 374,2011 C378.411,2011 382,2014 382,2019 L384,2019 C384,2014.445 381.417,2011.048 377.758,2009.673"
-                                            id="profile-[#1335]"></path>
-                                    </g>
-                                </g>
-                            </g>
-                        </g>
-                    </svg>
-                    <a href="#" class="text-sm text-slate-700">Sign in</a>
-                    <span>/</span>
-                    <a href="#" class="text-sm text-slate-700">Sign up</a>
-                </div>
             </div>
+
             <div class="flex justify-between items md:pe-5">
                 <nav class="flex" aria-label="Breadcrumb">
                     <ol class="flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
