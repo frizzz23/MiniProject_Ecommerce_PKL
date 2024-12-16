@@ -10,12 +10,12 @@
     <!-- Table Actions -->
     <div class="flex justify-between items-center mb-4">
     <button class="btn btn-primary text-white py-2 px-4 rounded-lg" data-bs-toggle="modal" data-bs-target="#tambahModal">
-            + Add new user
+        + Tambahkan pengguna baru
         </button>
         <div class="space-x-2">
             <form action="{{ route('admin.users.index') }}" method="GET" id="roleFilterForm" class="inline-block">
                 <select name="role" id="role" class="form-select text-center" onchange="this.form.submit()">
-                    <option value="">All Role</option>
+                    <option value="">Semua Peran</option>
                     @foreach ($roles as $role)
                         <option value="{{ $role->name }}" {{ request('role') == $role->name ? 'selected' : '' }}>
                             {{ $role->name }}
@@ -27,7 +27,7 @@
                 @csrf
                 @method('DELETE')
                 <input type="hidden" name="selected_users" id="selected_users">
-                <button type="button" class="bg-red-500 text-white py-1 px-3 rounded-md" id="delete-all-button">Delete all</button>
+                <button type="button" class="bg-red-500 text-white py-1 px-3 rounded-md" id="delete-all-button">Hapus semua</button>
             </form>
         </div>
     </div>
@@ -38,10 +38,10 @@
             <thead class="bg-[#5d85fa] text-white">
                 <tr>
                     <th class="py-3 px-4 text-left"><input type="checkbox" class="form-checkbox h-4 w-4 text-purple-600" id="select-all"></th>
-                    <th class="py-3 px-4 text-left">USER</th>
-                    <th class="py-3 px-4 text-left">USER ROLE</th>
+                    <th class="py-3 px-4 text-left">PENGGUNA</th>
+                    <th class="py-3 px-4 text-left">PERAN PENGGUNA</th>
                     <th class="py-3 px-4 text-left">STATUS</th>
-                    <th class="py-3 px-4 text-left">ACTIONS</th>
+                    <th class="py-3 px-4 text-left">AKSI</th>
                 </tr>
             </thead>
             <tbody>
@@ -55,11 +55,11 @@
                         @endforeach
                     </td>
                     <td class="py-3 px-4">
-                        <span class="py-1 px-2 bg-green-600 text-white rounded-lg text-sm">Active</span>
+                        <span class="py-1 px-2 bg-green-600 text-white rounded-lg text-sm">Aktif</span>
                     </td>
                     <td class="py-3 px-4 space-x-2">
                         <button class="bg-red-600 text-white py-1 px-2 rounded-lg hover:bg-red-700" data-bs-toggle="modal" data-bs-target="#hapusModal{{ $user->id }}">
-                            Delete
+                            Hapus
                         </button>
                     </td>
                 </tr>
@@ -69,18 +69,18 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">Delete Confirmation</h5>
+                                <h5 class="modal-title">Hapus Konfirmasi</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                Are you sure you want to delete <strong>{{ $user->name }}</strong>?
+                                Apakah Anda yakin ingin menghapus <strong>{{ $user->name }}</strong>?
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                                 <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" class="d-inline-block">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                    <button type="submit" class="btn btn-danger">Hapus</button>
                                 </form>
                             </div>
                         </div>
@@ -98,14 +98,14 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="tambahModalLabel">Add User</h5>
+                <h5 class="modal-title" id="tambahModalLabel">Tambah Pengguna</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form action="{{ route('admin.users.store') }}" method="POST">
                     @csrf
                     <div class="mb-3">
-                        <label for="name" class="form-label">Name</label>
+                        <label for="name" class="form-label">Nama</label>
                         <input type="text" id="name" name="name" class="form-control" value="{{ old('name') }}" required>
                     </div>
                     <div class="mb-3">
@@ -121,8 +121,8 @@
                         <input type="password" id="password_confirmation" name="password_confirmation" class="form-control" required>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Save User</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Simpan Pengguna</button>
                     </div>
                 </form>
             </div>

@@ -6,12 +6,12 @@
             <div class="card w-100">
                 <div class="py-12">
                     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                        <h5 class="card-title fw-semibold mb-4">Promo Diskon</h5>
+                        <h5 class="card-title fw-semibold mb-4">Promo Vocher</h5>
 
                         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                 data-bs-target="#tambahmodal">
-                                Tambah Diskon
+                                Tambah Vocher
                             </button>
                             <div class="p-6 text-gray-900 dark:text-gray-100">
                                 @if (session('success'))
@@ -38,8 +38,8 @@
                                 <table class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
-                                            <th>Kode Diskon</th>
+                                            <th>No</th>
+                                            <th>Kode Vocher</th>
                                             <th>Diskon</th>
                                             <th>Kuantitas</th>
                                             <th>Minimal Pembelian</th>
@@ -120,12 +120,12 @@
                                                     <div class="modal-content">
                                                         <div class="modal-header">
                                                             <h5 class="modal-title"
-                                                                id="hapusModalLabel{{ $code->id }}">Hapus Diskon</h5>
+                                                                id="hapusModalLabel{{ $code->id }}">Hapus Vocher</h5>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                                 aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body" style="color: black;">
-                                                            Apakah Anda yakin ingin menghapus diskon
+                                                            Apakah Anda yakin ingin menghapus voucher
                                                             <strong>{{ $code->code }}</strong>?
                                                         </div>
                                                         <div class="modal-footer">
@@ -149,7 +149,7 @@
                                                     <div class="modal-content">
                                                         <div class="modal-header">
                                                             <h5 class="modal-title" id="editModalLabel{{ $code->id }}">
-                                                                Edit Diskon</h5>
+                                                                Edit Vocher</h5>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                                 aria-label="Close"></button>
                                                         </div>
@@ -160,7 +160,7 @@
                                                                 @method('PUT')
                                                                 <div class="mb-3">
                                                                     <label for="code{{ $code->id }}"
-                                                                        class="form-label">Kode Diskon</label>
+                                                                        class="form-label">Kode Vocher</label>
                                                                     <input type="text" name="code"
                                                                         class="form-control"
                                                                         value="{{ old('code') ?? $code->code }}"
@@ -217,14 +217,14 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="formModalLabel">Tambah Diskon</h5>
+                    <h5 class="modal-title" id="formModalLabel">Tambah Vocher</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form action="{{ route('admin.discount.store') }}" method="POST">
                         @csrf
                         <div class="mb-3">
-                            <label for="code" class="form-label">Kode Diskon</label>
+                            <label for="code" class="form-label">Kode Vocher</label>
                             <input type="text" name="code" class="form-control" id="code" required>
                         </div>
                         <div class="mb-3">

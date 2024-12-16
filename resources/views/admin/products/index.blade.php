@@ -28,7 +28,7 @@
                     </form>
                 </div>
                 <div class="flex items-center gap-4">
-                <button class="btn btn-primary text-white font-medium py-2 px-4 rounded-lg" data-bs-toggle="modal" data-bs-target="#addModal">+ Add new product</button>
+                <button class="btn btn-primary text-white font-medium py-2 px-4 rounded-lg" data-bs-toggle="modal" data-bs-target="#addModal">+ Tambahkan produk baru</button>
                     <!-- Filter Kategori -->
                     <form id="filterForm" action="{{ route('admin.products.index') }}" method="GET">
                         <div class="d-flex align-items-center ">
@@ -51,22 +51,22 @@
             <div class="grid grid-cols-4 gap-4 text-white border-t border-gray-600 pt-4 mb-4">
                 <div>
                 <select class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full">
-                    <option>Brand</option>
+                    <option>Merek</option>
                 </select>
                 </div>
                 <div>
                 <select class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full">
-                    <option>Price</option>
+                    <option>Harga</option>
                 </select>
                 </div>
                 <div>
                 <select class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full">
-                    <option>Stock</option>
+                    <option>Stok</option>
                 </select>
                 </div>
                 <div>
                 <select class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full">
-                    <option>Color</option>
+                    <option>Warna</option>
                 </select>
                 </div>
             </div>
@@ -77,11 +77,11 @@
                 <tr>
                     <th class="px-4 py-2 text-left">Nama Produk</th>
                     <th class="px-4 py-2 text-left">Kategori</th>
-                    <th class="px-4 py-2 text-left">Brand</th>
+                    <th class="px-4 py-2 text-left">Merek</th>
                     <th class="px-4 py-2 text-left">Harga</th>
                     <th class="px-4 py-2 text-left">Stok</th>
                     <th class="px-4 py-2 text-left">Rating</th>
-                    <th class="px-6 py-2 text-center">Last Update</th>
+                    <th class="px-6 py-2 text-center">Pembaruan Terakhir</th>
                     <th class="px-4 py-2 text-center">Aksi</th>
                 </tr>
             </thead>
@@ -182,9 +182,9 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="brand_id" class="form-label">Brand</label>
+                        <label for="brand_id" class="form-label">Merek</label>
                         <select name="brand_id" class="form-control" required>
-                            <option value="" disabled selected>Pilih Brand</option>
+                            <option value="" disabled selected>Pilih Merek</option>
                             @foreach ($brands as $brand)
                                 <option value="{{ $brand->id }}">{{ $brand->name_brand }}</option>
                             @endforeach
@@ -241,10 +241,10 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="brand_id_{{ $product->id }}" class="form-label">Brand</label>
+                        <label for="brand_id_{{ $product->id }}" class="form-label">Merek</label>
                         <select name="brand_id" class="form-control" required>
                             @foreach ($brands as $brand)
-                                <option value="{{ $brand->id }}" {{ $product->brand_id == $brand->id ? 'selected' : '' }}>{{ $brand->name }}</option>
+                                <option value="{{ $brand->id }}" {{ $product->brand_id == $brand->id ? 'selected' : '' }}>{{ $brand->name_brand }}</option>
                             @endforeach
                         </select>
                     </div>

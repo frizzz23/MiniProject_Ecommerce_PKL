@@ -19,8 +19,8 @@
                             <thead class="text-dark fs-4">
                                 <tr>
                                     <th class="border-bottom-0">No</th>
-                                    <th class="border-bottom-0">User</th>
-                                    <th class="border-bottom-0">Product</th>
+                                    <th class="border-bottom-0">Pengguna</th>
+                                    <th class="border-bottom-0">Produk</th>
                                     <th class="border-bottom-0">Rating</th>
                                     <th class="border-bottom-0">Komentar</th>
                                     <th class="border-bottom-0">Aksi</th>
