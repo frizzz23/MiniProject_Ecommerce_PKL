@@ -48,7 +48,7 @@
         </ol>
     </nav>
     <div class="flex flex-col justify-center items-start bg-white py-3 px-4 rounded-lg mb-1 shadow-sm mt-4">
-        <h2 class=" text-xl font-semibold text-gray-800 ">Profile Saya </h2>
+        <h2 class=" text-xl font-semibold text-gray-800 ">Ubah Password </h2>
         <p class="text-muted small">
             Pastikan akun Anda menggunakan kata sandi yang panjang dan acak agar tetap aman.
     </div>

@@ -5,7 +5,7 @@
         <ol class="flex items-center  rtl:space-x-reverse">
             <li class="flex items-center">
                 <a href="{{ route('landing-page') }}"
-                    class="flex justify-center items-end gap-1 bg-white sahdoew-sm text-slate-800 w-auto py-1.5 px-2 rounded-md">
+                    class="flex justify-center items-end gap-1 bg-white shadow-sm text-slate-800 w-auto py-1.5 px-2 rounded-md">
                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
@@ -27,7 +27,7 @@
                             d="m9 5 7 7-7 7" />
                     </svg>
                     <a href=""
-                        class="flex justify-center items-end gap-1 bg-white sahdoew-sm text-slate-800  w-auto py-2 px-2 rounded-md">
+                        class="flex justify-center items-end gap-1 bg-white shadow-sm text-slate-800  w-auto py-2 px-2 rounded-md">
                         <span class="font-semibold text-xs">Account</span>
                     </a>
                 </div>
@@ -40,8 +40,8 @@
                             d="m9 5 7 7-7 7" />
                     </svg>
                     <a href=""
-                        class="flex justify-center items-end gap-1 bg-white sahdoew-sm text-slate-800  w-auto py-2 px-2 rounded-md">
-                        <span class="font-semibold text-xs">Address</span>
+                        class="flex justify-center items-end gap-1 bg-white shadow-sm text-slate-800  w-auto py-2 px-2 rounded-md">
+                        <span class="font-semibold text-xs">Alamat</span>
                     </a>
                 </div>
             </li>
@@ -50,7 +50,7 @@
 
 
     <div class="flex justify-between items-center bg-white py-3 px-4 rounded-lg mb-1 shadow-sm">
-        <h2 class="flex text-xl justify-center font-semibold text-gray-800 ">My Address </h2>
+        <h2 class="flex text-xl justify-center font-semibold text-gray-800 ">Alamat Saya </h2>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAddressModal">
             + Tambah Alamat
         </button>
