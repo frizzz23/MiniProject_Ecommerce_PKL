@@ -48,8 +48,8 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('user/akun/password', [ProfileController::class, 'password'])->name('user.profile.password');
     Route::get('user/akun/delete', [ProfileController::class, 'delete'])->name('user.profile.delete');
 
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('user.profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('user.profile.destroy');
+    Route::patch('user/profile', [ProfileController::class, 'update'])->name('user.profile.update');
+    Route::delete('user/profile', [ProfileController::class, 'destroy'])->name('user.profile.destroy');
 
     // Route::resource('payments', PaymentController::class);
     Route::post('/create-snap-token', [PaymentController::class, 'CreateSnapToken'])->name('craete.snap.token');

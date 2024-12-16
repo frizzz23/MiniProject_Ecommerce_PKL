@@ -213,23 +213,7 @@
                     <span class="flex items-center mb-4">
                         <span class="h-px flex-1 bg-gray-300"></span>
                     </span>
-                    {{-- <div class="flex space-x-4">
-                        @if (Auth::user()->image)
-                            <img src="{{ asset('storage/' . Auth::user()->image) }}" alt="Profile Picture"
-                                style="width: 100px; height: 100px; object-fit: cover; object-position: center;">
-                        @else
-                            <img src="{{ asset('style/src/assets/images/profile/user-1.jpg') }}"
-                                alt="Default Profile Picture"
-                                style="width: 100px; height: 100px; object-fit: cover; object-position: center;">
-                        @endif
-
-                        <div>
-                            <h2
-                                class="flex items-center mt-8 text-xl font-bold leading-none text-gray-800 sm:text-2xl">
-                                {{ Auth::user()->name ?? 'User' }}
-                            </h2>
-                        </div>
-                    </div> --}}
+                    
                     <div class="grid grid-cols-2 gap-6">
                         <div>
                             <p class="text-gray-600 mb-2"><span class="font-bold text-gray-800">Name
