@@ -126,10 +126,10 @@
                         <a href="#" class="text-md text-slate-700 py-2 block">Home</a>
                     </li>
                     <li>
-                        <a href="#" class="text-md text-slate-700 py-2 block">Product</a>
+                        <a href="#" class="text-md text-slate-700 py-2 block">Produk</a>
                     </li>
                     <li>
-                        <a href="#" class="text-md text-slate-700 py-2 block">Category</a>
+                        <a href="#" class="text-md text-slate-700 py-2 block">Kategory</a>
                     </li>
                     <li>
                         <a href="#" class="text-md text-slate-700 py-2 block">About</a>
@@ -155,13 +155,13 @@
                 <thead class="border-b-2">
                     <tr>
                         <th class="text-slate-700 text-sm text-medium text-left py-2">
-                            Product
+                            Produk
                         </th>
                         <th class="text-slate-700 text-sm text-medium text-left py-2">
-                            Price
+                            Harga
                         </th>
                         <th class="text-slate-700 text-sm text-medium text-left py-2">
-                            Quantity
+                            Kuantitas
                         </th>
                         <th class="text-slate-700 text-sm text-medium text-left py-2">
                             Total
@@ -223,14 +223,14 @@
                                     @method('DELETE')
                                     <button type="submit" class="text-red-500 text-xs"
                                         onclick="confirmDelete(event, '{{ $cart->id }}')">
-                                        Remove
+                                        Hapus
                                     </button>
                                 </form>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <th colspan="5" class="text-center text-slate-700 text-sm py-10">Cart Not Found.
+                            <th colspan="5" class="text-center text-slate-700 text-sm py-10">Kwranjang Tidak Ditemukan.
                             </th>
                         </tr>
                     @endforelse
@@ -242,7 +242,7 @@
                     <div class="w-1/2">
                         <h4 class="text-md text-slate-600">Subtotal</h4>
                         <p class="text-xs text-slate-500">
-                            Tax included and Shipping and taxes calculated at checkout.
+                            Termasuk pajak dan Pengiriman dan pajak dihitung saat checkout.
                         </p>
                     </div>
 
