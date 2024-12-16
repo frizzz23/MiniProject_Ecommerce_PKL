@@ -24,7 +24,7 @@
     </style>
 </head>
 
-<body>
+<body class="overflow-x-hidden">
 
     <!-- start header -->
     <header id="header" class="w-full py-4 px-10 flex justify-between items-center absolute top-0 z-10  ">
