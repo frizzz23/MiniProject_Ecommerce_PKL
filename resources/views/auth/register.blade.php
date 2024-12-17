@@ -84,13 +84,13 @@
 ">
             <div class="w-full">
                 <h1 class="font-bold text-white text-3xl mb-3 text-center mb-4">Sign In</h1>
-                <form action="{{ route('login') }}" method="POST">
+                <form action="{{ route('register') }}" method="POST">
                     @csrf
                     <div class="mb-4">
                         <label for="name" class="block text-white text-xs mb-1">Name</label>
                         <input type="text" id="name" name="name"
                             class="outline-none w-full py-2 text-xs px-3 rounded text-slate-800" value="{{ old('name') }}"
-                            autofocus placeholder="example@gmail.com">
+                            autofocus placeholder="name">
                         @error('name')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
