@@ -31,7 +31,9 @@ Route::get('/category-page', CategoryPageController::class)->name('category-page
 Route::get('/about-page', AboutPageController::class)->name('about-page');
 
 
-
+Route::fallback(function () {
+    return response()->view('errors.404', [], 404);
+});
 
 
 require __DIR__ . '/auth.php';
