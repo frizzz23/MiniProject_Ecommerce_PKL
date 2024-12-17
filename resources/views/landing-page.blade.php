@@ -27,7 +27,7 @@
 <body class="overflow-x-hidden">
 
     <!-- start header -->
-    <header id="header" class="w-full py-4 px-10 flex justify-between items-center absolute top-0 z-10" >
+    <header id="header" class="w-full py-4 px-10 xl:px-14 flex justify-between items-center absolute top-0 z-10">
         <h5 class="font-semibold text-2xl text-white hidden xl:flex">Zentech</h5>
 
         <div
@@ -115,26 +115,39 @@
                     <a href="{{ route('register') }}" class="text-sm text-white hover:text-blue-400">Sign up</a>
                 @endguest
                 @auth
-                    <div class="tooltip">
-                        <a href="{{ route('user.profile.profile') }}"
-                            class="flex justify-start items-center gap-1 text-md py-2 bg-gray-200 text-slate-800 w-auto  px-2 rounded-full">
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                    <!-- Lingkaran untuk kepala -->
+                    @if (auth()->user()->hasRole('user'))
+                        <!-- Cek jika peran user -->
+                        <div class="tooltip">
+                            <a href="{{ route('user.profile.profile') }}"
+                                class="flex justify-start items-center gap-1 text-md py-2 bg-gray-200 text-slate-800 w-auto px-2 rounded-full">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                    class="w-5 h-5">
                                     <circle cx="12" cy="8" r="4" stroke="#1C274C" stroke-width="1.5"
                                         stroke-linecap="round" stroke-linejoin="round"></circle>
-                                    <!-- Kurva untuk tubuh -->
                                     <path d="M4 20C4 16 8 14 12 14C16 14 20 16 20 20" stroke="#1C274C" stroke-width="1.5"
                                         stroke-linecap="round" stroke-linejoin="round"></path>
-                                </g>
-                            </svg>
-                            <span class="tooltiptext">My Account</span>
-                        </a>
-
-                    </div>
+                                </svg>
+                                <span class="tooltiptext">My Account</span>
+                            </a>
+                        </div>
+                    @elseif(auth()->user()->hasRole('admin'))
+                        <!-- Cek jika peran admin -->
+                        <div class="tooltip">
+                            <a href="{{ route('dashboard.index') }}" 
+                                class="flex justify-start items-center gap-1 text-md py-2 bg-gray-200 text-slate-800 w-auto px-2 rounded-full">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                    class="w-5 h-5">
+                                    <circle cx="12" cy="8" r="4" stroke="#1C274C" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round"></circle>
+                                    <path d="M4 20C4 16 8 14 12 14C16 14 20 16 20 20" stroke="#1C274C" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                                <span class="tooltiptext">Dashboard</span>
+                            </a>
+                        </div>
+                    @endif
                 @endauth
+
             </div>
 
 

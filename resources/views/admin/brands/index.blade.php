@@ -19,9 +19,10 @@
                         <thead class="text-dark fs-4">
                             <tr>
                                 <th class="border-bottom-0" style="width: 10%;">No</th>
-                                <th class="border-bottom-0" style="width: 20%;">Gambar</th>
-                                <th class="border-bottom-0" style="width: 40%;">Nama Merek</th>
-                                <th class="border-bottom-0" style="width: 30%;">Aksi</th>
+                                <th class="border-bottom-0" style="width: 30%;">Gambar</th>
+                                <th class="border-bottom-0" style="width: 30%;">Nama Merek</th>
+                                <th class="border-bottom-0" style="width: 20%;">Dibuat</th>
+                                <th class="border-bottom-0" style="width: 10%;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -35,7 +36,8 @@
                                             <span class="text-gray-500">Tidak ada gambar</span>
                                         @endif
                                     </td>
-                                    <td class="border-bottom-0">{{ $brand->name_brand }}</td>
+                                    <td class="border-bottom-0">{{ $brand->name_brand ?? 'kosong'}}</td>
+                                    <td class="border-bottom-0">{{ $brand->created_at->format('d F Y') ?? 'kosong' }}</td>
                                     <td class="border-bottom-0">
                                         <div class="d-flex align-items-center gap-2">
                                             <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editmodal{{ $brand->id }}">

@@ -21,9 +21,10 @@
                             <thead class="text-dark fs-4">
                                 <tr>
                                     <th class="border-bottom-0" style="width: 10%;">No</th>
-                                    <th class="border-bottom-0" style="width: 20%;">Gambar</th>
-                                    <th class="border-bottom-0" style="width: 40%;">Nama Kategori</th>
-                                    <th class="border-bottom-0" style="width: 30%;">Aksi</th>
+                                    <th class="border-bottom-0" style="width: 30%;">Gambar</th>
+                                    <th class="border-bottom-0" style="width: 30%;">Nama Kategori</th>
+                                    <th class="border-bottom-0" style="width: 20%;">Dibuat</th>
+                                    <th class="border-bottom-0" style="width: 10%;">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -34,6 +35,7 @@
                                             <img src="{{ asset('storage/' . $category->image_category) }}" alt="Gambar Kategori" class="img-thumbnail" style="width: 100px; height: auto;">
                                         </td>
                                         <td class="border-bottom-0">{{ $category->name_category }}</td>
+                                        <td class="border-bottom-0">{{ $category->created_at->format('d F Y') ?? 'kosong' }}</td>
                                         <td class="border-bottom-0">
                                             <div class="d-flex align-items-center gap-2">
                                                 <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editmodal{{ $category->id }}">

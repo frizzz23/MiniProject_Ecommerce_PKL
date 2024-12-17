@@ -18,9 +18,9 @@ Route::get('/', [HomePageController::class,'index'])->name('landing-page');
 // })->name('home');
 
 
-// Route::get('/account', function () {
-//     return view('account');
-// })->name('home');
+Route::get('/account', function () {
+    return view('account');
+})->name('account');
 
 
 
