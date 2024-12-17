@@ -25,23 +25,14 @@
                         <span class="hide-menu">Dashboard</span>
                     </a>
                 </li>
-                <li class="sidebar-item my-2">
-                    <a class="sidebar-link " href="{{ route('admin.users.index') }}" aria-expanded="false">
-                        <span>
-                            <i class="fa-solid fa-users"></i>
-                        </span>
-                        <span class="hide-menu">User</span>
-                    </a>
-                </li>
-
-                {{-- dropdown produk --}}
-                <div class="">
+                 {{-- dropdown produk --}}
+                 <div class="">
                     <button id="accountMenuToggle"
                         class="w-full flex items-center justify-between {{ request()->routeIs('admin.products.index') ||
                         request()->routeIs('admin.categories.index') ||
                         request()->routeIs('admin.brands.index')
                             ? 'text-white bg-[#5D87FF] hover:bg-[#5D87FF]'
-                            : 'text-[#2A3547]' }} hover:text-[#5D87FF] space-x-2 my-2 p-[10px] rounded-md hover:bg-[rgba(219,234,254,0.5)] group">
+                            : 'text-[#2A3547] hover:bg-[rgba(219,234,254,0.5)]' }} hover:text-[#5D87FF] space-x-2 my-2 p-[10px] rounded-md  group">
                         <div class="flex items-center">
                             <span
                                 style="color: {{ request()->routeIs('admin.products.index') ||
@@ -82,8 +73,8 @@
                             : 'hidden' }} pl-4 space-y-2 mt-2">
                         <a href="{{ route('admin.products.index') }}"
                             class="block text-sm  p-2 {{ request()->routeIs('admin.products.index')
-                                ? 'text-blue-600 font-semibold'
-                                : 'text-gray-700 hover:text-blue-600' }}">
+                                ? 'text-[#5D87FF] font-semibold  bg-[rgba(219,234,254,0.5)] rounded-md'
+                                : 'text-gray-700 hover:text-[#5D87FF]' }}">
                             <span>
                                 <i class="fa-solid fa-circle-chevron-right"></i>
                             </span>
@@ -92,8 +83,8 @@
                         </a>
                         <a href="{{ route('admin.categories.index') }}"
                             class="block text-sm  p-2 {{ request()->routeIs('admin.categories.index')
-                                ? 'text-blue-600 font-semibold'
-                                : 'text-gray-700 hover:text-blue-600' }}">
+                                ? 'text-[#5D87FF] font-semibold  bg-[rgba(219,234,254,0.5)] rounded-md'
+                                : 'text-gray-700 hover:text-[#5D87FF]' }}">
                              <span>
                                 <i class="fa-solid fa-circle-chevron-right"></i>
                             </span>
@@ -102,8 +93,8 @@
                         </a>
                         <a href="{{ route('admin.brands.index') }}"
                             class="block text-sm  p-2 {{ request()->routeIs('admin.brands.index')
-                                ? 'text-blue-600 font-semibold'
-                                : 'text-gray-700 hover:text-blue-600' }}">
+                                ? 'text-[#5D87FF] font-semibold  bg-[rgba(219,234,254,0.5)] rounded-md'
+                                : 'text-gray-700 hover:text-[#5D87FF]' }}">
                              <span>
                                 <i class="fa-solid fa-circle-chevron-right"></i>
                             </span>
@@ -112,14 +103,6 @@
                         </a>
                     </div>
                 </div>
-                <li class="sidebar-item my-2">
-                    <a class="sidebar-link" href="{{ route('admin.discount.index') }}" aria-expanded="false">
-                        <span>
-                            <i class="fa-solid fa-ticket"></i>
-                        </span>
-                        <span class="hide-menu">Voucher</span>
-                    </a>
-                </li>
                 <li class="sidebar-item my-2">
                     <a class="sidebar-link" href="{{ route('admin.orders.index') }}" aria-expanded="false">
                         <span>
@@ -130,6 +113,15 @@
                     </a>
                 </li>
                 <li class="sidebar-item my-2">
+                    <a class="sidebar-link" href="{{ route('admin.discount.index') }}" aria-expanded="false">
+                        <span> 
+                            <i class="fa-solid fa-ticket"></i>
+                        </span>
+                        <span class="hide-menu">Voucher</span>
+                    </a>
+                </li>
+                
+                <li class="sidebar-item my-2">
                     <a class="sidebar-link" href="{{ route('admin.reviews.index') }}" aria-expanded="false">
                         <span>
                             <i class="fa-solid fa-comments"></i>
@@ -137,6 +129,17 @@
                         <span class="hide-menu">Review</span>
                     </a>
                 </li>
+                <li class="sidebar-item my-2">
+                    <a class="sidebar-link " href="{{ route('admin.users.index') }}" aria-expanded="false">
+                        <span>
+                            <i class="fa-solid fa-users"></i>
+                        </span>
+                        <span class="hide-menu">User</span>
+                    </a>
+                </li>
+
+               
+                
             </ul>
         </nav>
         <!-- End Sidebar navigation -->
