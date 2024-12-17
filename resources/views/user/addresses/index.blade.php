@@ -69,7 +69,7 @@
                             <p class="text-gray-600">{{ $address->no_telepon }}</p>
                         </div>
                         <p class="text-gray-600 text-sm mb-2">
-                            {{ $address->address }} , {{ $address->city['city_name'] }} 
+                            {{ $address->address }} , {{ $address->city['city_name'] }}
                         </p>
                         <div
                             class="inline-block px-3 py-1 border-1 border-blue-500 text-blue-500 text-xs font-semibold rounded-lg">
@@ -150,45 +150,80 @@
     </div>
 
     <!-- Modal Tambah Alamat -->
-    <div class="modal fade" id="addAddressModal" tabindex="-1" aria-labelledby="addAddressModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addAddressModalLabel">Tambah Alamat</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ route('user.addresses.store') }}" method="POST">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="mark">Tandai Sebagai</label>
-                            <input type="text" name="mark" id="mark" class="form-control"
-                                placeholder="cth rumah/kantor/gedung/dll" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="city_id">Kota</label>
-                            <select name="city_id" id="city_id" class="form-control" required>
-                                <option value="">Pilih Kota</option>
-                                @foreach ($cities as $city)
-                                    <option value="{{ $city['city_id'] }}">{{ $city['city_name'] }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="address">Alamat</label>
-                            <textarea name="address" id="address" class="form-control" rows="3" required></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="no_telepon">No Telepon</label>
-                            <input type="text" name="no_telepon" id="no_telepon" class="form-control" placeholder="+62-8000-0000-000" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                    </form>
-                </div>
+<div class="modal fade" id="addAddressModal" tabindex="-1" aria-labelledby="addAddressModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addAddressModalLabel">Tambah Alamat</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('user.addresses.store') }}" method="POST">
+                    @csrf
+                    <!-- Tandai Sebagai -->
+                    <div class="mb-3">
+                        <label for="mark">Tandai Sebagai</label>
+                        <input type="text" name="mark" id="mark" class="form-control"
+                            placeholder="cth rumah/kantor/gedung/dll" value="{{ old('mark') }}">
+                        @error('mark')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Kota -->
+                    <div class="mb-3">
+                        <label for="city_id">Kota</label>
+                        <select name="city_id" id="city_id" class="form-control">
+                            <option value="">Pilih Kota</option>
+                            @foreach ($cities as $city)
+                                <option value="{{ $city['city_id'] }}" {{ old('city_id') == $city['city_id'] ? 'selected' : '' }}>
+                                    {{ $city['city_name'] }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('city_id')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Alamat -->
+                    <div class="mb-3">
+                        <label for="address">Alamat</label>
+                        <textarea name="address" id="address" class="form-control" rows="3">{{ old('address') }}</textarea>
+                        @error('address')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- No Telepon -->
+                    <div class="mb-3">
+                        <label for="no_telepon">No Telepon</label>
+                        <input type="text" name="no_telepon" id="no_telepon" class="form-control"
+                            placeholder="+62-8000-0000-000" value="{{ old('no_telepon') }}">
+                        @error('no_telepon')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                </form>
             </div>
         </div>
     </div>
+</div>
+
+<!-- JavaScript untuk Membuka Modal Jika Ada Error -->
+@if ($errors->any())
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var addAddressModal = new bootstrap.Modal(document.getElementById('addAddressModal'));
+            addAddressModal.show();
+        });
+    </script>
+@endif
+
+
 
     @push('scripts')
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

@@ -36,6 +36,10 @@ class CategoryController extends Controller
         $request->validate([
             'name_category' => 'required|string|max:255|unique:categories,name_category',
             'image_category' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ],[
+            'name_category.required' => 'Nama kategori wajib diisi.',
+            'name_category.unique' => 'Nama kategori sudah digunakan.',
+            'image_category.nullable' => 'Gambar kategori wajib diisi.',
         ]);
 
         $imagePath = null;
