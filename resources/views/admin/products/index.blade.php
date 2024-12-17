@@ -167,64 +167,116 @@
     </div>
 
     <!-- Modal Tambah Produk -->
-    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addModalLabel">Tambah Produk</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="name_product" class="form-label">Nama Produk</label>
-                            <input type="text" name="name_product" class="form-control" placeholder="Nama Produk"
-                                required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="description_product" class="form-label">Deskripsi Produk</label>
-                            <textarea name="description_product" class="form-control" rows="3" required></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="price_product" class="form-label">Harga</label>
-                            <input type="number" name="price_product" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="stock_product" class="form-label">Stok</label>
-                            <input type="number" name="stock_product" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="image_product" class="form-label">Gambar Produk</label>
-                            <input type="file" name="image_product" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="category_id" class="form-label">Kategori</label>
-                            <select name="category_id" class="form-control" required>
-                                <option value="" disabled selected>Pilih Kategori</option>
-                                @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->name_category }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="brand_id" class="form-label">Merek</label>
-                            <select name="brand_id" class="form-control" required>
-                                <option value="" disabled selected>Pilih Merek</option>
-                                @foreach ($brands as $brand)
-                                    <option value="{{ $brand->id }}">{{ $brand->name_brand }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
-                    </div>
-                </form>
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModalLabel">Tambah Produk</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <!-- Nama Produk -->
+                    <div class="mb-3">
+                        <label for="name_product" class="form-label">Nama Produk</label>
+                        <input type="text" name="name_product" class="form-control"
+                               placeholder="Nama Produk" value="{{ old('name_product') }}">
+                        @error('name_product')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Deskripsi Produk -->
+                    <div class="mb-3">
+                        <label for="description_product" class="form-label">Deskripsi Produk</label>
+                        <textarea name="description_product" class="form-control" rows="3">{{ old('description_product') }}</textarea>
+                        @error('description_product')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Harga -->
+                    <div class="mb-3">
+                        <label for="price_product" class="form-label">Harga</label>
+                        <input type="number" name="price_product" class="form-control" value="{{ old('price_product') }}">
+                        @error('price_product')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Stok -->
+                    <div class="mb-3">
+                        <label for="stock_product" class="form-label">Stok</label>
+                        <input type="number" name="stock_product" class="form-control" value="{{ old('stock_product') }}">
+                        @error('stock_product')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Gambar Produk -->
+                    <div class="mb-3">
+                        <label for="image_product" class="form-label">Gambar Produk</label>
+                        <input type="file" name="image_product" class="form-control">
+                        @error('image_product')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Kategori -->
+                    <div class="mb-3">
+                        <label for="category_id" class="form-label">Kategori</label>
+                        <select name="category_id" class="form-control">
+                            <option value="" disabled selected>Pilih Kategori</option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}"
+                                    {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name_category }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('category_id')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Merek -->
+                    <div class="mb-3">
+                        <label for="brand_id" class="form-label">Merek</label>
+                        <select name="brand_id" class="form-control">
+                            <option value="" disabled selected>Pilih Merek</option>
+                            @foreach ($brands as $brand)
+                                <option value="{{ $brand->id }}"
+                                    {{ old('brand_id') == $brand->id ? 'selected' : '' }}>
+                                    {{ $brand->name_brand }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('brand_id')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
         </div>
     </div>
+</div>
+
+<!-- Script untuk Menampilkan Modal Jika Ada Error -->
+@if ($errors->any())
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var addModal = new bootstrap.Modal(document.getElementById('addModal'));
+            addModal.show();
+        });
+    </script>
+@endif
+
     <!-- Modal Edit Produk -->
     @foreach ($products as $product)
         <div class="modal fade" id="editModal_{{ $product->id }}" tabindex="-1"

@@ -66,6 +66,14 @@ class ProductController extends Controller
             'price_product' => 'required|numeric|min:0',
             'category_id' => 'required|exists:categories,id',
             'brand_id' => 'required|exists:brands,id',
+        ],[
+            'name_product.required' => 'Nama produk wajib diisi.',
+            'description_product.required' => 'Deskripsi produk wajib diisi.',
+            'image_product.nullable' => 'Gambar produk wajib diisi.',
+            'stock_product.required' => 'Stok produk wajib diisi.',
+            'price_product.required' => 'Harga produk wajib diisi.',
+            'category_id.required' => 'Kategori produk wajib diisi.',
+            'brand_id.required' => 'Merek produk wajib diisi.',
         ]);
 
         $imagePath = $request->file('image_product')

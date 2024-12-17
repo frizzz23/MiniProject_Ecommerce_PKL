@@ -52,6 +52,11 @@ class AddressController extends Controller
             'address' => 'required|string|max:255',
             'no_telepon' => 'required|string|max:15',
             'city_id' => 'required|integer', // Validasi city_id
+        ], [
+            'mark.required' => 'Nama alamat wajib diisi.',
+            'address.required' => 'Alamat wajib diisi.',
+            'no_telepon.required' => 'Nomor telepon wajib diisi.',
+            'city_id.required' => 'Kota wajib diisi.',
         ]);
 
         // Buat alamat baru untuk user yang sedang login

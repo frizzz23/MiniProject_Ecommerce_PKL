@@ -108,33 +108,58 @@
     </div>
 
     <!-- Modal Tambah -->
-    <div class="modal fade" id="tambahmodal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="formModalLabel">Tambah Merek</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Form inside modal -->
-                    <form action="{{ route('admin.brands.store') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="name_brand" class="form-label">Nama Merek</label>
-                            <input type="text" name="name_brand" class="form-control" id="name_brand" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="image_brand" class="form-label">Gambar Merek</label>
-                            <input type="file" name="image_brand" class="form-control" id="image_brand" accept="image/*">
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
-                            <button type="submit" class="btn btn-primary">Simpan</button>
-                        </div>
-                    </form>
-                </div>
+<div class="modal fade" id="tambahmodal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="formModalLabel">Tambah Merek</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Form inside modal -->
+                <form action="{{ route('admin.brands.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+
+                    <!-- Input Nama Merek -->
+                    <div class="mb-3">
+                        <label for="name_brand" class="form-label">Nama Merek</label>
+                        <input type="text" name="name_brand" class="form-control" id="name_brand"
+                               value="{{ old('name_brand') }}">
+                        @error('name_brand')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Input Gambar Merek -->
+                    <div class="mb-3">
+                        <label for="image_brand" class="form-label">Gambar Merek</label>
+                        <input type="file" name="image_brand" class="form-control" id="image_brand"
+                               accept="image/*">
+                        @error('image_brand')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Tombol Modal -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
+
+<!-- Script untuk Menampilkan Modal Jika Ada Error -->
+@if ($errors->any())
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var tambahModal = new bootstrap.Modal(document.getElementById('tambahmodal'));
+            tambahModal.show();
+        });
+    </script>
+@endif
+
 </div>
 @endsection

@@ -108,32 +108,57 @@
 
 
     <!-- Modal Tambah -->
-    <div class="modal fade" id="tambahmodal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="formModalLabel">Tambah Kategori</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Form inside modal -->
-                    <form action="{{ route('admin.categories.store') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="name_category" class="form-label">Nama Kategori</label>
-                            <input type="text" name="name_category" class="form-control" id="name_category" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="image_category" class="form-label">Gambar Kategori</label>
-                            <input type="file" name="image_category" class="form-control" id="image_category" accept="image/*">
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
-                            <button type="submit" class="btn btn-primary">Simpan</button>
-                        </div>
-                    </form>
-                </div>
+<div class="modal fade" id="tambahmodal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="formModalLabel">Tambah Kategori</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Form inside modal -->
+                <form action="{{ route('admin.categories.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+
+                    <!-- Input Nama Kategori -->
+                    <div class="mb-3">
+                        <label for="name_category" class="form-label">Nama Kategori</label>
+                        <input type="text" name="name_category" class="form-control" id="name_category"
+                               value="{{ old('name_category') }}">
+                        @error('name_category')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Input Gambar Kategori -->
+                    <div class="mb-3">
+                        <label for="image_category" class="form-label">Gambar Kategori</label>
+                        <input type="file" name="image_category" class="form-control" id="image_category"
+                               accept="image/*">
+                        @error('image_category')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Tombol Modal -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
+
+<!-- Script untuk Menampilkan Modal Jika Ada Error -->
+@if ($errors->any())
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var tambahModal = new bootstrap.Modal(document.getElementById('tambahmodal'));
+            tambahModal.show();
+        });
+    </script>
+@endif
+
 @endsection

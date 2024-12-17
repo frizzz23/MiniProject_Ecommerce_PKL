@@ -36,6 +36,10 @@ class BrandController extends Controller
         $request->validate([
             'name_brand' => 'required|string|max:255|unique:brands,name_brand',
             'image_brand' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ],[
+            'name_brand.required' => 'Nama brand wajib diisi.',
+            'name_brand.unique' => 'Nama brand sudah digunakan.',
+            'image_brand.nullable' => 'Gambar brand wajib diisi.',
         ]);
 
         $imagePath = null;

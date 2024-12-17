@@ -25,15 +25,7 @@
                                     </div>
                                 @endif
 
-                                @if ($errors->any())
-                                    <div class="alert alert-danger">
-                                        <ul>
-                                            @foreach ($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                @endif
+                               
 
                                 <table class="table table-bordered table-hover">
                                     <thead>
@@ -213,41 +205,74 @@
     </div>
 
     <!-- Modal Tambah -->
-    <div class="modal fade" id="tambahmodal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="formModalLabel">Tambah Vocher</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ route('admin.discount.store') }}" method="POST">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="code" class="form-label">Kode Vocher</label>
-                            <input type="text" name="code" class="form-control" id="code" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="discount_amount" class="form-label">Jumlah Diskon</label>
-                            <input type="number" name="discount_amount" class="form-control" id="discount_amount"
-                                required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="quantity" class="form-label">Kuantitas</label>
-                            <input type="number" name="quantity" class="form-control" id="quantity" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="minimum_purchase" class="form-label">Minimal Pembelian</label>
-                            <input type="number" name="minimum_purchase" class="form-control" id="minimum_purchase"
-                                required>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
-                            <button type="submit" class="btn btn-primary">Simpan</button>
-                        </div>
-                    </form>
-                </div>
+<div class="modal fade" id="tambahmodal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="formModalLabel">Tambah Voucher</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('admin.discount.store') }}" method="POST">
+                    @csrf
+
+                    <!-- Kode Voucher -->
+                    <div class="mb-3">
+                        <label for="code" class="form-label">Kode Voucher</label>
+                        <input type="text" name="code" class="form-control" id="code" value="{{ old('code') }}">
+                        @error('code')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Jumlah Diskon -->
+                    <div class="mb-3">
+                        <label for="discount_amount" class="form-label">Jumlah Diskon</label>
+                        <input type="number" name="discount_amount" class="form-control" id="discount_amount"
+                               value="{{ old('discount_amount') }}">
+                        @error('discount_amount')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Kuantitas -->
+                    <div class="mb-3">
+                        <label for="quantity" class="form-label">Kuantitas</label>
+                        <input type="number" name="quantity" class="form-control" id="quantity"
+                               value="{{ old('quantity') }}">
+                        @error('quantity')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Minimal Pembelian -->
+                    <div class="mb-3">
+                        <label for="minimum_purchase" class="form-label">Minimal Pembelian</label>
+                        <input type="number" name="minimum_purchase" class="form-control" id="minimum_purchase"
+                               value="{{ old('minimum_purchase') }}">
+                        @error('minimum_purchase')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
+
+<!-- Script untuk Menampilkan Modal Jika Ada Error -->
+@if ($errors->any())
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var tambahModal = new bootstrap.Modal(document.getElementById('tambahmodal'));
+            tambahModal.show();
+        });
+    </script>
+@endif
+
 @endsection
