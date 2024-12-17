@@ -49,13 +49,13 @@ class PaymentController extends Controller
         $fraud = $notif->fraud_status;
         $order = Order::findOrFail($orderId);
         $status = 'pending';
-        // $status_order = 'pending';
+        $status_order = 'pending';
         if ($transaction == 'capture') {
             if ($type == 'credit_card') {
 
                 if ($fraud == 'challenge') {
                     $status = 'pending';
-                    // $status_order = 'pending';
+                    $status_order = 'pending';
                 } else {
                     $status = 'success';
                     // $status_order = 'completed';
@@ -78,10 +78,11 @@ class PaymentController extends Controller
             // $status_order = 'pending';
         }
         $order->update([
-            'status_order' => $status,
+            'status_order' => $status_order,
         ]);
 
         $order->payment->update([
+            'status' => $status,
             'payment_method' => $type,
         ]);
     }
