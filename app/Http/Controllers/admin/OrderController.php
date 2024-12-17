@@ -13,12 +13,11 @@ class OrderController extends Controller
     public function index()
     {
         // Ambil semua pengguna, produk, dan pesanan
-        $users = User::all();
-        $products = Product::all();
-        $orders = Order::with('user', 'productOrders.product')->get();
+        $orders = Order::with('user', 'productOrders.product', 'addresses', 'postage', 'promoCode', 'payment')->latest()->get();
+        // dd($orders->toArray());
 
         // Tampilkan view untuk admin
-        return view('admin.orders.index', compact('orders', 'users', 'products'));
+        return view('admin.orders.index', compact('orders'));
     }
 
     /**
@@ -82,6 +81,4 @@ class OrderController extends Controller
     {
         //
     }
-
-    
 }

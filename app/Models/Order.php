@@ -21,6 +21,7 @@ class Order extends Model
     protected $fillable = [
         'user_id',
         'promo_code_id',
+        'postage_id',
         'addresses_id',
         'sub_total_amount',
         'grand_total_amount',
@@ -57,6 +58,10 @@ class Order extends Model
             ->withPivot('quantity'); // Menambahkan kolom tambahan dari tabel pivot jika ada.
     }
 
+
+    public function postage(){
+        return $this->belongsTo(Postage::class, 'postage_id', 'id');
+    }
 
     /**
      * Relasi ke model PromoCode (Many-to-One).

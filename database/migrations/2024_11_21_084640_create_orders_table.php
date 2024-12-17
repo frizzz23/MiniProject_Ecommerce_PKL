@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->uuid('id')->unique();
             $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('addresses_id')->constrained('addresses');
             $table->foreignId('promo_code_id')->nullable()->constrained('promo_codes');
+            $table->foreignId('postage_id')->constrained('postages');
             $table->decimal('sub_total_amount', 15, 2);
             $table->decimal('grand_total_amount', 15, 2);
             $table->enum('status_order', ['pending', 'processing', 'completed'])->default('pending');
