@@ -40,10 +40,10 @@
                 <a href="#" class="text-sm text-white">Contact</a>
             </div>
 
-            <form action=""
+            <form action="{{ route('page.product') }}" method="GET"
                 class=" gap-2 flex-1 md:flex-none hidden gap-1 bg-white rounded-full items-center xl:flex py-2 px-5">
-                <input type="text" class=" outline-none text-sm w-full text-slate-800 md:w-80"
-                    placeholder="Search" />
+                <input type="text" class=" outline-none text-sm w-full text-slate-800 md:w-80 bg-transparent"
+                    placeholder="Search" name="search" value="{{ request()->get('search') }}" />
                 <button type="submit">
                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -183,7 +183,7 @@
                             <form action="" class="flex gap-2 flex-1 w-full">
                                 <input type="text"
                                     class="py-1 px-3 outline-none border border-gray-300 rounded-lg text-sm w-full text-slate-700"
-                                    placeholder="Search" />
+                                    placeholder="Search" name="search" value="{{ request()->get('search') }}" />
                                 <button type="submit">
                                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                                         class="w-4 h-4">
@@ -259,7 +259,7 @@
     <!-- end list cart -->
 
     <section style="padding-top: 80px;background: linear-gradient(104.58deg, #2E01B8 2.1%, #05F2F2 100.64%);"
-        class="px-10 h-screen grid grid-cols-1 md:grid-cols-[1fr_1.5fr] w-ful md:ps-28">
+        class="px-10 min-h-screen md:h-screen grid grid-cols-1 md:grid-cols-[1fr_1.5fr] w-ful md:ps-28">
         <div class="md:order-0 order-1 md:py-0 py-10 flex flex-col justify-center ">
             <h1 class="text-4xl font-bold mb-5 text-white">
                 Technology belongs to <span style="color: #2da5f3">everyone</span>
@@ -314,7 +314,7 @@
                 </div>
             </div>
             <div class="rounded-md px-5 py-5 overflow-hidden grid grid-cols-[2fr_1fr] overflow-hidden"
-                style="background: linear-gradient(261.16deg, #1A75D4 30.14%, #0AD6EB 90.71%);">
+                style="background: linear-gradient(270.55deg, #0AD3EB -31.53%, #1A78D5 49.53%);">
                 <div class="flex flex-col gap-3">
                     <p class="text-xs text-white mb-2">
                         M6 Wireless Gaming Headset Gaming Headphones with Mic for Mobile Device

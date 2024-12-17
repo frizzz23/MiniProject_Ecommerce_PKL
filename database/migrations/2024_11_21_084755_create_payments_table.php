@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignUuid('order_id')->constrained('orders');
             $table->string('image_payment')->nullable();
             $table->string('payment_method')->default('bank_transfer');
-            // $table->enum('status', ['pending', 'failed', 'success', 'expired'])->default('pending');
+            $table->enum('status', ['pending', 'failed', 'success', 'expired'])->default('pending');
             $table->timestamps();
         });
     }
