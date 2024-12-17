@@ -9,8 +9,8 @@
     @endif
     <!-- Table Actions -->
     <div class="flex justify-between items-center mb-4">
-    <button class="btn btn-primary text-white py-2 px-4 rounded-lg" data-bs-toggle="modal" data-bs-target="#tambahModal">
-        + Tambahkan pengguna baru
+        <button class="btn btn-primary text-white py-2 px-4 rounded-lg" data-bs-toggle="modal" data-bs-target="#tambahModal">
+            + Tambahkan pengguna baru
         </button>
         <div class="space-x-2">
             <form action="{{ route('admin.users.index') }}" method="GET" id="roleFilterForm" class="inline-block">
@@ -23,12 +23,6 @@
                     @endforeach
                 </select>
             </form>
-            <form action="{{ route('admin.users.index') }}" method="POST" id="delete-form">
-                @csrf
-                @method('DELETE')
-                <input type="hidden" name="selected_users" id="selected_users">
-                <button type="button" class="bg-red-500 text-white py-1 px-3 rounded-md" id="delete-all-button">Hapus semua</button>
-            </form>
         </div>
     </div>
 
@@ -37,25 +31,26 @@
         <table class="min-w-full table-auto">
             <thead class="bg-[#5d85fa] text-white">
                 <tr>
-                    <th class="py-3 px-4 text-left"><input type="checkbox" class="form-checkbox h-4 w-4 text-purple-600" id="select-all"></th>
                     <th class="py-3 px-4 text-left">PENGGUNA</th>
                     <th class="py-3 px-4 text-left">PERAN PENGGUNA</th>
-                    <th class="py-3 px-4 text-left">STATUS</th>
+                    <th class="py-3 px-4 text-left">BERGABUNG</th>
                     <th class="py-3 px-4 text-left">AKSI</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($users as $user)
                 <tr class="border-b border-gray-700 hover:bg-slate-300">
-                    <td class="py-3 px-4"> <input type="checkbox" class="form-checkbox h-4 w-4 text-purple-600 checkbox-user" value="{{ $user->id }}"> </td>
-                    <td class="py-3 px-4 flex items-center"> <img src="https://via.placeholder.com/40" alt="User Avatar" class="w-8 h-8 rounded-full mr-3"> <span>{{ $user->name }}</span> </td>
+                    <td class="py-3 px-4 flex items-center"> 
+                        <img src="https://via.placeholder.com/40" alt="User Avatar" class="w-8 h-8 rounded-full mr-3"> 
+                        <span>{{ $user->name }}</span> 
+                    </td>
                     <td class="py-3 px-4">
                         @foreach ($user->roles as $role)
                             <span class="bg-[#5d85fa] text-white py-1 px-2 rounded-lg text-sm">{{ $role->name }}</span>
                         @endforeach
                     </td>
                     <td class="py-3 px-4">
-                        <span class="py-1 px-2 bg-green-600 text-white rounded-lg text-sm">Aktif</span>
+                        {{  $user->joinDate }}
                     </td>
                     <td class="py-3 px-4 space-x-2">
                         <button class="bg-red-600 text-white py-1 px-2 rounded-lg hover:bg-red-700" data-bs-toggle="modal" data-bs-target="#hapusModal{{ $user->id }}">
@@ -129,34 +124,5 @@
         </div>
     </div>
 </div>
-
-<script>
-document.getElementById('select-all').onclick = function() {
-    var checkboxes = document.querySelectorAll('.checkbox-user');
-    for (var checkbox of checkboxes) {
-        checkbox.checked = this.checked;
-    }
-}
-
-function getSelectedUsers() {
-    var selected = [];
-    var checkboxes = document.querySelectorAll('.checkbox-user:checked');
-    for (var checkbox of checkboxes) {
-        selected.push(checkbox.value);
-    }
-    return selected;
-}
-
-document.getElementById('delete-all-button').onclick = function() {
-    var selectedUsers = getSelectedUsers();
-    if (selectedUsers.length > 0) {
-        if (confirm('Are you sure you want to delete selected users?')) {
-            document.getElementById('delete-form').submit();
-        }
-    } else {
-        alert('Please select at least one user to delete.');
-    }
-}
-</script>
 
 @endsection

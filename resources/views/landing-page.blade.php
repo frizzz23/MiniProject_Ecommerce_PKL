@@ -26,9 +26,8 @@
 
 <body class="overflow-x-hidden">
 
-
     <!-- start header -->
-    <header id="header" class="w-full py-4 px-10 flex justify-between items-center absolute top-0 z-10  ">
+    <header id="header" class="w-full py-4 px-10 flex justify-between items-center absolute top-0 z-10" >
         <h5 class="font-semibold text-2xl text-white hidden xl:flex">Zentech</h5>
 
         <div

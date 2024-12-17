@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\admin;
 
+use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
-use Illuminate\Validation\Rules;
-    use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -16,7 +17,6 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-
         $selectedRole = $request->input('role');
 
         // Query pengguna berdasarkan role yang dipilih
@@ -25,16 +25,24 @@ class UserController extends Controller
         })
             ->get();
 
-        $roles = Role::all(); // Mendapatkan semua role untuk dropdown filter
+        // Iterasi untuk menambahkan 'joinDate' ke setiap pengguna
+        $users->each(function ($user) {
+            $user->joinDate = Carbon::parse($user->created_at)->diffForHumans();
+        });
 
+        // Mendapatkan semua role untuk dropdown filter
+        $roles = Role::all();
+
+        // Return view dengan data users dan roles
         return view('admin.users.index', compact('users', 'roles'));
     }
+
 
     /**
      * Show the form for editing the specified user.
      */
-    
-    
+
+
     public function store(Request $request)
     {
         // Validasi input
@@ -43,20 +51,20 @@ class UserController extends Controller
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
-    
+
         // Membuat pengguna baru
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-    
+
         // Tetapkan role admin secara otomatis
         $user->assignRole('admin');
-    
+
         return redirect()->route('admin.users.index')->with('success', 'Pengguna berhasil ditambahkan dengan role Admin.');
     }
-    
+
 
     public function edit(string $id) {}
 
@@ -87,5 +95,4 @@ class UserController extends Controller
 
         return redirect()->route('admin.users.index')->with('error', 'No users selected for deletion.');
     }
-
 }
