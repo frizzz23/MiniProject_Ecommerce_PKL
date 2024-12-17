@@ -26,6 +26,19 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        /* Style dasar header */
+        .app-header {
+            transition: box-shadow 0.3s ease;
+            /* Menambahkan transisi halus untuk perubahan shadow */
+        }
+
+        /* Shadow saat di-scroll */
+        .app-header.scrolled {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            /* Gaya shadow yang akan muncul setelah scroll */
+        }
+    </style>
 </head>
 
 <body>
@@ -40,7 +53,7 @@
         <!--  Main wrapper -->
         <div class="body-wrapper">
             <!--  Header Start -->
-            <header class="app-header">
+            <header id="app-header" class="app-header">
                 <nav class="navbar navbar-expand-lg navbar-light">
                     <ul class="navbar-nav">
                         <li class="nav-item d-block d-xl-none">
@@ -91,6 +104,19 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Menambahkan event listener untuk scroll
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('app-header');
+
+            if (window.scrollY > 10) { // Jika scroll lebih dari 10px
+                header.classList.add('scrolled'); // Tambahkan kelas .scrolled untuk shadow
+            } else {
+                header.classList.remove('scrolled'); // Hapus kelas .scrolled jika scroll kembali ke atas
+            }
+        });
+    </script>
     <script src="{{ asset('style/src/assets/libs/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('style/src/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('style/src/assets/js/sidebarmenu.js') }}"></script>
@@ -99,7 +125,7 @@
     <script src="{{ asset('style/src/assets/libs/simplebar/dist/simplebar.js') }}"></script>
     <script src="{{ asset('style/src/assets/js/dashboard.js') }}"></script>
     <script src="{{ asset('loading/loading.js') }}"></script>
-    
+
 </body>
 
 </html>

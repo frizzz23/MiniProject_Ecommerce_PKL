@@ -3,8 +3,9 @@
     <div>
         <div class="brand-logo d-flex align-items-center justify-content-between">
 
-            <a href="{{ route('dashboard.index') }}" class="text-nowrap logo-img">
-                <img src="{{ asset('style/src/assets/images/logos/dark-logo.svg') }}" width="180" alt="" />
+            <a href="{{ route('dashboard.index') }}" class=" flex justify-center items-center gap-2 text-nowrap logo-img">
+                <img src="{{ asset('loading/logo.png') }}" width="50" height="50" alt="" />
+                <h5 class="font-bold text-3xl text-gray-700 ">Zen <span class="text-[#5D87FF]">Tech</span></h5>
             </a>
 
             <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
@@ -87,7 +88,7 @@
                                 <i class="fa-solid fa-circle-chevron-right"></i>
                             </span>
 
-                            <span class="ml-4">List Product</span>
+                            <span class="ml-4">List Produk</span>
                         </a>
                         <a href="{{ route('admin.categories.index') }}"
                             class="block text-sm  p-2 {{ request()->routeIs('admin.categories.index')
