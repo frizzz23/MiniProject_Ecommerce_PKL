@@ -126,6 +126,22 @@
                                                             </ul>
                                                         </div>
                                                         <div class="border-2 p-2 border-slate-300 mb-2">
+                                                            <span class="text-sm ">Pembayaran</span>
+                                                            <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
+                                                                <span>metode pembayaran</span>
+                                                                <span>:</span>
+                                                                <span>{{ $order->payment->payment_method }}</span>
+                                                                </span>
+                                                            </div>
+                                                            <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
+                                                                <span>status pembayaran</span>
+                                                                <span>:</span>
+                                                                <span>{{ $order->payment->status }}</span>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="border-2 p-2 border-slate-300 mb-2">
+                                                            <span class="text-sm ">Total</span>
                                                             <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
                                                                 <span>sub total</span>
                                                                 <span>:</span>
@@ -155,6 +171,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="border-2 p-2 border-slate-300 mb-2">
+                                                        <span class="text-sm ">Alamat</span>
                                                         <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
                                                             <span>alamat</span>
                                                             <span>:</span>
