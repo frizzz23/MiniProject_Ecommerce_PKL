@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers\user;
 
+use Midtrans\Snap;
 use App\Models\Cart;
+use Midtrans\Config;
 use App\Models\Order;
 use App\Models\Address;
 use App\Models\Payment;
+use App\Models\Postage;
 use App\Models\Product;
+use App\Models\Province;
 use App\Models\PromoCode;
 use App\Models\ProductOrder;
 use Illuminate\Http\Request;
+
 use App\Models\UsedPromoCode;
 use App\Http\Controllers\Controller;
-use App\Models\Province;
 use Illuminate\Support\Facades\Auth;
-
-use Midtrans\Config;
-use Midtrans\Snap;
 
 
 class CheckoutController extends Controller
@@ -58,7 +59,7 @@ class CheckoutController extends Controller
     public function store(Request $request)
     {
         $diskon = PromoCode::find($request->id_discount);
-
+        // dd($request->all());
         $request->validate([
             'alamat' => 'required',
             'name' => 'required',
@@ -73,10 +74,17 @@ class CheckoutController extends Controller
         ]);
 
 
+        $postage = Postage::create([
+            'code' => $request->courier,
+            'service' => $request->service,
+            'ongkir_total_amount' => $request->cost,
+        ]);
+
         // Buat data pesanan di tabel `orders`
         $order = Order::create([
             'user_id' => Auth::id(),
             'promo_code_id' => $diskon->id ?? null,
+            'postage_id' => $postage->id,
             'addresses_id' => $request->addresses_id,
             'sub_total_amount' => $request->subtotal,
             'grand_total_amount' => $request->total,

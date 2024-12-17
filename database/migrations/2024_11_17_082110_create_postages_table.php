@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('orders', function (Blueprint $table) {
-            $table->foreignId('addresses_id')->nullable()->constrained('addresses');
+        Schema::create('postages', function (Blueprint $table) {
+            $table->id();
+            $table->string('code');
+            $table->string('service');
+            $table->decimal('ongkir_total_amount', 15, 2);
+            $table->timestamps();
         });
     }
 
@@ -21,9 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('orders', function (Blueprint $table) {
-            $table->dropForeign(['addresses_id']);
-            $table->dropColumn('addresses_id');
-        });
+        Schema::dropIfExists('postages');
     }
 };

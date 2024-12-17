@@ -105,7 +105,71 @@
 
                                                     <!-- Form fields for editing -->
                                                     <div class="mb-3">
+                                                        <div
+                                                            class="grid grid-cols-[1fr_0.1fr_2fr] border-b-2 py-2 border-slate-300 mb-2">
+                                                            <span>pelanggan</span>
+                                                            <span>:</span>
+                                                            <span>{{ $order->user->name }}</span>
+                                                        </div>
+                                                        <div
+                                                            class="grid grid-cols-[1fr_0.1fr_2fr] border-b-2 py-2 border-slate-300 mb-2">
+                                                            <span>Produk</span>
+                                                            <span>:</span>
+                                                            <ul class="list-disc">
+                                                                @foreach ($order->productOrders as $productOrder)
+                                                                    <li class="flex justify-between items-center">
+                                                                        <span>{{ $productOrder->product->name_product }}</span>
+                                                                        <span
+                                                                            class="text-xs text-slate-700">x{{ $productOrder->quantity }}</span>
+                                                                    </li>
+                                                                @endforeach
+                                                            </ul>
+                                                        </div>
+                                                        <div class="border-2 p-2 border-slate-300 mb-2">
+                                                            <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
+                                                                <span>sub total</span>
+                                                                <span>:</span>
+                                                                <span>Rp.
+                                                                    {{ number_format($order->sub_total_amount, 2) }}
+                                                                </span>
+                                                            </div>
+                                                            <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
+                                                                <span>ongkos kirim</span>
+                                                                <span>:</span>
+                                                                <span>+ Rp.
+                                                                    {{ $order->postage->ongkir_total_amount }}</span>
+                                                            </div>
+                                                            <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
+                                                                <span>diskon</span>
+                                                                <span>:</span>
+                                                                <span>- Rp.
+                                                                    {{ $order->promoCode->discount_amount ?? '' }}</span>
+                                                            </div>
+                                                            <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
+                                                                <span>total</span>
+                                                                <span>:</span>
+                                                                <span>Rp.
+                                                                    {{ number_format($order->grand_total_amount, 2) }}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="border-2 p-2 border-slate-300 mb-2">
+                                                        <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
+                                                            <span>alamat</span>
+                                                            <span>:</span>
+                                                            <span>{{ $order->addresses->address }}</span>
+                                                        </div>
+                                                        <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
+                                                            <span>no telp</span>
+                                                            <span>:</span>
+                                                            <span>{{ $order->addresses->no_telepon }}</span>
+                                                        </div>
+                                                    </div>
 
+                                                    <div class="mb-2 text-right">
+                                                        <span
+                                                            class="text-xs">{{ $order->created_at->translatedFormat('d F Y') }}</span>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary"

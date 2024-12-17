@@ -116,7 +116,7 @@
                     <div class="mb-4">
                         <label for="password_confirmation" class="block text-white text-xs mb-1">Confirmation
                             Password</label>
-                        <input type="password_confirmation" id="password_confirmation" name="password_confirmation"
+                        <input type="password" id="password_confirmation" name="password_confirmation"
                             class="outline-none w-full py-2 text-xs px-3 rounded text-slate-800"
                             value="{{ old('password_confirmation') }}" placeholder="password_confirmation">
                         @error('password_confirmation')

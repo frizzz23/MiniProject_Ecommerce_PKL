@@ -44,6 +44,7 @@
         @csrf
         <input type="hidden" name="addresses_id" id="addresses_id">
         <input type="hidden" name="id_discount" id="id_discount" value="" />
+        <input type="hidden" name="service" id="service" value="" />
         <div class="grid md:grid-cols-2 grid-cols-1">
             <div class="bg-white min-h-screen">
                 <div class="py-10 px-20">
@@ -213,6 +214,9 @@
                         @enderror
                     </div> --}}
 
+                    {{-- <button type="submit" class="block w-full py-2 px-5 w-full bg-blue-600 text-white rounded-md">
+                        Bayar Sekarang
+                    </button> --}}
                     <button type="submit" onclick="checkoutButton(event, this)"
                         class="block w-full py-2 px-5 w-full bg-blue-600 text-white rounded-md">
                         Bayar Sekarang
@@ -753,7 +757,7 @@
                     '<label for="courier" class="text-slate-700 font-medium text-sm">Courier & Cost</label><div class="w-full border border-gray-300 rounded-lg overflow-hidden">';
                 costs.forEach(cost => {
                     elementChild += `<div class="flex gap-5 border-b-2 py-2 px-3">
-                    <input onchange="setTotal()" type="radio" name="cost" id="courier_${cost.service}" value="${(cost.cost[0].value)}"  />
+                    <input onchange="setService('${cost.service}')" type="radio" name="cost" id="courier_${cost.service}" value="${(cost.cost[0].value)}"  />
                     <label for="courier_${cost.service}" class="w-full">
                             <h6 class="text-md text-slate-700 font-semibold">${cost.service}</h6>
                             <p class="text-sm text-slate-600 mb-3">${cost.description}</p>
@@ -767,6 +771,12 @@
             } else {
                 alert('error')
             }
+        }
+
+        function setService(value) {
+            if (snap_token) return false;
+            document.getElementById('service').value = value
+            setTotal()
         }
 
 
