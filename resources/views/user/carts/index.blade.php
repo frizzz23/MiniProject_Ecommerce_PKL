@@ -7,6 +7,7 @@
             <table class="table-auto w-full">
                 <thead class="border-b-2">
                     <tr>
+                        <th class="text-slate-700 text-sm text-medium text-left py-2 w-10"></th>
                         <th class="text-slate-700 text-sm text-medium text-left py-2">
                             Produk
                         </th>
@@ -36,12 +37,32 @@
                             <input type="hidden" name="total_input_{{ $cart->id }}"
                                 id="total_input_{{ $cart->id }}"
                                 value="{{ $cart->product->price_product * $cart->quantity }}" />
+                            <td class="text-slate-700 text-sm text-medium py-2 ">
+                                <div class="flex gap-2 items-center mb-2">
+                                    <label for="cart_{{ $cart->id }}" class="relative w-5 h-5">
+                                        <!-- Checkbox untuk multiple selection -->
+                                        <input onchange="checkAdd()" type="checkbox" name="cart[]"
+                                            value="{{ $cart->id }}" id="cart_{{ $cart->id }}"
+                                            class="w-full h-full block peer appearance-none cursor-pointer border-2 border-blue-300 rounded-sm checked:bg-no-repeat checked:bg-center checked:border-blue-500 checked:bg-blue-100" />
+
+                                        <!-- SVG Icon yang hanya muncul ketika checkbox dicentang -->
+                                        <svg class="absolute w-3 h-3 hidden peer-checked:block text-blue-500 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                                            style="user-select: none;pointer-events: none;"
+                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="4" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </label>
+
+                                </div>
+                            </td>
                             <td class="text-slate-700 text-sm text-medium py-2">
                                 <div class="flex gap-1 flex-wrap items-center">
                                     <div
                                         class="w-28 h-28 bg-cover bg-center overflow-hidden flex justify-center items-center p-5">
-                                        <img src="{{ asset('storage/' . $cart->product->image_product) }}"
-                                            alt="Hp" class="object-contain" />
+                                        <img src="{{ asset('storage/' . $cart->product->image_product) }}" alt="Hp"
+                                            class="object-contain" />
                                     </div>
                                     <span> {{ $cart->product->name_product }}</span>
                                 </div>
@@ -70,8 +91,7 @@
                                 </span>
                             </td>
                             <td class="text-slate-700 text-sm text-medium py-2 align-bottom text-right">
-                                <form action="{{ route('user.carts.destroy', $cart->id) }}" method="post"
-                                    class="pe-2">
+                                <form action="{{ route('user.carts.destroy', $cart->id) }}" method="post" class="pe-2">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="text-red-500 text-xs"
@@ -83,7 +103,8 @@
                         </tr>
                     @empty
                         <tr>
-                            <th colspan="5" class="text-center text-slate-700 text-sm py-10">Kwranjang Tidak Ditemukan.
+                            <th colspan="5" class="text-center text-slate-700 text-sm py-10">Keranjang Tidak
+                                Ditemukan.
                             </th>
                         </tr>
                     @endforelse
@@ -107,10 +128,13 @@
 
                 <div class="flex justify-end">
                     @if (count($carts) > 0)
-                        <a href="{{ route('user.checkout.index') }}"
-                            class="bg-blue-500 text-white text-sm px-5 py-2 rounded-md">
-                            Checkout
-                        </a>
+                        <form action="{{ route('user.checkout.index') }}" method="get">
+                            <input type="hidden" name="cart" id="cartForm" />
+                            <button type="submit" id="cartSubmit"
+                                class="bg-blue-500 text-white text-sm px-5 py-2 rounded-md" disabled>
+                                Checkout
+                            </button>
+                        </form>
                     @endif
                 </div>
             </div>
@@ -119,6 +143,19 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
+        function checkAdd(id) {
+            const cartForm = document.getElementById("cartForm");
+            const carts = document.querySelectorAll("input[name='cart[]']:checked");
+            const cartSubmit = document.getElementById("cartSubmit");
+            if (carts.length > 0) {
+                cartSubmit.disabled = false;
+            } else {
+                cartSubmit.disabled = true;
+            }
+            const listCart = Array.from(carts).map(item => item.value);
+            cartForm.value = listCart.join('-');
+        }
+
         function showAlert(icon, message) {
             const Toast = Swal.mixin({
                 toast: true,
@@ -292,5 +329,3 @@
         }
     </script>
 @endsection
-    
-
