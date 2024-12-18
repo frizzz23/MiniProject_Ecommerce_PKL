@@ -10,10 +10,37 @@
                     </div>
                 @endif
                 <div class="card-body p-4">
-                    <h5 class="card-title fw-semibold mb-4">Semua Ulasan</h5>
-                    <button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#addReviewModal">
-                        Tambah Ulasan
-                    </button>
+                    <h5 class="card-title text-2xl font-bold mb-4">Semua Ulasan</h5>
+
+                    <div class="flex justify-between items-center mb-4">
+                        <div>
+                            <!-- Pencarian -->
+                            <form action="{{ route('admin.reviews.index') }}" method="GET" class="d-inline-block">
+                                <div class="d-flex align-items-center">
+                                    <input type="text" name="search"
+                                        class="form-control me-2 border-lg border-[#5d85fa]" placeholder="Cari produk"
+                                        value="{{ request('search') }}" style="width: 200px;">
+                                    <button type="submit" class="btn btn-primary">Cari</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <button class="btn btn-primary text-white font-medium py-2 px-4 rounded-lg"
+                                data-bs-toggle="modal" data-bs-target="#addReviewModal">+ Tambahkan ulasan baru</button>
+                            <!-- Filter Kategori -->
+                            {{-- <form id="filterForm" action="{{ route('admin.orders.index') }}" method="GET" class="ms-auto">
+                                <select name="product_id" class="form-select text-center" onchange="this.form.submit()">
+                                    <option value="">Semua Produk</option>
+                                    @foreach ($products as $product)
+                                        <option value="{{ $product->id }}"
+                                            {{ request('product_id') == $product->id ? 'selected' : '' }}>
+                                            {{ $product->name_product }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </form> --}}
+                        </div>
+                    </div>
                     <div class="table-responsive">
                         <table class="table text-nowrap mb-0 align-middle">
                             <thead class="text-dark fs-4">
