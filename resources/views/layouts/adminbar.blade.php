@@ -3,9 +3,8 @@
     <div>
         <div class="brand-logo d-flex align-items-center justify-content-between">
 
-            <a href="{{ route('dashboard.index') }}" class=" flex justify-center items-center gap-2 text-nowrap logo-img">
-                <img src="{{ asset('loading/logo.png') }}" width="50" height="50" alt="" />
-                <h5 class="font-bold text-3xl text-gray-700 ">Zen <span class="text-[#5D87FF]">Tech</span></h5>
+            <a href="{{ route('dashboard.index') }}" class=" flex justify-center items-center logo-img">
+                <img src="{{ asset('img/logo&text.svg') }}" width="170"  alt="" />
             </a>
 
             <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
@@ -76,7 +75,7 @@
                                 ? 'text-[#5D87FF] font-semibold  bg-[rgba(219,234,254,0.5)] rounded-md'
                                 : 'text-gray-700 hover:text-[#5D87FF]' }}">
                             <span>
-                                <i class="fa-solid fa-circle-chevron-right"></i>
+                                <i class="fa-regular fa-circle"></i>
                             </span>
 
                             <span class="ml-4">List Produk</span>
@@ -86,7 +85,7 @@
                                 ? 'text-[#5D87FF] font-semibold  bg-[rgba(219,234,254,0.5)] rounded-md'
                                 : 'text-gray-700 hover:text-[#5D87FF]' }}">
                              <span>
-                                <i class="fa-solid fa-circle-chevron-right"></i>
+                                <i class="fa-regular fa-circle"></i>
                             </span>
 
                             <span class="ml-4">List Katgeori</span>
@@ -96,7 +95,7 @@
                                 ? 'text-[#5D87FF] font-semibold  bg-[rgba(219,234,254,0.5)] rounded-md'
                                 : 'text-gray-700 hover:text-[#5D87FF]' }}">
                              <span>
-                                <i class="fa-solid fa-circle-chevron-right"></i>
+                                <i class="fa-regular fa-circle"></i>
                             </span>
 
                             <span class="ml-4">List Brand</span>

@@ -28,15 +28,17 @@
 
     <!-- start header -->
     <header id="header" class="w-full py-4 px-10 xl:px-14 flex justify-between items-center absolute top-0 z-10">
-        <h5 class="font-semibold text-2xl text-white hidden xl:flex">Zentech</h5>
+        <a href="{{ route('landing-page') }}" class="font-semibold text-xl text-white hidden xl:flex">
+            <img src="{{ asset('img/logo.svg') }}" alt="logo" class="w-8 mr-2">
+            Zentech</a>
 
         <div
             class="py-2 px-5 xl:ps-10 rounded-[20px] hidden gap-4 items-center md:w-auto hidden gap-1 items-center xl:flex">
             <div class="hidden md:flex gap-4">
                 <a href="{{ route('landing-page') }}" class="text-sm text-white">Home</a>
                 <a href="{{ route('page.product') }}" class="text-sm text-white">Product</a>
-                <a href="#" class="text-sm text-white">About</a>
-                <a href="#" class="text-sm text-white">Contact</a>
+                <a href="{{ route('about-page') }}" class="text-sm text-white">About</a>
+                <a href="{{ route('contact-page') }}" class="text-sm text-white">Contact</a>
             </div>
 
             <form action="{{ route('page.product') }}" method="GET"
@@ -133,7 +135,7 @@
                     @elseif(auth()->user()->hasRole('admin'))
                         <!-- Cek jika peran admin -->
                         <div class="tooltip">
-                            <a href="{{ route('dashboard.index') }}" 
+                            <a href="{{ route('dashboard.index') }}"
                                 class="flex justify-start items-center gap-1 text-md py-2 bg-gray-200 text-slate-800 w-auto px-2 rounded-full">
                                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                                     class="w-5 h-5">
@@ -221,10 +223,11 @@
                             class="text-md text-slate-700 py-2 block px-2">Product</a>
                     </li>
                     <li>
-                        <a href="#" class="text-md text-slate-700 py-2 block px-2">Category</a>
+                        <a href="{{ route('about-page') }}" class="text-md text-slate-700 py-2 block px-2">About</a>
                     </li>
                     <li>
-                        <a href="#" class="text-md text-slate-700 py-2 block px-2">About</a>
+                        <a href="{{ route('contact-page') }}"
+                            class="text-md text-slate-700 py-2 block px-2">Contact</a>
                     </li>
                     @guest
                         <li>
@@ -271,7 +274,7 @@
     <!-- end list cart -->
 
     <section style="padding-top: 80px;background: linear-gradient(104.58deg, #2E01B8 2.1%, #05F2F2 100.64%);"
-        class="px-10 min-h-screen md:h-screen grid grid-cols-1 md:grid-cols-[1fr_1.5fr] w-ful md:ps-28">
+        class="px-10 min-h-screen md:h-screen grid grid-cols-1 md:grid-cols-[1fr_1.5fr] w-ful md:ps-28 relative">
         <div class="md:order-0 order-1 md:py-0 py-10 flex flex-col justify-center ">
             <h1 class="text-4xl font-bold mb-5 text-white">
                 Technology belongs to <span style="color: #2da5f3">everyone</span>

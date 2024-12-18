@@ -123,10 +123,8 @@
         <div class=" md:block hidden">
             <div id="sidebar-left"
                 class="fixed top-0 z-10 py-5 bg-white border-e-2 h-screen ps-5 pe-16 overflow-y-auto">
-                <a href="{{ route('landing-page') }}">
-                    <h5 class="font-semibold text-xl text-slate-700 mb-5 text-center">
-                        Zentech
-                    </h5>
+                <a href="{{ route('landing-page') }}" class="text-center block mb-10 w-full">
+                    <img src="{{ asset('img/logo&text.svg') }}" alt="logo" class="w-32 mr-2 mx-auto">
                 </a>
                 <form method="GET" action="{{ route('page.product') }}">
                     <div class="ps-3">

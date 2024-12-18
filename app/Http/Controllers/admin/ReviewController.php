@@ -14,25 +14,44 @@ class ReviewController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Product $product)
-    {
-        // Mengambil semua ulasan produk beserta informasi produk dan user
-        $reviews = Review::with(['product', 'user'])->get();
-        $products = Product::all(); // Ambil semua produk yang tersedia
-        $users = User::all(); // Ambil semua pengguna
+    public function index(Request $request)
+{
+    // Ambil parameter pencarian dan filter produk
+    $search = $request->input('search');
+    $productId = $request->input('product_id');
 
-        return view('admin.reviews.index', compact('reviews', 'product', 'products', 'users'));
-    }
+    // Mengambil semua ulasan dengan filter pencarian dan produk
+    $reviews = Review::with(['product', 'user'])
+        ->when($search, function ($query, $search) {
+            $query->whereHas('product', function ($query) use ($search) {
+                $query->where('name_product', 'like', '%' . $search . '%');
+            })->orWhere('comment', 'like', '%' . $search . '%'); // Kolom 'comment' dari tabel 'reviews'
+        })
+        ->when($productId, function ($query, $productId) {
+            $query->where('product_id', $productId);
+        })
+        ->latest()
+        ->paginate(10); // Pagination
+
+    // Mengambil semua produk untuk dropdown
+    $products = Product::all();
+    $users = User::all();
+
+    // Mengembalikan view dengan data
+    return view('admin.reviews.index', compact('reviews', 'products', 'users'));
+}
+
+
 
     /**
      * Show the form for creating a new review.
      */
     public function create(Product $product)
     {
-        $users = User::all();
-        $products = Product::all();
+        // $users = User::all();
+        // $products = Product::all();
 
-        return view('admin.reviews.create', compact('product', 'products', 'users'));
+        // return view('admin.reviews.create', compact('product', 'products', 'users'));
     }
 
     /**
@@ -40,22 +59,22 @@ class ReviewController extends Controller
      */
     public function store(Request $request)
     {
-        // Validasi input
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'product_id' => 'required|exists:products,id',
-            'rating' => 'required|in:1,2,3,4,5',
-            'comment' => 'nullable|string',
-        ]);
+        // // Validasi input
+        // $request->validate([
+        //     'user_id' => 'required|exists:users,id',
+        //     'product_id' => 'required|exists:products,id',
+        //     'rating' => 'required|in:1,2,3,4,5',
+        //     'comment' => 'nullable|string',
+        // ]);
 
-        Review::create([
-            'user_id' => Auth::id(),
-            'product_id' => $request->product_id,
-            'rating' => $request->rating,
-            'comment' => $request->comment,
-        ]);
+        // Review::create([
+        //     'user_id' => Auth::id(),
+        //     'product_id' => $request->product_id,
+        //     'rating' => $request->rating,
+        //     'comment' => $request->comment,
+        // ]);
 
-        return redirect()->route('admin.reviews.index', ['product' => $request->product_id])->with('success', 'Ulasan berhasil ditambahkan.');
+        // return redirect()->route('admin.reviews.index', ['product' => $request->product_id])->with('success', 'Ulasan berhasil ditambahkan.');
     }
 
 
@@ -65,9 +84,9 @@ class ReviewController extends Controller
      */
     public function edit(Review $review)
     {
-        $users = User::all();
-        $products = Product::all();
-        return view('admin.reviews.edit', compact('review', 'products', 'users'));
+        // $users = User::all();
+        // $products = Product::all();
+        // return view('admin.reviews.edit', compact('review', 'products', 'users'));
     }
 
     /**
@@ -75,22 +94,22 @@ class ReviewController extends Controller
      */
     public function update(Request $request, Review $review)
     {
-        // Validasi input
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'product_id' => 'required|exists:products,id',
-            'rating' => 'required|in:1,2,3,4,5',
-            'comment' => 'nullable|string',
-        ]);
+        // // Validasi input
+        // $request->validate([
+        //     'user_id' => 'required|exists:users,id',
+        //     'product_id' => 'required|exists:products,id',
+        //     'rating' => 'required|in:1,2,3,4,5',
+        //     'comment' => 'nullable|string',
+        // ]);
 
-        // Memperbarui ulasan
-        $review->user_id = Auth::id();
-        $review->product_id = $review->product_id;
-        $review->rating = $request->rating;
-        $review->comment = $request->comment;
-        $review->save();
+        // // Memperbarui ulasan
+        // $review->user_id = Auth::id();
+        // $review->product_id = $review->product_id;
+        // $review->rating = $request->rating;
+        // $review->comment = $request->comment;
+        // $review->save();
 
-        return redirect()->route('admin.reviews.index', $review->product_id)->with('success', 'Ulasan berhasil diperbarui.');
+        // return redirect()->route('admin.reviews.index', $review->product_id)->with('success', 'Ulasan berhasil diperbarui.');
     }
 
     /**
@@ -98,9 +117,9 @@ class ReviewController extends Controller
      */
     public function destroy(Review $review)
     {
-        $productId = $review->product_id;
-        $review->delete();
+        // $productId = $review->product_id;
+        // $review->delete();
 
-        return redirect()->route('admin.reviews.index', $productId)->with('success', 'Ulasan berhasil dihapus.');
+        // return redirect()->route('admin.reviews.index', $productId)->with('success', 'Ulasan berhasil dihapus.');
     }
 }
