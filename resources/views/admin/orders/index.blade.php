@@ -12,7 +12,6 @@
                 @endif
                 <div class="card-body p-4">
                     <h5 class="card-title text-2xl font-bold mb-4">Semua Order</h5>
-<
                     <div>
                         <div class="flex justify-between items-center mb-4">
                             <div>
@@ -28,16 +27,22 @@
                             </div>
                             <div class="flex items-center gap-4">
                                 <!-- Filter Kategori -->
-                                <form id="filterForm" action="{{ route('admin.orders.index') }}" method="GET" class="ms-auto">
-                                <select name="product_id" class="form-select text-center" onchange="this.form.submit()">
-                                    <option value="">Semua Produk</option>
-                                    @foreach ($products as $product)
-                                        <option value="{{ $product->id }}"
-                                            {{ request('product_id') == $product->id ? 'selected' : '' }}>
-                                            {{ $product->name_product }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <form id="filterForm" method="{{ route('admin.orders.index') }}" method="GET">
+                                    <div class="d-flex align-items-center ">
+                                        <select name="product_id"
+                                            class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
+                                            style="width: 200px;"
+                                            onchange="document.getElementById('filterForm').submit();">
+                                            <option value="">Semua Produk</option>
+                                            @foreach ($products as $product)
+                                            <option value="{{ $product->id }}"
+                                                {{ request('product_id') == $product->id ? 'selected' : '' }}>
+                                                {{ $product->name_product }}
+                                            </option>
+                                        @endforeach
+                                        </select>
+                                    </div>
+                                </form>
                             </form>
                             </div>
                         </div>
