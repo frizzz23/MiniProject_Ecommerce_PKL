@@ -14,15 +14,31 @@ class ReviewController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Product $product)
+    public function index(Request $request, Product $product)
     {
-        // Mengambil semua ulasan produk beserta informasi produk dan user
-        $reviews = Review::with(['product', 'user'])->get();
-        $products = Product::all(); // Ambil semua produk yang tersedia
-        $users = User::all(); // Ambil semua pengguna
+        // Ambil parameter pencarian
+        $search = $request->input('search');
 
+        // Mengambil semua ulasan produk dengan filter pencarian
+        $reviews = Review::with(['product', 'user'])
+            ->when($search, function ($query, $search) {
+                $query->whereHas('product', function ($query) use ($search) {
+                    $query->where('name_product', 'like', '%' . $search . '%');
+                })->orWhere('comment', 'like', '%' . $search . '%'); // Kolom 'content' dari tabel 'reviews'
+            })
+            ->latest()
+            ->paginate(10);
+
+        // Mengambil semua produk yang tersedia
+        $products = Product::all();
+
+        // Mengambil semua pengguna
+        $users = User::all();
+
+        // Mengembalikan view dengan data
         return view('admin.reviews.index', compact('reviews', 'product', 'products', 'users'));
     }
+
 
     /**
      * Show the form for creating a new review.
