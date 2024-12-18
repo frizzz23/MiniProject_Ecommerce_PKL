@@ -55,7 +55,7 @@ class PaymentController extends Controller
 
                 if ($fraud == 'challenge') {
                     $status = 'pending';
-                    $status_order = 'pending';
+                    // $status_order = 'pending';
                 } else {
                     $status = 'success';
                     // $status_order = 'completed';
