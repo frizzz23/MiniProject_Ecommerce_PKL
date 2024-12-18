@@ -103,8 +103,9 @@
                         </tr>
                     @empty
                         <tr>
-                            <th colspan="5" class="text-center text-slate-700 text-sm py-10">Keranjang Tidak
-                                Ditemukan.
+
+                            <th colspan="5" class="text-center text-slate-700 text-sm py-10">Tidak Ada Produk.
+     
                             </th>
                         </tr>
                     @endforelse
@@ -305,7 +306,7 @@
 
             Swal.fire({
                 title: "Kamu Yakin?",
-                text: "Item ini akan dihapus dari keranjang!",
+                text: "Produk ini akan dihapus dari keranjang!",
                 icon: "warning",
                 iconColor: "#334155",
                 width: 400,
@@ -317,7 +318,7 @@
                 cancelButtonText: "Batal"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    showAlert('success', 'Item dihapus')
+                    showAlert('success', 'Produk dihapus')
                     total.innerHTML = 'loading..';
                     document.getElementById("cart_" + id).classList.add("hidden");
                     setTimeout(() => {

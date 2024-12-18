@@ -1,3 +1,4 @@
+z
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     const formatRupiah = (number) => {
@@ -134,6 +135,19 @@
         async function addToCart(id_product, el) {
             el.disabled = true;
             try {
+                setTimeout(() => {
+                    // Toast Notification
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end', // Pojok kanan atas
+                        icon: 'success',
+                        title: 'Produk berhasil ditambahkan ke keranjang!',
+                        showConfirmButton: false,
+                        timer: 1000,
+                        timerProgressBar: true
+                    });
+                }, 500);
+
                 const api = await fetch('/api/cart', {
                     method: 'POST',
                     headers: {
