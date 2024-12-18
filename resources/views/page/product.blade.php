@@ -416,9 +416,6 @@
                                 class="text-sm text-slate-600">{{ isset($reviewsCount[$product->id]) ? $reviewsCount[$product->id] : 0 }}
                                 reviews</span>
                         </div>
-                        <div class="text-sm text-gray-600">
-                            Kategori: {{ $product->category->name_category }} <!-- Menampilkan nama kategori produk -->
-                        </div>
                         <div class="md:flex justify-between">
                             <p class="text-xl text-blue-500 font-medium tracking-tight">
                                 Rp {{ number_format($product->price_product, 0, ',', '.') }}

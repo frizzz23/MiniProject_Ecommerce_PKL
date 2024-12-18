@@ -432,14 +432,14 @@
                         @csrf <!-- Tambahkan CSRF token untuk keamanan -->
 
                         <!-- Pilih Bintang -->
-                        <div class="mb-5 flex gap-1">
+                        <div class="mb-5 flex gap-1" id="star-rating">
                             @for ($i = 1; $i <= 5; $i++)
                                 <label for="star_{{ $i }}">
                                     <input type="radio" name="rating" id="star_{{ $i }}"
-                                        value="{{ $i }}" class="hidden peer" required />
+                                        value="{{ $i }}" class="hidden" required />
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                        class="w-5 h-5 fill-gray-300 peer-checked:fill-yellow-500" viewBox="0 0 24 24"
-                                        stroke="none">
+                                        class="w-5 h-5 star-icon text-gray-300" data-star="{{ $i }}"
+                                        viewBox="0 0 24 24" stroke="none">
                                         <path
                                             d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
                                         </path>
@@ -449,7 +449,7 @@
                         </div>
 
                         <!-- Komentar -->
-                        <div class="py-2 px-4 mb-4 bg-white rounded-lg border border-gray-200">
+                        <div class="py-2 px-4 mb-3 bg-white rounded-lg border border-gray-200">
                             <label for="comment" class="sr-only">Your comment</label>
                             <textarea id="comment" name="comment" rows="6" required
                                 class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none"
@@ -460,10 +460,12 @@
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
 
                         <!-- Kirim -->
-                        <button type="submit"
-                            class="inline-flex items-center py-2.5 px-4 text-xs border font-medium text-center text-slate-500 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-800">
-                            Send
-                        </button>
+                        <div class="mb-3">
+                            <button type="submit"
+                                class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300">
+                                Send
+                            </button>
+                        </div>
                     </form>
 
 
@@ -510,9 +512,56 @@
                                 </p>
                             </article>
                         @empty
-                            <p>tidak ada</p>
+                            <p>Tidak ada komentar</p>
                         @endforelse
                     </div>
+
+                    <div class="mt-10">
+                        <h3 class="text-xl font-semibold mb-4">Produk Terkait</h3>
+                        <div class="grid md:grid-cols-4 grid-cols-2 gap-5 pe-5">
+                            @foreach ($relatedProducts as $item)
+                                <div class="border-2 py-3 px-2 flex flex-col justify-between">
+                                    <a href="{{ route('page.productshow', $item->slug) }}"
+                                        class="font-medium text-slate-800 text-sm tracking-tighter">
+                                        {{ $item->name_product }} <!-- Tampilkan nama produk -->
+                                    </a>
+                                    <a href="{{ route('page.productshow', $item->slug) }}"
+                                        class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-4">
+                                        @if ($item->image_product)
+                                            <img src="{{ asset('storage/' . $item->image_product) }}"
+                                                alt="Product Image" class="object-cover w-32 h-32" />
+                                        @else
+                                            <img src="{{ asset('img/img-carousel-promo/laptop.jpg') }}"
+                                                alt="Default Image" class="object-cover w-32 h-32" />
+                                        @endif
+                                    </a>
+
+                                    <div class="flex items-center space-x-1 mb-2">
+                                        @for ($i = 0; $i < 5; $i++)
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                class="w-4 h-4 {{ $i < round($item->average_rating) ? 'text-yellow-400' : 'text-gray-300' }}"
+                                                viewBox="0 0 24 24" stroke="none">
+                                                <path
+                                                    d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
+                                                </path>
+                                            </svg>
+                                        @endfor
+                                        <span class="text-sm text-slate-600">
+                                            {{ isset($relatedReviewsCount[$item->id]) ? $relatedReviewsCount[$item->id] : 0 }}
+                                            reviews
+                                        </span>
+                                    </div>
+
+                                    <div class="md:flex justify-between">
+                                        <p class="text-xl text-blue-500 font-medium tracking-tight">
+                                            Rp {{ number_format($item->price_product, 0, ',', '.') }}
+                                        </p>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
                 </section>
             </div>
         </div>
@@ -595,6 +644,50 @@
             });
         });
     </script>
+
+    <script>
+        document.getElementById('star-rating').addEventListener('click', function(event) {
+            // Cari elemen SVG yang diklik
+            const clickedStar = event.target.closest('svg');
+
+            if (clickedStar) {
+                // Ambil nilai bintang yang dipilih
+                const selectedStarValue = clickedStar.getAttribute('data-star');
+
+                // Dapatkan semua ikon bintang
+                const starIcons = document.querySelectorAll('.star-icon');
+
+                // Reset warna semua bintang ke gray-300
+                starIcons.forEach(icon => {
+                    icon.classList.remove('text-yellow-500');
+                    icon.classList.add('text-gray-300');
+                });
+
+                // Warnai bintang dari 1 hingga nilai yang dipilih
+                for (let i = 0; i < selectedStarValue; i++) {
+                    starIcons[i].classList.remove('text-gray-300');
+                    starIcons[i].classList.add('text-yellow-500');
+                }
+            }
+        });
+
+        // Pastikan bintang selalu dimulai dari gray-300
+        document.addEventListener('DOMContentLoaded', () => {
+            const starIcons = document.querySelectorAll('.star-icon');
+            starIcons.forEach(icon => {
+                icon.classList.remove('text-yellow-500');
+                icon.classList.add('text-gray-300');
+            });
+        });
+    </script>
+
+    <style>
+        .star-icon {
+            transition: fill 0.2s ease;
+            cursor: pointer;
+        }
+    </style>
+
 </body>
 
 </html>
