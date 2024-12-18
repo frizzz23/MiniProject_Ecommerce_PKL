@@ -100,15 +100,33 @@ class ProductPageController extends Controller
         $averageRating = Review::where('product_id', $product->id)
             ->avg('rating') ?: 0; // Set default rating 0 jika tidak ada review
 
-        // Menghitung jumlah review per produk
+        // Menghitung jumlah review untuk produk yang dipilih
         $reviewsCount = Review::where('product_id', $product->id)->count();
 
-
+        // Mengambil semua review untuk produk yang dipilih
         $reviews = Review::where('product_id', $product->id)->get();
 
-        // Tampilkan view dengan data produk, rating, jumlah review, dan review
-        return view('page.productshow', compact('product', 'reviews', 'averageRating', 'reviewsCount'));
+        // Mengambil produk lain dengan kategori yang sama
+        $relatedProducts = Product::where('category_id', $product->category_id)
+            ->where('id', '!=', $product->id) // Menghindari produk yang sedang dilihat
+            ->get();
+
+        // Menghitung rata-rata rating untuk setiap produk terkait
+        foreach ($relatedProducts as $relatedProduct) {
+            $relatedProduct->average_rating = Review::where('product_id', $relatedProduct->id)
+                ->avg('rating') ?: 0; // Set default rating 0 jika tidak ada review
+        }
+
+        // Menghitung jumlah review per produk terkait
+        $relatedReviewsCount = [];
+        foreach ($relatedProducts as $relatedProduct) {
+            $relatedReviewsCount[$relatedProduct->id] = Review::where('product_id', $relatedProduct->id)->count();
+        }
+
+        // Tampilkan view dengan data produk, rating, jumlah review, dan produk terkait
+        return view('page.productshow', compact('product', 'reviews', 'averageRating', 'reviewsCount', 'relatedProducts', 'relatedReviewsCount'));
     }
+
 
 
     /**

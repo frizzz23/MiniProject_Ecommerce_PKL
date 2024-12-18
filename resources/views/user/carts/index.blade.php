@@ -2,6 +2,7 @@
 
 
 @section('main')
+
     <nav class="flex" aria-label="Breadcrumb">
         <ol class="flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
             <li class="flex items-center">
@@ -68,6 +69,7 @@
                     <div class="text-slate-700 text-sm font-medium text-right">Action</div>
                 </div>
             </div>
+
 
             <!-- List Data -->
             @php
@@ -157,7 +159,7 @@
                 </div>
             @empty
                 <div class="bg-white shadow rounded-lg p-4 text-center">
-                    <span class="text-slate-700 text-sm">Keranjang Tidak Ditemukan.</span>
+                    <span class="text-slate-700 text-sm">Tidak Ada Produk</span>
                 </div>
             @endforelse
         </div>
@@ -356,7 +358,7 @@
 
             Swal.fire({
                 title: "Kamu Yakin?",
-                text: "Item ini akan dihapus dari keranjang!",
+                text: "Produk ini akan dihapus dari keranjang!",
                 icon: "warning",
                 iconColor: "#334155",
                 width: 400,
@@ -368,7 +370,7 @@
                 cancelButtonText: "Batal"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    showAlert('success', 'Item dihapus')
+                    showAlert('success', 'Produk dihapus')
                     total.innerHTML = 'loading..';
                     document.getElementById("cart_" + id).classList.add("hidden");
                     setTimeout(() => {
