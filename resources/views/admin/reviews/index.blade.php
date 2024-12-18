@@ -28,7 +28,7 @@
                             <button class="btn btn-primary text-white font-medium py-2 px-4 rounded-lg"
                                 data-bs-toggle="modal" data-bs-target="#addReviewModal">+ Tambahkan ulasan baru</button>
                             <!-- Filter Kategori -->
-                            {{-- <form id="filterForm" action="{{ route('admin.orders.index') }}" method="GET" class="ms-auto">
+                            <form id="filterForm" action="{{ route('admin.reviews.index') }}" method="GET" class="ms-auto">
                                 <select name="product_id" class="form-select text-center" onchange="this.form.submit()">
                                     <option value="">Semua Produk</option>
                                     @foreach ($products as $product)
@@ -38,7 +38,7 @@
                                         </option>
                                     @endforeach
                                 </select>
-                            </form> --}}
+                            </form>
                         </div>
                     </div>
                     <div class="table-responsive">

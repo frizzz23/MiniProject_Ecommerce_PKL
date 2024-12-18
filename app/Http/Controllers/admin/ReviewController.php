@@ -14,30 +14,33 @@ class ReviewController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, Product $product)
-    {
-        // Ambil parameter pencarian
-        $search = $request->input('search');
+    public function index(Request $request)
+{
+    // Ambil parameter pencarian dan filter produk
+    $search = $request->input('search');
+    $productId = $request->input('product_id');
 
-        // Mengambil semua ulasan produk dengan filter pencarian
-        $reviews = Review::with(['product', 'user'])
-            ->when($search, function ($query, $search) {
-                $query->whereHas('product', function ($query) use ($search) {
-                    $query->where('name_product', 'like', '%' . $search . '%');
-                })->orWhere('comment', 'like', '%' . $search . '%'); // Kolom 'content' dari tabel 'reviews'
-            })
-            ->latest()
-            ->paginate(10);
+    // Mengambil semua ulasan dengan filter pencarian dan produk
+    $reviews = Review::with(['product', 'user'])
+        ->when($search, function ($query, $search) {
+            $query->whereHas('product', function ($query) use ($search) {
+                $query->where('name_product', 'like', '%' . $search . '%');
+            })->orWhere('comment', 'like', '%' . $search . '%'); // Kolom 'comment' dari tabel 'reviews'
+        })
+        ->when($productId, function ($query, $productId) {
+            $query->where('product_id', $productId);
+        })
+        ->latest()
+        ->paginate(10); // Pagination
 
-        // Mengambil semua produk yang tersedia
-        $products = Product::all();
+    // Mengambil semua produk untuk dropdown
+    $products = Product::all();
+    $users = User::all();
 
-        // Mengambil semua pengguna
-        $users = User::all();
+    // Mengembalikan view dengan data
+    return view('admin.reviews.index', compact('reviews', 'products', 'users'));
+}
 
-        // Mengembalikan view dengan data
-        return view('admin.reviews.index', compact('reviews', 'product', 'products', 'users'));
-    }
 
 
     /**
