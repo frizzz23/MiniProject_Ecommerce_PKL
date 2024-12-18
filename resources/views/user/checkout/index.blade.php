@@ -250,8 +250,13 @@
                                         <th>
                                             <div
                                                 class="w-28 h-28 bg-cover bg-center overflow-hidden flex justify-center items-center p-5">
-                                                <img src="{{ asset('storage/' . $cart->product->image_product) }}"
-                                                    alt="">
+                                                @if ($cart->product->image_product)
+                                                    <img src="{{ asset('storage/' . $cart->product->image_product) }}"
+                                                        alt="">
+                                                @else
+                                                    <img src="{{ asset('img/img-carousel-promo/laptop.jpg') }}"
+                                                        alt="">
+                                                @endif
                                             </div>
                                         </th>
                                         <td class="w-full align-bottom">
