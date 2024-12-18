@@ -18,13 +18,14 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $selectedRole = $request->input('role');
+        $search = $request->input('search');
 
         // Query pengguna berdasarkan role yang dipilih
         $users = User::with('roles')->orderBy('created_at', 'desc')->when($selectedRole, function ($query, $selectedRole) {
             return $query->role($selectedRole);
-        })
-            ->get();
-
+        })->when($search, function ($query, $search) {
+            return $query->where('name', 'like', '%' . $search . '%');
+        })->get();
         // Iterasi untuk menambahkan 'joinDate' ke setiap pengguna
         $users->each(function ($user) {
             $user->joinDate = Carbon::parse($user->created_at)->diffForHumans();

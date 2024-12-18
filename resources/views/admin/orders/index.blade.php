@@ -35,15 +35,15 @@
                                             onchange="document.getElementById('filterForm').submit();">
                                             <option value="">Semua Produk</option>
                                             @foreach ($products as $product)
-                                            <option value="{{ $product->id }}"
-                                                {{ request('product_id') == $product->id ? 'selected' : '' }}>
-                                                {{ $product->name_product }}
-                                            </option>
-                                        @endforeach
+                                                <option value="{{ $product->id }}"
+                                                    {{ request('product_id') == $product->id ? 'selected' : '' }}>
+                                                    {{ $product->name_product }}
+                                                </option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </form>
-                            </form>
+                                </form>
                             </div>
                         </div>
                         <form action="{{ route('admin.products.index') }}" method="GET">
@@ -90,7 +90,7 @@
                                     </select>
                                 </div>
                             </div>
-                        </form>        
+                        </form>
                     </div>
                     <div class="table-responsive">
                         <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
@@ -127,7 +127,7 @@
                                         </td>
                                         <td class="px-4 py-2">
                                             Rp.
-                                            {{ number_format($order->grand_total_amount, 2) }}
+                                            {{ number_format($order->grand_total_amount, 0, '.', '.') }}
                                         </td>
                                         <td class="px-4 py-2">
                                             <div class="d-flex align-items-center gap-2">

@@ -76,7 +76,7 @@
                                 ? 'text-[#5D87FF] font-semibold  bg-[rgba(219,234,254,0.5)] rounded-md'
                                 : 'text-gray-700 hover:text-[#5D87FF]' }}">
                             <span>
-                                <i class="fa-solid fa-circle-chevron-right"></i>
+                                <i class="fa-regular fa-circle"></i>
                             </span>
 
                             <span class="ml-4">List Produk</span>
@@ -86,7 +86,7 @@
                                 ? 'text-[#5D87FF] font-semibold  bg-[rgba(219,234,254,0.5)] rounded-md'
                                 : 'text-gray-700 hover:text-[#5D87FF]' }}">
                              <span>
-                                <i class="fa-solid fa-circle-chevron-right"></i>
+                                <i class="fa-regular fa-circle"></i>
                             </span>
 
                             <span class="ml-4">List Katgeori</span>
@@ -96,7 +96,7 @@
                                 ? 'text-[#5D87FF] font-semibold  bg-[rgba(219,234,254,0.5)] rounded-md'
                                 : 'text-gray-700 hover:text-[#5D87FF]' }}">
                              <span>
-                                <i class="fa-solid fa-circle-chevron-right"></i>
+                                <i class="fa-regular fa-circle"></i>
                             </span>
 
                             <span class="ml-4">List Brand</span>
