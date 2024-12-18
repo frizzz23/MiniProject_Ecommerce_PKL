@@ -288,7 +288,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($categories as $category)
-                                    <tr onclick="toggleDropdown(this)" class="hover:bg-gray-50 cursor-pointer border-b">
+                                    <tr class="hover:bg-gray-100  border-b">
                                         <td class="px-4 py-2">
                                             {{ $loop->iteration ?? '-' }}
                                         </td>
