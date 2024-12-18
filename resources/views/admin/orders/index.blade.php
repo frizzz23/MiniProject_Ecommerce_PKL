@@ -145,27 +145,29 @@
                                                             <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
                                                                 <span>sub total</span>
                                                                 <span>:</span>
-                                                                <span>Rp.
-                                                                    {{ number_format($order->sub_total_amount, 2) }}
+                                                                <span>
+                                                                    <span class="w-5 h-5"></span>
+                                                                    Rp.
+                                                                    {{ number_format($order->sub_total_amount, 0, ',', '.') }}
                                                                 </span>
                                                             </div>
                                                             <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
                                                                 <span>ongkos kirim</span>
                                                                 <span>:</span>
                                                                 <span>+ Rp.
-                                                                    {{ $order->postage->ongkir_total_amount }}</span>
+                                                                    {{ number_format($order->postage->ongkir_total_amount, 0, ',', '.') }}</span>
                                                             </div>
                                                             <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
                                                                 <span>diskon</span>
                                                                 <span>:</span>
                                                                 <span>- Rp.
-                                                                    {{ $order->promoCode->discount_amount ?? '' }}</span>
+                                                                    {{ $order->promoCode?->discount_amount ? number_format($order->promoCode->discount_amount, 0, ',', '.') : '' }}</span>
                                                             </div>
                                                             <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
                                                                 <span>total</span>
                                                                 <span>:</span>
                                                                 <span>Rp.
-                                                                    {{ number_format($order->grand_total_amount, 2) }}
+                                                                    {{ number_format($order->grand_total_amount, 0, ',', '.') }}
                                                                 </span>
                                                             </div>
                                                         </div>
