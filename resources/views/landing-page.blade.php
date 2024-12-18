@@ -37,8 +37,8 @@
             <div class="hidden md:flex gap-4">
                 <a href="{{ route('landing-page') }}" class="text-sm text-white">Home</a>
                 <a href="{{ route('page.product') }}" class="text-sm text-white">Product</a>
-                <a href="#" class="text-sm text-white">About</a>
-                <a href="#" class="text-sm text-white">Contact</a>
+                <a href="{{ route('about-page') }}" class="text-sm text-white">About</a>
+                <a href="{{ route('contact-page') }}" class="text-sm text-white">Contact</a>
             </div>
 
             <form action="{{ route('page.product') }}" method="GET"
@@ -223,10 +223,11 @@
                             class="text-md text-slate-700 py-2 block px-2">Product</a>
                     </li>
                     <li>
-                        <a href="#" class="text-md text-slate-700 py-2 block px-2">Category</a>
+                        <a href="{{ route('about-page') }}" class="text-md text-slate-700 py-2 block px-2">About</a>
                     </li>
                     <li>
-                        <a href="#" class="text-md text-slate-700 py-2 block px-2">About</a>
+                        <a href="{{ route('contact-page') }}"
+                            class="text-md text-slate-700 py-2 block px-2">Contact</a>
                     </li>
                     @guest
                         <li>
