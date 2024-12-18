@@ -42,12 +42,20 @@ class CheckoutController extends Controller
             $slug = $request->input('product');
             $product = Product::where('slug', $slug)->first();
             if (!$product || $product->stock_product <= 0) {
-                return redirect()->route('landing-page');
+                return redirect()->route('page.product');
             }
         } else {
-            $carts = Cart::where('user_id', Auth::id())->with('product')->get();
+            $carts = Cart::where('user_id', Auth::id())->with('product');
+            if ($request->input('cart')) {
+                $carts = $carts->whereIn('id', explode('-', $request->input('cart')))->get();
+                if (!$carts) {
+                    return redirect()->route('page.product');
+                }
+            } else {
+                $carts = $carts->get();
+            }
             if (count($carts) <= 0) {
-                return redirect()->route('landing-page');
+                return redirect()->route('page.product');
             }
         }
         $addresses = Address::where('user_id', Auth::id())->get();
@@ -115,9 +123,9 @@ class CheckoutController extends Controller
                     'quantity' => $quantity,
                     'name'     => $product->name_product,
                 ];
+                Cart::where('user_id', Auth::id())->where('product_id', $product_id)->delete();
             }
             // Hapus data keranjang setelah checkout
-            Cart::where('user_id', Auth::id())->delete();
         } else if ($request->order_form == 'product') {
             $request->validate([
                 'product_id' => 'required|exists:products,id',
