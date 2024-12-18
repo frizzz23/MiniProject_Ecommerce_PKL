@@ -14,7 +14,7 @@
 
 /* Gaya untuk logo */
 #loader img {
-    width: 150px; /* Ukuran logo yang proporsional */
+    width: 325px; /* Ukuran logo yang proporsional */
     height: auto; /* Menjaga proporsi gambar */
     animation: blinkAndGrow 2s infinite; /* Animasi berkedip dan membesar/mengecil */
 }

@@ -20,7 +20,7 @@
     {{-- font awesome end --}}
 
 
-    <link rel="shortcut icon" type="image/png" href="{{ asset('loading/logo.png') }}" />
+    <link rel="shortcut icon" type="image/png" href="{{ asset('img/logoo.png') }}" />
     <link rel="stylesheet" href="{{ asset('style/src/assets/css/styles.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('loading/loading.css') }}" />
 
@@ -43,7 +43,7 @@
 
 <body>
     <div id="loader">
-        <img src="{{ asset('loading/logo.png') }}" alt="Loading...">
+        <img src="{{ asset('img/logo2.png') }}" alt="Loading...">
     </div>
     <!--  Body Wrapper -->
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
