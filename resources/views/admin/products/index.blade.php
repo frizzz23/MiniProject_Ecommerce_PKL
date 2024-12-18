@@ -108,7 +108,7 @@
                                     <th class="px-4 py-2 text-left">Harga</th>
                                     <th class="px-4 py-2 text-left">Stok</th>
                                     <th class="px-4 py-2 text-left">Rating</th>
-                                    <th class="px-6 py-2 text-center">Pembaruan Terakhir</th>
+                                    <th class="px-6 py-2 text-center">Dibuat</th>
                                     <th class="px-4 py-2 text-center">Aksi</th>
                                 </tr>
                             </thead>
@@ -118,7 +118,9 @@
                                         <td class="px-4 py-2 flex items-center">
                                             <img src="{{ asset('storage/' . $product->image_product) }}"
                                                 alt="{{ $product->name_product }}" class="w-8 h-8 rounded-full mr-3">
-                                            {{ $product->name_product }}
+                                                <span>
+                                                    {{ $product->name_product }}
+                                                </span>
                                         </td>
                                         <td class="px-4 py-2">
                                             {{ $product->category->name_category ?? '-' }}
@@ -136,7 +138,7 @@
                                             {{ $product->reviews->avg('rating') ? number_format($product->reviews->avg('rating'), 1) . ' / 5' : 'Belum ada' }}
                                         </td>
                                         <td class="px-4 py-2 text-center">
-                                            {{ $product->updated_at->format('d-m-Y H:i') }}
+                                            {{ $product->created_at->format('d F Y') ?? 'kosong' }}
                                         </td>
                                         <td class="px-4 py-2 text-center space-x-2">
                                             <button type="button" class="bg-yellow-500 text-white px-3 py-1 rounded"
@@ -188,7 +190,7 @@
                 </div>
                 <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <div class="modal-body">
+                    <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
                         <!-- Nama Produk -->
                         <div class="mb-3">
                             <label for="name_product" class="form-label">Nama Produk</label>
@@ -197,6 +199,60 @@
                             @error('name_product')
                                 <div class="text-danger mt-1">{{ $message }}</div>
                             @enderror
+                        </div>
+
+                        <!-- Harga dan Stok (Satu Baris) -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="price_product" class="form-label">Harga</label>
+                                <input type="number" name="price_product" class="form-control"
+                                    value="{{ old('price_product') }}">
+                                @error('price_product')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="stock_product" class="form-label">Stok</label>
+                                <input type="number" name="stock_product" class="form-control"
+                                    value="{{ old('stock_product') }}">
+                                @error('stock_product')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <!-- Kategori dan Merek (Satu Baris) -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="category_id" class="form-label">Kategori</label>
+                                <select name="category_id" class="form-select">
+                                    <option value="" disabled selected>Pilih Kategori</option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}"
+                                            {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                            {{ $category->name_category }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('category_id')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="brand_id" class="form-label">Merek</label>
+                                <select name="brand_id" class="form-select">
+                                    <option value="" disabled selected>Pilih Merek</option>
+                                    @foreach ($brands as $brand)
+                                        <option value="{{ $brand->id }}"
+                                            {{ old('brand_id') == $brand->id ? 'selected' : '' }}>
+                                            {{ $brand->name_brand }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('brand_id')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
 
                         <!-- Deskripsi Produk -->
@@ -208,65 +264,11 @@
                             @enderror
                         </div>
 
-                        <!-- Harga -->
-                        <div class="mb-3">
-                            <label for="price_product" class="form-label">Harga</label>
-                            <input type="number" name="price_product" class="form-control"
-                                value="{{ old('price_product') }}">
-                            @error('price_product')
-                                <div class="text-danger mt-1">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <!-- Stok -->
-                        <div class="mb-3">
-                            <label for="stock_product" class="form-label">Stok</label>
-                            <input type="number" name="stock_product" class="form-control"
-                                value="{{ old('stock_product') }}">
-                            @error('stock_product')
-                                <div class="text-danger mt-1">{{ $message }}</div>
-                            @enderror
-                        </div>
-
                         <!-- Gambar Produk -->
                         <div class="mb-3">
                             <label for="image_product" class="form-label">Gambar Produk</label>
                             <input type="file" name="image_product" class="form-control">
                             @error('image_product')
-                                <div class="text-danger mt-1">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <!-- Kategori -->
-                        <div class="mb-3">
-                            <label for="category_id" class="form-label">Kategori</label>
-                            <select name="category_id" class="form-control">
-                                <option value="" disabled selected>Pilih Kategori</option>
-                                @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}"
-                                        {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                                        {{ $category->name_category }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('category_id')
-                                <div class="text-danger mt-1">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <!-- Merek -->
-                        <div class="mb-3">
-                            <label for="brand_id" class="form-label">Merek</label>
-                            <select name="brand_id" class="form-control">
-                                <option value="" disabled selected>Pilih Merek</option>
-                                @foreach ($brands as $brand)
-                                    <option value="{{ $brand->id }}"
-                                        {{ old('brand_id') == $brand->id ? 'selected' : '' }}>
-                                        {{ $brand->name_brand }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('brand_id')
                                 <div class="text-danger mt-1">{{ $message }}</div>
                             @enderror
                         </div>
@@ -281,7 +283,8 @@
         </div>
     </div>
 
-    <!-- Script untuk Menampilkan Modal Jika Ada Error -->
+
+    {{-- <!-- Script untuk Menampilkan Modal Jika Ada Error -->
     @if ($errors->any())
         <script>
             document.addEventListener("DOMContentLoaded", function() {
@@ -289,7 +292,7 @@
                 addModal.show();
             });
         </script>
-    @endif
+    @endif --}}
 
     <!-- Modal Edit Produk -->
     @foreach ($products as $product)
@@ -305,50 +308,84 @@
                         enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
-                        <div class="modal-body">
+                        <div class="modal-body" style="max-height: 80vh; overflow-y: auto;">
+                            <!-- Nama Produk -->
                             <div class="mb-3">
                                 <label for="name_product_{{ $product->id }}" class="form-label">Nama Produk</label>
                                 <input type="text" name="name_product" class="form-control"
-                                    value="{{ $product->name_product }}" required>
+                                    value="{{ old('name_product') ?? $product->name_product }}" >
+                                @error('name_product')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
+
+                            <!-- Stok dan Harga -->
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="stock_product_{{ $product->id }}" class="form-label">Stok</label>
+                                    <input type="number" name="stock_product" class="form-control"
+                                        value="{{ old('stock_product') ?? $product->stock_product }}" >
+                                    @error('stock_product')
+                                        <div class="text-danger mt-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="price_product_{{ $product->id }}" class="form-label">Harga</label>
+                                    <input type="number" name="price_product" class="form-control"
+                                        value="{{ old('price_product') ?? $product->price_product }}" >
+                                    @error('price_product')
+                                        <div class="text-danger mt-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- Kategori dan Merek -->
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="category_id_{{ $product->id }}" class="form-label">Kategori</label>
+                                    <select name="category_id" class="form-select" >
+                                        @foreach ($categories as $category)
+                                            <option value="{{ $category->id }}"
+                                                {{ old('category_id')  ?? $product->category_id == $category->id ? 'selected' : '' }}>
+                                                {{ $category->name_category }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('category_id')
+                                        <div class="text-danger mt-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="brand_id_{{ $product->id }}" class="form-label">Merek</label>
+                                    <select name="brand_id" class="form-select" >
+                                        @foreach ($brands as $brand)
+                                            <option value="{{ $brand->id }}"
+                                                {{ old('brand_id') ?? $product->brand_id == $brand->id ? 'selected' : '' }}>
+                                                {{ $brand->name_brand }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('brand_id')
+                                        <div class="text-danger mt-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- Deskripsi Produk -->
                             <div class="mb-3">
                                 <label for="description_product_{{ $product->id }}" class="form-label">Deskripsi
                                     Produk</label>
-                                <textarea name="description_product" class="form-control" rows="3" required>{{ $product->description_product }}</textarea>
+                                <textarea name="description_product" class="form-control" rows="3" >{{ old('description_product') ?? $product->description_product }}</textarea>
+                                @error('description_product')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
-                            <div class="mb-3">
-                                <label for="price_product_{{ $product->id }}" class="form-label">Harga</label>
-                                <input type="number" name="price_product" class="form-control"
-                                    value="{{ $product->price_product }}" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="stock_product_{{ $product->id }}" class="form-label">Stok</label>
-                                <input type="number" name="stock_product" class="form-control"
-                                    value="{{ $product->stock_product }}" required>
-                            </div>
+
+                            <!-- Gambar Produk -->
                             <div class="mb-3">
                                 <label for="image_product_{{ $product->id }}" class="form-label">Gambar Produk</label>
                                 <input type="file" name="image_product" class="form-control">
-                            </div>
-                            <div class="mb-3">
-                                <label for="category_id_{{ $product->id }}" class="form-label">Kategori</label>
-                                <select name="category_id" class="form-control" required>
-                                    @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}"
-                                            {{ $product->category_id == $category->id ? 'selected' : '' }}>
-                                            {{ $category->name_category }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="brand_id_{{ $product->id }}" class="form-label">Merek</label>
-                                <select name="brand_id" class="form-control" required>
-                                    @foreach ($brands as $brand)
-                                        <option value="{{ $brand->id }}"
-                                            {{ $product->brand_id == $brand->id ? 'selected' : '' }}>
-                                            {{ $brand->name_brand }}</option>
-                                    @endforeach
-                                </select>
+                                @error('image_product')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -360,6 +397,7 @@
             </div>
         </div>
     @endforeach
+
 
     <!-- Modal Hapus Produk -->
     @foreach ($products as $product)

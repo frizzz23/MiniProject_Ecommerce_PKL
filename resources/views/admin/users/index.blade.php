@@ -15,10 +15,10 @@
                         <div class="flex justify-between items-center mb-4">
                             <div>
                                 <!-- Pencarian -->
-                                <form action="{{ route('admin.products.index') }}" method="GET" class="d-inline-block">
+                                <form action="{{ route('admin.users.index') }}" method="GET" class="d-inline-block">
                                     <div class="d-flex align-items-center">
                                         <input type="text" name="search"
-                                            class="form-control me-2 border-lg border-[#5d85fa]" placeholder="Cari produk"
+                                            class="form-control me-2 border-lg border-[#5d85fa]" placeholder="Cari Nama Pengguna"
                                             value="{{ request('search') }}" style="width: 200px;">
                                         <button type="submit" class="btn btn-primary">Cari</button>
                                     </div>
@@ -30,7 +30,7 @@
                                     + Tambahkan pengguna baru
                                 </button>
                                 <!-- Filter Kategori -->
-                                <form id="filterForm" action="{{ route('admin.reviews.index') }}" method="GET">
+                                <form id="filterForm" action="{{ route('admin.users.index') }}" method="GET">
                                     <div class="d-flex align-items-center ">
                                         <select name="role" id="role"
                                             class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
@@ -58,6 +58,7 @@
                                 <tr>
                                     <th class="px-4 py-2 text-left">Gambar</th>
                                     <th class="px-4 py-2 text-left">Pengguna</th>
+                                    <th class="px-4 py-2 text-left">Email</th>
                                     <th class="px-4 py-2 text-left">Peran</th>
                                     <th class="px-4 py-2 text-left">Bergabung</th>
                                 </tr>
@@ -66,11 +67,20 @@
                                 @foreach ($users as $user)
                                     <tr onclick="toggleDropdown(this)" class="hover:bg-gray-50 cursor-pointer border-b">
                                         <td class="px-4 py-2">
-                                            <img src="https://via.placeholder.com/40" alt="User Avatar"
-                                                class="w-8 h-8 rounded-full mr-3">
+                                            @if ($user->image)
+                                                <img src="{{ asset('storage/' . $user->image) }}" alt="Profile Picture"
+                                                    class="w-10 h-10 rounded-full mr-3">
+                                            @else
+                                                <img src="{{ asset('style/src/assets/images/profile/user-1.jpg') }}"
+                                                    alt="User Avatar" class="w-10 h-10 rounded-full mr-3">
+                                            @endif
+
                                         </td>
-                                        <td class="px-4 py-2 flex items-center">
+                                        <td class="px-4 py-2 ">
                                             <span>{{ $user->name }}</span>
+                                        </td>
+                                        <td class="px-4 py-2 ">
+                                            <span>{{ $user->email }}</span>
                                         </td>
                                         <td class="px-4 py-2">
                                             @foreach ($user->roles as $role)
@@ -150,7 +160,7 @@
                 <tr class="border-b border-gray-700 hover:bg-slate-300">
                     <td class="py-3 px-4 flex items-center">
                         <img src="https://via.placeholder.com/40" alt="User Avatar"
-                            class="w-8 h-8 rounded-full mr-3">
+                            class="w-10 h-10 rounded-full mr-3">
                         <span>{{ $user->name }}</span>
                     </td>
                     <td class="py-3 px-4">
