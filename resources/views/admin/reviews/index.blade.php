@@ -16,7 +16,7 @@
                     <div class="flex justify-between items-center mb-4">
                         <div>
                             <!-- Pencarian -->
-                            <form action="{{ route('admin.reviews.index') }}" method="GET" class="d-inline-block">
+                            <form action="{{ route('admin.orders.index') }}" method="GET" class="d-inline-block">
                                 <div class="d-flex align-items-center">
                                     <input type="text" name="search"
                                         class="form-control me-2 border-lg border-[#5d85fa]" placeholder="Cari produk"
@@ -26,108 +26,112 @@
                             </form>
                         </div>
                         <div class="flex items-center gap-4">
-                            <button class="btn btn-primary text-white font-medium py-2 px-4 rounded-lg"
-                                data-bs-toggle="modal" data-bs-target="#addReviewModal">+ Tambahkan ulasan baru</button>
-                            <!-- Filter Kategori -->
-                            <form id="filterForm" action="{{ route('admin.reviews.index') }}" method="GET" class="ms-auto">
-                                <select name="product_id" class="form-select text-center" onchange="this.form.submit()">
-                                    <option value="">Semua Produk</option>
-                                    @foreach ($products as $product)
+                            <form id="filterForm" method="{{ route('admin.reviews.index') }}" method="GET">
+                                <div class="d-flex align-items-center ">
+                                    <select name="product_id"
+                                        class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
+                                        style="width: 200px;"
+                                        onchange="document.getElementById('filterForm').submit();">
+                                        <option value="">Semua Produk</option>
+                                        @foreach ($products as $product)
                                         <option value="{{ $product->id }}"
                                             {{ request('product_id') == $product->id ? 'selected' : '' }}>
                                             {{ $product->name_product }}
                                         </option>
                                     @endforeach
-                                </select>
+                                    </select>
+                                </div>
                             </form>
                         </div>
-                        <form action="{{ route('admin.products.index') }}" method="GET">
-                            <div class="grid grid-cols-4 gap-4 text-white border-t border-gray-600 pt-4 mb-4">
-                                <div>
-                                    <select name="brand_id"
-                                        class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                        onchange="this.form.submit()">
-                                        <option value="">Merek</option>
-
-                                    </select>
-                                </div>
-                                <div>
-                                    <select name="price_product"
-                                        class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                        onchange="this.form.submit()">
-                                        <option value="">Harga</option>
-                                        <option value="asc" {{ request('price_product') == 'asc' ? 'selected' : '' }}>
-                                            Terendah
-                                            ke Tertinggi</option>
-                                        <option value="desc" {{ request('price_product') == 'desc' ? 'selected' : '' }}>
-                                            Tertinggi
-                                            ke Terendah</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <select name="stock_product"
-                                        class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                        onchange="this.form.submit()">
-                                        <option value="">Stok</option>
-                                        <option value="1" {{ request('stock_product') == '1' ? 'selected' : '' }}>Ada
-                                        </option>
-                                        <option value="0" {{ request('stock_product') == '0' ? 'selected' : '' }}>
-                                            Habis
-                                        </option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <select name="color_product"
-                                        class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                        onchange="this.form.submit()">
-                                        <option value="">Warna</option>
-                                        <!-- Tambahkan opsi warna jika diperlukan -->
-                                    </select>
-                                </div>
-                            </div>
-                        </form>
                     </div>
-                    <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-                        <thead class="bg-[#5D87FF] text-white"> {{-- bg-gray-100 --}}
-                            <tr>
-                                <th class="px-4 py-2 text-left">No</th>
-                                <th class="px-4 py-2 text-left">Pengguna</th>
-                                <th class="px-4 py-2 text-left">Produk</th>
-                                <th class="px-4 py-2 text-left">Rating</th>
-                                <th class="px-4 py-2 text-left">Komentar</th>
-                                <th class="px-4 py-2 text-left">Dibuat</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($reviews as $review)
-                                <tr class="hover:bg-gray-100  border-b">
-                                    <td class="px-4 py-2">
-                                        {{ $loop->iteration ?? '-' }}
-                                    </td>
-                                    <td class="px-4 py-2 flex items-center">
-                                        {{ $review->name }}
-                                    </td>
-                                    <td class="px-4 py-2">
-                                        {{ $review->product->name_product }}
-                                    </td>
-                                    <td class="px-4 py-2">
-                                        {{ $review->rating }}
-                                    </td>
-                                    <td class="px-4 py-2">
-                                        {{ $review->comment }}
-                                    </td>
-                                    <td class="px-4 py-2">
-                                        {{ $review->created_at->format('d F Y') ?? 'kosong' }}
-                                    </td>
+                    <form action="{{ route('admin.products.index') }}" method="GET">
+                        <div class="grid grid-cols-4 gap-4 text-white border-t border-gray-600 pt-4 mb-4">
+                            <div>
+                                <select name="brand_id"
+                                    class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
+                                    onchange="this.form.submit()">
+                                    <option value="">Merek</option>
+
+                                </select>
+                            </div>
+                            <div>
+                                <select name="price_product"
+                                    class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
+                                    onchange="this.form.submit()">
+                                    <option value="">Harga</option>
+                                    <option value="asc" {{ request('price_product') == 'asc' ? 'selected' : '' }}>
+                                        Terendah
+                                        ke Tertinggi</option>
+                                    <option value="desc" {{ request('price_product') == 'desc' ? 'selected' : '' }}>
+                                        Tertinggi
+                                        ke Terendah</option>
+                                </select>
+                            </div>
+                            <div>
+                                <select name="stock_product"
+                                    class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
+                                    onchange="this.form.submit()">
+                                    <option value="">Stok</option>
+                                    <option value="1" {{ request('stock_product') == '1' ? 'selected' : '' }}>Ada
+                                    </option>
+                                    <option value="0" {{ request('stock_product') == '0' ? 'selected' : '' }}>
+                                        Habis
+                                    </option>
+                                </select>
+                            </div>
+                            <div>
+                                <select name="color_product"
+                                    class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
+                                    onchange="this.form.submit()">
+                                    <option value="">Warna</option>
+                                    <!-- Tambahkan opsi warna jika diperlukan -->
+                                </select>
+                            </div>
+                        </div>
+                    </form>   
+                    <div class="table-responsive">
+                        <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+                            <thead class="bg-[#5D87FF] text-white"> {{-- bg-gray-100 --}}
+                                <tr>
+                                    <th class="px-4 py-2 text-left">No</th>
+                                    <th class="px-4 py-2 text-left">Pengguna</th>
+                                    <th class="px-4 py-2 text-left">Produk</th>
+                                    <th class="px-4 py-2 text-left">Rating</th>
+                                    <th class="px-4 py-2 text-left">Komentar</th>
+                                    <th class="px-4 py-2 text-left">Dibuat</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach ($reviews as $review)
+                                    <tr class="hover:bg-gray-100  border-b">
+                                        <td class="px-4 py-2">
+                                            {{ $loop->iteration ?? '-' }}
+                                        </td>
+                                        <td class="px-4 py-2 flex items-center">
+                                            {{ $review->name }}
+                                        </td>
+                                        <td class="px-4 py-2">
+                                            {{ $review->product->name_product }}
+                                        </td>
+                                        <td class="px-4 py-2">
+                                            {{ $review->rating }}
+                                        </td>
+                                        <td class="px-4 py-2">
+                                            {{ $review->comment }}
+                                        </td>
+                                        <td class="px-4 py-2">
+                                            {{ $review->created_at->format('d F Y') ?? 'kosong' }}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
-    
 @endsection
 
 
