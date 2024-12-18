@@ -190,7 +190,7 @@
                 </div>
                 <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                    <div class="modal-body" style="max-height: 70vh; overflow-y: auto; -ms-overflow-style: none; scrollbar-width: none;">
                         <!-- Nama Produk -->
                         <div class="mb-3">
                             <label for="name_product" class="form-label">Nama Produk</label>
@@ -308,7 +308,7 @@
                         enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
-                        <div class="modal-body" style="max-height: 80vh; overflow-y: auto;">
+                        <div class="modal-body" style="max-height: 70vh; overflow-y: auto; -ms-overflow-style: none; scrollbar-width: none;">
                             <!-- Nama Produk -->
                             <div class="mb-3">
                                 <label for="name_product_{{ $product->id }}" class="form-label">Nama Produk</label>
