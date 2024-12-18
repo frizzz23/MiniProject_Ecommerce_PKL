@@ -10,15 +10,34 @@ use App\Models\Order;
 
 class OrderController extends Controller
 {
-    public function index()
-    {
-        // Ambil semua pengguna, produk, dan pesanan
-        $orders = Order::with('user', 'productOrders.product', 'addresses', 'postage', 'promoCode', 'payment')->latest()->get();
-        // dd($orders->toArray());
+    public function index(Request $request)
+{
+    // Mengambil parameter filter dari request
+    $productId = $request->input('product_id'); // Filter berdasarkan ID produk
+    $search = $request->input('search'); // Filter berdasarkan pencarian
 
-        // Tampilkan view untuk admin
-        return view('admin.orders.index', compact('orders'));
-    }
+    // Mengambil semua pesanan, dengan filter berdasarkan product_id dan search jika ada
+    $orders = Order::with('user', 'productOrders.product', 'addresses', 'postage', 'promoCode', 'payment')
+                   ->when($productId, function ($query) use ($productId) {
+                       return $query->whereHas('productOrders', function ($query) use ($productId) {
+                           $query->where('product_id', $productId);
+                       });
+                   })
+                   ->when($search, function ($query, $search) {
+                       return $query->whereHas('productOrders.product', function ($query) use ($search) {
+                           $query->where('name_product', 'like', '%' . $search . '%');
+                       });
+                   })
+                   ->latest()
+                   ->get();
+
+    // Mengambil semua produk yang tersedia
+    $products = Product::all();
+
+    // Mengembalikan tampilan dengan data orders dan products
+    return view('admin.orders.index', compact('orders', 'products'));
+}
+
 
     /**
      * Show the form for creating a new resource.

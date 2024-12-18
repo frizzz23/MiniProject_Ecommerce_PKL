@@ -12,11 +12,12 @@
                 @endif
                 <div class="card-body p-4">
                     <h5 class="card-title text-2xl font-bold mb-4">Semua Order</h5>
+<
                     <div>
                         <div class="flex justify-between items-center mb-4">
                             <div>
                                 <!-- Pencarian -->
-                                <form action="{{ route('admin.products.index') }}" method="GET" class="d-inline-block">
+                                <form action="{{ route('admin.orders.index') }}" method="GET" class="d-inline-block">
                                     <div class="d-flex align-items-center">
                                         <input type="text" name="search"
                                             class="form-control me-2 border-lg border-[#5d85fa]" placeholder="Cari produk"
@@ -27,17 +28,17 @@
                             </div>
                             <div class="flex items-center gap-4">
                                 <!-- Filter Kategori -->
-                                <form id="filterForm" action="{{ route('admin.products.index') }}" method="GET">
-                                    <div class="d-flex align-items-center ">
-                                        <select name="category_id"
-                                            class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                            style="width: 200px;"
-                                            onchange="document.getElementById('filterForm').submit();">
-                                            <option value="">Semua Kategori</option>
-
-                                        </select>
-                                    </div>
-                                </form>
+                                <form id="filterForm" action="{{ route('admin.orders.index') }}" method="GET" class="ms-auto">
+                                <select name="product_id" class="form-select text-center" onchange="this.form.submit()">
+                                    <option value="">Semua Produk</option>
+                                    @foreach ($products as $product)
+                                        <option value="{{ $product->id }}"
+                                            {{ request('product_id') == $product->id ? 'selected' : '' }}>
+                                            {{ $product->name_product }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </form>
                             </div>
                         </div>
                         <form action="{{ route('admin.products.index') }}" method="GET">
@@ -84,7 +85,7 @@
                                     </select>
                                 </div>
                             </div>
-                        </form>
+                        </form>        
                     </div>
                     <div class="table-responsive">
                         <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
@@ -211,27 +212,29 @@
                                                             <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
                                                                 <span>sub total</span>
                                                                 <span>:</span>
-                                                                <span>Rp.
-                                                                    {{ number_format($order->sub_total_amount, 2) }}
+                                                                <span>
+                                                                    <span class="w-5 h-5"></span>
+                                                                    Rp.
+                                                                    {{ number_format($order->sub_total_amount, 0, ',', '.') }}
                                                                 </span>
                                                             </div>
                                                             <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
                                                                 <span>ongkos kirim</span>
                                                                 <span>:</span>
                                                                 <span>+ Rp.
-                                                                    {{ $order->postage->ongkir_total_amount }}</span>
+                                                                    {{ number_format($order->postage->ongkir_total_amount, 0, ',', '.') }}</span>
                                                             </div>
                                                             <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
                                                                 <span>diskon</span>
                                                                 <span>:</span>
                                                                 <span>- Rp.
-                                                                    {{ $order->promoCode->discount_amount ?? '' }}</span>
+                                                                    {{ $order->promoCode?->discount_amount ? number_format($order->promoCode->discount_amount, 0, ',', '.') : '' }}</span>
                                                             </div>
                                                             <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
                                                                 <span>total</span>
                                                                 <span>:</span>
                                                                 <span>Rp.
-                                                                    {{ number_format($order->grand_total_amount, 2) }}
+                                                                    {{ number_format($order->grand_total_amount, 0, ',', '.') }}
                                                                 </span>
                                                             </div>
                                                         </div>
