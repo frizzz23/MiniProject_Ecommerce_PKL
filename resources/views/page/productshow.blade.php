@@ -102,9 +102,7 @@
         <div class="px-5">
             <div class="flex w-full justify-between gap-5 mb-5 sticky top-0 z-10 bg-white py-3 md:pe-5">
                 <a href="{{ route('landing-page') }}">
-                    <h5 class="font-semibold text-xl text-slate-700 mb-5 text-center">
-                        Zentech
-                    </h5>
+                    <img src="{{ asset('img/logo&text.svg') }}" alt="logo" class="w-32">
                 </a>
                 <form action="{{ route('page.product') }}" method="GET"
                     class=" gap-2 flex-1 md:flex-none hidden gap-1 bg-gray-100 rounded-full items-center xl:flex py-2 px-5">
