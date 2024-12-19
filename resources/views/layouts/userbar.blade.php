@@ -49,7 +49,7 @@
                             d="M12 6a3.91 3.91 0 0 0-4 4 3.91 3.91 0 0 0 4 4 3.91 3.91 0 0 0 4-4 3.91 3.91 0 0 0-4-4zm0 6a1.91 1.91 0 0 1-2-2 1.91 1.91 0 0 1 2-2 1.91 1.91 0 0 1 2 2 1.91 1.91 0 0 1-2 2z">
                         </path>
                     </svg>
-                    <span>Akun Saya</span>
+                    <span>Akun </span>
                 </div>
                 <svg id="accountMenuChevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                     viewBox="0 0 24 24"
@@ -78,7 +78,7 @@
                     class="block text-sm {{ request()->routeIs('user.profile.profile')
                         ? 'text-blue-600 font-semibold'
                         : 'text-gray-700 hover:text-blue-600' }}">
-                    Profile Saya
+                    Profile 
                 </a>
                 <a href="{{ route('user.profile.password') }}"
                     class="block text-sm {{ request()->routeIs('user.profile.password')
@@ -107,7 +107,7 @@
                 <!-- Lines Representing Orders -->
                 <path d="M8 7h8v2H8zm0 4h8v2H8zm0 4h5v2H8z"></path>
             </svg>
-            <span>My orders</span>
+            <span>Pesanan </span>
         </a>
         <a href="{{ route('user.carts.index') }}"
             class="flex items-center {{ request()->routeIs('user.carts.index') ? 'text-blue-600' : 'text-gray-600' }} hover:text-blue-600 space-x-2 ">
@@ -119,7 +119,7 @@
                 <circle cx="10.5" cy="19.5" r="1.5"></circle>
                 <circle cx="16.5" cy="19.5" r="1.5"></circle>
             </svg>
-            <span>Carts</span>
+            <span>Keranjang </span>
         </a>
         <a href="{{ route('user.addresses.index') }}"
             class="flex items-center {{ request()->routeIs('user.addresses.index') ? 'text-blue-600' : 'text-gray-600' }} hover:text-blue-600 space-x-2 ">
@@ -129,7 +129,7 @@
                     d="M19.15 8a2 2 0 0 0-1.72-1H15V5a1 1 0 0 0-1-1H4a2 2 0 0 0-2 2v10a2 2 0 0 0 1 1.73 3.49 3.49 0 0 0 7 .27h3.1a3.48 3.48 0 0 0 6.9 0 2 2 0 0 0 2-2v-3a1.07 1.07 0 0 0-.14-.52zM15 9h2.43l1.8 3H15zM6.5 19A1.5 1.5 0 1 1 8 17.5 1.5 1.5 0 0 1 6.5 19zm10 0a1.5 1.5 0 1 1 1.5-1.5 1.5 1.5 0 0 1-1.5 1.5z">
                 </path>
             </svg>
-            <span> Addresses</span>
+            <span>Alamat </span>
         </a>
         <hr class="border-gray-700 my-4">
         <a href="#" class="flex items-center text-red-400 hover:text-red-600 space-x-2"
