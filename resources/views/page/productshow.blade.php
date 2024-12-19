@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Product Detail </title>
 
+    <link rel="shortcut icon" type="image/png" href="{{ asset('img/logoo.png') }}" />
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="{{ asset('desainmini-main/dist/output.css') }}" rel="stylesheet" />
@@ -98,30 +100,32 @@
 
     <x-list-cart-modal />
 
-    <div style="">
+    <div>
         <div class="px-5">
             <div class="flex w-full justify-between gap-5 mb-5 sticky top-0 z-10 bg-white py-3 md:pe-5">
                 <a href="{{ route('landing-page') }}">
                     <img src="{{ asset('img/logo&text.svg') }}" alt="logo" class="w-32">
                 </a>
-                <form action="{{ route('page.product') }}" method="GET"
-                    class=" gap-2 flex-1 md:flex-none hidden gap-1 bg-gray-100 rounded-full items-center xl:flex py-2 px-5">
-                    <input type="text" name="search" value="{{ request()->get('search') }}"
-                        class=" outline-none text-sm w-full text-slate-800 md:w-80 bg-transparent"
-                        placeholder="Search" />
-                    <button type="submit">
-                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4">
-                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                            <g id="SVGRepo_iconCarrier">
-                                <path
-                                    d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
-                                    stroke="#333333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                </path>
-                            </g>
-                        </svg>
-                    </button>
-                </form>
+                <div class="py-2 rounded-[20px] hidden gap-4 items-center md:w-auto hidden gap-1 items-center xl:flex">
+                    <div class="hidden md:flex gap-4">
+                        <a href="{{ route('landing-page') }}"
+                            class="text-sm text-gray-800 hover:text-[#5D87FF] hover:font-semibold relative after:content-[''] after:block after:h-[2px] after:w-0 after:bg-[#5D87FF] after:mt-1 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full">
+                            Home
+                        </a>
+                        <a href="{{ route('page.product') }}"
+                            class="text-sm text-gray-800 hover:text-[#5D87FF] hover:font-semibold relative after:content-[''] after:block after:h-[2px] after:w-0 after:bg-[#5D87FF] after:mt-1 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full">
+                            Product
+                        </a>
+                        <a href="{{ route('about-page') }}"
+                            class="text-sm text-gray-800 hover:text-[#5D87FF] hover:font-semibold relative after:content-[''] after:block after:h-[2px] after:w-0 after:bg-[#5D87FF] after:mt-1 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full">
+                            About
+                        </a>
+                        <a href="{{ route('contact-page') }}"
+                            class="text-sm text-gray-800 hover:text-[#5D87FF] hover:font-semibold relative after:content-[''] after:block after:h-[2px] after:w-0 after:bg-[#5D87FF] after:mt-1 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full">
+                            Contact
+                        </a>
+                    </div>
+                </div>
 
                 <div class="flex gap-1 items-center cursor-pointer">
                     <div class="flex gap-1" id="carts">
@@ -176,7 +180,8 @@
                                 </g>
                             </svg>
                             <!-- Jika pengguna belum login -->
-                            <a href="{{ route('login') }}" class="text-sm text-slate-700 hover:text-blue-400">Sign in</a>
+                            <a href="{{ route('login') }}" class="text-sm text-slate-700 hover:text-blue-400">Sign
+                                in</a>
                             <span>/</span>
                             <a href="{{ route('register') }}" class="text-sm text-slate-700 hover:text-blue-400">Sign
                                 up</a>
@@ -188,7 +193,8 @@
                                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                                         class="w-5 h-5">
                                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                                        </g>
                                         <g id="SVGRepo_iconCarrier">
                                             <!-- Lingkaran untuk kepala -->
                                             <circle cx="12" cy="8" r="4" stroke="#1C274C"
@@ -196,7 +202,8 @@
                                             </circle>
                                             <!-- Kurva untuk tubuh -->
                                             <path d="M4 20C4 16 8 14 12 14C16 14 20 16 20 20" stroke="#1C274C"
-                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                            </path>
                                         </g>
                                     </svg>
                                     <span class="tooltiptext">My Account</span>
@@ -426,7 +433,7 @@
                             Reviews
                         </h2>
                     </div>
-                    <form action="{{ route('reviews.store') }}" method="POST">
+                    <form action="{{ route('addReview') }}" method="POST">
                         @csrf <!-- Tambahkan CSRF token untuk keamanan -->
 
                         <!-- Pilih Bintang -->
@@ -465,8 +472,6 @@
                             </button>
                         </div>
                     </form>
-
-
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                         @forelse ($reviews as $review)

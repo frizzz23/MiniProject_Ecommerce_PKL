@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>landing page</title>
     <link href="{{ asset('desainmini-main/dist/output.css') }}" rel="stylesheet" />
+    <link rel="shortcut icon" type="image/png" href="{{ asset('img/logoo.png') }}" />
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -35,10 +36,22 @@
         <div
             class="py-2 px-5 xl:ps-10 rounded-[20px] hidden gap-4 items-center md:w-auto hidden gap-1 items-center xl:flex">
             <div class="hidden md:flex gap-4">
-                <a href="{{ route('landing-page') }}" class="text-sm text-white">Home</a>
-                <a href="{{ route('page.product') }}" class="text-sm text-white">Product</a>
-                <a href="{{ route('about-page') }}" class="text-sm text-white">About</a>
-                <a href="{{ route('contact-page') }}" class="text-sm text-white">Contact</a>
+                <a href="{{ route('landing-page') }}"
+                    class="text-sm text-white relative after:content-[''] after:block after:h-[2px] after:w-0 after:bg-white after:mt-1 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full">
+                    Home
+                </a>
+                <a href="{{ route('page.product') }}"
+                    class="text-sm text-white relative after:content-[''] after:block after:h-[2px] after:w-0 after:bg-white after:mt-1 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full">
+                    Product
+                </a>
+                <a href="{{ route('about-page') }}"
+                    class="text-sm text-white relative after:content-[''] after:block after:h-[2px] after:w-0 after:bg-white after:mt-1 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full">
+                    About
+                </a>
+                <a href="{{ route('contact-page') }}"
+                    class="text-sm text-white relative after:content-[''] after:block after:h-[2px] after:w-0 after:bg-white after:mt-1 after:transition-all after:ease-in-out hover:after:w-full">
+                    Contact
+                </a>
             </div>
 
             <form action="{{ route('page.product') }}" method="GET"
