@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\OrderShowController;
 use App\Http\Controllers\Page\AboutPageController;
 use App\Http\Controllers\Page\CategoryPageController;
 
@@ -34,6 +35,8 @@ Route::post('/addReview', [ProductPageController::class, 'addReview'])->name('ad
 Route::get('/category-page', CategoryPageController::class)->name('category-page');
 Route::get('/about', AboutPageController::class)->name('about-page');
 Route::get('/contact', ContactPageController::class)->name('contact-page');
+
+Route::get('/order-show', OrderShowController::class)->name('order-show');
 
 
 Route::fallback(function () {

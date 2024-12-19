@@ -121,7 +121,8 @@
                                 @endforeach
                                 <div class="text-slate-700 text-sm grid grid-cols-[0.5fr_2fr]">
                                     <div class="flex items-end">
-                                        <a href="#" class="bg-blue-700 text-white rounded-lg px-5 py-2 text-sm">Detail
+                                        <a href="{{ route('order-show', ['order_id' => $order->id]) }}"
+                                            class="bg-blue-700 text-white rounded-lg px-5 py-2 text-sm">Detail
                                         </a>
                                     </div>
                                     <div class="flex justify-end">
@@ -213,7 +214,7 @@
                                 @endforeach
                                 <div class="text-slate-700 text-sm grid grid-cols-[0.5fr_2fr]">
                                     <div class="flex items-end">
-                                        <a href="#"
+                                        <a href="{{ route('order-show', ['order_id' => $order->id]) }}"
                                             class="bg-blue-700 text-white rounded-lg px-5 py-2 text-sm">Detail
                                         </a>
                                     </div>
@@ -304,7 +305,7 @@
                                 @endforeach
                                 <div class="text-slate-700 text-sm grid grid-cols-[0.5fr_2fr]">
                                     <div class="flex items-end gap-2">
-                                        <a href="#"
+                                        <a href="{{ route('order-show', ['order_id' => $order->id]) }}"
                                             class="bg-blue-700 text-white rounded-lg px-5 py-2 text-sm">Detail
                                         </a>
                                     </div>

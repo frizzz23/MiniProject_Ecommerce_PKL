@@ -907,19 +907,34 @@
                                 // Tangani jika pembayaran success
                                 showAlert('success', 'Pembayaran berhasil!')
                                 // console.log(result)
-                                window.location.href = "{{ route('user.orders.index') }}";
+                                const finish_redirect_url = result.finish_redirect_url
+                                if (finish_redirect_url) {
+                                    window.location.href = finish_redirect_url
+                                } else {
+                                    window.location.href = "{{ route('user.orders.index') }}";
+                                }
                             },
                             onPending: function(result) {
                                 // Tangani jika pembayaran pending
                                 showAlert('warning', 'Pembayaran sedang dalam proses!')
                                 // console.log(result)
-                                window.location.href = "{{ route('user.orders.index') }}";
+                                const finish_redirect_url = result.finish_redirect_url
+                                if (finish_redirect_url) {
+                                    window.location.href = finish_redirect_url
+                                } else {
+                                    window.location.href = "{{ route('user.orders.index') }}";
+                                }
                             },
                             onError: function(result) {
                                 // Tangani jika pembayaran gagal
                                 showAlert('error', 'Pembayaran gagal!')
                                 // console.log(result)
-                                window.location.href = "{{ route('user.orders.index') }}";
+                                const finish_redirect_url = result.finish_redirect_url
+                                if (finish_redirect_url) {
+                                    window.location.href = finish_redirect_url
+                                } else {
+                                    window.location.href = "{{ route('user.orders.index') }}";
+                                }
                             }
                         });
                     } else {
