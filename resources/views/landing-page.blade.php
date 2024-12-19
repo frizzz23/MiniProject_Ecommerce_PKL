@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>landing page</title>
     <link href="{{ asset('desainmini-main/dist/output.css') }}" rel="stylesheet" />
-    <link rel="shortcut icon" type="image/png" href="{{ asset('img/logoo.png') }}" />
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -36,22 +35,10 @@
         <div
             class="py-2 px-5 xl:ps-10 rounded-[20px] hidden gap-4 items-center md:w-auto hidden gap-1 items-center xl:flex">
             <div class="hidden md:flex gap-4">
-                <a href="{{ route('landing-page') }}"
-                    class="text-sm text-white relative after:content-[''] after:block after:h-[2px] after:w-0 after:bg-white after:mt-1 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full">
-                    Home
-                </a>
-                <a href="{{ route('page.product') }}"
-                    class="text-sm text-white relative after:content-[''] after:block after:h-[2px] after:w-0 after:bg-white after:mt-1 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full">
-                    Product
-                </a>
-                <a href="{{ route('about-page') }}"
-                    class="text-sm text-white relative after:content-[''] after:block after:h-[2px] after:w-0 after:bg-white after:mt-1 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full">
-                    About
-                </a>
-                <a href="{{ route('contact-page') }}"
-                    class="text-sm text-white relative after:content-[''] after:block after:h-[2px] after:w-0 after:bg-white after:mt-1 after:transition-all after:ease-in-out hover:after:w-full">
-                    Contact
-                </a>
+                <a href="{{ route('landing-page') }}" class="text-sm text-white">Home</a>
+                <a href="{{ route('page.product') }}" class="text-sm text-white">Product</a>
+                <a href="{{ route('about-page') }}" class="text-sm text-white">About</a>
+                <a href="{{ route('contact-page') }}" class="text-sm text-white">Contact</a>
             </div>
 
             <form action="{{ route('page.product') }}" method="GET"
@@ -631,274 +618,89 @@
         <h1 class="text-2xl font-semibold text-slate-700 mb-10">
             Top Rated <span class="text-blue-500">Products</span>
         </h1>
-        <div class="grid md:grid-cols-4 grid-cols-2 gap-4">
-            <div class="border-2 py-3 px-2 flex flex-col justify-between">
-                <a href="view-product.html" class="font-medium text-slate-800 text-sm tracking-tighter">Samsung
-                    Galaxy A55 5G 8/128 8/256 | 5000mAh</a>
-                <div class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-4">
-                    <img src="{{ asset('desainmini-main/image/hp-3.png') }}" alt="Hp" width="100" />
-                </div>
+        <!-- Kontainer untuk produk yang dapat digulirkan -->
+        <div class="flex overflow-x-auto space-x-6">
+            @foreach ($products as $product)
+                <div class="border-2 py-4 px-4 flex flex-col justify-between w-150 h-150"> <!-- Card lebih besar dengan ukuran 150x150 -->
+                    <a href="view-product.html"
+                        class="font-medium text-slate-800 text-sm tracking-tighter">{{ $product->name_product }}</a>
+                    <div class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-6">
+                        <a href="{{ route('page.productshow', $product->slug) }}"
+                            class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-6">
+                            @if ($product->image_product)
+                                <img src="{{ asset('storage/' . $product->image_product) }}" alt="Product Image"
+                                    class="object-cover w-full h-full" /> <!-- Menyesuaikan gambar dengan card yang lebih besar -->
+                            @else
+                                <img src="{{ asset('img/img-carousel-promo/laptop.jpg') }}" alt="Default Image"
+                                    class="object-cover w-full h-full" />
+                            @endif
+                        </a>
+                    </div>
 
-                <div class="flex items-center space-x-1 mb-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 text-yellow-400"
-                        viewBox="0 0 24 24" stroke="none">
-                        <path
-                            d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
-                        </path>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 text-yellow-400"
-                        viewBox="0 0 24 24" stroke="none">
-                        <path
-                            d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
-                        </path>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 text-yellow-400"
-                        viewBox="0 0 24 24" stroke="none">
-                        <path
-                            d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
-                        </path>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 text-yellow-400"
-                        viewBox="0 0 24 24" stroke="none">
-                        <path
-                            d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
-                        </path>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 text-gray-300"
-                        viewBox="0 0 24 24" stroke="none">
-                        <path
-                            d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
-                        </path>
-                    </svg>
-                    <span class="text-sm text-slate-600 text-sm">(460)</span>
-                </div>
-                <div class="flex justify-between">
-                    <p class="text-xl text-blue-500 font-medium tracking-tight">
-                        Rp.10.000.000
-                    </p>
-                    <button class="w-10 h-10 bg-blue-500 flex justify-center items-center rounded-md">
-                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
-                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                            <g id="SVGRepo_iconCarrier">
+                    <div class="flex items-center gap-2">
+                        <!-- Loop untuk menampilkan rating berdasarkan averageRating -->
+                        @for ($i = 1; $i <= 5; $i++)
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                class="w-5 h-5 {{ $i <= $product->averageRating ? 'text-yellow-400' : 'text-gray-300' }}"
+                                viewBox="0 0 24 24" stroke="none">
                                 <path
-                                    d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H19"
-                                    stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
-                                <path
-                                    d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z"
-                                    stroke="#ffffff" stroke-width="1.5"></path>
-                                <path
-                                    d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z"
-                                    stroke="#ffffff" stroke-width="1.5"></path>
-                                <path
-                                    d="M5 6H16.4504C18.5054 6 19.5328 6 19.9775 6.67426C20.4221 7.34853 20.0173 8.29294 19.2078 10.1818L18.7792 11.1818C18.4013 12.0636 18.2123 12.5045 17.8366 12.7523C17.4609 13 16.9812 13 16.0218 13H5"
-                                    stroke="#ffffff" stroke-width="1.5"></path>
-                            </g>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            <div class="border-2 py-3 px-2 flex flex-col justify-between">
-                <a href="view-product.html" class="font-medium text-slate-800 text-sm tracking-tighter">MacBook Air
-                    M3 2024 | 13 Inch 128GB | 256GB | 512GB</a>
-                <div class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-4">
-                    <img src="{{ asset('desainmini-main/image/laptop.png') }}" alt="Hp" width="100" />
-                </div>
+                                    d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
+                                </path>
+                            </svg>
+                        @endfor
+                        <span class="text-sm text-slate-600">{{ $product->reviewsCount }} Reviews</span>
+                    </div>
 
-                <div class="flex items-center space-x-1 mb-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 text-yellow-400"
-                        viewBox="0 0 24 24" stroke="none">
-                        <path
-                            d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
-                        </path>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 text-yellow-400"
-                        viewBox="0 0 24 24" stroke="none">
-                        <path
-                            d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
-                        </path>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 text-yellow-400"
-                        viewBox="0 0 24 24" stroke="none">
-                        <path
-                            d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
-                        </path>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 text-yellow-400"
-                        viewBox="0 0 24 24" stroke="none">
-                        <path
-                            d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
-                        </path>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 text-gray-300"
-                        viewBox="0 0 24 24" stroke="none">
-                        <path
-                            d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
-                        </path>
-                    </svg>
-                    <span class="text-sm text-slate-600 text-sm">(460)</span>
+                    <div class="md:flex justify-between">
+                        <p class="text-xl text-blue-500 font-medium tracking-tight">
+                            Rp {{ number_format($product->price_product, 0, ',', '.') }}
+                        </p>
+                        @auth
+                            <button onclick="addToCart({{ $product->id }}, this)" type="button"
+                                class="w-12 h-12 bg-blue-500 flex justify-center items-center rounded-md">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                    class="w-6 h-6">
+                                    <path
+                                        d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H19"
+                                        stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
+                                    <path
+                                        d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z"
+                                        stroke="#ffffff" stroke-width="1.5"></path>
+                                    <path
+                                        d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z"
+                                        stroke="#ffffff" stroke-width="1.5"></path>
+                                    <path
+                                        d="M5 6H16.4504C18.5054 6 19.5328 6 19.9775 6.67426C20.4221 7.34853 20.0173 8.29294 19.2078 10.1818L18.7792 11.1818C18.4013 12.0636 18.2123 12.5045 17.8366 12.7523C17.4609 13 16.9812 13 16.0218 13H5"
+                                        stroke="#ffffff" stroke-width="1.5"></path>
+                                </svg>
+                            </button>
+                        @else
+                            <a href="{{ route('login') }}"
+                                class="w-12 h-12 bg-blue-500 flex justify-center items-center rounded-md">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                    class="w-6 h-6">
+                                    <path
+                                        d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H19"
+                                        stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
+                                    <path
+                                        d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z"
+                                        stroke="#ffffff" stroke-width="1.5"></path>
+                                    <path
+                                        d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z"
+                                        stroke="#ffffff" stroke-width="1.5"></path>
+                                    <path
+                                        d="M5 6H16.4504C18.5054 6 19.5328 6 19.9775 6.67426C20.4221 7.34853 20.0173 8.29294 19.2078 10.1818L18.7792 11.1818C18.4013 12.0636 18.2123 12.5045 17.8366 12.7523C17.4609 13 16.9812 13 16.0218 13H5"
+                                        stroke="#ffffff" stroke-width="1.5"></path>
+                                </svg>
+                            </a>
+                        @endauth
+                    </div>
                 </div>
-                <div class="flex justify-between">
-                    <p class="text-xl text-blue-500 font-medium tracking-tight">
-                        Rp.10.000.000
-                    </p>
-                    <button class="w-10 h-10 bg-blue-500 flex justify-center items-center rounded-md">
-                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
-                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                            <g id="SVGRepo_iconCarrier">
-                                <path
-                                    d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H19"
-                                    stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
-                                <path
-                                    d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z"
-                                    stroke="#ffffff" stroke-width="1.5"></path>
-                                <path
-                                    d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z"
-                                    stroke="#ffffff" stroke-width="1.5"></path>
-                                <path
-                                    d="M5 6H16.4504C18.5054 6 19.5328 6 19.9775 6.67426C20.4221 7.34853 20.0173 8.29294 19.2078 10.1818L18.7792 11.1818C18.4013 12.0636 18.2123 12.5045 17.8366 12.7523C17.4609 13 16.9812 13 16.0218 13H5"
-                                    stroke="#ffffff" stroke-width="1.5"></path>
-                            </g>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            <div class="border-2 py-3 px-2 flex flex-col justify-between">
-                <a href="view-product.html" class="font-medium text-slate-800 text-sm tracking-tighter">M6 Wireless
-                    Gaming Headset Gaming with Mic for Mobile
-                    Device</a>
-                <div class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-4">
-                    <img src="{{ asset('desainmini-main/image/headset-2.png') }}" alt="Hp" width="100" />
-                </div>
-
-                <div class="flex items-center space-x-1 mb-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 text-yellow-400"
-                        viewBox="0 0 24 24" stroke="none">
-                        <path
-                            d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
-                        </path>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 text-yellow-400"
-                        viewBox="0 0 24 24" stroke="none">
-                        <path
-                            d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
-                        </path>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 text-yellow-400"
-                        viewBox="0 0 24 24" stroke="none">
-                        <path
-                            d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
-                        </path>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 text-yellow-400"
-                        viewBox="0 0 24 24" stroke="none">
-                        <path
-                            d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
-                        </path>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 text-gray-300"
-                        viewBox="0 0 24 24" stroke="none">
-                        <path
-                            d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
-                        </path>
-                    </svg>
-                    <span class="text-sm text-slate-600 text-sm">(460)</span>
-                </div>
-                <div class="flex justify-between">
-                    <p class="text-xl text-blue-500 font-medium tracking-tight">
-                        Rp.10.000.000
-                    </p>
-                    <button class="w-10 h-10 bg-blue-500 flex justify-center items-center rounded-md">
-                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
-                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                            <g id="SVGRepo_iconCarrier">
-                                <path
-                                    d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H19"
-                                    stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
-                                <path
-                                    d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z"
-                                    stroke="#ffffff" stroke-width="1.5"></path>
-                                <path
-                                    d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z"
-                                    stroke="#ffffff" stroke-width="1.5"></path>
-                                <path
-                                    d="M5 6H16.4504C18.5054 6 19.5328 6 19.9775 6.67426C20.4221 7.34853 20.0173 8.29294 19.2078 10.1818L18.7792 11.1818C18.4013 12.0636 18.2123 12.5045 17.8366 12.7523C17.4609 13 16.9812 13 16.0218 13H5"
-                                    stroke="#ffffff" stroke-width="1.5"></path>
-                            </g>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            <div class="border-2 py-3 px-2 flex flex-col justify-between">
-                <a href="view-product.html" class="font-medium text-slate-800 text-sm tracking-tighter">Mouse Gaming
-                    | PRO Wireless PRO X SUPERLIGHT TWO</a>
-                <div class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-4">
-                    <img src="{{ asset('desainmini-main/image/mouse.png') }}" alt="Hp" width="100" />
-                </div>
-
-                <div class="flex items-center space-x-1 mb-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 text-yellow-400"
-                        viewBox="0 0 24 24" stroke="none">
-                        <path
-                            d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
-                        </path>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 text-yellow-400"
-                        viewBox="0 0 24 24" stroke="none">
-                        <path
-                            d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
-                        </path>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 text-yellow-400"
-                        viewBox="0 0 24 24" stroke="none">
-                        <path
-                            d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
-                        </path>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 text-yellow-400"
-                        viewBox="0 0 24 24" stroke="none">
-                        <path
-                            d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
-                        </path>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 text-gray-300"
-                        viewBox="0 0 24 24" stroke="none">
-                        <path
-                            d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
-                        </path>
-                    </svg>
-                    <span class="text-sm text-slate-600 text-sm">(460)</span>
-                </div>
-                <div class="flex justify-between">
-                    <p class="text-xl text-blue-500 font-medium tracking-tight">
-                        Rp.10.000.000
-                    </p>
-                    <button class="w-10 h-10 bg-blue-500 flex justify-center items-center rounded-md">
-                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
-                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                            <g id="SVGRepo_iconCarrier">
-                                <path
-                                    d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H19"
-                                    stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
-                                <path
-                                    d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z"
-                                    stroke="#ffffff" stroke-width="1.5"></path>
-                                <path
-                                    d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z"
-                                    stroke="#ffffff" stroke-width="1.5"></path>
-                                <path
-                                    d="M5 6H16.4504C18.5054 6 19.5328 6 19.9775 6.67426C20.4221 7.34853 20.0173 8.29294 19.2078 10.1818L18.7792 11.1818C18.4013 12.0636 18.2123 12.5045 17.8366 12.7523C17.4609 13 16.9812 13 16.0218 13H5"
-                                    stroke="#ffffff" stroke-width="1.5"></path>
-                            </g>
-                        </svg>
-                    </button>
-                </div>
-            </div>
+            @endforeach
         </div>
     </section>
+
+
 
     <section class="md:px-28 px-5 py-5 mb-10">
         <h1 class="text-2xl font-semibold text-slate-700 mb-10">
