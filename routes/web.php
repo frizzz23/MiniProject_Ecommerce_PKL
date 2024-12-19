@@ -27,6 +27,9 @@ Route::get('/account', function () {
 
 Route::get('/product', [ProductPageController::class, 'index'])->name('page.product');
 Route::get('/product-show/{slug}', [ProductPageController::class, 'show'])->name('page.productshow');
+Route::post('/addReview', [ProductPageController::class, 'addReview'])->name('addReview');
+
+
 
 Route::get('/category-page', CategoryPageController::class)->name('category-page');
 Route::get('/about', AboutPageController::class)->name('about-page');

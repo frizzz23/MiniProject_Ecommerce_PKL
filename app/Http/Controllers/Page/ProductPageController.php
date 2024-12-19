@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Page;
 
+use App\Models\Review;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Review;
+use Illuminate\Support\Facades\Auth;
 
 class ProductPageController extends Controller
 {
@@ -91,7 +92,7 @@ class ProductPageController extends Controller
     /**
      * Display the specified product.
      */
-    public function show($slug)
+    public function show(Request $request , $slug)
     {
         // Gunakan slug untuk mencari produk
         $product = Product::with('reviews.user')->where('slug', $slug)->firstOrFail();
@@ -127,6 +128,28 @@ class ProductPageController extends Controller
         return view('page.productshow', compact('product', 'reviews', 'averageRating', 'reviewsCount', 'relatedProducts', 'relatedReviewsCount'));
     }
 
+    public function addReview(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'rating' => 'required|in:1,2,3,4,5',
+            'comment' => 'nullable|string',
+        ]);
+
+        $review = Review::create([
+            'user_id' => Auth::id(),
+            'product_id' => $request->product_id,
+            'rating' => $request->rating,
+            'comment' => $request->comment,
+        ]);
+
+        // Ambil slug produk
+        $product = Product::findOrFail($request->product_id);
+
+        // Redirect kembali ke halaman produk berdasarkan slug
+        return redirect()->route('page.productshow', $product->slug)
+            ->with('success', 'Ulasan berhasil ditambahkan.');
+    }
 
 
     /**
