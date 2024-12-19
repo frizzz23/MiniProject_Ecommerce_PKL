@@ -71,27 +71,51 @@
                         </div>
                     </li>
                     <li>
-                        <a href="{{ route('landing-page') }}" class="text-md text-slate-700 py-2 block">Home</a>
+                        <a href="{{ route('landing-page') }}" class="text-md text-slate-700 py-2 block">Beranda</a>
                     </li>
                     <li>
-                        <a href="{{ route('page.product') }}" class="text-md text-slate-700 py-2 block">Product</a>
+                        <a href="{{ route('page.product') }}" class="text-md text-slate-700 py-2 block">Produk</a>
                     </li>
                     <li>
-                        <a href="" class="text-md text-slate-700 py-2 block">Category</a>
+                        <a href="{{ route('about-page') }}" class="text-md text-slate-700 py-2 block">Tentang</a>
                     </li>
                     <li>
-                        <a href="#" class="text-md text-slate-700 py-2 block">About</a>
+                        <a href="{{ route('contact-page') }}" class="text-md text-slate-700 py-2 block">Hubugi</a>
                     </li>
 
-                    <li>
-                        <a href="#"
-                            class="text-sm block py-2 w-full rounded-lg bg-blue-500 text-white text-center mb-3">Sign
-                            in</a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-sm block py-2 w-full rounded-lg text-blue-500 text-center">Sign
-                            up</a>
-                    </li>
+                    @guest
+                        <li>
+                            <a href="{{ route('login') }}"
+                                class="text-sm block px-2 py-2 w-full rounded-lg bg-blue-500 text-white text-center mb-3">
+                                Masuk</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('register') }}"
+                                class="text-sm block px-2 py-2 w-full rounded-lg text-blue-500 text-center">
+                                Daftar</a>
+                        </li>
+                    @endguest
+                    @auth
+
+                        <li>
+                            <a href="{{ route('user.profile.profile') }}"
+                                class="flex justify-start items-center gap-1 text-md py-2 bg-gray-200 text-slate-800 w-auto  px-2 rounded-md">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <!-- Lingkaran untuk kepala -->
+                                        <circle cx="12" cy="8" r="4" stroke="#1C274C" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round"></circle>
+                                        <!-- Kurva untuk tubuh -->
+                                        <path d="M4 20C4 16 8 14 12 14C16 14 20 16 20 20" stroke="#1C274C"
+                                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </g>
+                                </svg>
+                                <span class="font-semibold text-xs"> Akun Saya</span>
+                            </a>
+                        </li>
+                    @endauth
                 </ul>
             </div>
         </div>
@@ -110,19 +134,19 @@
                     <div class="hidden md:flex gap-4">
                         <a href="{{ route('landing-page') }}"
                             class="text-sm text-gray-800 hover:text-[#5D87FF] hover:font-semibold relative after:content-[''] after:block after:h-[2px] after:w-0 after:bg-[#5D87FF] after:mt-1 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full">
-                            Home
+                            Beranda
                         </a>
                         <a href="{{ route('page.product') }}"
                             class="text-sm text-gray-800 hover:text-[#5D87FF] hover:font-semibold relative after:content-[''] after:block after:h-[2px] after:w-0 after:bg-[#5D87FF] after:mt-1 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full">
-                            Product
+                            Produk
                         </a>
                         <a href="{{ route('about-page') }}"
                             class="text-sm text-gray-800 hover:text-[#5D87FF] hover:font-semibold relative after:content-[''] after:block after:h-[2px] after:w-0 after:bg-[#5D87FF] after:mt-1 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full">
-                            About
+                           Tentang
                         </a>
                         <a href="{{ route('contact-page') }}"
                             class="text-sm text-gray-800 hover:text-[#5D87FF] hover:font-semibold relative after:content-[''] after:block after:h-[2px] after:w-0 after:bg-[#5D87FF] after:mt-1 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full">
-                            Contact
+                           Hubungi
                         </a>
                     </div>
                 </div>
@@ -180,11 +204,9 @@
                                 </g>
                             </svg>
                             <!-- Jika pengguna belum login -->
-                            <a href="{{ route('login') }}" class="text-sm text-slate-700 hover:text-blue-400">Sign
-                                in</a>
+                            <a href="{{ route('login') }}" class="text-sm text-slate-700 hover:text-blue-400">Masuk</a>
                             <span>/</span>
-                            <a href="{{ route('register') }}" class="text-sm text-slate-700 hover:text-blue-400">Sign
-                                up</a>
+                            <a href="{{ route('register') }}" class="text-sm text-slate-700 hover:text-blue-400">Daftar</a>
                         @endguest
                         @auth
                             <div class="tooltip">
@@ -206,14 +228,12 @@
                                             </path>
                                         </g>
                                     </svg>
-                                    <span class="tooltiptext">My Account</span>
+                                    <span class="tooltiptext">Akun Saya</span>
                                 </a>
 
                             </div>
                         @endauth
                     </div>
-
-
                 </div>
 
                 <!-- Hamburger Menu (untuk tampilan mobile) -->
@@ -247,7 +267,7 @@
                                             stroke-linejoin="round"></path>
                                     </g>
                                 </svg>
-                                <span class="font-semibold text-xs"> Home</span>
+                                <span class="font-semibold text-xs"> Beranda</span>
                             </a>
                         </li>
                         <li>
@@ -260,7 +280,7 @@
                                 </svg>
                                 <a href="{{ route('page.product') }}"
                                     class="flex justify-center items-end gap-1 bg-gray-200 text-slate-800 mx-2 w-auto py-2 px-2 rounded-md">
-                                    <span class="font-semibold text-xs">Product</span>
+                                    <span class="font-semibold text-xs">Produk</span>
                                 </a>
                             </div>
                         </li>
@@ -282,22 +302,6 @@
                         </li>
                     </ol>
                 </nav>
-                <div class="flex gap-2 items-center">
-                    <button id="filter"
-                        class="flex justify-center items-end gap-1 bg-gray-200 text-slate-800 w-auto py-2 px-2 rounded-md">
-                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4">
-                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                            <g id="SVGRepo_iconCarrier">
-                                <path
-                                    d="M7.60848 4C6.03761 4 5.07993 5.7279 5.91249 7.06L8.08798 10.5408C8.68397 11.4944 8.99999 12.5963 8.99999 13.7208V16.7639C8.99999 17.5215 9.42799 18.214 10.1056 18.5528L13.5528 20.2764C14.2177 20.6088 15 20.1253 15 19.382V13.7208C15 12.5963 15.316 11.4944 15.912 10.5408L18.0875 7.06C18.9201 5.7279 17.9624 4 16.3915 4H7.60848Z"
-                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
-                                    stroke-linejoin="round"></path>
-                            </g>
-                        </svg>
-                        <span class="font-semibold text-xs"> Filter</span>
-                    </button>
-                </div>
             </div>
 
             <div class="mt-10 grid md:grid-cols-[2fr_1.5fr] grid-cols-1 gap-5 pe-5 md:mb-10 mb-5">

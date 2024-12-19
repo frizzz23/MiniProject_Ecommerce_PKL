@@ -66,28 +66,28 @@
                         </div>
                     </li>
                     <li>
-                        <a href="#" class="text-md text-slate-700 py-2 block">Home</a>
+                        <a href="{{ route('landing-page') }}" class="text-md text-slate-700 py-2 block">Beranda</a>
                     </li>
                     <li>
-                        <a href="#" class="text-md text-slate-700 py-2 block">Product</a>
+                        <a href="{{ route('page.product') }}" class="text-md text-slate-700 py-2 block">Produk</a>
                     </li>
                     <li>
-                        <a href="#" class="text-md text-slate-700 py-2 block">Category</a>
+                        <a href="{{ route('about-page') }}" class="text-md text-slate-700 py-2 block">Tentang</a>
                     </li>
                     <li>
-                        <a href="#" class="text-md text-slate-700 py-2 block">About</a>
+                        <a href="{{ route('contact-page') }}" class="text-md text-slate-700 py-2 block">Hubugi</a>
                     </li>
 
                     @guest
                         <li>
                             <a href="{{ route('login') }}"
-                                class="text-sm block px-2 py-2 w-full rounded-lg bg-blue-500 text-white text-center mb-3">Sign
-                                in</a>
+                                class="text-sm block px-2 py-2 w-full rounded-lg bg-blue-500 text-white text-center mb-3">
+                                Masuk</a>
                         </li>
                         <li>
                             <a href="{{ route('register') }}"
-                                class="text-sm block px-2 py-2 w-full rounded-lg text-blue-500 text-center">Sign
-                                up</a>
+                                class="text-sm block px-2 py-2 w-full rounded-lg text-blue-500 text-center">
+                                Daftar</a>
                         </li>
                     @endguest
                     @auth
@@ -107,7 +107,7 @@
                                             stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                                     </g>
                                 </svg>
-                                <span class="font-semibold text-xs"> My Account</span>
+                                <span class="font-semibold text-xs"> Akun Saya</span>
                             </a>
                         </li>
                     @endauth
@@ -181,19 +181,19 @@
                     <div class="hidden md:flex gap-4">
                         <a href="{{ route('landing-page') }}"
                             class="text-sm text-gray-800 hover:text-[#5D87FF] hover:font-semibold relative after:content-[''] after:block after:h-[2px] after:w-0 after:bg-[#5D87FF] after:mt-1 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full">
-                            Home
+                            Beranda
                         </a>
                         <a href="{{ route('page.product') }}"
                             class="text-sm text-gray-800 hover:text-[#5D87FF] hover:font-semibold relative after:content-[''] after:block after:h-[2px] after:w-0 after:bg-[#5D87FF] after:mt-1 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full">
-                            Product
+                            Produk
                         </a>
                         <a href="{{ route('about-page') }}"
                             class="text-sm text-gray-800 hover:text-[#5D87FF] hover:font-semibold relative after:content-[''] after:block after:h-[2px] after:w-0 after:bg-[#5D87FF] after:mt-1 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full">
-                            About
+                            Tentang
                         </a>
                         <a href="{{ route('contact-page') }}"
                             class="text-sm text-gray-800 hover:text-[#5D87FF] hover:font-semibold relative after:content-[''] after:block after:h-[2px] after:w-0 after:bg-[#5D87FF] after:mt-1 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full">
-                            Contact
+                            Hubungi
                         </a>
                     </div>
                 </div>
@@ -271,10 +271,9 @@
                                 </g>
                             </svg>
                             <!-- Jika pengguna belum login -->
-                            <a href="{{ route('login') }}" class="text-sm text-slate-700 hover:text-blue-400">Sign in</a>
+                            <a href="{{ route('login') }}" class="text-sm text-slate-700 hover:text-blue-400">Masuk</a>
                             <span>/</span>
-                            <a href="{{ route('register') }}" class="text-sm text-slate-700 hover:text-blue-400">Sign
-                                up</a>
+                            <a href="{{ route('register') }}" class="text-sm text-slate-700 hover:text-blue-400">Daftar</a>
                         @endguest
                         @auth
                             <div class="tooltip">
@@ -294,7 +293,7 @@
                                                 stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                                         </g>
                                     </svg>
-                                    <span class="tooltiptext">My Account</span>
+                                    <span class="tooltiptext">Akun Saya</span>
                                 </a>
 
                             </div>
