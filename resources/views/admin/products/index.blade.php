@@ -1,184 +1,177 @@
 @extends('layouts.admin')
 
 @section('main')
-    <div class="container-fluid">
-        <div class="container p-6">
-            <div class="card w-full">
-                @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
+<div class="container-fluid">
+    <div class="container p-6">
+        <div class="card w-full">
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
 
-                <div class="card-body p-4">
-                    <h5 class="card-title text-2xl font-bold mb-4">Daftar Merek</h5>
+            <div class="card-body p-4">
+                <h5 class="card-title text-2xl font-bold mb-4">Daftar Merek</h5>
+
+                <!-- Pencarian dan Filter -->
+                <div class="flex justify-between items-center mb-4">
                     <div>
-                        <div class="flex justify-between items-center mb-4">
-                            <div>
-                                <!-- Pencarian -->
-                                <form action="{{ route('admin.products.index') }}" method="GET" class="d-inline-block">
-                                    <div class="d-flex align-items-center">
-                                        <input type="text" name="search"
-                                            class="form-control me-2 border-lg border-[#5d85fa]" placeholder="Cari produk"
-                                            value="{{ request('search') }}" style="width: 200px;">
-                                        <button type="submit" class="btn btn-primary">Cari</button>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="flex items-center gap-4">
-                                <button class="btn btn-primary text-white font-medium py-2 px-4 rounded-lg"
-                                    data-bs-toggle="modal" data-bs-target="#addModal">+ Tambahkan produk baru</button>
-                                <!-- Filter Kategori -->
-                                <form id="filterForm" action="{{ route('admin.products.index') }}" method="GET">
-                                    <div class="d-flex align-items-center ">
-                                        <select name="category_id"
-                                            class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                            style="width: 200px;"
-                                            onchange="document.getElementById('filterForm').submit();">
-                                            <option value="">Semua Kategori</option>
-                                            @foreach ($categories as $category)
-                                                <option value="{{ $category->id }}"
-                                                    {{ $category->id == request('category_id') ? 'selected' : '' }}>
-                                                    {{ $category->name_category }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <form action="{{ route('admin.products.index') }}" method="GET">
-                            <div class="grid grid-cols-4 gap-4 text-white border-t border-gray-600 pt-4 mb-4">
-                                <div>
-                                    <select name="brand_id"
-                                        class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                        onchange="this.form.submit()">
-                                        <option value="">Merek</option>
-                                        @foreach ($brands as $brand)
-                                            <option value="{{ $brand->id }}"
-                                                {{ request('brand_id') == $brand->id ? 'selected' : '' }}>
-                                                {{ $brand->name_brand }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div>
-                                    <select name="price_product"
-                                        class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                        onchange="this.form.submit()">
-                                        <option value="">Harga</option>
-                                        <option value="asc" {{ request('price_product') == 'asc' ? 'selected' : '' }}>
-                                            Terendah
-                                            ke Tertinggi</option>
-                                        <option value="desc" {{ request('price_product') == 'desc' ? 'selected' : '' }}>
-                                            Tertinggi
-                                            ke Terendah</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <select name="stock_product"
-                                        class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                        onchange="this.form.submit()">
-                                        <option value="">Stok</option>
-                                        <option value="1" {{ request('stock_product') == '1' ? 'selected' : '' }}>Ada
-                                        </option>
-                                        <option value="0" {{ request('stock_product') == '0' ? 'selected' : '' }}>
-                                            Habis
-                                        </option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <select name="color_product"
-                                        class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                        onchange="this.form.submit()">
-                                        <option value="">Warna</option>
-                                        <!-- Tambahkan opsi warna jika diperlukan -->
-                                    </select>
-                                </div>
+                        <!-- Pencarian -->
+                        <form action="{{ route('admin.products.index') }}" method="GET" class="d-inline-block">
+                            <div class="d-flex align-items-center">
+                                <input type="text" name="search" class="form-control me-2 border-lg border-[#5d85fa]" placeholder="Cari produk" value="{{ request('search') }}" style="width: 200px;">
+                                <button type="submit" class="btn btn-primary">Cari</button>
                             </div>
                         </form>
                     </div>
-                    <div class="table-responsive">
-                        <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-                            <thead class="bg-[#5D87FF] text-white"> {{-- bg-gray-100 --}}
-                                <tr>
-                                    <th class="px-4 py-2 text-left">Nama Produk</th>
-                                    <th class="px-4 py-2 text-left">Kategori</th>
-                                    <th class="px-4 py-2 text-left">Merek</th>
-                                    <th class="px-4 py-2 text-left">Harga</th>
-                                    <th class="px-4 py-2 text-left">Stok</th>
-                                    <th class="px-4 py-2 text-left">Rating</th>
-                                    <th class="px-6 py-2 text-center">Dibuat</th>
-                                    <th class="px-4 py-2 text-center">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($products as $product)
-                                    <tr onclick="toggleDropdown(this)" class="hover:bg-gray-50 cursor-pointer border-b">
-                                        <td class="px-4 py-2 flex items-center">
-                                            <img src="{{ asset('storage/' . $product->image_product) }}"
-                                                alt="{{ $product->name_product }}" class="w-8 h-8 rounded-full mr-3">
-                                                <span>
-                                                    {{ $product->name_product }}
-                                                </span>
-                                        </td>
-                                        <td class="px-4 py-2">
-                                            {{ $product->category->name_category ?? '-' }}
-                                        </td>
-                                        <td class="px-4 py-2">
-                                            {{ $product->brand->name_brand ?? '-' }}
-                                        </td>
-                                        <td class="px-4 py-2">
-                                            Rp. {{ number_format($product->price_product, 0, ',', '.') }}
-                                        </td>
-                                        <td class="px-4 py-2">
-                                            {{ $product->stock_product }} unit
-                                        </td>
-                                        <td class="px-4 py-2">
-                                            {{ $product->reviews->avg('rating') ? number_format($product->reviews->avg('rating'), 1) . ' / 5' : 'Belum ada' }}
-                                        </td>
-                                        <td class="px-4 py-2 text-center">
-                                            {{ $product->created_at->format('d F Y') ?? 'kosong' }}
-                                        </td>
-                                        <td class="px-4 py-2 text-center space-x-2">
-                                            <button type="button" class="bg-yellow-500 text-white px-3 py-1 rounded"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#editModal_{{ $product->id }}">Edit</button>
-                                            <button type="button" class="bg-blue-500 text-white px-3 py-1 rounded"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#detailModal_{{ $product->id }}">Detail</button>
-                                            <button type="button" class="bg-red-500 text-white px-3 py-1 rounded"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#deleteModal_{{ $product->id }}">Hapus</button>
-                                        </td>
-                                    </tr>
-                                    <tr class="dropdown-content hidden">
-                                        <td colspan="5" class="px-4 py-2 bg-gray-50">
-                                            <div class="flex items-center space-x-4">
-                                                @if ($product->image_product)
-                                                    <img src="{{ asset('storage/' . $product->image_product) }}"
-                                                        alt="{{ $product->name_product }}"
-                                                        class="w-24 h-24 object-cover rounded">
-                                                @endif
-                                                <div>
-                                                    <strong>Deskripsi:</strong>
-                                                    <p>{{ $product->description_product }}</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                    <div class="flex items-center gap-4">
+                        <button class="btn btn-primary text-white font-medium py-2 px-4 rounded-lg" data-bs-toggle="modal" data-bs-target="#addModal">+ Tambahkan produk baru</button>
+                        <!-- Filter Kategori -->
+                        <form id="filterForm" action="{{ route('admin.products.index') }}" method="GET">
+                            <div class="d-flex align-items-center">
+                                <select name="category_id" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full" style="width: 200px;" onchange="document.getElementById('filterForm').submit();">
+                                    <option value="">Semua Kategori</option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}" {{ $category->id == request('category_id') ? 'selected' : '' }}>
+                                            {{ $category->name_category }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </form>
                     </div>
+                </div>
+                <form action="{{ route('admin.products.index') }}" method="GET">
+                        <div class="grid grid-cols-5 gap-4 text-white border-t border-gray-600 pt-4 mb-4">
+                            <div>
+                                <select name="brand_id"
+                                    class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
+                                    onchange="this.form.submit()">
+                                    <option value="">Merek</option>
+                                    @foreach ($brands as $brand)
+                                        <option value="{{ $brand->id }}"
+                                            {{ request('brand_id') == $brand->id ? 'selected' : '' }}>
+                                            {{ $brand->name_brand }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div>
+                                <select name="price_product"
+                                    class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
+                                    onchange="this.form.submit()">
+                                    <option value="">Harga</option>
+                                    <option value="asc" {{ request('price_product') == 'asc' ? 'selected' : '' }}>
+                                        Terendah ke Tertinggi</option>
+                                    <option value="desc" {{ request('price_product') == 'desc' ? 'selected' : '' }}>
+                                        Tertinggi ke Terendah</option>
+                                </select>
+                            </div>
+                            <div>
+                                <select name="rating"
+                                    class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
+                                    onchange="this.form.submit()">
+                                    <option value="">Rating</option>
+                                    <option value="5" {{ request('rating') == '5' ? 'selected' : '' }}>5 Bintang</option>
+                                    <option value="4" {{ request('rating') == '4' ? 'selected' : '' }}>4 Bintang</option>
+                                    <option value="3" {{ request('rating') == '3' ? 'selected' : '' }}>3 Bintang</option>
+                                    <option value="2" {{ request('rating') == '2' ? 'selected' : '' }}>2 Bintang</option>
+                                    <option value="1" {{ request('rating') == '1' ? 'selected' : '' }}>1 Bintang</option>
+                                </select>
+                            </div>
+                            <div>
+                                <select name="stock_product"
+                                    class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
+                                    onchange="this.form.submit()">
+                                    <option value="">Stok</option>
+                                    <option value="1" {{ request('stock_product') == '1' ? 'selected' : '' }}>Ada</option>
+                                    <option value="0" {{ request('stock_product') == '0' ? 'selected' : '' }}>Habis</option>
+                                </select>
+                            </div>
+                            <div>
+                                <select name="created_at"
+                                    class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
+                                    onchange="this.form.submit()">
+                                    <option value="">Tanggal</option>
+                                    <option value="asc" {{ request('created_at') == 'asc' ? 'selected' : '' }}>Lama</option>
+                                    <option value="desc" {{ request('created_at') == 'desc' ? 'selected' : '' }}>Terbaru</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
 
-                    <div class="mt-4">
-                        {{ $products->links() }}
-                    </div>
+                <!-- Daftar Produk -->
+                <div class="table-responsive">
+                    <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+                        <!-- Table Head -->
+                        <thead class="bg-[#5D87FF] text-white">
+                            <tr>
+                                <th class="px-4 py-2 text-left">Nama Produk</th>
+                                <th class="px-4 py-2 text-left">Kategori</th>
+                                <th class="px-4 py-2 text-left">Merek</th>
+                                <th class="px-4 py-2 text-left">Harga</th>
+                                <th class="px-4 py-2 text-left">Stok</th>
+                                <th class="px-4 py-2 text-left">Rating</th>
+                                <th class="px-6 py-2 text-center">Dibuat</th>
+                                <th class="px-4 py-2 text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <!-- Table Body -->
+                        <tbody>
+                            @foreach ($products as $product)
+                                <tr class="hover:bg-gray-50 cursor-pointer border-b">
+                                    <td class="px-4 py-2 flex items-center">
+                                        <img src="{{ asset('storage/' . $product->image_product) }}" alt="{{ $product->name_product }}" class="w-8 h-8 rounded-full mr-3">
+                                        <span>{{ $product->name_product }}</span>
+                                    </td>
+                                    <td class="px-4 py-2">{{ $product->category->name_category ?? '-' }}</td>
+                                    <td class="px-4 py-2">{{ $product->brand->name_brand ?? '-' }}</td>
+                                    <td class="px-4 py-2">Rp. {{ number_format($product->price_product, 0, ',', '.') }}</td>
+                                    <td class="px-4 py-2">{{ $product->stock_product }} unit</td>
+                                    <td class="px-4 py-2">{{ $product->reviews->avg('rating') ? number_format($product->reviews->avg('rating'), 1) . ' / 5' : 'Belum ada' }}</td>
+                                    <td class="px-4 py-2 text-center">{{ $product->created_at->format('d F Y') }}</td>
+                                    <td class="px-4 py-2 text-center space-x-2">
+                                        <button class="bg-yellow-500 text-white px-3 py-1 rounded">Edit</button>
+                                        <button type="button" class="bg-blue-500 text-white px-3 py-1 rounded" onclick="toggleDetails({{ $product->id }})">Detail</button>
+                                        <button class="bg-red-500 text-white px-3 py-1 rounded">Hapus</button>
+                                    </td>
+                                </tr>
+                                <tr id="details_{{ $product->id }}" class="hidden">
+                                    <td colspan="8" class="px-4 py-2 bg-gray-50">
+                                        <div class="flex items-center space-x-4">
+                                            @if ($product->image_product)
+                                                <img src="{{ asset('storage/' . $product->image_product) }}" alt="{{ $product->name_product }}" class="w-24 h-24 object-cover rounded">
+                                            @endif
+                                            <div>
+                                                <strong>Deskripsi:</strong>
+                                                <p>{{ $product->description_product }}</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="mt-4">
+                    {{ $products->links() }}
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+<script>
+    function toggleDetails(productId) {
+        const detailsRow = document.getElementById(`details_${productId}`);
+        if (detailsRow) {
+            detailsRow.classList.toggle('hidden');
+        }
+    }
+</script>
+
 
     <!-- Modal Tambah Produk -->
     <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">

@@ -88,7 +88,7 @@
                                 <i class="fa-regular fa-circle"></i>
                             </span>
 
-                            <span class="ml-4">List Katgeori</span>
+                            <span class="ml-4">List Kategori</span>
                         </a>
                         <a href="{{ route('admin.brands.index') }}"
                             class="block text-sm  p-2 {{ request()->routeIs('admin.brands.index')
