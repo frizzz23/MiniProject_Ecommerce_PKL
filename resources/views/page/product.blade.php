@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Product</title>
 
+    <link rel="shortcut icon" type="image/png" href="{{ asset('img/logoo.png') }}" />
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="{{ asset('desainmini-main/dist/output.css') }}" rel="stylesheet" />
@@ -64,28 +66,28 @@
                         </div>
                     </li>
                     <li>
-                        <a href="#" class="text-md text-slate-700 py-2 block">Home</a>
+                        <a href="{{ route('landing-page') }}" class="text-md text-slate-700 py-2 block">Beranda</a>
                     </li>
                     <li>
-                        <a href="#" class="text-md text-slate-700 py-2 block">Product</a>
+                        <a href="{{ route('page.product') }}" class="text-md text-slate-700 py-2 block">Produk</a>
                     </li>
                     <li>
-                        <a href="#" class="text-md text-slate-700 py-2 block">Category</a>
+                        <a href="{{ route('about-page') }}" class="text-md text-slate-700 py-2 block">Tentang</a>
                     </li>
                     <li>
-                        <a href="#" class="text-md text-slate-700 py-2 block">About</a>
+                        <a href="{{ route('contact-page') }}" class="text-md text-slate-700 py-2 block">Hubugi</a>
                     </li>
 
                     @guest
                         <li>
                             <a href="{{ route('login') }}"
-                                class="text-sm block px-2 py-2 w-full rounded-lg bg-blue-500 text-white text-center mb-3">Sign
-                                in</a>
+                                class="text-sm block px-2 py-2 w-full rounded-lg bg-blue-500 text-white text-center mb-3">
+                                Masuk</a>
                         </li>
                         <li>
                             <a href="{{ route('register') }}"
-                                class="text-sm block px-2 py-2 w-full rounded-lg text-blue-500 text-center">Sign
-                                up</a>
+                                class="text-sm block px-2 py-2 w-full rounded-lg text-blue-500 text-center">
+                                Daftar</a>
                         </li>
                     @endguest
                     @auth
@@ -105,7 +107,7 @@
                                             stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                                     </g>
                                 </svg>
-                                <span class="font-semibold text-xs"> My Account</span>
+                                <span class="font-semibold text-xs"> Akun Saya</span>
                             </a>
                         </li>
                     @endauth
@@ -174,6 +176,27 @@
         </div>
         <div class="px-5">
             <div class="flex w-full justify-between gap-5 mb-5 sticky top-0 z-10 bg-white py-3 md:pe-5">
+
+                <div class="py-2 rounded-[20px] hidden gap-4 items-center md:w-auto hidden gap-1 items-center xl:flex">
+                    <div class="hidden md:flex gap-4">
+                        <a href="{{ route('landing-page') }}"
+                            class="text-sm text-gray-800 hover:text-[#5D87FF] hover:font-semibold relative after:content-[''] after:block after:h-[2px] after:w-0 after:bg-[#5D87FF] after:mt-1 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full">
+                            Beranda
+                        </a>
+                        <a href="{{ route('page.product') }}"
+                            class="text-sm text-gray-800 hover:text-[#5D87FF] hover:font-semibold relative after:content-[''] after:block after:h-[2px] after:w-0 after:bg-[#5D87FF] after:mt-1 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full">
+                            Produk
+                        </a>
+                        <a href="{{ route('about-page') }}"
+                            class="text-sm text-gray-800 hover:text-[#5D87FF] hover:font-semibold relative after:content-[''] after:block after:h-[2px] after:w-0 after:bg-[#5D87FF] after:mt-1 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full">
+                            Tentang
+                        </a>
+                        <a href="{{ route('contact-page') }}"
+                            class="text-sm text-gray-800 hover:text-[#5D87FF] hover:font-semibold relative after:content-[''] after:block after:h-[2px] after:w-0 after:bg-[#5D87FF] after:mt-1 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full">
+                            Hubungi
+                        </a>
+                    </div>
+                </div>
 
                 <form action="{{ route('page.product') }}" method="GET"
                     class=" gap-2 flex-1 md:flex-none hidden gap-1 bg-gray-100 rounded-full items-center xl:flex py-2 px-5">
@@ -248,10 +271,9 @@
                                 </g>
                             </svg>
                             <!-- Jika pengguna belum login -->
-                            <a href="{{ route('login') }}" class="text-sm text-slate-700 hover:text-blue-400">Sign in</a>
+                            <a href="{{ route('login') }}" class="text-sm text-slate-700 hover:text-blue-400">Masuk</a>
                             <span>/</span>
-                            <a href="{{ route('register') }}" class="text-sm text-slate-700 hover:text-blue-400">Sign
-                                up</a>
+                            <a href="{{ route('register') }}" class="text-sm text-slate-700 hover:text-blue-400">Daftar</a>
                         @endguest
                         @auth
                             <div class="tooltip">
@@ -271,7 +293,7 @@
                                                 stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                                         </g>
                                     </svg>
-                                    <span class="tooltiptext">My Account</span>
+                                    <span class="tooltiptext">Akun Saya</span>
                                 </a>
 
                             </div>

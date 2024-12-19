@@ -200,11 +200,10 @@
                         <div class="flex justify-between items-center mb-4">
                             <div>
                                 <!-- Pencarian -->
-                                <form action="{{ route('admin.products.index') }}" method="GET" class="d-inline-block">
+                                <form action="{{ route('admin.categories.index') }}" method="GET" class="d-inline-block">
+                                    <input type="hidden" name="sort_by_date" value="{{ request('sort_by_date') }}">
                                     <div class="d-flex align-items-center">
-                                        <input type="text" name="search"
-                                            class="form-control me-2 border-lg border-[#5d85fa]" placeholder="Cari produk"
-                                            value="{{ request('search') }}" style="width: 200px;">
+                                        <input type="text" name="search" class="form-control me-2 border-lg border-[#5d85fa]" placeholder="Cari produk" value="{{ request('search') }}" style="width: 200px;">
                                         <button type="submit" class="btn btn-primary">Cari</button>
                                     </div>
                                 </form>
@@ -214,65 +213,17 @@
                                     data-bs-target="#tambahmodal">
                                     + Tambah kategori
                                 </button>
-                                <!-- Filter Kategori -->
-                                <form id="filterForm" action="{{ route('admin.products.index') }}" method="GET">
-                                    <div class="d-flex align-items-center ">
-                                        <select name="category_id"
-                                            class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                            style="width: 200px;"
-                                            onchange="document.getElementById('filterForm').submit();">
-                                            <option value="">Semua Kategori</option>
-
+                                <!-- Filter Sort By Date -->
+                                <form id="filterForm" action="{{ route('admin.categories.index') }}" method="GET" class="d-inline-block">
+                                    <div class="d-flex align-items-center">
+                                        <select name="sort_by_date" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full" onchange="document.getElementById('filterForm').submit();">
+                                            <option value="newest" {{ request('sort_by_date') == 'newest' ? 'selected' : '' }}>Kategori Terbaru</option>
+                                            <option value="oldest" {{ request('sort_by_date') == 'oldest' ? 'selected' : '' }}>Kategori Terlama</option>
                                         </select>
                                     </div>
                                 </form>
                             </div>
                         </div>
-                        <form action="{{ route('admin.products.index') }}" method="GET">
-                            <div class="grid grid-cols-4 gap-4 text-white border-t border-gray-600 pt-4 mb-4">
-                                <div>
-                                    <select name="brand_id"
-                                        class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                        onchange="this.form.submit()">
-                                        <option value="">Merek</option>
-
-                                    </select>
-                                </div>
-                                <div>
-                                    <select name="price_product"
-                                        class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                        onchange="this.form.submit()">
-                                        <option value="">Harga</option>
-                                        <option value="asc" {{ request('price_product') == 'asc' ? 'selected' : '' }}>
-                                            Terendah
-                                            ke Tertinggi</option>
-                                        <option value="desc" {{ request('price_product') == 'desc' ? 'selected' : '' }}>
-                                            Tertinggi
-                                            ke Terendah</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <select name="stock_product"
-                                        class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                        onchange="this.form.submit()">
-                                        <option value="">Stok</option>
-                                        <option value="1" {{ request('stock_product') == '1' ? 'selected' : '' }}>Ada
-                                        </option>
-                                        <option value="0" {{ request('stock_product') == '0' ? 'selected' : '' }}>
-                                            Habis
-                                        </option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <select name="color_product"
-                                        class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                        onchange="this.form.submit()">
-                                        <option value="">Warna</option>
-                                        <!-- Tambahkan opsi warna jika diperlukan -->
-                                    </select>
-                                </div>
-                            </div>
-                        </form>
                     </div>
 
                     <div class="table-responsive">

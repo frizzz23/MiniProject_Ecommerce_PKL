@@ -38,27 +38,27 @@ class ReviewController extends Controller
      * Store a newly created review in the database.
      */
     public function store(Request $request)
-{
-    $request->validate([
-        'product_id' => 'required|exists:products,id',
-        'rating' => 'required|in:1,2,3,4,5',
-        'comment' => 'nullable|string',
-    ]);
+    {
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'rating' => 'required|in:1,2,3,4,5',
+            'comment' => 'nullable|string',
+        ]);
 
-    $review = Review::create([
-        'user_id' => Auth::id(),
-        'product_id' => $request->product_id,
-        'rating' => $request->rating,
-        'comment' => $request->comment,
-    ]);
+        $review = Review::create([
+            'user_id' => Auth::id(),
+            'product_id' => $request->product_id,
+            'rating' => $request->rating,
+            'comment' => $request->comment,
+        ]);
 
-    // Ambil slug produk
-    $product = Product::findOrFail($request->product_id);
+        // Ambil slug produk
+        $product = Product::findOrFail($request->product_id);
 
-    // Redirect kembali ke halaman produk berdasarkan slug
-    return redirect()->route('page.productshow', $product->slug)
-        ->with('success', 'Ulasan berhasil ditambahkan.');
-}
+        // Redirect kembali ke halaman produk berdasarkan slug
+        return redirect()->route('page.productshow', $product->slug)
+            ->with('success', 'Ulasan berhasil ditambahkan.');
+    }
 
 
 

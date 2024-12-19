@@ -25,12 +25,12 @@
                                 </div>
                             </form>
                         </div>
-                        <div class="flex items-center gap-4">
-                            <form id="filterForm" method="{{ route('admin.reviews.index') }}" method="GET">
-                                <div class="d-flex align-items-center ">
-                                    <select name="product_id"
+                    </div>
+                    <form action="{{ route('admin.products.index') }}" method="GET">
+                        <div class="grid grid-cols-3 gap-4 text-white border-t border-gray-600 pt-4 mb-4">
+                            <div>
+                                <select name="product_id"
                                         class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                        style="width: 200px;"
                                         onchange="document.getElementById('filterForm').submit();">
                                         <option value="">Semua Produk</option>
                                         @foreach ($products as $product)
@@ -40,51 +40,26 @@
                                         </option>
                                     @endforeach
                                     </select>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <form action="{{ route('admin.products.index') }}" method="GET">
-                        <div class="grid grid-cols-4 gap-4 text-white border-t border-gray-600 pt-4 mb-4">
+                            </div>
                             <div>
-                                <select name="brand_id"
+                                <select name="rating"
                                     class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
                                     onchange="this.form.submit()">
-                                    <option value="">Merek</option>
-
+                                    <option value="">Rating</option>
+                                    <option value="5" {{ request('rating') == '5' ? 'selected' : '' }}>5 Bintang</option>
+                                    <option value="4" {{ request('rating') == '4' ? 'selected' : '' }}>4 Bintang</option>
+                                    <option value="3" {{ request('rating') == '3' ? 'selected' : '' }}>3 Bintang</option>
+                                    <option value="2" {{ request('rating') == '2' ? 'selected' : '' }}>2 Bintang</option>
+                                    <option value="1" {{ request('rating') == '1' ? 'selected' : '' }}>1 Bintang</option>
                                 </select>
                             </div>
                             <div>
-                                <select name="price_product"
+                                <select name="created_at"
                                     class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
                                     onchange="this.form.submit()">
-                                    <option value="">Harga</option>
-                                    <option value="asc" {{ request('price_product') == 'asc' ? 'selected' : '' }}>
-                                        Terendah
-                                        ke Tertinggi</option>
-                                    <option value="desc" {{ request('price_product') == 'desc' ? 'selected' : '' }}>
-                                        Tertinggi
-                                        ke Terendah</option>
-                                </select>
-                            </div>
-                            <div>
-                                <select name="stock_product"
-                                    class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                    onchange="this.form.submit()">
-                                    <option value="">Stok</option>
-                                    <option value="1" {{ request('stock_product') == '1' ? 'selected' : '' }}>Ada
-                                    </option>
-                                    <option value="0" {{ request('stock_product') == '0' ? 'selected' : '' }}>
-                                        Habis
-                                    </option>
-                                </select>
-                            </div>
-                            <div>
-                                <select name="color_product"
-                                    class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                    onchange="this.form.submit()">
-                                    <option value="">Warna</option>
-                                    <!-- Tambahkan opsi warna jika diperlukan -->
+                                    <option value="">Tanggal</option>
+                                    <option value="asc" {{ request('created_at') == 'asc' ? 'selected' : '' }}>Lama</option>
+                                    <option value="desc" {{ request('created_at') == 'desc' ? 'selected' : '' }}>Terbaru</option>
                                 </select>
                             </div>
                         </div>

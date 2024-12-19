@@ -7,6 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
+    <link rel="shortcut icon" type="image/png" href="{{ asset('img/logoo.png') }}" />
 
     <!-- Fonts -->
     {{-- <link rel="preconnect" href="https://fonts.bunny.net"> --}}
@@ -27,6 +28,8 @@
             /* border: 1px solid black; */
         }
     </style>
+
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
