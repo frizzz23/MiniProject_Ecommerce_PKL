@@ -139,26 +139,28 @@
                                             {{ $order->created_at->format('d F Y') ?? 'kosong' }}
                                         </td>
                                         <td class="px-4 py-2">
-                                            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#detailOrderModal{{ $order->id }}">
-                                                Detail
-                                            </button>
-                                            <!-- Tombol Edit -->
-                                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#editOrderModal{{ $order->id }}">
-                                                Edit
-                                            </button>
-
-                                            <!-- Form Hapus Pesanan -->
-                                            <form action="{{ route('admin.orders.destroy', $order->id) }}" method="POST"
-                                                style="display: inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm"
-                                                    onclick="return confirm('Yakin ingin menghapus?')">
-                                                    Hapus
+                                            <div class="flex gap-2">
+                                                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                                                    data-bs-target="#detailOrderModal{{ $order->id }}">
+                                                    Detail
                                                 </button>
-                                            </form>
+                                                <!-- Tombol Edit -->
+                                                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                                    data-bs-target="#editOrderModal{{ $order->id }}">
+                                                    Edit
+                                                </button>
+
+                                                <!-- Form Hapus Pesanan -->
+                                                <form action="{{ route('admin.orders.destroy', $order->id) }}"
+                                                    method="POST" style="display: inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm"
+                                                        onclick="return confirm('Yakin ingin menghapus?')">
+                                                        Hapus
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </td>
                                     </tr>
                                     <div class="modal fade" id="detailOrderModal{{ $order->id }}" tabindex="-1"
