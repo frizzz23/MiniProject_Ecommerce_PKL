@@ -141,6 +141,7 @@
                                         class="w-full h-full block peer appearance-none cursor-pointer border-2 border-blue-300 rounded-sm checked:bg-no-repeat checked:bg-center checked:border-blue-500 checked:bg-blue-100"
                                         {{ in_array($category->id, request('categories', [])) ? 'checked' : '' }} />
                                     <svg class="absolute w-3 h-3 hidden peer-checked:block text-blue-500 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                                        style="user-select: none;pointer-events: none;"
                                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                         stroke="currentColor" stroke-width="4" stroke-linecap="round"
                                         stroke-linejoin="round">
@@ -157,10 +158,12 @@
                             <div class="flex flex-col gap-3">
                                 <input type="number" name="min_price" placeholder="Min Harga"
                                     class="border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-36"
+                                    oninput="minMax(this.value, this.nextElementSibling)" min="1"
                                     value="{{ request('min_price') }}">
-                                <input type="number" name="max_price" placeholder="Max Harga"
+                                <input type="number" onchange="maxMin(this)" name="max_price"
+                                    placeholder="Max Harga"
                                     class="border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-36"
-                                    value="{{ request('max_price') }}">
+                                    min="1" value="{{ request('max_price') }}">
                             </div>
                         </div>
 
@@ -273,7 +276,8 @@
                             <!-- Jika pengguna belum login -->
                             <a href="{{ route('login') }}" class="text-sm text-slate-700 hover:text-blue-400">Masuk</a>
                             <span>/</span>
-                            <a href="{{ route('register') }}" class="text-sm text-slate-700 hover:text-blue-400">Daftar</a>
+                            <a href="{{ route('register') }}"
+                                class="text-sm text-slate-700 hover:text-blue-400">Daftar</a>
                         @endguest
                         @auth
                             <div class="tooltip">
@@ -377,8 +381,9 @@
                 <form method="GET" action="{{ route('page.product') }}"
                     class="flex justify-start items-center gap-2">
 
-                    <div class="flex items-center ">
-                        <select name="sort_order" onchange="this.form.submit();"
+                    <div class="">
+                        <label for="sort_order" class="block text-sm text-slate-700 mb-1">Sort Order</label>
+                        <select name="sort_order" onchange="this.form.submit();" id="sort_order"
                             class="border border-slate-300
                             text-sm px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-md">
                             <option value="">Dibuat</option>
@@ -389,8 +394,9 @@
                         </select>
                     </div>
 
-                    <div class="flex  items-center ">
-                        <select name="sort_price"
+                    <div class="">
+                        <label for="sort_price" class="block text-sm text-slate-700 mb-1">Sort Price</label>
+                        <select name="sort_price" id="sort_price"
                             class="border border-slate-300 text-sm px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-md"
                             onchange="this.form.submit();">
                             <option value="">Harga</option>
@@ -545,6 +551,15 @@
     <x-list-cart-script />
 
     <script>
+        function minMax(min, el) {
+            el.min = parseInt(min) + 1;
+        }
+
+        function maxMin(el) {
+            if (el.value.trim() == '') return;
+            if (el.value < el.min) el.value = el.min;
+
+        }
         const carts = document.getElementById("carts");
         carts.addEventListener("click", () => {
             const closeCart = document.getElementById("close-cart");

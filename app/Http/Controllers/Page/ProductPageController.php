@@ -29,6 +29,9 @@ class ProductPageController extends Controller
         // Ambil filter harga
         $minPrice = $request->input('min_price');
         $maxPrice = $request->input('max_price');
+        if ($minPrice && $maxPrice && $maxPrice < $minPrice) {
+            return redirect()->route('page.product')->with('error', 'Min harga tidak boleh lebih rendah dari max harga');
+        }
 
         // Ambil filter pengurutan (terlama/terbaru)
         $sortOrder = $request->input('sort_order', 'terbaru');
@@ -92,7 +95,7 @@ class ProductPageController extends Controller
     /**
      * Display the specified product.
      */
-    public function show(Request $request , $slug)
+    public function show(Request $request, $slug)
     {
         // Gunakan slug untuk mencari produk
         $product = Product::with('reviews.user')->where('slug', $slug)->firstOrFail();
