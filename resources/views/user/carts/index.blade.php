@@ -2,7 +2,6 @@
 
 
 @section('main')
-
     <nav class="flex" aria-label="Breadcrumb">
         <ol class="flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
             <li class="flex items-center">
@@ -77,18 +76,18 @@
             @endphp
             @forelse ($carts as $cart)
                 @php
-                    $total += $cart->product->price_product * $cart->quantity;
+                    // $total += $cart->product->price_product * $cart->quantity;
                 @endphp
-                <div class="bg-white shadow-sm rounded-lg p-4" id="cart_{{ $cart->id }}">
+                <div class="bg-white shadow-sm rounded-lg p-4 opacity-50" id="cart_{{ $cart->id }}">
                     <input type="hidden" name="total_input_{{ $cart->id }}" id="total_input_{{ $cart->id }}"
                         value="{{ $cart->product->price_product * $cart->quantity }}" />
 
                     <div class="grid grid-cols-[50px,2fr,1fr,1fr,1fr,auto] gap-4 items-center">
                         <!-- Checkbox -->
                         <div class="flex justify-center">
-                            <label for="cart_{{ $cart->id }}" class="relative w-5 h-5">
-                                <input onchange="checkAdd()" type="checkbox" name="cart[]" value="{{ $cart->id }}"
-                                    id="cart_{{ $cart->id }}"
+                            <label for="cart_input_{{ $cart->id }}" class="relative w-5 h-5">
+                                <input type="checkbox" name="cart[]" value="{{ $cart->id }}"
+                                    id="cart_input_{{ $cart->id }}"
                                     class="w-full h-full block peer appearance-none cursor-pointer border-2 border-blue-300 rounded-sm checked:bg-no-repeat checked:bg-center checked:border-blue-500 checked:bg-blue-100" />
 
                                 <!-- SVG Icon -->
@@ -124,14 +123,17 @@
                         <!-- Kuantitas -->
                         <div>
                             <div class="flex border-2 border-blue-200 justify-between items-center w-24 rounded-md">
-                                <button type="button" class="p-2"
-                                    onclick="minus('quantity_{{ $cart->id }}', '{{ $cart->product->price_product }}', this)">
+                                <button type="button" id="minus_{{ $cart->id }}" class="p-2"
+                                    onclick="minus('quantity_{{ $cart->id }}', '{{ $cart->product->price_product }}', this)"
+                                    disabled>
                                     -
                                 </button>
                                 <input type="text" class="w-full text-center outline-none p-2"
-                                    value="{{ $cart->quantity }}" id="quantity_{{ $cart->id }}" readonly />
-                                <button type="button" class="p-2"
-                                    onclick="plus('quantity_{{ $cart->id }}', {{ $cart->product->stock_product }}, '{{ $cart->product->price_product }}', this)">
+                                    value="{{ $cart->quantity }}" id="quantity_{{ $cart->id }}"
+                                    data-price="{{ $cart->product->price_product }}" readonly />
+                                <button type="button" id="plus_{{ $cart->id }}" class="p-2"
+                                    onclick="plus('quantity_{{ $cart->id }}', {{ $cart->product->stock_product }}, '{{ $cart->product->price_product }}', this)"
+                                    disabled>
                                     +
                                 </button>
                             </div>
@@ -175,7 +177,8 @@
 
                 <input type="hidden" name="total_input" id="total_input" value="{{ $total }}" />
                 <div class="text-md text-slate-800 text-nowrap ">
-                    <span id="total">Rp. {{ number_format($total, 0, ',', '.') }}</span>
+                    {{-- <span id="total">Rp. {{ number_format($total, 0, ',', '.') }}</span> --}}
+                    <span id="total">Rp. 0</span>
                 </div>
             </div>
 
@@ -184,7 +187,7 @@
                     <form action="{{ route('user.checkout.index') }}" method="get">
                         <input type="hidden" name="cart" id="cartForm" />
                         <button type="submit" id="cartSubmit"
-                            class="bg-blue-500 text-white text-sm px-5 py-2 rounded-md" disabled>
+                            class="bg-blue-200 text-white text-sm px-5 py-2 rounded-md" disabled>
                             Checkout
                         </button>
                     </form>
@@ -196,18 +199,65 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        function checkAdd(id) {
-            const cartForm = document.getElementById("cartForm");
-            const carts = document.querySelectorAll("input[name='cart[]']:checked");
-            const cartSubmit = document.getElementById("cartSubmit");
-            if (carts.length > 0) {
-                cartSubmit.disabled = false;
-            } else {
-                cartSubmit.disabled = true;
-            }
-            const listCart = Array.from(carts).map(item => item.value);
-            cartForm.value = listCart.join('-');
+        const formatRupiah = (number) => {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                maximumFractionDigits: 0
+            }).format(number);
         }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const carts = document.querySelectorAll("input[name='cart[]']"); // Checkbox untuk cart
+            const totalInput = document.getElementById("total_input"); // Input total (hidden)
+            const totalEl = document.getElementById("total"); // Elemen tampilan total harga
+
+            // Fungsi untuk memperbarui total harga
+            const updateTotal = () => {
+                let total = 0;
+                let listCart = [];
+
+                carts.forEach((cart) => {
+                    const id = cart.value; // ID produk
+                    const quantityInput = document.getElementById(`quantity_${id}`); // Kuantitas
+                    const price = parseInt(quantityInput.dataset.price); // Harga per item
+                    const quantity = parseInt(quantityInput.value); // Jumlah
+
+                    if (cart.checked) {
+                        total += price * quantity; // Tambahkan harga ke total
+                        listCart.push(id); // Menambahkan id produk ke listCart
+                        document.getElementById(`plus_${id}`).disabled = false;
+                        document.getElementById(`minus_${id}`).disabled = false;
+                        document.getElementById(`cart_${id}`).classList.remove("opacity-50");
+                    } else {
+                        document.getElementById(`plus_${id}`).disabled = true;
+                        document.getElementById(`minus_${id}`).disabled = true;
+                        document.getElementById(`cart_${id}`).classList.add("opacity-50");
+                    }
+                });
+                if (total > 0) {
+                    cartSubmit.disabled = false;
+                    cartSubmit.classList.remove("bg-blue-200");
+                    cartSubmit.classList.add("bg-blue-500");
+                    cartForm.value = listCart.join('-');
+                } else {
+                    cartSubmit.disabled = true;
+                    cartSubmit.classList.remove("bg-blue-500");
+                    cartSubmit.classList.add("bg-blue-200");
+                }
+
+                // Perbarui input dan tampilan total
+                totalInput.value = total;
+                totalEl.textContent = formatRupiah(total);
+            };
+
+            // Tambahkan event listener pada setiap checkbox
+            carts.forEach((cart) => {
+                cart.addEventListener("change", updateTotal);
+            });
+        });
+
+
 
         function showAlert(icon, message) {
             const Toast = Swal.mixin({
@@ -246,13 +296,7 @@
                 });
             });
         }
-        const formatRupiah = (number) => {
-            return new Intl.NumberFormat('id-ID', {
-                style: 'currency',
-                currency: 'IDR',
-                maximumFractionDigits: 0
-            }).format(number);
-        }
+
 
 
         const total_input = document.getElementById("total_input"); // Mengambil input total
@@ -284,12 +328,11 @@
                     const data = await response.json();
                     input.value = data.quantity;
 
-
-                    total_input.value = parseInt(total_input.value) - parseInt(price);
                     const total_input_id = parseInt(document.getElementById("total_input_" + id.split("_")[1]).value) -
                         parseInt(price);
                     document.getElementById("total_input_" + id.split("_")[1]).value = total_input_id
                     document.getElementById("total_" + id.split("_")[1]).innerHTML = formatRupiah(total_input_id);
+                    total_input.value = parseInt(total_input.value) - parseInt(price);
                     total.innerHTML = formatRupiah(total_input.value);
 
                 } else {
