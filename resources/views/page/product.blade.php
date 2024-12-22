@@ -393,7 +393,6 @@
                                 Terbaru</option>
                         </select>
                     </div>
-
                     <div class="">
                         <label for="sort_price" class="block text-sm text-slate-700 mb-1">Sort Price</label>
                         <select name="sort_price" id="sort_price"
