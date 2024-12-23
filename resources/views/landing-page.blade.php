@@ -738,12 +738,14 @@
                                     </path>
                                 </svg>
                             @else
+
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                     class="w-4 h-4 text-gray-300" viewBox="0 0 24 24">
                                     <path
                                         d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
                                     </path>
                                 </svg>
+
                             @endif
                         @endfor
                         <span

@@ -84,7 +84,7 @@
             // Cek apakah produk memiliki gambar, jika tidak gunakan gambar default
             const imageSrc = item.product.image_product ?
                 `{{ url('') }}/storage/${item.product.image_product}` :
-                `{{ asset('img/img-carousel-promo/laptop.jpg') }}`; // Gambar default
+                `{{ asset('img/laptop.jpg') }}`; // Gambar default
 
             // Hitung total harga berdasarkan kuantitas produk
             amount += item.product.price_product * item.quantity;

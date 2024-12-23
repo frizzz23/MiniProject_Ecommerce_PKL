@@ -205,7 +205,7 @@
                                 <div class="relative mb-4">
                                     <input type="number" name="min_price" id="min_price"
                                         class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                        placeholder=" " value="{{ request('min_price') }}" >
+                                        placeholder=" " value="{{ request('min_price') ?? 0}}" >
                                     <label for="min_price"
                                         class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">
                                         Min Harga
@@ -221,7 +221,7 @@
                                 <div class="relative mb-4">
                                     <input type="number" name="max_price" id="max_price"
                                         class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                        placeholder=" " value="{{ request('max_price') }}">
+                                        placeholder=" " value="{{ request('max_price') ?? 0 }}">
                                     <label for="max_price"
                                         class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">
                                         Max Harga
@@ -408,7 +408,7 @@
                                                 stroke-linejoin="round"></path>
                                         </g>
                                     </svg>
-                                    <span class="font-semibold text-xs"> Home</span>
+                                    <span class="font-semibold text-xs"> Beranda</span>
                                 </a>
                             </li>
                             <li>
@@ -421,7 +421,7 @@
                                     </svg>
                                     <a href="{{ route('page.product') }}"
                                         class="flex justify-center items-end gap-1 bg-gray-200 text-slate-800 mx-2 w-auto py-2 px-2 rounded-md">
-                                        <span class="font-semibold text-xs">Product</span>
+                                        <span class="font-semibold text-xs">Produk</span>
                                     </a>
                                 </div>
                             </li>
@@ -504,7 +504,7 @@
                                     <img src="{{ asset('storage/' . $product->image_product) }}"
                                         alt="{{ $product->name_product }}" class="object-cover w-32 h-32">
                                 @else
-                                    <img src="{{ asset('img/default-product.jpg') }}" alt="Default Image"
+                                    <img src="{{ asset('img/laptop.jpg') }}" alt="Default Image"
                                         class="object-cover w-32 h-32">
                                 @endif
                             </a>
