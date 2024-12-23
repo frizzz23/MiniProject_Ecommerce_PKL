@@ -409,50 +409,63 @@
                 </form>
             </div>
 
-            <div class="mt-5 grid md:grid-cols-4 grid-cols-2 gap-5 pe-5 md:mb-10">
-                @foreach ($products as $product)
-                    <div class="border-2 py-3 px-2 flex flex-col justify-between">
-                        <a href="{{ route('page.productshow', $product->slug) }}"
-                            class="font-medium text-slate-800 text-sm tracking-tighter">
-                            {{ $product->name_product }} <!-- Tampilkan nama produk -->
-                        </a>
-                        <a href="{{ route('page.productshow', $product->slug) }}"
-                            class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-4">
-                            @if ($product->image_product)
-                                <img src="{{ asset('storage/' . $product->image_product) }}" alt="Product Image"
-                                    class="object-cover w-32 h-32" />
-                            @else
-                                <img src="{{ asset('img/img-carousel-promo/laptop.jpg') }}" alt="Default Image"
-                                    class="object-cover w-32 h-32" />
-                            @endif
-                        </a>
+            @if ($products->isEmpty())
+                <div class="flex flex-col items-center justify-center gap-4 py-10">
+                    <!-- Ganti gambar dengan ilustrasi yang relevan -->
+                    <img src="{{ asset('img/empty-search.jpg') }}" alt="Produk Tidak Ditemukan" class="w-64 h-64">
+                    <p class="text-lg text-gray-600 font-medium">Produk Tidak Ditemukan</p>
+                    <p class="text-sm text-gray-500">Maaf, kami tidak dapat menemukan produk yang Anda cari.</p>
+                    <a href="{{ route('page.product') }}"
+                        class="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600 transition">
+                        Lihat Semua Produk
+                    </a>
+                </div>
+            @else
+                <div class="mt-5 grid md:grid-cols-4 grid-cols-2 gap-5 pe-5 md:mb-10">
+                    @foreach ($products as $product)
+                        <div class="border-2 py-3 px-2 flex flex-col justify-between">
+                            <a href="{{ route('page.productshow', $product->slug) }}"
+                                class="font-medium text-slate-800 text-sm tracking-tighter hover:text-blue-500 transition">
+                                {{ $product->name_product }}
+                            </a>
+                            <a href="{{ route('page.productshow', $product->slug) }}"
+                                class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-4">
+                                @if ($product->image_product)
+                                    <img src="{{ asset('storage/' . $product->image_product) }}"
+                                        alt="{{ $product->name_product }}" class="object-cover w-32 h-32">
+                                @else
+                                    <img src="{{ asset('img/default-product.jpg') }}" alt="Default Image"
+                                        class="object-cover w-32 h-32">
+                                @endif
+                            </a>
 
-                        <div class="flex items-center space-x-1 mb-2">
-                            @for ($i = 0; $i < 5; $i++)
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                    class="w-4 h-4 {{ $i < round($product->average_rating) ? 'text-yellow-400' : 'text-gray-300' }}"
-                                    viewBox="0 0 24 24" stroke="none">
-                                    <path
-                                        d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
-                                    </path>
-                                </svg>
-                            @endfor
-                            <span
-                                class="text-sm text-slate-600">{{ isset($reviewsCount[$product->id]) ? $reviewsCount[$product->id] : 0 }}
-                                reviews</span>
-                        </div>
-                        <div class="md:flex justify-between">
-                            <p class="text-xl text-blue-500 font-medium tracking-tight">
-                                Rp {{ number_format($product->price_product, 0, ',', '.') }}
-                            </p>
-                            @auth
-                                <button onclick="addToCart({{ $product->id }}, this)" type="button"
-                                    class="w-10 h-10 bg-blue-500 flex justify-center items-center rounded-md">
-                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                        class="w-5 h-5">
-                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                        <g id="SVGRepo_iconCarrier">
+                            <!-- Penilaian produk -->
+                            <div class="flex items-center space-x-1 mb-2">
+                                @for ($i = 0; $i < 5; $i++)
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                        class="w-4 h-4 {{ $i < round($product->average_rating) ? 'text-yellow-400' : 'text-gray-300' }}"
+                                        viewBox="0 0 24 24" stroke="none">
+                                        <path
+                                            d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
+                                        </path>
+                                    </svg>
+                                @endfor
+                                <span class="text-sm text-slate-600">{{ $reviewsCount[$product->id] ?? 0 }}
+                                    reviews</span>
+                            </div>
+
+                            <div class="md:flex justify-between">
+                                <!-- Harga produk -->
+                                <p class="text-xl text-blue-500 font-medium tracking-tight">
+                                    Rp {{ number_format($product->price_product, 0, ',', '.') }}
+                                </p>
+
+                                @auth
+                                    <!-- Tombol Tambah ke Keranjang -->
+                                    <button onclick="addToCart({{ $product->id }}, this)" type="button"
+                                        class="w-10 h-10 bg-blue-500 flex justify-center items-center rounded-md hover:bg-blue-600 transition">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                            class="w-5 h-5">
                                             <path
                                                 d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H19"
                                                 stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
@@ -465,17 +478,14 @@
                                             <path
                                                 d="M5 6H16.4504C18.5054 6 19.5328 6 19.9775 6.67426C20.4221 7.34853 20.0173 8.29294 19.2078 10.1818L18.7792 11.1818C18.4013 12.0636 18.2123 12.5045 17.8366 12.7523C17.4609 13 16.9812 13 16.0218 13H5"
                                                 stroke="#ffffff" stroke-width="1.5"></path>
-                                        </g>
-                                    </svg>
-                                </button>
-                            @else
-                                <a href="{{ route('login') }}"
-                                    class="w-10 h-10 bg-blue-500 flex justify-center items-center rounded-md">
-                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                        class="w-5 h-5">
-                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                        <g id="SVGRepo_iconCarrier">
+                                        </svg>
+                                    </button>
+                                @else
+                                    <!-- Tombol Login -->
+                                    <a href="{{ route('login') }}"
+                                        class="w-10 h-10 bg-blue-500 flex justify-center items-center rounded-md hover:bg-blue-600 transition">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                            class="w-5 h-5">
                                             <path
                                                 d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H19"
                                                 stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
@@ -488,14 +498,14 @@
                                             <path
                                                 d="M5 6H16.4504C18.5054 6 19.5328 6 19.9775 6.67426C20.4221 7.34853 20.0173 8.29294 19.2078 10.1818L18.7792 11.1818C18.4013 12.0636 18.2123 12.5045 17.8366 12.7523C17.4609 13 16.9812 13 16.0218 13H5"
                                                 stroke="#ffffff" stroke-width="1.5"></path>
-                                        </g>
-                                    </svg>
-                                </a>
-                            @endauth
+                                        </svg>
+                                    </a>
+                                @endauth
+                            </div>
                         </div>
-                    </div>
-                @endforeach
-            </div>
+                    @endforeach
+                </div>
+            @endif  
         </div>
     </div>
 
