@@ -16,35 +16,37 @@
                     <div class="flex justify-between items-center mb-4">
                         <div>
                             <!-- Pencarian -->
-                            <form action="{{ route('admin.orders.index') }}" method="GET" class="d-inline-block">
+                            <form action="{{ route('admin.reviews.index') }}" method="GET" class="d-inline-block">
                                 <div class="d-flex align-items-center">
-                                    <input type="text" name="search"
-                                        class="form-control me-2 border-lg border-[#5d85fa]" placeholder="Cari produk"
+                                    <input type="text" name="search" class="form-control me-2 border-lg border-[#5d85fa]" placeholder="Cari produk atau komentar"
                                         value="{{ request('search') }}" style="width: 200px;">
                                     <button type="submit" class="btn btn-primary">Cari</button>
                                 </div>
                             </form>
                         </div>
                     </div>
-                    <form action="{{ route('admin.products.index') }}" method="GET">
+
+
+                    <!-- Filter Form -->
+                    <form action="{{ route('admin.reviews.index') }}" method="GET" id="filterForm">
                         <div class="grid grid-cols-3 gap-4 text-white border-t border-gray-600 pt-4 mb-4">
+                            <!-- Filter Produk -->
                             <div>
-                                <select name="product_id"
-                                        class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                        onchange="document.getElementById('filterForm').submit();">
-                                        <option value="">Semua Produk</option>
-                                        @foreach ($products as $product)
-                                        <option value="{{ $product->id }}"
-                                            {{ request('product_id') == $product->id ? 'selected' : '' }}>
+                                <select name="product_id" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
+                                    onchange="document.getElementById('filterForm').submit();">
+                                    <option value="">Semua Produk</option>
+                                    @foreach ($products as $product)
+                                        <option value="{{ $product->id }}" {{ request('product_id') == $product->id ? 'selected' : '' }}>
                                             {{ $product->name_product }}
                                         </option>
                                     @endforeach
-                                    </select>
+                                </select>
                             </div>
+
+                            <!-- Filter Rating -->
                             <div>
-                                <select name="rating"
-                                    class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                    onchange="this.form.submit()">
+                                <select name="rating" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
+                                    onchange="document.getElementById('filterForm').submit();">
                                     <option value="">Rating</option>
                                     <option value="5" {{ request('rating') == '5' ? 'selected' : '' }}>5 Bintang</option>
                                     <option value="4" {{ request('rating') == '4' ? 'selected' : '' }}>4 Bintang</option>
@@ -53,20 +55,22 @@
                                     <option value="1" {{ request('rating') == '1' ? 'selected' : '' }}>1 Bintang</option>
                                 </select>
                             </div>
+
+                            <!-- Filter Tanggal -->
                             <div>
-                                <select name="created_at"
-                                    class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                    onchange="this.form.submit()">
+                                <select name="created_at" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
+                                    onchange="document.getElementById('filterForm').submit();">
                                     <option value="">Tanggal</option>
                                     <option value="asc" {{ request('created_at') == 'asc' ? 'selected' : '' }}>Lama</option>
                                     <option value="desc" {{ request('created_at') == 'desc' ? 'selected' : '' }}>Terbaru</option>
                                 </select>
                             </div>
                         </div>
-                    </form>   
+                    </form>
+
                     <div class="table-responsive">
                         <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-                            <thead class="bg-[#5D87FF] text-white"> {{-- bg-gray-100 --}}
+                            <thead class="bg-[#5D87FF] text-white">
                                 <tr>
                                     <th class="px-4 py-2 text-left">No</th>
                                     <th class="px-4 py-2 text-left">Pengguna</th>
@@ -77,33 +81,27 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($reviews as $review)
-                                    <tr class="hover:bg-gray-100  border-b">
-                                        <td class="px-4 py-2">
-                                            {{ $loop->iteration ?? '-' }}
-                                        </td>
-                                        <td class="px-4 py-2 flex items-center">
-                                            {{ $review->name }}
-                                        </td>
-                                        <td class="px-4 py-2">
-                                            {{ $review->product->name_product }}
-                                        </td>
-                                        <td class="px-4 py-2">
-                                            {{ $review->rating }}
-                                        </td>
-                                        <td class="px-4 py-2">
-                                            {{ $review->comment }}
-                                        </td>
-                                        <td class="px-4 py-2">
-                                            {{ $review->created_at->format('d F Y') ?? 'kosong' }}
-                                        </td>
+                                @forelse ($reviews as $review)
+                                    <tr class="hover:bg-gray-100 border-b">
+                                        <td class="px-4 py-2">{{ $loop->iteration ?? '-' }}</td>
+                                        <td class="px-4 py-2 flex items-center">{{ $review->user->name }}</td>
+                                        <td class="px-4 py-2">{{ $review->product->name_product }}</td>
+                                        <td class="px-4 py-2">{{ $review->rating }}</td>
+                                        <td class="px-4 py-2">{{ $review->comment }}</td>
+                                        <td class="px-4 py-2">{{ $review->created_at->format('d F Y') ?? 'kosong' }}</td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                    <tr>
+                                        <td colspan="6" class="px-4 py-2 text-center text-gray-500">Tidak ada review yang ditemukan</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
 
+
                 </div>
+
             </div>
         </div>
     </div>
