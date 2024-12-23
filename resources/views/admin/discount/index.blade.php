@@ -152,26 +152,32 @@
                                                     <h5 class="modal-title" id="userModalLabel{{ $code->id }}">
                                                         Pengguna Yang Sudah Menggunakan Voucher {{ $code->code }}
                                                     </h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
-                                                <div class="modal-body" style="color: black;">
-                                                    @if ($code->users->count() > 0)
-                                                        <ul>
+                                                <div class="modal-body">
+                                                    @if($code->users->count() > 0)
+                                                        <div class="border-2 p-2 border-slate-300">
                                                             @foreach ($code->users as $user)
-                                                                <li><strong>Nama:</strong>{{ $user->name }} <br>
-                                                                    <strong>Email:</strong> ({{ $user->email }})
-                                                                    <br> <br>
-                                                                </li>
+                                                                <div class="border-b py-2">
+                                                                    <div class="grid grid-cols-[1fr_0.1fr_2fr] mb-2">
+                                                                        <span>Nama</span>
+                                                                        <span>:</span>
+                                                                        <span>{{ $user->name }}</span>
+                                                                    </div>
+                                                                    <div class="grid grid-cols-[1fr_0.1fr_2fr] mb-2">
+                                                                        <span>Email</span>
+                                                                        <span>:</span>
+                                                                        <span>{{ $user->email }}</span>
+                                                                    </div>
+                                                                </div>
                                                             @endforeach
-                                                        </ul>
+                                                        </div>
                                                     @else
-                                                        <p>Belum ada pengguna yang memakai voucher ini.</p>
+                                                        <p>Tidak ada pengguna yang menggunakan voucher ini.</p>
                                                     @endif
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">Tutup</button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                                                 </div>
                                             </div>
                                         </div>
