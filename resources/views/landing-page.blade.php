@@ -628,7 +628,7 @@
                                 <img src="{{ asset('storage/' . $product->image_product) }}" alt="Product Image"
                                     class="object-cover w-full h-full" /> <!-- Menyesuaikan gambar dengan card yang lebih besar -->
                             @else
-                                <img src="{{ asset('img/img-carousel-promo/laptop.jpg') }}" alt="Default Image"
+                                <img src="{{ asset('img/laptop.jpg') }}" alt="Default Image"
                                     class="object-cover w-full h-full" />
                             @endif
                         </a>
