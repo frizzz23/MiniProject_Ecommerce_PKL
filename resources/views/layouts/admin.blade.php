@@ -23,6 +23,7 @@
     <link rel="shortcut icon" type="image/png" href="{{ asset('img/logoo.png') }}" />
     <link rel="stylesheet" href="{{ asset('style/src/assets/css/styles.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('loading/loading.css') }}" />
+    
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])

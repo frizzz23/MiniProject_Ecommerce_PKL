@@ -65,7 +65,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($users as $user)
-                                    <tr onclick="toggleDropdown(this)" class="hover:bg-gray-50 cursor-pointer border-b">
+                                    <tr onclick="toggleDropdown(this)" class="hover:bg-gray-50 border-b">
                                         <td class="px-4 py-2">
                                             @if ($user->image)
                                                 <img src="{{ asset('storage/' . $user->image) }}" alt="Profile Picture"
@@ -84,8 +84,14 @@
                                         </td>
                                         <td class="px-4 py-2">
                                             @foreach ($user->roles as $role)
-                                                <span
-                                                    class="bg-[#5d85fa] text-white py-1 px-2 rounded-md text-sm">{{ $role->name }}</span>
+                                            <span class="inline-flex items-center 
+                                                @if($role->name === 'admin') bg-blue-200 text-primary @elseif($role->name === 'user') bg-green-200 text-green-600 @else bg-gray-100 bg-opacity-50 text-gray-800 dark:bg-gray-700 dark:text-gray-300 @endif
+                                                text-xs font-medium px-3 py-1 rounded-full">
+                                                <span class="w-2 h-2 me-1
+                                                    @if($role->name === 'admin') bg-blue-500 @elseif($role->name === 'user') bg-green-500  @else bg-gray-500  @endif
+                                                    rounded-full"></span>
+                                                {{ ucfirst($role->name) }}
+                                            </span>
                                             @endforeach
                                         </td>
                                         <td class="px-4 py-2">
