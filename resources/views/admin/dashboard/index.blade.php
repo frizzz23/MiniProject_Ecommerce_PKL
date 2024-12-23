@@ -11,14 +11,14 @@
                             <i class="fas fa-dollar-sign fa-3x text-success"></i>
                         </div>
                         <div>
-                            <h5 class="card-title">Total Pendapatan</h5>
+                            <h5 class="card-title">Total Pendapatan Bulan Ini</h5>
                             <p class="card-text">Rp. {{ number_format($Revenue, 0, ',', '.') }}</p>
                         </div>
                     </div>
                 </div>
             </div>
-            
-        
+
+
             <!-- Card 2: Order Terbaru -->
             <div class="col-md-4 col-sm-6 mb-4">
                 <div class="card h-100">
@@ -29,18 +29,26 @@
                         </div>
                         <!-- Teks Konten -->
                         <div>
-                            <h5 class="card-title">Order Terbaru</h5>
-                            @if($neworder > 0)
+                            {{-- <h5 class="card-title">Order Terbaru</h5>
+                            @if ($neworder > 0)
                                 <p class="card-text">{{ $neworder }} Orders Pending</p>
                             @else
                                 <p class="card-text">0</p>
+                            @endif --}}
+
+                            <h5 class="card-title">Total Penjualan Bulan Ini</h5>
+                            @if ($totalItemsSold > 0)
+                                <p class="card-text">{{ $totalItemsSold }} Pesanan Selesai</p>
+                            @else
+                                <p class="card-text">Tidak ada penjualan</p>
                             @endif
+
                         </div>
                     </div>
                 </div>
             </div>
-            
-        
+
+
             <!-- Card 4: Pelanggan Baru -->
             <div class="col-md-4 col-sm-6 mb-4">
                 <div class="card h-100 shadow-sm">
@@ -53,114 +61,51 @@
                         <div>
                             <h5 class="card-title mb-2">Pelanggan Baru</h5>
                             <p class="card-text mb-0">
-                                <span class="fw-bold fs-5 text-dark">{{ $newuser }}</span> 
+                                <span class="fw-bold fs-5 text-dark">{{ $newuser }}</span>
                                 <span class="text-muted">/ dalam sebulan terakhir</span>
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
         </div>
-        
-        
-        
-        
-        <div class="row">
-            <div class="col-lg-8 d-flex align-items-strech">
-                <div class="card w-100">
-                    <div class="card-body">
-                        <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
-                            <div class="mb-3 mb-sm-0">
-                                <h5 class="card-title fw-semibold">Sales Overview</h5>
-                            </div>
-                            <div>
-                                <select class="form-select">
-                                    <option value="1">March 2023</option>
-                                    <option value="2">April 2023</option>
-                                    <option value="3">May 2023</option>
-                                    <option value="4">June 2023</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div id="chart"></div>
-                    </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Top 10 Barang Paling Banyak Diorder</h5>
+                <div class="d-flex justify-content-end mb-3">
+                    <form method="GET" action="{{ route('dashboard.index') }}" class="d-flex align-items-center">
+                        <label for="month" class="me-2 small">Bulan</label>
+                        <select id="month" name="month" class="form-select form-select-sm me-2">
+                            @for ($i = 1; $i <= 12; $i++)
+                                <option value="{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}"
+                                    {{ $i == request('month', now()->format('m')) ? 'selected' : '' }}>
+                                    {{ date('F', mktime(0, 0, 0, $i, 1)) }}
+                                </option>
+                            @endfor
+                        </select>
+
+                        <label for="year" class="me-2 small">Tahun</label>
+                        <select id="year" name="year" class="form-select form-select-sm me-2">
+                            @for ($i = now()->year; $i >= 2000; $i--)
+                                <option value="{{ $i }}"
+                                    {{ $i == request('year', now()->format('Y')) ? 'selected' : '' }}>
+                                    {{ $i }}
+                                </option>
+                            @endfor
+                        </select>
+
+                        <button type="submit" class="btn btn-sm btn-primary">Tampilkan</button>
+                    </form>
                 </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <!-- Yearly Breakup -->
-                        <div class="card overflow-hidden">
-                            <div class="card-body p-4">
-                                <h5 class="card-title mb-9 fw-semibold">Yearly Breakup</h5>
-                                <div class="row align-items-center">
-                                    <div class="col-8">
-                                        <h4 class="fw-semibold mb-3">$36,358</h4>
-                                        <div class="d-flex align-items-center mb-3">
-                                            <span
-                                                class="me-1 rounded-circle bg-light-success round-20 d-flex align-items-center justify-content-center">
-                                                <i class="ti ti-arrow-up-left text-success"></i>
-                                            </span>
-                                            <p class="text-dark me-1 fs-3 mb-0">+9%</p>
-                                            <p class="fs-3 mb-0">last year</p>
-                                        </div>
-                                        <div class="d-flex align-items-center">
-                                            <div class="me-4">
-                                                <span class="round-8 bg-primary rounded-circle me-2 d-inline-block"></span>
-                                                <span class="fs-2">2023</span>
-                                            </div>
-                                            <div>
-                                                <span
-                                                    class="round-8 bg-light-primary rounded-circle me-2 d-inline-block"></span>
-                                                <span class="fs-2">2023</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="d-flex justify-content-center">
-                                            <div id="breakup"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-12">
-                        <!-- Monthly Earnings -->
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row alig n-items-start">
-                                    <div class="col-8">
-                                        <h5 class="card-title mb-9 fw-semibold"> Monthly
-                                            Earnings </h5>
-                                        <h4 class="fw-semibold mb-3">$6,820</h4>
-                                        <div class="d-flex align-items-center pb-1">
-                                            <span
-                                                class="me-2 rounded-circle bg-light-danger round-20 d-flex align-items-center justify-content-center">
-                                                <i class="ti ti-arrow-down-right text-danger"></i>
-                                            </span>
-                                            <p class="text-dark me-1 fs-3 mb-0">+9%</p>
-                                            <p class="fs-3 mb-0">last year</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="d-flex justify-content-end">
-                                            <div
-                                                class="text-white bg-secondary rounded-circle p-6 d-flex align-items-center justify-content-center">
-                                                <i class="ti ti-currency-dollar fs-6"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="earning"></div>
-                        </div>
-                    </div>
-                </div>
+
+                <canvas id="mostOrderedProductsChart"></canvas>
             </div>
         </div>
-        <div class="row">
+
+
+        {{-- <div class="row">
             <div class="col-lg-4 d-flex align-items-stretch">
                 <div class="card w-100">
                     <div class="card-body p-4">
@@ -482,6 +427,99 @@
         <div class="py-6 px-6 text-center">
             <p class="mb-0 fs-4">Design and Developed by <a href="https://adminmart.com/" target="_blank"
                     class="pe-1 text-primary text-decoration-underline">AdminMart.com</a></p>
-        </div>
+        </div> --}}
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('mostOrderedProductsChart').getContext('2d');
+
+            // Data dari server
+            const mostOrderedProductsData = @json($mostOrderedProducts);
+
+            // Ambil nama produk dan jumlah total yang diorder
+            const labels = mostOrderedProductsData.map(item => item.product.name_product);
+            const data = mostOrderedProductsData.map(item => parseInt(item.total_quantity));
+
+            // Warna batang
+            const baseColor = 'rgba(54, 162, 235, 0.8)'; // Biru
+            const borderColor = 'rgba(255, 255, 255, 1)'; // Putih
+
+            // Konfigurasi Chart.js
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Jumlah Barang yang Diorder',
+                        data: data,
+                        backgroundColor: baseColor,
+                        borderColor: borderColor,
+                        borderWidth: 2,
+                        borderRadius: 10, // Membuat ujung batang rounded
+                        borderSkipped: false, // Menghilangkan border yang diskip
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    size: 14
+                                },
+                                color: '#000' // Warna teks legenda
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `Jumlah: ${context.raw}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                font: {
+                                    size: 12
+                                },
+                                color: '#000',
+                                maxRotation: 45,
+                                minRotation: 0
+                            },
+                            grid: {
+                                display: false // Hilangkan garis grid di sumbu X
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Jumlah Barang',
+                                font: {
+                                    size: 14
+                                },
+                                color: '#000'
+                            },
+                            ticks: {
+                                font: {
+                                    size: 12
+                                },
+                                color: '#000'
+                            },
+                            grid: {
+                                color: 'rgba(200, 200, 200, 0.2)', // Warna garis grid
+                                borderColor: '#000' // Warna garis sumbu Y
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
 @endsection
