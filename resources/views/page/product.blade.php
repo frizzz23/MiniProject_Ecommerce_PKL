@@ -123,53 +123,123 @@
 
     <div class="grid md:grid-cols-[0.5fr_2fr] grid-cols-1">
         <div class=" md:block hidden">
-            <div id="sidebar-left"
-                class="fixed top-0 z-10 py-5 bg-white border-e-2 h-screen ps-5 pe-16 overflow-y-auto">
+            <div id="sidebar-left" class="fixed top-0 z-10 py-5 bg-white border-e-2 h-screen ps-5 pe-16 overflow-y-auto"
+                style="overflow-y: scroll; max-height: 100vh;">
+                <style>
+                    #sidebar-left::-webkit-scrollbar {
+                        display: none;
+                        /* Menyembunyikan scrollbar */
+                    }
+                </style>
                 <a href="{{ route('landing-page') }}" class="text-center block mb-10 w-full">
                     <img src="{{ asset('img/logo&text.svg') }}" alt="logo" class="w-32 mr-2 mx-auto">
                 </a>
                 <form method="GET" action="{{ route('page.product') }}">
                     <div class="ps-3">
-                        <h1 class="font-semibold text-xl text-blue-700 mb-5">Categories</h1>
+                        <h1 class="font-semibold text-xl text-blue-700 mb-5">Kategori</h1>
 
-                        @foreach ($categories as $category)
-                            <div class="flex gap-2 items-center mb-2">
-                                <div class="relative w-5 h-5">
-                                    <!-- Menggunakan checkbox untuk multiple selection -->
-                                    <input type="checkbox" name="categories[]" id="category_{{ $category->id }}"
-                                        value="{{ $category->id }}"
-                                        class="w-full h-full block peer appearance-none cursor-pointer border-2 border-blue-300 rounded-sm checked:bg-no-repeat checked:bg-center checked:border-blue-500 checked:bg-blue-100"
-                                        {{ in_array($category->id, request('categories', [])) ? 'checked' : '' }} />
-                                    <svg class="absolute w-3 h-3 hidden peer-checked:block text-blue-500 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-                                        style="user-select: none;pointer-events: none;"
-                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                        stroke="currentColor" stroke-width="4" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <polyline points="20 6 9 17 4 12"></polyline>
-                                    </svg>
+                        <div class="max-h-36 overflow-y-scroll mb-4" style="max-height: 10rem; overflow-y: scroll;">
+                            <!-- Menghilangkan scrollbar visual di WebKit-based browsers -->
+                            <style>
+                                .max-h-36::-webkit-scrollbar {
+                                    display: none;
+                                }
+                            </style>
+                            @foreach ($categories as $category)
+                                <div class="flex gap-2 items-center mb-2">
+                                    <div class="relative w-5 h-5">
+                                        <!-- Menggunakan checkbox untuk multiple selection -->
+                                        <input type="checkbox" name="categories[]" id="category_{{ $category->id }}"
+                                            value="{{ $category->id }}"
+                                            class="w-full h-full block peer appearance-none cursor-pointer border-2 border-blue-300 rounded-sm checked:bg-no-repeat checked:bg-center checked:border-blue-500 checked:bg-blue-100"
+                                            {{ in_array($category->id, request('categories', [])) ? 'checked' : '' }} />
+                                        <svg class="absolute w-3 h-3 hidden peer-checked:block text-blue-500 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                                            style="user-select: none;pointer-events: none;"
+                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="4" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </div>
+                                    <label for="category_{{ $category->id }}" class="pointer"
+                                        style="cursor: pointer;">{{ $category->name_category }}</label>
                                 </div>
-                                <label for="category_{{ $category->id }}" class="pointer"
-                                    style="cursor: pointer;">{{ $category->name_category }}</label>
-                            </div>
-                        @endforeach
+                            @endforeach
+                        </div>
+
+                        <h1 class="font-semibold text-xl text-blue-700 mb-5">Merek</h1>
+
+                        <div class="max-h-36 overflow-y-scroll mb-4" style="max-height: 10rem; overflow-y: scroll;">
+                            <!-- Menghilangkan scrollbar visual di WebKit-based browsers -->
+                            <style>
+                                .max-h-36::-webkit-scrollbar {
+                                    display: none;
+                                }
+                            </style>
+
+                            @foreach ($brands as $brand)
+                                <div class="flex gap-2 items-center mb-2">
+                                    <div class="relative w-5 h-5">
+                                        <!-- Menggunakan checkbox untuk multiple selection -->
+                                        <input type="checkbox" name="Brands[]" id="brand_{{ $brand->id }}"
+                                            value="{{ $brand->id }}"
+                                            class="w-full h-full block peer appearance-none cursor-pointer border-2 border-blue-300 rounded-sm checked:bg-no-repeat checked:bg-center checked:border-blue-500 checked:bg-blue-100"
+                                            {{ in_array($brand->id, request('Brands', [])) ? 'checked' : '' }} />
+                                        <svg class="absolute w-3 h-3 hidden peer-checked:block text-blue-500 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                                            style="user-select: none;pointer-events: none;"
+                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="4" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </div>
+                                    <label for="brand_{{ $brand->id }}" class="pointer"
+                                        style="cursor: pointer;">{{ $brand->name_brand }}</label>
+                                </div>
+                            @endforeach
+                        </div>
                         <h1 class="font-semibold text-lg text-blue-700 mb-4">Harga </h1>
                         <div class="flex gap-2 items-center mb-2">
 
-                            <div class="flex flex-col gap-3">
-                                <input type="number" name="min_price" placeholder="Min Harga"
-                                    class="border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-36"
-                                    oninput="minMax(this.value, this.nextElementSibling)" min="1"
-                                    value="{{ request('min_price') }}">
-                                <input type="number" onchange="maxMin(this)" name="max_price"
-                                    placeholder="Max Harga"
-                                    class="border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-36"
-                                    min="1" value="{{ request('max_price') }}">
+                            <div class="flex flex-col gap-3 w-36">
+                                <div class="relative mb-4">
+                                    <input type="number" name="min_price" id="min_price"
+                                        class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                        placeholder=" " value="{{ request('min_price') }}" >
+                                    <label for="min_price"
+                                        class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">
+                                        Min Harga
+                                    </label>
+                            
+                                    <!-- Tampilkan Pesan Error untuk Min Harga -->
+                                    @error('min_price')
+                                        <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            
+                                <!-- Max Harga -->
+                                <div class="relative mb-4">
+                                    <input type="number" name="max_price" id="max_price"
+                                        class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                        placeholder=" " value="{{ request('max_price') }}">
+                                    <label for="max_price"
+                                        class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">
+                                        Max Harga
+                                    </label>
+                            
+                                    <!-- Tampilkan Pesan Error untuk Max Harga -->
+                                    @error('max_price')
+                                        <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
                             </div>
+                            
+
                         </div>
 
                         <button type="submit"
                             class="bg-blue-500 text-white px-3 text-xs py-2 block w-auto rounded-md w-full my-3">
-                            Apply
+                            Terapkan
                         </button>
                     </div>
                 </form>
@@ -531,12 +601,12 @@
                 </div>
                 <form method="GET" action="{{ route('page.product') }}">
                     <div class="ps-3">
-                        <h1 class="font-semibold text-center text-xl text-blue-700 mb-5">Categories</h1>
+                        <h1 class="font-semibold text-center text-xl text-blue-700 mb-5">Katgeori</h1>
 
                         <!-- Dropdown Select untuk memilih kategori -->
                         <select name="Category" id="category"
                             class="text-center bg-transparent outline-none text-slate-700 w-full mb-3 border-2 rounded-md">
-                            <option value=""> All Category</option>
+                            <option value=""> Semua Kategori</option>
                             @foreach ($categories as $category)
                                 <option value="{{ $category->id }}"
                                     {{ request('Category') == $category->id ? 'selected' : '' }}>
@@ -545,9 +615,22 @@
                             @endforeach
                         </select>
 
+                        <h1 class="font-semibold text-center text-xl text-blue-700 mb-5">Merek</h1>
+
+                        <select name="Brand" id="brand"
+                            class="text-center bg-transparent outline-none text-slate-700 w-full mb-3 border-2 rounded-md">
+                            <option value=""> Semua Merek</option>
+                            @foreach ($brands as $brand)
+                                <option value="{{ $brand->id }}"
+                                    {{ request('Brand') == $brand->id ? 'selected' : '' }}>
+                                    {{ $brand->name_brand }}
+                                </option>
+                            @endforeach
+                        </select>
+
                         <button type="submit"
                             class="bg-blue-500  text-white px-3 text-xs py-2 block w-auto rounded-md w-full my-3">
-                            Apply
+                            Terapkan
                         </button>
                     </div>
                 </form>
@@ -560,15 +643,6 @@
     <x-list-cart-script />
 
     <script>
-        function minMax(min, el) {
-            el.min = parseInt(min) + 1;
-        }
-
-        function maxMin(el) {
-            if (el.value.trim() == '') return;
-            if (el.value < el.min) el.value = el.min;
-
-        }
         const carts = document.getElementById("carts");
         carts.addEventListener("click", () => {
             const closeCart = document.getElementById("close-cart");
