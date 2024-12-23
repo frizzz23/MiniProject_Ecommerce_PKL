@@ -638,6 +638,7 @@
             </div>
         </div>
     </div>
+    
     <!-- end filter view -->
 
     <x-list-cart-script />

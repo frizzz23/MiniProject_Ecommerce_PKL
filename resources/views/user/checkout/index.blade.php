@@ -163,7 +163,8 @@
                         <p class="text-sm text-slate-700 mb-1">
                             masukkan kode voucher jika ada
                             <br />
-                            <span class="text-red-500 text-[10px]"> optimal </span>
+                            <span class="text-red-500 text-[10px]"> 
+                                opsional </span>
                         </p>
 
                         <div class="flex items-center justify-center w-full border rounded-md overflow-hidden">
@@ -288,29 +289,29 @@
                             </table>
                         </div>
 
-                        <div class="py-4 flex justify-between items-center mt-5 px-20">
+                        <div class="py-6 flex justify-between items-center shadow-md m-6 px-6 bg-white rounded-lg">
                             <table class="table-auto w-full">
                                 <tr>
-                                    <td class="text-xs text-slate-600 w-full">Subtotal</td>
-                                    <td class="text-xs text-slate-800 text-right text-nowrap flex justify-end">
+                                    <td class="text-sm text-slate-600 w-full">Subtotal</td>
+                                    <td class="text-sm text-slate-800 text-right text-nowrap flex justify-end">
                                         Rp. <div id="subtotal">{{ number_format($total, 0, ',', '.') }}</div>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="text-xs text-slate-600">Ongkos kirim</td>
-                                    <td class="text-xs text-slate-800 text-right text-nowrap">
+                                    <td class="text-sm text-slate-600">Ongkos kirim</td>
+                                    <td class="text-sm text-slate-800 text-right text-nowrap">
                                         <div id="ongkir-cek">+</div>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="text-xs text-slate-600">Diskon</td>
-                                    <td class="text-xs text-slate-800 text-right text-nowrap">
+                                    <td class="text-sm text-slate-600">Diskon</td>
+                                    <td class="text-sm text-slate-800 text-right text-nowrap">
                                         <div id="discount">-</div>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="text-sm text-slate-600">Total</td>
-                                    <td class="text-sm text-slate-800 text-right text-nowrap flex">
+                                    <td class="text-base text-slate-600">Total</td>
+                                    <td class="text-base text-slate-800 text-right text-nowrap flex">
                                         Rp.
                                         <div id="total">{{ number_format($total, 0, ',', '.') }}</div>
                                     </td>
@@ -373,7 +374,7 @@
                             </table>
                         </div>
 
-                        <div class="py-4 flex justify-between items-center mt-5 px-20">
+                        <div class="py-4 flex justify-between items-center mt-5 px-20 ">
                             <table class="table-auto w-full">
                                 <tr>
                                     <td class="text-xs text-slate-600 w-full">Subtotal</td>
@@ -439,7 +440,7 @@
                     @csrf
                     <div class="mb-3">
                         <label for="mark" class="text-slate-700 font-medium text-sm">
-                            Mark
+                            Sebagai
                         </label>
                         <input type="text" id="mark" name="mark"
                             class="w-full py-3 px-3 outline-none border border-gray-300 text-slate-700 rounded-lg text-sm"
@@ -447,12 +448,12 @@
                     </div>
                     <div class="mb-3">
                         <label for="province_id" class="text-slate-700 font-medium text-sm">
-                            Province
+                            Provinsi
                         </label>
                         <select name="province_id" id="province_id"
                             onchange="setCityProvince(this.value, 'city_area')"
                             class="w-full py-3 px-3 outline-none border border-gray-300 text-slate-700 rounded-lg text-sm">
-                            <option value="" selected disabled>Select Province</option>
+                            <option value="" selected disabled>Pilih Provinsi</option>
                             @foreach ($provinces as $province)
                                 <option value="{{ $province['province_id'] }}">{{ $province['province'] }}
                                 </option>
@@ -482,7 +483,7 @@
 
                     <button type="submit"
                         class="bg-blue-500 text-white px-5 py-2 text-sm text-slate-700 rounded-md w-full">
-                        Save Address
+                        Simpan Alamat
                     </button>
                 </form>
             </div>
@@ -568,12 +569,12 @@
                 const vocher = vocher_input.value;
                 const total = total_input.value;
                 let message = document.getElementById("voucher-status");
-                message.innerHTML = `<span class="text-xs text-slate-700 font-medium">Checking voucher...</span>`;
+                message.innerHTML = `<span class="text-xs text-slate-700 font-medium">Mengecek kode voucher...</span>`;
 
                 if (vocher.trim() === '') {
                     setTimeout(() => {
                         message.innerHTML =
-                            `<span class="text-xs text-yellow-700 font-medium">Vocher Not Found</span>`;
+                            `<span class="text-xs text-yellow-700 font-medium">Kode voucher tidak ada</span>`;
                         el.disabled = false;
                     }, 1000);
                     return;
@@ -594,7 +595,7 @@
                 });
                 const data = await response.json();
                 if (data.status === 'success') {
-                    message.innerHTML = `<span class="text-xs text-green-500 font-medium">Voucher code is valid</span>`;
+                    message.innerHTML = `<span class="text-xs text-green-500 font-medium">Kode voucher tersedia</span>`;
                     id_discount_input.value = data.id;
                     discount_input.value = data.discount;
                     discount.textContent = `-Rp. ${parseInt(data.discount).toLocaleString("id-ID")}`;
@@ -798,10 +799,10 @@
             if (data) {
                 let elementChild = `
             <div class="mb-3">
-                <label for="city_id" class="text-slate-700 font-medium text-sm">City</label>
+                <label for="city_id" class="text-slate-700 font-medium text-sm">Kota</label>
                  <select name="city_id" id="city_id"
                     class="w-full py-3 px-3 outline-none border border-gray-300 text-slate-700 rounded-lg text-sm">
-                <option value="" selected disabled>Select City</option>
+                <option value="" selected disabled>Pilih Kota</option>
             `;
                 Object.values(data).forEach(city => {
                     elementChild += `<option value="${city['city_id']}">${city['city_name']}</option>`

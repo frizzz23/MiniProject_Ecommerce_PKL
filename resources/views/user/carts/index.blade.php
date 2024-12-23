@@ -60,7 +60,22 @@
             <!-- Heading -->
             <div class="bg-white shadow-sm rounded-lg p-4">
                 <div class="grid grid-cols-[50px,2fr,1fr,1fr,1fr,auto] gap-4 items-center">
-                    <div class="text-slate-700 text-sm font-medium text-center">Pilih</div>
+                    <!-- Check All Checkbox -->
+                    <div class="text-slate-700 text-sm font-medium flex justify-center items-center ">
+                        <div class="relative w-5 h-5">
+                            <input type="checkbox" id="check_all" onclick="toggleAllCheckboxes(this)"
+                                class="w-full h-full block peer appearance-none cursor-pointer border-2 border-blue-300 rounded-sm checked:bg-no-repeat checked:bg-center checked:border-blue-500 checked:bg-blue-100" />
+                            <!-- SVG Icon -->
+                            <svg class="absolute w-3 h-3 hidden peer-checked:block text-blue-500 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                                style="user-select: none; pointer-events: none;" xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+
+
+                    </div>
                     <div class="text-slate-700 text-sm font-medium">Produk</div>
                     <div class="text-slate-700 text-sm font-medium">Harga</div>
                     <div class="text-slate-700 text-sm font-medium">Kuantitas</div>
@@ -68,7 +83,6 @@
                     <div class="text-slate-700 text-sm font-medium text-right">Action</div>
                 </div>
             </div>
-
 
             <!-- List Data -->
             @php
@@ -89,7 +103,6 @@
                                 <input type="checkbox" name="cart[]" value="{{ $cart->id }}"
                                     id="cart_input_{{ $cart->id }}"
                                     class="w-full h-full block peer appearance-none cursor-pointer border-2 border-blue-300 rounded-sm checked:bg-no-repeat checked:bg-center checked:border-blue-500 checked:bg-blue-100" />
-
                                 <!-- SVG Icon -->
                                 <svg class="absolute w-3 h-3 hidden peer-checked:block text-blue-500 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                                     style="user-select: none;pointer-events: none;" xmlns="http://www.w3.org/2000/svg"
@@ -110,7 +123,6 @@
                                     <img src="{{ asset('img/img-carousel-promo/laptop.jpg') }}" alt="Product"
                                         class="object-contain w-full h-full" />
                                 @endif
-
                             </div>
                             <span>{{ $cart->product->name_product }}</span>
                         </div>
@@ -211,6 +223,7 @@
             const carts = document.querySelectorAll("input[name='cart[]']"); // Checkbox untuk cart
             const totalInput = document.getElementById("total_input"); // Input total (hidden)
             const totalEl = document.getElementById("total"); // Elemen tampilan total harga
+            const checkAll = document.getElementById("check_all"); // Checkbox "Check All"
 
             // Fungsi untuk memperbarui total harga
             const updateTotal = () => {
@@ -235,6 +248,7 @@
                         document.getElementById(`cart_${id}`).classList.add("opacity-50");
                     }
                 });
+
                 if (total > 0) {
                     cartSubmit.disabled = false;
                     cartSubmit.classList.remove("bg-blue-200");
@@ -251,13 +265,25 @@
                 totalEl.textContent = formatRupiah(total);
             };
 
+            // Fungsi untuk menandai atau membatalkan semua checkbox
+            const toggleCheckAll = () => {
+                const isChecked = checkAll.checked;
+                carts.forEach((cart) => {
+                    cart.checked = isChecked;
+                });
+                updateTotal();
+            };
+
             // Tambahkan event listener pada setiap checkbox
             carts.forEach((cart) => {
                 cart.addEventListener("change", updateTotal);
             });
+
+            // Tambahkan event listener pada checkbox "Check All"
+            if (checkAll) {
+                checkAll.addEventListener("change", toggleCheckAll);
+            }
         });
-
-
 
         function showAlert(icon, message) {
             const Toast = Swal.mixin({
@@ -277,7 +303,6 @@
             });
         }
 
-
         const hamburger = document.getElementById("hamburger");
         if (hamburger) {
             hamburger.addEventListener("click", () => {
@@ -296,8 +321,6 @@
                 });
             });
         }
-
-
 
         const total_input = document.getElementById("total_input"); // Mengambil input total
         const total = document.getElementById("total"); // Mengambil total
@@ -322,7 +345,6 @@
                     })
                 });
 
-
                 // Cek jika respons JSON
                 if (response.ok) {
                     const data = await response.json();
@@ -340,12 +362,6 @@
                     const text = await response.text();
                     console.error('Response text:', text);
                 }
-
-
-
-
-
-
             }
             el.disabled = false;
         }
@@ -369,7 +385,6 @@
                         quantity: input.value
                     })
                 });
-
 
                 // Cek jika respons JSON
                 if (response.ok) {
@@ -421,7 +436,6 @@
                     }, 500);
                 }
             });
-
         }
     </script>
 @endsection
