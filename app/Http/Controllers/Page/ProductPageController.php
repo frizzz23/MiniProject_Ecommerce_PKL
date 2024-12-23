@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Page;
 
+use App\Models\Brand;
 use App\Models\Review;
 use App\Models\Product;
 use App\Models\Category;
@@ -16,8 +17,21 @@ class ProductPageController extends Controller
      */
     public function index(Request $request)
     {
+        $validated = $request->validate([
+            'min_price' => 'nullable|numeric|min:0',
+            'max_price' => 'nullable|numeric|min:0|gte:min_price',
+        ], [
+            // Custom validation messages
+            'min_price.numeric' => 'Harga minimal harus berupa angka.',
+            'min_price.min' => 'Harga minimal tidak boleh kurang dari 0.',
+            'max_price.numeric' => 'Harga maksimal harus berupa angka.',
+            'max_price.min' => 'Harga maksimal tidak boleh kurang dari 0.',
+            'max_price.gte' => 'Harga maksimal tidak boleh lebih kecil dari harga minimal.',
+        ]);
+
         // Ambil semua kategori
         $categories = Category::all();
+        $brands = Brand::all();
 
         // Ambil input pencarian (untuk nama produk)
         $search = $request->get('search');
@@ -26,12 +40,15 @@ class ProductPageController extends Controller
         $selectedCategory = $request->input('Category');
         $selectedCategories = $request->input('categories', []);
 
+        // Ambil kategori yang dipilih dari input
+        $selectedBrand = $request->input('Brand');
+        $selectedBrands = $request->input('Brands', []);
+
         // Ambil filter harga
         $minPrice = $request->input('min_price');
         $maxPrice = $request->input('max_price');
-        if ($minPrice && $maxPrice && $maxPrice < $minPrice) {
-            return redirect()->route('page.product')->with('error', 'Min harga tidak boleh lebih rendah dari max harga');
-        }
+        // Validasi untuk min_price dan max_price
+        
 
         // Ambil filter pengurutan (terlama/terbaru)
         $sortOrder = $request->input('sort_order', 'terbaru');
@@ -49,6 +66,12 @@ class ProductPageController extends Controller
             })
             ->when(!empty($selectedCategories), function ($query) use ($selectedCategories) {
                 return $query->whereIn('category_id', $selectedCategories);
+            })
+            ->when($selectedBrand, function ($query) use ($selectedBrand) {
+                return $query->where('brand_id', $selectedBrand);
+            })
+            ->when(!empty($selectedBrands), function ($query) use ($selectedBrands) {
+                return $query->whereIn('brand_id', $selectedBrands);
             })
             ->when($minPrice, function ($query) use ($minPrice) {
                 return $query->where('price_product', '>=', $minPrice);
@@ -85,7 +108,7 @@ class ProductPageController extends Controller
         }
 
         // Return ke view dengan data produk, kategori, dan jumlah review
-        return view('page.product', compact('products', 'categories', 'reviewsCount', 'search', 'minPrice', 'maxPrice', 'sortOrder', 'sortPrice'));
+        return view('page.product', compact('products', 'categories', 'reviewsCount', 'search', 'minPrice', 'maxPrice', 'sortOrder', 'sortPrice', 'brands'));
     }
 
 
