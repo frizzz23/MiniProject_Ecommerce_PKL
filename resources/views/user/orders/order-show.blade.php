@@ -78,16 +78,16 @@
                     <div class="mb-3">
                         @if ($order->payment->status == 'pending')
                             <span
-                                class="inline-flex items-center m-2 px-3 py-1 bg-blue-200 hover:bg-blue-300 rounded-full text-sm font-semibold text-blue-600">Pending</span>
+                                class="inline-flex items-center m-2 px-3 py-1 bg-blue-200  rounded-full text-sm font-semibold text-blue-600">Pending</span>
                         @elseif ($order->payment->status == 'failed')
                             <span
-                                class="inline-flex items-center m-2 px-3 py-1 bg-red-200 hover:bg-red-300 rounded-full text-sm font-semibold text-red-600">Failed</span>
+                                class="inline-flex items-center m-2 px-3 py-1 bg-red-200  rounded-full text-sm font-semibold text-red-600">Failed</span>
                         @elseif ($order->payment->status == 'expired')
                             <span
-                                class="inline-flex items-center m-2 px-3 py-1 bg-warning-200 hover:bg-warning-300 rounded-full text-sm font-semibold text-warning-600">Expired</span>
+                                class="inline-flex items-center m-2 px-3 py-1 bg-yellow-200  rounded-full text-sm font-semibold text-yellow-600">Expired</span>
                         @else
                             <span
-                                class="inline-flex items-center m-2 px-3 py-1 bg-green-200 hover:bg-green-300 rounded-full text-sm font-semibold text-green-600">Success</span>
+                                class="inline-flex items-center m-2 px-3 py-1 bg-green-200  rounded-full text-sm font-semibold text-green-600">Success</span>
                         @endif
                     </div>
 

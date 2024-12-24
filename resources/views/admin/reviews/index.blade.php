@@ -97,6 +97,9 @@
                                 @endforelse
                             </tbody>
                         </table>
+                        <div class="mt-4">
+                            {{ $reviews->links() }}
+                        </div>
                     </div>
 
 

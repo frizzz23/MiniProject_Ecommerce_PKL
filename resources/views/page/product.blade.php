@@ -212,11 +212,12 @@
                                     </label>
                                 </div>
                                 <div class="w-36">
+
                                     @error('min_price')
                                         <div class="text-red-500 text-xs ">{{ $message }}</div>
                                     @enderror
                                 </div>
-                            
+
                                 <!-- Max Harga -->
                                 <div class="relative ">
                                     <input type="number" name="max_price" id="max_price"
@@ -226,6 +227,7 @@
                                         class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">
                                         Max Harga
                                     </label>
+
                                    
                                 </div>
                                 <div class="w-36">
@@ -234,7 +236,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            
+
 
                         </div>
 
@@ -327,18 +329,11 @@
                         @guest
                             <svg viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
                                 xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" class="w-4 h-4">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                                 <g id="SVGRepo_iconCarrier">
-                                    <defs></defs>
-                                    <g id="Page-1" stroke="none" stroke-width="1" fill="none"
-                                        fill-rule="evenodd">
-                                        <g id="Dribbble-Light-Preview" transform="translate(-420.000000, -2159.000000)"
-                                            fill="#000000">
+                                    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <g id="Dribbble-Light-Preview" transform="translate(-420.000000, -2159.000000)" fill="#000000">
                                             <g id="icons" transform="translate(56.000000, 160.000000)">
-                                                <path
-                                                    d="M374,2009 C371.794,2009 370,2007.206 370,2005 C370,2002.794 371.794,2001 374,2001 C376.206,2001 378,2002.794 378,2005 C378,2007.206 376.206,2009 374,2009 M377.758,2009.673 C379.124,2008.574 380,2006.89 380,2005 C380,2001.686 377.314,1999 374,1999 C370.686,1999 368,2001.686 368,2005 C368,2006.89 368.876,2008.574 370.242,2009.673 C366.583,2011.048 364,2014.445 364,2019 L366,2019 C366,2014 369.589,2011 374,2011 C378.411,2011 382,2014 382,2019 L384,2019 C384,2014.445 381.417,2011.048 377.758,2009.673"
-                                                    id="profile-[#1335]"></path>
+                                                <path d="M374,2009 C371.794,2009 370,2007.206 370,2005 C370,2002.794 371.794,2001 374,2001 C376.206,2001 378,2002.794 378,2005 C378,2007.206 376.206,2009 374,2009 M377.758,2009.673 C379.124,2008.574 380,2006.89 380,2005 C380,2001.686 377.314,1999 374,1999 C370.686,1999 368,2001.686 368,2005 C368,2006.89 368.876,2008.574 370.242,2009.673 C366.583,2011.048 364,2014.445 364,2019 L366,2019 C366,2014 369.589,2011 374,2011 C378.411,2011 382,2014 382,2019 L384,2019 C384,2014.445 381.417,2011.048 377.758,2009.673" id="profile-[#1335]"></path>
                                             </g>
                                         </g>
                                     </g>
@@ -347,33 +342,42 @@
                             <!-- Jika pengguna belum login -->
                             <a href="{{ route('login') }}" class="text-sm text-slate-700 hover:text-blue-400">Masuk</a>
                             <span>/</span>
-                            <a href="{{ route('register') }}"
-                                class="text-sm text-slate-700 hover:text-blue-400">Daftar</a>
+                            <a href="{{ route('register') }}" class="text-sm text-slate-700 hover:text-blue-400">Daftar</a>
                         @endguest
                         @auth
-                            <div class="tooltip">
-                                <a href="{{ route('user.profile.profile') }}"
-                                    class="flex justify-start items-center gap-1 text-md py-2 bg-gray-200 text-slate-800 w-auto  px-2 rounded-full">
-                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                        class="w-5 h-5">
-                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                        <g id="SVGRepo_iconCarrier">
-                                            <!-- Lingkaran untuk kepala -->
-                                            <circle cx="12" cy="8" r="4" stroke="#1C274C"
-                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                            </circle>
-                                            <!-- Kurva untuk tubuh -->
-                                            <path d="M4 20C4 16 8 14 12 14C16 14 20 16 20 20" stroke="#1C274C"
-                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                        </g>
-                                    </svg>
-                                    <span class="tooltiptext">Akun Saya</span>
-                                </a>
-
+                            <div class="relative">
+                                <!-- Profil dropdown -->
+                                <button id="profileDropdownButton">
+                                    <!-- Tampilkan gambar profil -->
+                                    <div class="w-12 h-12 rounded-full overflow-hidden">
+                                        <img src="{{ Auth::user()->image ? asset('storage/' . Auth::user()->image) : asset('style/src/assets/images/profile/user-1.jpg') }}"
+                                            alt="Profile Picture" class="w-full h-full object-cover">
+                                    </div>
+                                </button>
+                                <!-- Dropdown content -->
+                                <div id="profileDropdownMenu"
+                                    class="hidden absolute right-0 bg-white shadow-md rounded-lg mt-2 py-2 w-48">
+                                    <a href="{{ route('user.profile.profile') }}"
+                                        class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Aun Saya</a>
+                                    <a href="{{ route('user.orders.index') }}"
+                                        class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Pesanan Saya</a>
+                                    <a href="{{ route('logout') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                                        @csrf
+                                    </form>
+                                </div>
                             </div>
                         @endauth
                     </div>
+
+                    <script>
+                        document.getElementById('profileDropdownButton').addEventListener('click', function() {
+                            let dropdownMenu = document.getElementById('profileDropdownMenu');
+                            dropdownMenu.classList.toggle('hidden');
+                        });
+                    </script>
+
 
 
                 </div>
@@ -576,7 +580,7 @@
                         </div>
                     @endforeach
                 </div>
-            @endif  
+            @endif
         </div>
     </div>
 
@@ -639,7 +643,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- end filter view -->
 
     <x-list-cart-script />

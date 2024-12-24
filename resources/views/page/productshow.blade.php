@@ -142,11 +142,11 @@
                         </a>
                         <a href="{{ route('about-page') }}"
                             class="text-sm text-gray-800 hover:text-[#5D87FF] hover:font-semibold relative after:content-[''] after:block after:h-[2px] after:w-0 after:bg-[#5D87FF] after:mt-1 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full">
-                           Tentang
+                            Tentang
                         </a>
                         <a href="{{ route('contact-page') }}"
                             class="text-sm text-gray-800 hover:text-[#5D87FF] hover:font-semibold relative after:content-[''] after:block after:h-[2px] after:w-0 after:bg-[#5D87FF] after:mt-1 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full">
-                           Hubungi
+                            Hubungi
                         </a>
                     </div>
                 </div>
@@ -206,34 +206,41 @@
                             <!-- Jika pengguna belum login -->
                             <a href="{{ route('login') }}" class="text-sm text-slate-700 hover:text-blue-400">Masuk</a>
                             <span>/</span>
-                            <a href="{{ route('register') }}" class="text-sm text-slate-700 hover:text-blue-400">Daftar</a>
+                            <a href="{{ route('register') }}"
+                                class="text-sm text-slate-700 hover:text-blue-400">Daftar</a>
                         @endguest
                         @auth
-                            <div class="tooltip">
-                                <a href="{{ route('user.profile.profile') }}"
-                                    class="flex justify-start items-center gap-1 text-md py-2 bg-gray-200 text-slate-800 w-auto  px-2 rounded-full">
-                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                        class="w-5 h-5">
-                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
-                                        </g>
-                                        <g id="SVGRepo_iconCarrier">
-                                            <!-- Lingkaran untuk kepala -->
-                                            <circle cx="12" cy="8" r="4" stroke="#1C274C"
-                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                            </circle>
-                                            <!-- Kurva untuk tubuh -->
-                                            <path d="M4 20C4 16 8 14 12 14C16 14 20 16 20 20" stroke="#1C274C"
-                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                            </path>
-                                        </g>
-                                    </svg>
-                                    <span class="tooltiptext">Akun Saya</span>
-                                </a>
-
+                            <div class="relative">
+                                <!-- Profil dropdown -->
+                                <button id="profileDropdownButton">
+                                    <!-- Tampilkan gambar profil -->
+                                    <div class="w-12 h-12 rounded-full overflow-hidden">
+                                        <img src="{{ Auth::user()->image ? asset('storage/' . Auth::user()->image) : asset('style/src/assets/images/profile/user-1.jpg') }}"
+                                            alt="Profile Picture" class="w-full h-full object-cover">
+                                    </div>
+                                </button>
+                                <!-- Dropdown content -->
+                                <div id="profileDropdownMenu"
+                                    class="hidden absolute right-0 bg-white shadow-md rounded-lg mt-2 py-2 w-48">
+                                    <a href="{{ route('user.profile.profile') }}"
+                                        class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Akun Saya</a>
+                                    <a href="{{ route('user.orders.index') }}"
+                                        class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Pesanan Saya</a>
+                                    <a href="{{ route('logout') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                                        @csrf
+                                    </form>
+                                </div>
                             </div>
                         @endauth
                     </div>
+                    <script>
+                        document.getElementById('profileDropdownButton').addEventListener('click', function() {
+                            let dropdownMenu = document.getElementById('profileDropdownMenu');
+                            dropdownMenu.classList.toggle('hidden');
+                        });
+                    </script>
                 </div>
 
                 <!-- Hamburger Menu (untuk tampilan mobile) -->
@@ -437,7 +444,7 @@
                             Reviews
                         </h2>
                     </div>
-                    <form action="{{ route('addReview') }}" method="POST">
+                    {{-- <form action="{{ route('addReview') }}" method="POST">
                         @csrf <!-- Tambahkan CSRF token untuk keamanan -->
 
                         <!-- Pilih Bintang -->
@@ -475,8 +482,7 @@
                                 Send
                             </button>
                         </div>
-                    </form>
-
+                    </form> --}}
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                         @forelse ($reviews as $review)
                             <!-- Use $reviews instead of $product->reviews -->

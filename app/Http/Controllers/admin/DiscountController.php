@@ -11,11 +11,35 @@ class DiscountController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $codes = PromoCode::all();
-        return view('admin.discount.index', compact('codes'));
+    public function index(Request $request)
+{
+    // Mulai query untuk PromoCode
+    $query = PromoCode::query();
+
+    // Filter berdasarkan diskon
+    if ($request->has('price_discount') && in_array($request->price_discount, ['asc', 'desc'])) {
+        $query->orderBy('discount_amount', $request->price_discount);
     }
+
+    // Filter berdasarkan kuantitas
+    if ($request->has('kuantitas') && in_array($request->kuantitas, ['asc', 'desc'])) {
+        $query->orderBy('quantity', $request->kuantitas);
+    }
+
+    // Filter berdasarkan minimal pembelian
+    if ($request->has('minimal_pembelian') && in_array($request->minimal_pembelian, ['asc', 'desc'])) {
+        $query->orderByRaw('CAST(minimum_purchase AS DECIMAL) ' . $request->minimal_pembelian);
+    }
+
+    // Ambil data dengan pagination (misalnya 10 data per halaman)
+    $codes = $query->paginate(10);
+
+    // Kirim data ke view
+    return view('admin.discount.index', compact('codes'));
+}
+
+
+
 
     /**
      * Show the form for creating a new resource.
