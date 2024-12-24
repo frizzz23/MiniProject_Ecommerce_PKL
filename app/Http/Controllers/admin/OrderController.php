@@ -13,15 +13,15 @@ class OrderController extends Controller
     public function index(Request $request)
 {
     // Mengambil parameter filter dari request
-    $priceProduct = $request->input('price_product'); // Filter berdasarkan harga produk
+    $priceProduct = $request->input('price'); // Filter berdasarkan harga produk
     $statusOrder = $request->input('status_order'); // Filter berdasarkan status order
     $createdAt = $request->input('created_at'); // Filter berdasarkan tanggal
     $search = $request->input('search'); // Filter berdasarkan pencarian
 
-    // Mengambil semua pesanan, dengan filter berdasarkan price_product, status_order, created_at, dan search jika ada
+    // Mengambil semua pesanan, dengan filter berdasarkan price, status_order, created_at, dan search jika ada
     $orders = Order::with('user', 'productOrders.product', 'addresses', 'postage', 'promoCode', 'payment')
         ->when($priceProduct, function ($query) use ($priceProduct) {
-            return $query->orderBy('price', $priceProduct);
+            return $query->orderBy('grand_total_amount', $priceProduct); // Filter harga berdasarkan grand_total_amount
         })
         ->when($statusOrder, function ($query) use ($statusOrder) {
             return $query->where('status_order', $statusOrder);
@@ -29,20 +29,21 @@ class OrderController extends Controller
         ->when($createdAt, function ($query) use ($createdAt) {
             return $query->orderBy('created_at', $createdAt);
         })
-        ->when($search, function ($query, $search) {
+        ->when($search, function ($query) use ($search) {
             return $query->whereHas('productOrders.product', function ($query) use ($search) {
                 $query->where('name_product', 'like', '%' . $search . '%');
             });
         })
-        ->latest()
-        ->paginate(5);  // Added pagination to limit results per page
+        ->latest() // Mengurutkan berdasarkan yang terbaru
+        ->paginate(10);  // Added pagination to limit results per page
 
-    // Mengambil semua produk yang tersedia (if needed for other purposes, not for brand filter anymore)
+    // Mengambil semua produk yang tersedia untuk digunakan dalam form filter jika diperlukan
     $products = Product::all();
 
     // Mengembalikan tampilan dengan data orders dan products
     return view('admin.orders.index', compact('orders', 'products'));
 }
+
 
 
     /**

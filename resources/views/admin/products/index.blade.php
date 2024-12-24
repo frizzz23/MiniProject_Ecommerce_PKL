@@ -11,7 +11,7 @@
             @endif
 
             <div class="card-body p-4">
-                <h5 class="card-title text-2xl font-bold mb-4">Daftar Merek</h5>
+                <h5 class="card-title text-2xl font-bold mb-4">Daftar Produk</h5>
 
                 <!-- Pencarian dan Filter -->
                 <div class="flex justify-between items-center mb-4">
