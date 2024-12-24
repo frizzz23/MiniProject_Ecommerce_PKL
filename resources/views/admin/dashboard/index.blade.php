@@ -29,13 +29,6 @@
                         </div>
                         <!-- Teks Konten -->
                         <div>
-                            {{-- <h5 class="card-title">Order Terbaru</h5>
-                            @if ($neworder > 0)
-                                <p class="card-text">{{ $neworder }} Orders Pending</p>
-                            @else
-                                <p class="card-text">0</p>
-                            @endif --}}
-
                             <h5 class="card-title">Total Penjualan Bulan Ini</h5>
                             @if ($totalItemsSold > 0)
                                 <p class="card-text">{{ $totalItemsSold }} Pesanan Selesai</p>
@@ -47,8 +40,6 @@
                     </div>
                 </div>
             </div>
-
-
             <!-- Card 4: Pelanggan Baru -->
             <div class="col-md-4 col-sm-6 mb-4">
                 <div class="card h-100 shadow-sm">
@@ -68,14 +59,74 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <!-- Card for Sales Chart -->
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Penjualan Chart</h5>
+                <div class="d-flex justify-content-end mb-3">
+                    <!-- Dropdown for period selection -->
+                    <div class="relative inline-block text-left">
+                        <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Pilih Periode
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li><a class="dropdown-item" href="#" onclick="changePeriod('daily')">Harian</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="changePeriod('weekly')">Mingguan</a>
+                            </li>
+                            <li><a class="dropdown-item" href="#" onclick="changePeriod('monthly')">Bulanan</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
 
+                <!-- Canvas for chart display -->
+                <canvas id="salesChart"></canvas>
+            </div>
         </div>
 
+        <!-- Card for Top 10 Barang Paling Banyak Diorder -->
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Top 10 Barang Paling Banyak Diorder</h5>
                 <div class="d-flex justify-content-end mb-3">
-                    <form method="GET" action="{{ route('dashboard.index') }}" class="d-flex align-items-center">
+                    <form id="filterForm" class="d-flex align-items-center">
+                        @csrf
+                        <label for="month" class="me-2 small">Bulan</label>
+                        <select id="month" name="month" class="form-select form-select-sm me-2">
+                            @for ($i = 1; $i <= 12; $i++)
+                                <option value="{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}"
+                                    {{ $i == request('month', now()->format('m')) ? 'selected' : '' }}>
+                                    {{ date('F', mktime(0, 0, 0, $i, 1)) }}
+                                </option>
+                            @endfor
+                        </select>
+
+                        <label for="year" class="me-2 small">Tahun</label>
+                        <select id="year" name="year" class="form-select form-select-sm me-2">
+                            @for ($i = now()->year; $i >= 2000; $i--)
+                                <option value="{{ $i }}"
+                                    {{ $i == request('year', now()->format('Y')) ? 'selected' : '' }}>
+                                    {{ $i }}
+                                </option>
+                            @endfor
+                        </select>
+
+                        <button type="submit" class="btn btn-sm btn-primary">Tampilkan</button>
+                    </form>
+                </div>
+                <canvas id="mostOrderedProductsChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Card for Top 10 Kategori Terlaris -->
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Top 10 Kategori Produk Terlaris</h5>
+                <div class="d-flex justify-content-end mb-3">
+                    <form id="categoryForm" class="d-flex align-items-center">
+                        @csrf
                         <label for="month" class="me-2 small">Bulan</label>
                         <select id="month" name="month" class="form-select form-select-sm me-2">
                             @for ($i = 1; $i <= 12; $i++)
@@ -100,425 +151,448 @@
                     </form>
                 </div>
 
-                <canvas id="mostOrderedProductsChart"></canvas>
-            </div>
-        </div>
-
-
-        {{-- <div class="row">
-            <div class="col-lg-4 d-flex align-items-stretch">
-                <div class="card w-100">
-                    <div class="card-body p-4">
-                        <div class="mb-4">
-                            <h5 class="card-title fw-semibold">Recent Transactions</h5>
+                <div class="chart-container" style="position: relative; height: 400px;">
+                    <canvas id="topCategoriesChart"></canvas>
+                    <div id="chartLoading" class="chart-loading d-none">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
                         </div>
-                        <ul class="timeline-widget mb-0 position-relative mb-n5">
-                            <li class="timeline-item d-flex position-relative overflow-hidden">
-                                <div class="timeline-time text-dark flex-shrink-0 text-end">
-                                    09:30</div>
-                                <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                    <span class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
-                                    <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                                </div>
-                                <div class="timeline-desc fs-3 text-dark mt-n1">Payment
-                                    received from John Doe of $385.90</div>
-                            </li>
-                            <li class="timeline-item d-flex position-relative overflow-hidden">
-                                <div class="timeline-time text-dark flex-shrink-0 text-end">
-                                    10:00 am</div>
-                                <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                    <span class="timeline-badge border-2 border border-info flex-shrink-0 my-8"></span>
-                                    <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                                </div>
-                                <div class="timeline-desc fs-3 text-dark mt-n1 fw-semibold">New
-                                    sale recorded <a href="javascript:void(0)"
-                                        class="text-primary d-block fw-normal">#ML-3467</a>
-                                </div>
-                            </li>
-                            <li class="timeline-item d-flex position-relative overflow-hidden">
-                                <div class="timeline-time text-dark flex-shrink-0 text-end">
-                                    12:00 am</div>
-                                <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                    <span class="timeline-badge border-2 border border-success flex-shrink-0 my-8"></span>
-                                    <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                                </div>
-                                <div class="timeline-desc fs-3 text-dark mt-n1">Payment was
-                                    made of $64.95 to Michael</div>
-                            </li>
-                            <li class="timeline-item d-flex position-relative overflow-hidden">
-                                <div class="timeline-time text-dark flex-shrink-0 text-end">
-                                    09:30 am</div>
-                                <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                    <span class="timeline-badge border-2 border border-warning flex-shrink-0 my-8"></span>
-                                    <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                                </div>
-                                <div class="timeline-desc fs-3 text-dark mt-n1 fw-semibold">New
-                                    sale recorded <a href="javascript:void(0)"
-                                        class="text-primary d-block fw-normal">#ML-3467</a>
-                                </div>
-                            </li>
-                            <li class="timeline-item d-flex position-relative overflow-hidden">
-                                <div class="timeline-time text-dark flex-shrink-0 text-end">
-                                    09:30 am</div>
-                                <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                    <span class="timeline-badge border-2 border border-danger flex-shrink-0 my-8"></span>
-                                    <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                                </div>
-                                <div class="timeline-desc fs-3 text-dark mt-n1 fw-semibold">New
-                                    arrival recorded
-                                </div>
-                            </li>
-                            <li class="timeline-item d-flex position-relative overflow-hidden">
-                                <div class="timeline-time text-dark flex-shrink-0 text-end">
-                                    12:00 am</div>
-                                <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                    <span class="timeline-badge border-2 border border-success flex-shrink-0 my-8"></span>
-                                </div>
-                                <div class="timeline-desc fs-3 text-dark mt-n1">Payment Done
-                                </div>
-                            </li>
-                        </ul>
                     </div>
-                </div>
-            </div>
-            <div class="col-lg-8 d-flex align-items-stretch">
-                <div class="card w-100">
-                    <div class="card-body p-4">
-                        <h5 class="card-title fw-semibold mb-4">Recent Transactions</h5>
-                        <div class="table-responsive">
-                            <table class="table text-nowrap mb-0 align-middle">
-                                <thead class="text-dark fs-4">
-                                    <tr>
-                                        <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Id</h6>
-                                        </th>
-                                        <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Assigned</h6>
-                                        </th>
-                                        <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Name</h6>
-                                        </th>
-                                        <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Priority</h6>
-                                        </th>
-                                        <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Budget</h6>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">1</h6>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-1">Sunil Joshi</h6>
-                                            <span class="fw-normal">Web Designer</span>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <p class="mb-0 fw-normal">Elite Admin</p>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <div class="d-flex align-items-center gap-2">
-                                                <span class="badge bg-primary rounded-3 fw-semibold">Low</span>
-                                            </div>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0 fs-4">$3.9</h6>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">2</h6>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-1">Andrew McDownland</h6>
-                                            <span class="fw-normal">Project Manager</span>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <p class="mb-0 fw-normal">Real Homes WP Theme</p>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <div class="d-flex align-items-center gap-2">
-                                                <span class="badge bg-secondary rounded-3 fw-semibold">Medium</span>
-                                            </div>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0 fs-4">$24.5k</h6>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">3</h6>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-1">Christopher Jamil</h6>
-                                            <span class="fw-normal">Project Manager</span>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <p class="mb-0 fw-normal">MedicalPro WP Theme</p>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <div class="d-flex align-items-center gap-2">
-                                                <span class="badge bg-danger rounded-3 fw-semibold">High</span>
-                                            </div>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0 fs-4">$12.8k</h6>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">4</h6>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-1">Nirav Joshi</h6>
-                                            <span class="fw-normal">Frontend Engineer</span>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <p class="mb-0 fw-normal">Hosting Press HTML</p>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <div class="d-flex align-items-center gap-2">
-                                                <span class="badge bg-success rounded-3 fw-semibold">Critical</span>
-                                            </div>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0 fs-4">$2.4k</h6>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div id="chartMessage" class="d-none text-center text-muted mt-3">
+                        Tidak ada data penjualan untuk periode yang dipilih.
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-sm-6 col-xl-3">
-                <div class="card overflow-hidden rounded-2">
-                    <div class="position-relative">
-                        <a href="javascript:void(0)"><img src="{{ asset('style/src/assets/images/products/s4.jp') }}g"
-                                class="card-img-top rounded-0" alt=""></a>
-                        <a href="javascript:void(0)"
-                            class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3"
-                            data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart"><i
-                                class="ti ti-basket fs-4"></i></a>
-                    </div>
-                    <div class="card-body pt-3 p-4">
-                        <h6 class="fw-semibold fs-4">Boat Headphone</h6>
-                        <div class="d-flex align-items-center justify-content-between">
-                            <h6 class="fw-semibold fs-4 mb-0">$50 <span
-                                    class="ms-2 fw-normal text-muted fs-3"><del>$65</del></span>
-                            </h6>
-                            <ul class="list-unstyled d-flex align-items-center mb-0">
-                                <li><a class="me-1" href="javascript:void(0)"><i
-                                            class="ti ti-star text-warning"></i></a></li>
-                                <li><a class="me-1" href="javascript:void(0)"><i
-                                            class="ti ti-star text-warning"></i></a></li>
-                                <li><a class="me-1" href="javascript:void(0)"><i
-                                            class="ti ti-star text-warning"></i></a></li>
-                                <li><a class="me-1" href="javascript:void(0)"><i
-                                            class="ti ti-star text-warning"></i></a></li>
-                                <li><a class="" href="javascript:void(0)"><i
-                                            class="ti ti-star text-warning"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-xl-3">
-                <div class="card overflow-hidden rounded-2">
-                    <div class="position-relative">
-                        <a href="javascript:void(0)"><img src="{{ asset('style/src/assets/images/products/s5.jpg') }}"
-                                class="card-img-top rounded-0" alt=""></a>
-                        <a href="javascript:void(0)"
-                            class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3"
-                            data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart"><i
-                                class="ti ti-basket fs-4"></i></a>
-                    </div>
-                    <div class="card-body pt-3 p-4">
-                        <h6 class="fw-semibold fs-4">MacBook Air Pro</h6>
-                        <div class="d-flex align-items-center justify-content-between">
-                            <h6 class="fw-semibold fs-4 mb-0">$650 <span
-                                    class="ms-2 fw-normal text-muted fs-3"><del>$900</del></span>
-                            </h6>
-                            <ul class="list-unstyled d-flex align-items-center mb-0">
-                                <li><a class="me-1" href="javascript:void(0)"><i
-                                            class="ti ti-star text-warning"></i></a></li>
-                                <li><a class="me-1" href="javascript:void(0)"><i
-                                            class="ti ti-star text-warning"></i></a></li>
-                                <li><a class="me-1" href="javascript:void(0)"><i
-                                            class="ti ti-star text-warning"></i></a></li>
-                                <li><a class="me-1" href="javascript:void(0)"><i
-                                            class="ti ti-star text-warning"></i></a></li>
-                                <li><a class="" href="javascript:void(0)"><i
-                                            class="ti ti-star text-warning"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-xl-3">
-                <div class="card overflow-hidden rounded-2">
-                    <div class="position-relative">
-                        <a href="javascript:void(0)"><img src="{{ asset('style/src/assets/images/products/s7.jpg') }}"
-                                class="card-img-top rounded-0" alt=""></a>
-                        <a href="javascript:void(0)"
-                            class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3"
-                            data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart"><i
-                                class="ti ti-basket fs-4"></i></a>
-                    </div>
-                    <div class="card-body pt-3 p-4">
-                        <h6 class="fw-semibold fs-4">Red Valvet Dress</h6>
-                        <div class="d-flex align-items-center justify-content-between">
-                            <h6 class="fw-semibold fs-4 mb-0">$150 <span
-                                    class="ms-2 fw-normal text-muted fs-3"><del>$200</del></span>
-                            </h6>
-                            <ul class="list-unstyled d-flex align-items-center mb-0">
-                                <li><a class="me-1" href="javascript:void(0)"><i
-                                            class="ti ti-star text-warning"></i></a></li>
-                                <li><a class="me-1" href="javascript:void(0)"><i
-                                            class="ti ti-star text-warning"></i></a></li>
-                                <li><a class="me-1" href="javascript:void(0)"><i
-                                            class="ti ti-star text-warning"></i></a></li>
-                                <li><a class="me-1" href="javascript:void(0)"><i
-                                            class="ti ti-star text-warning"></i></a></li>
-                                <li><a class="" href="javascript:void(0)"><i
-                                            class="ti ti-star text-warning"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-xl-3">
-                <div class="card overflow-hidden rounded-2">
-                    <div class="position-relative">
-                        <a href="javascript:void(0)"><img src="{{ asset('style/src/assets/images/products/s11.jpg') }}"
-                                class="card-img-top rounded-0" alt=""></a>
-                        <a href="javascript:void(0)"
-                            class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3"
-                            data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart"><i
-                                class="ti ti-basket fs-4"></i></a>
-                    </div>
-                    <div class="card-body pt-3 p-4">
-                        <h6 class="fw-semibold fs-4">Cute Soft Teddybear</h6>
-                        <div class="d-flex align-items-center justify-content-between">
-                            <h6 class="fw-semibold fs-4 mb-0">$285 <span
-                                    class="ms-2 fw-normal text-muted fs-3"><del>$345</del></span>
-                            </h6>
-                            <ul class="list-unstyled d-flex align-items-center mb-0">
-                                <li><a class="me-1" href="javascript:void(0)"><i
-                                            class="ti ti-star text-warning"></i></a></li>
-                                <li><a class="me-1" href="javascript:void(0)"><i
-                                            class="ti ti-star text-warning"></i></a></li>
-                                <li><a class="me-1" href="javascript:void(0)"><i
-                                            class="ti ti-star text-warning"></i></a></li>
-                                <li><a class="me-1" href="javascript:void(0)"><i
-                                            class="ti ti-star text-warning"></i></a></li>
-                                <li><a class="" href="javascript:void(0)"><i
-                                            class="ti ti-star text-warning"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="py-6 px-6 text-center">
-            <p class="mb-0 fs-4">Design and Developed by <a href="https://adminmart.com/" target="_blank"
-                    class="pe-1 text-primary text-decoration-underline">AdminMart.com</a></p>
-        </div> --}}
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const ctx = document.getElementById('mostOrderedProductsChart').getContext('2d');
+        // Mengambil bulan dan tahun dari variabel Blade
+        let month = "{{ $month }}"; // Ini akan diparsing dari variabel PHP
+        let year = "{{ $year }}"; // Ini juga akan diparsing dari variabel PHP
 
-            // Data dari server
-            const mostOrderedProductsData = @json($mostOrderedProducts);
+        // Fungsi untuk mengubah periode chart
+        function changePeriod(period) {
+            // Mengirim permintaan AJAX untuk mengambil data berdasarkan periode yang dipilih
+            fetch("{{ route('sales.chart') }}?period=" + period + "&month=" + month + "&year=" + year, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Memperbarui chart dengan data yang diterima dari server
+                    updateChart(data);
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
 
-            // Ambil nama produk dan jumlah total yang diorder
-            const labels = mostOrderedProductsData.map(item => item.product.name_product);
-            const data = mostOrderedProductsData.map(item => parseInt(item.total_quantity));
+        // Fungsi untuk memperbarui chart
+        function updateChart(data) {
+            let ctx = document.getElementById('salesChart').getContext('2d');
+            let chart = new Chart(ctx, {
+                type: 'line', // Jenis chart yang digunakan
+                data: {
+                    labels: data.labels, // Misalnya tanggal, minggu, atau bulan
+                    datasets: [{
+                        label: 'Total Penjualan',
+                        data: data.total_sales, // Data penjualan
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        fill: false
+                    }]
+                }
+            });
+        }
+    </script>
 
-            // Warna batang
-            const baseColor = 'rgba(54, 162, 235, 0.8)'; // Biru
-            const borderColor = 'rgba(255, 255, 255, 1)'; // Putih
+    <script>
+        var chart = null;
 
-            // Konfigurasi Chart.js
-            new Chart(ctx, {
-                type: 'bar',
+        // Fungsi untuk memperbarui grafik berdasarkan periode
+        function changePeriod(period) {
+            // Mengirim request AJAX
+            $.ajax({
+                url: "{{ route('sales.chart') }}", // Gantilah dengan URL yang sesuai
+                method: "GET",
+                data: {
+                    period: period
+                },
+                success: function(data) {
+                    // Memperbarui grafik dengan data baru
+                    updateChart(data, period);
+                }
+            });
+        }
+
+        // Fungsi untuk memperbarui grafik
+        function updateChart(salesData, period) {
+            // Memastikan grafik tidak digambar lebih dari sekali
+            if (chart) {
+                chart.destroy(); // Menghancurkan grafik lama
+            }
+
+            // Menyiapkan data untuk chart
+            var labels = salesData.map(function(item) {
+                if ('date' in item) return item.date; // For daily
+                if ('week' in item) return 'Minggu ' + item.week; // For weekly
+                if ('month' in item) return 'Bulan ' + item.month; // For monthly
+            });
+
+            var data = salesData.map(function(item) {
+                return item.total_sales;
+            });
+
+            // Membuat grafik baru
+            var ctx = document.getElementById('salesChart').getContext('2d');
+            chart = new Chart(ctx, {
+                type: 'line',
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: 'Jumlah Barang yang Diorder',
+                        label: 'Total Penjualan',
                         data: data,
-                        backgroundColor: baseColor,
-                        borderColor: borderColor,
-                        borderWidth: 2,
-                        borderRadius: 10, // Membuat ujung batang rounded
-                        borderSkipped: false, // Menghilangkan border yang diskip
+                        borderColor: 'rgb(75, 192, 192)',
+                        fill: false,
                     }]
                 },
                 options: {
                     responsive: true,
                     plugins: {
                         legend: {
-                            display: true,
                             position: 'top',
-                            labels: {
-                                font: {
-                                    size: 14
-                                },
-                                color: '#000' // Warna teks legenda
+                        },
+                    },
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: period.charAt(0).toUpperCase() + period.slice(1)
                             }
                         },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return `Jumlah: ${context.raw}`;
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Total Penjualan'
+                            },
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        // Memuat grafik pertama kali dengan data harian
+        changePeriod('daily');
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            let chartInstance = null;
+
+            function initializeChart(data) {
+                const ctx = document.getElementById('mostOrderedProductsChart').getContext('2d');
+
+                // Hapus grafik yang ada jika sudah ada
+                if (chartInstance) {
+                    chartInstance.destroy();
+                }
+
+                // Cek apakah data kosong
+                if (!data || data.length === 0) {
+                    // Tampilkan pesan tidak ada data
+                    chartInstance = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Tidak ada data'],
+                            datasets: [{
+                                label: 'Jumlah Barang yang Diorder',
+                                data: [0],
+                                backgroundColor: 'rgba(200, 200, 200, 0.2)',
+                                borderColor: 'rgba(200, 200, 200, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    display: false
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Tidak ada data penjualan untuk periode yang dipilih',
+                                    font: {
+                                        size: 16
+                                    },
+                                    padding: 20
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    max: 10
+                                }
+                            }
+                        }
+                    });
+                    return;
+                }
+
+                const labels = data.map(item => item.product.name_product);
+                const chartData = data.map(item => parseInt(item.total_quantity));
+
+                chartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Jumlah Barang yang Diorder',
+                            data: chartData,
+                            backgroundColor: 'rgba(54, 162, 235, 0.8)',
+                            borderColor: 'rgba(255, 255, 255, 1)',
+                            borderWidth: 2,
+                            borderRadius: 10,
+                            borderSkipped: false,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                labels: {
+                                    font: {
+                                        size: 14
+                                    },
+                                    color: '#000'
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `Jumlah: ${context.raw}`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                ticks: {
+                                    font: {
+                                        size: 12
+                                    },
+                                    color: '#000',
+                                    maxRotation: 45,
+                                    minRotation: 0
+                                },
+                                grid: {
+                                    display: false
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Jumlah Barang',
+                                    font: {
+                                        size: 14
+                                    },
+                                    color: '#000'
+                                },
+                                ticks: {
+                                    font: {
+                                        size: 12
+                                    },
+                                    color: '#000'
+                                },
+                                grid: {
+                                    color: 'rgba(200, 200, 200, 0.2)',
+                                    borderColor: '#000'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Inisialisasi awal grafik
+            initializeChart(@json($mostOrderedProducts));
+
+            // Handle form submission
+            $('#filterForm').on('submit', function(e) {
+                e.preventDefault();
+                const month = $('#month').val();
+                const year = $('#year').val();
+
+                // Show loading state
+                const submitButton = $(this).find('button[type="submit"]');
+                submitButton.prop('disabled', true)
+                    .html(
+                        '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...'
+                    );
+
+                $.ajax({
+                    url: "{{ route('dashboard.index') }}",
+                    method: 'GET',
+                    data: {
+                        month: month,
+                        year: year,
+                        ajax: true
+                    },
+                    success: function(response) {
+                        if (response.mostOrderedProducts) {
+                            initializeChart(response.mostOrderedProducts);
+                            // Tambahkan notifikasi jika data kosong
+                            if (response.mostOrderedProducts.length === 0) {
+                                // Optional: Tampilkan toast atau notifikasi
+                                if (typeof Swal !== 'undefined') {
+                                    Swal.fire({
+                                        icon: 'info',
+                                        title: 'Tidak Ada Data',
+                                        text: 'Tidak ada data penjualan untuk periode yang dipilih',
+                                        timer: 3000
+                                    });
                                 }
                             }
                         }
                     },
-                    scales: {
-                        x: {
-                            ticks: {
-                                font: {
-                                    size: 12
-                                },
-                                color: '#000',
-                                maxRotation: 45,
-                                minRotation: 0
-                            },
-                            grid: {
-                                display: false // Hilangkan garis grid di sumbu X
-                            }
-                        },
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Jumlah Barang',
-                                font: {
-                                    size: 14
-                                },
-                                color: '#000'
-                            },
-                            ticks: {
-                                font: {
-                                    size: 12
-                                },
-                                color: '#000'
-                            },
-                            grid: {
-                                color: 'rgba(200, 200, 200, 0.2)', // Warna garis grid
-                                borderColor: '#000' // Warna garis sumbu Y
-                            }
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error);
+                        if (typeof Swal !== 'undefined') {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Terjadi kesalahan saat memuat data. Silakan coba lagi.'
+                            });
+                        } else {
+                            alert('Terjadi kesalahan saat memuat data. Silakan coba lagi.');
                         }
+                    },
+                    complete: function() {
+                        // Reset button state
+                        submitButton.prop('disabled', false).text('Tampilkan');
                     }
+                });
+            });
+        });
+    </script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let categoryChart = null;
+
+            // Function to update the chart
+            function updateChart(data) {
+                const ctx = document.getElementById('topCategoriesChart').getContext('2d');
+
+                // Destroy existing chart if it exists
+                if (categoryChart) {
+                    categoryChart.destroy();
                 }
+
+                // Check if data is empty
+                if (!data || data.length === 0) {
+                    document.getElementById('chartMessage').textContent =
+                        'Tidak ada data penjualan untuk periode yang dipilih.';
+                    document.getElementById('chartMessage').classList.remove('d-none');
+                    return;
+                } else {
+                    document.getElementById('chartMessage').classList.add('d-none');
+                }
+
+                // Create new chart
+                categoryChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: data.map(item => item.name_category),
+                        datasets: [{
+                            label: 'Jumlah Terjual',
+                            data: data.map(item => item.total_quantity),
+                            backgroundColor: [
+                                'rgba(75, 192, 192, 0.6)',
+                                'rgba(54, 162, 235, 0.6)',
+                                'rgba(255, 206, 86, 0.6)',
+                                'rgba(153, 102, 255, 0.6)',
+                                'rgba(255, 159, 64, 0.6)',
+                                'rgba(201, 203, 207, 0.6)',
+                                'rgba(255, 99, 132, 0.6)',
+                                'rgba(66, 135, 245, 0.6)',
+                                'rgba(183, 28, 28, 0.6)',
+                                'rgba(56, 142, 60, 0.6)',
+                            ],
+                        }],
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'right',
+                                labels: {
+                                    font: {
+                                        size: 12
+                                    },
+                                    padding: 20
+                                }
+                            },
+                            tooltip: {
+                                enabled: true,
+                                callbacks: {
+                                    label: function(context) {
+                                        const label = context.label || '';
+                                        const value = context.raw || 0;
+                                        const total = context.dataset.data.reduce((acc, current) =>
+                                            acc + current, 0);
+                                        const percentage = ((value / total) * 100).toFixed(1);
+                                        return `${label}: ${value} (${percentage}%)`;
+                                    }
+                                }
+                            },
+                        },
+                    },
+                });
+            }
+
+            // Initial chart creation with data from page load
+            updateChart(@json($topCategories));
+
+            // Handle form submission
+            document.getElementById('categoryForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const formData = new FormData(this);
+                const year = formData.get('year');
+                const month = formData.get('month');
+
+                fetch(`{{ route('dashboard.index') }}?year=${year}&month=${month}`, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(response => {
+                        if (response.success) {
+                            updateChart(response.topCategories || []);
+                        } else {
+                            throw new Error('Failed to fetch data');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        // Show error message to user
+                        alert('Gagal memuat data. Silakan coba lagi.');
+                    });
             });
         });
     </script>
