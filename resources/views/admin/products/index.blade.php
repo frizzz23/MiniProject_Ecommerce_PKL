@@ -159,6 +159,8 @@
                                             </span>
                                         </div>
 
+                                        <a href="{{ route('admin.products.show', $product->slug) }}">show</a>
+
                                         <!-- Delete Button with Tooltip -->
                                         <div class="relative group inline-block">
                                             <button class="bg-red-500 text-white px-3 py-1 rounded flex items-center">
@@ -201,14 +203,14 @@
     </div>
 </div>
 
-<script>
+{{-- <script>
     function toggleDetails(productId) {
         const detailsRow = document.getElementById(`details_${productId}`);
         if (detailsRow) {
             detailsRow.classList.toggle('hidden');
         }
     }
-</script>
+</script> --}}  
 
 
     <!-- Modal Tambah Produk -->

@@ -202,34 +202,35 @@
                         <div class="flex gap-2 items-center mb-2">
 
                             <div class="flex flex-col gap-3 w-36">
-                                <div class="relative mb-4">
+                                <div class="relative">
                                     <input type="number" name="min_price" id="min_price"
                                         class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                        placeholder=" " value="{{ request('min_price') ?? 0}}" >
+                                        placeholder=" " value="{{ request()->old('min_price') ?? 0}}" >
                                     <label for="min_price"
                                         class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">
                                         Min Harga
                                     </label>
-                            
-                                    <!-- Tampilkan Pesan Error untuk Min Harga -->
+                                </div>
+                                <div class="w-36">
                                     @error('min_price')
-                                        <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
+                                        <div class="text-red-500 text-xs ">{{ $message }}</div>
                                     @enderror
                                 </div>
                             
                                 <!-- Max Harga -->
-                                <div class="relative mb-4">
+                                <div class="relative ">
                                     <input type="number" name="max_price" id="max_price"
                                         class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                        placeholder=" " value="{{ request('max_price') ?? 0 }}">
+                                        placeholder=" " value="{{ request()->old('max_price') ?? 0 }}">
                                     <label for="max_price"
                                         class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">
                                         Max Harga
                                     </label>
-                            
-                                    <!-- Tampilkan Pesan Error untuk Max Harga -->
+                                   
+                                </div>
+                                <div class="w-36">
                                     @error('max_price')
-                                        <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
+                                        <div class="text-red-500 text-xs ">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
@@ -453,9 +454,9 @@
 
                     <div class="">
                         <label for="sort_order" class="block text-sm text-slate-700 mb-1">Sort Order</label>
-                        <select name="sort_order" onchange="this.form.submit();" id="sort_order"
+                        <select name="sort_order" 
                             class="border border-slate-300
-                            text-sm px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-md">
+                            text-sm px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-md" onchange="this.form.submit();" id="sort_order">
                             <option value="">Dibuat</option>
                             <option value="terlama" {{ request('sort_order') == 'terlama' ? 'selected' : '' }}>
                                 Terlama</option>

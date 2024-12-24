@@ -12,10 +12,19 @@ class BrandController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         // Mendapatkan semua data brand
-        $brands = Brand::all();
+        $brands = Brand::when($request->input('search'), function ($query, $search) {
+            $query->where('name_brand', 'like', '%' . $search . '%');
+        })
+            ->when($request->input('sort_order'), function ($query, $sortOrder) {
+                if ($sortOrder === 'terlama') {
+                    return $query->orderBy('created_at', 'asc');
+                }
+                return $query->orderBy('created_at', 'desc');
+            })
+            ->get();
         return view('admin.brands.index', compact('brands'));
     }
 
@@ -36,7 +45,7 @@ class BrandController extends Controller
         $request->validate([
             'name_brand' => 'required|string|max:255|unique:brands,name_brand',
             'image_brand' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        ],[
+        ], [
             'name_brand.required' => 'Nama brand wajib diisi.',
             'name_brand.unique' => 'Nama brand sudah digunakan.',
             'image_brand.nullable' => 'Gambar brand wajib diisi.',

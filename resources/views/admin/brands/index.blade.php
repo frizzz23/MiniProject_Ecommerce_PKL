@@ -199,7 +199,7 @@
                         <div class="flex justify-between items-center mb-4">
                             <div>
                                 <!-- Pencarian -->
-                                <form action="{{ route('admin.products.index') }}" method="GET" class="d-inline-block">
+                                <form action="{{ route('admin.brands.index') }}" method="GET" class="d-inline-block">
                                     <div class="d-flex align-items-center">
                                         <input type="text" name="search"
                                             class="form-control me-2 border-lg border-[#5d85fa]" placeholder="Cari produk"
@@ -214,11 +214,19 @@
                                     + Tambah Merek
                                 </button>
                                  <!-- Filter Sort By Date -->
-                                 <form id="filterForm" action="{{ route('admin.categories.index') }}" method="GET" class="d-inline-block">
+                                 <form id="filterForm" action="{{ route('admin.brands.index') }}" method="GET"
+                                    class="d-inline-block">
                                     <div class="d-flex align-items-center">
-                                        <select name="sort_by_date" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full" onchange="document.getElementById('filterForm').submit();">
-                                            <option value="newest" {{ request('sort_by_date') == 'newest' ? 'selected' : '' }}>Kategori Terbaru</option>
-                                            <option value="oldest" {{ request('sort_by_date') == 'oldest' ? 'selected' : '' }}>Kategori Terlama</option>
+                                        <select name="sort_order"
+                                            class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
+                                            onchange="this.form.submit();" id="sort_order">
+                                            <option value="">Urutkan</option>
+                                            <option value="terlama"
+                                                {{ request('sort_order') == 'terlama' ? 'selected' : '' }}>
+                                                Terlama</option>
+                                            <option value="terbaru"
+                                                {{ request('sort_order') == 'terbaru' ? 'selected' : '' }}>
+                                                Terbaru</option>
                                         </select>
                                     </div>
                                 </form>
