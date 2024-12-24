@@ -142,11 +142,11 @@
                         </a>
                         <a href="{{ route('about-page') }}"
                             class="text-sm text-gray-800 hover:text-[#5D87FF] hover:font-semibold relative after:content-[''] after:block after:h-[2px] after:w-0 after:bg-[#5D87FF] after:mt-1 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full">
-                           Tentang
+                            Tentang
                         </a>
                         <a href="{{ route('contact-page') }}"
                             class="text-sm text-gray-800 hover:text-[#5D87FF] hover:font-semibold relative after:content-[''] after:block after:h-[2px] after:w-0 after:bg-[#5D87FF] after:mt-1 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full">
-                           Hubungi
+                            Hubungi
                         </a>
                     </div>
                 </div>
@@ -206,7 +206,8 @@
                             <!-- Jika pengguna belum login -->
                             <a href="{{ route('login') }}" class="text-sm text-slate-700 hover:text-blue-400">Masuk</a>
                             <span>/</span>
-                            <a href="{{ route('register') }}" class="text-sm text-slate-700 hover:text-blue-400">Daftar</a>
+                            <a href="{{ route('register') }}"
+                                class="text-sm text-slate-700 hover:text-blue-400">Daftar</a>
                         @endguest
                         @auth
                             <div class="tooltip">
@@ -437,7 +438,7 @@
                             Reviews
                         </h2>
                     </div>
-                    <form action="{{ route('addReview') }}" method="POST">
+                    {{-- <form action="{{ route('addReview') }}" method="POST">
                         @csrf <!-- Tambahkan CSRF token untuk keamanan -->
 
                         <!-- Pilih Bintang -->
@@ -475,7 +476,7 @@
                                 Send
                             </button>
                         </div>
-                    </form>
+                    </form> --}}
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                         @forelse ($reviews as $review)

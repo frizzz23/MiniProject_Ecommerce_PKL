@@ -122,7 +122,7 @@
                                 <div class="text-slate-700 text-sm grid grid-cols-[0.5fr_2fr]">
                                     <div class="flex items-end">
                                         <a href="{{ route('order-show', ['order_id' => $order->id]) }}"
-                                            class="bg-blue-700 text-white rounded-lg px-5 py-2 text-sm">Detail
+                                            class="bg-blue-700 text-white rounded-lg px-3 py-2 text-sm">Detail
                                         </a>
                                     </div>
                                     <div class="flex justify-end">
@@ -215,7 +215,7 @@
                                 <div class="text-slate-700 text-sm grid grid-cols-[0.5fr_2fr]">
                                     <div class="flex items-end">
                                         <a href="{{ route('order-show', ['order_id' => $order->id]) }}"
-                                            class="bg-blue-700 text-white rounded-lg px-5 py-2 text-sm">Detail
+                                            class="bg-blue-700 text-white rounded-lg px-3 py-2 text-sm">Detail
                                         </a>
                                     </div>
                                     <div class="flex justify-end">
@@ -298,15 +298,23 @@
                                             <span
                                                 class="font-semibold text-slate-800">{{ $productOrder->product->name_product }}</span>
                                             <span class="text-xs text-slate-500">x{{ $productOrder->quantity }}</span>
+                                            <div>
+                                                @if ($productOrder->product->reviews->count() <= 0)
+                                                    <button class="bg-yellow-600 text-white rounded-md px-2 py-1 text-xs"
+                                                        onclick="openReview('{{ $productOrder->product->id }}', '{{ $productOrder->product->name_product }}')">
+                                                        Nilai
+                                                    </button>
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
-
                                     <!-- Keterangan Produk -->
                                 @endforeach
                                 <div class="text-slate-700 text-sm grid grid-cols-[0.5fr_2fr]">
                                     <div class="flex items-end gap-2">
+
                                         <a href="{{ route('order-show', ['order_id' => $order->id]) }}"
-                                            class="bg-blue-700 text-white rounded-lg px-5 py-2 text-sm">Detail
+                                            class="bg-blue-700 text-white rounded-lg px-3 py-2 text-sm">Detail
                                         </a>
                                     </div>
                                     <div class="flex justify-end">
@@ -368,8 +376,132 @@
         </div>
     </div>
 
+    <!-- start review-->
 
+    <div id="list-review"
+        class="hidden w-full h-screen overflow-hidden fixed top-0 right-0 left-0 bottom-0 z-20 backdrop-brightness-50 flex justify-center p-5">
+        <div id="review-content" class="relative bg-white shadow-xl h-full w-full rounded-md md:w-2/5">
+            <div class="absolute top-0 right-0 cursor-pointer m-3" id="close-review">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-7 h-7">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <path
+                            d="M10.0303 8.96965C9.73741 8.67676 9.26253 8.67676 8.96964 8.96965C8.67675 9.26255 8.67675 9.73742 8.96964 10.0303L10.9393 12L8.96966 13.9697C8.67677 14.2625 8.67677 14.7374 8.96966 15.0303C9.26255 15.3232 9.73743 15.3232 10.0303 15.0303L12 13.0607L13.9696 15.0303C14.2625 15.3232 14.7374 15.3232 15.0303 15.0303C15.3232 14.7374 15.3232 14.2625 15.0303 13.9696L13.0606 12L15.0303 10.0303C15.3232 9.73744 15.3232 9.26257 15.0303 8.96968C14.7374 8.67678 14.2625 8.67678 13.9696 8.96968L12 10.9393L10.0303 8.96965Z"
+                            fill="#1C274C"></path>
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M12 1.25C6.06294 1.25 1.25 6.06294 1.25 12C1.25 17.9371 6.06294 22.75 12 22.75C17.9371 22.75 22.75 17.9371 22.75 12C22.75 6.06294 17.9371 1.25 12 1.25ZM2.75 12C2.75 6.89137 6.89137 2.75 12 2.75C17.1086 2.75 21.25 6.89137 21.25 12C21.25 17.1086 17.1086 21.25 12 21.25C6.89137 21.25 2.75 17.1086 2.75 12Z"
+                            fill="#1C274C"></path>
+                    </g>
+                </svg>
+            </div>
+            <div class="p-5">
+                <h1 class="text-xl font-semibold text-slate-800 mb-2" id="product_name"></h1>
+                <form action="{{ route('addReview') }}" method="POST">
+                    @csrf <!-- Tambahkan CSRF token untuk keamanan -->
+
+                    <!-- Pilih Bintang -->
+                    <div class="mb-5 flex gap-1" id="star-rating">
+                        @for ($i = 1; $i <= 5; $i++)
+                            <label for="star_{{ $i }}">
+                                <input type="radio" name="rating" id="star_{{ $i }}"
+                                    value="{{ $i }}" class="hidden" required />
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                    class="w-5 h-5 star-icon text-gray-300" data-star="{{ $i }}"
+                                    viewBox="0 0 24 24" stroke="none">
+                                    <path
+                                        d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
+                                    </path>
+                                </svg>
+                            </label>
+                        @endfor
+                    </div>
+
+                    <!-- Komentar -->
+                    <div class="py-2 px-4 mb-3 bg-white rounded-lg border border-gray-200">
+                        <label for="comment" class="sr-only">Your comment</label>
+                        <textarea id="comment" name="comment" rows="6" required
+                            class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none"
+                            placeholder="Write a comment..."></textarea>
+                    </div>
+
+                    <!-- ID Produk -->
+                    <input type="hidden" name="product_id" id="product_id">
+
+                    <!-- Kirim -->
+                    <div class="mb-3">
+                        <button type="submit"
+                            class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300">
+                            Send
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- end review-->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
+    <script>
+        const radios = document.querySelectorAll('input[name="bintang"]');
+
+        radios.forEach((radio) => {
+            radio.addEventListener("change", (e) => {
+                const selectedRating = parseInt(e.target.id.split("_")[1]);
+                const previousStars = document.querySelectorAll(
+                    `label[for^="start_"] svg`
+                );
+                previousStars.forEach((star, index) => {
+                    if (index < selectedRating) {
+                        star.classList.add("fill-yellow-500");
+                    } else {
+                        star.classList.remove("fill-yellow-500");
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        document.getElementById('star-rating').addEventListener('click', function(event) {
+            // Cari elemen SVG yang diklik
+            const clickedStar = event.target.closest('svg');
+
+            if (clickedStar) {
+                // Ambil nilai bintang yang dipilih
+                const selectedStarValue = clickedStar.getAttribute('data-star');
+
+                // Dapatkan semua ikon bintang
+                const starIcons = document.querySelectorAll('.star-icon');
+
+                // Reset warna semua bintang ke gray-300
+                starIcons.forEach(icon => {
+                    icon.classList.remove('text-yellow-500');
+                    icon.classList.add('text-gray-300');
+                });
+
+                // Warnai bintang dari 1 hingga nilai yang dipilih
+                for (let i = 0; i < selectedStarValue; i++) {
+                    starIcons[i].classList.remove('text-gray-300');
+                    starIcons[i].classList.add('text-yellow-500');
+                }
+            }
+        });
+
+        // Pastikan bintang selalu dimulai dari gray-300
+        document.addEventListener('DOMContentLoaded', () => {
+            const starIcons = document.querySelectorAll('.star-icon');
+            starIcons.forEach(icon => {
+                icon.classList.remove('text-yellow-500');
+                icon.classList.add('text-gray-300');
+            });
+        });
+    </script>
+
+    <style>
+        .star-icon {
+            transition: fill 0.2s ease;
+            cursor: pointer;
+        }
+    </style>
     <script>
         const hamburger = document.getElementById("hamburger");
         hamburger.addEventListener("click", () => {
@@ -387,6 +519,24 @@
                 }
             });
         });
+
+        function openReview(id, product_name) {
+            const closeReview = document.getElementById("close-review");
+            const listReview = document.getElementById("list-review");
+            listReview.classList.remove("hidden");
+
+            closeReview.addEventListener("click", () => {
+                listReview.classList.add("hidden");
+            });
+            document.getElementById('product_id').value = id;
+            document.getElementById('product_name').innerHTML = product_name;
+
+            listReview.addEventListener("click", (e) => {
+                if (!e.target.closest("#review-content")) {
+                    listReview.classList.add("hidden");
+                }
+            });
+        }
 
         function minus(id) {
             const input = document.getElementById(id);
