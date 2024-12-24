@@ -13,25 +13,31 @@ class OrderController extends Controller
     public function index(Request $request)
 {
     // Mengambil parameter filter dari request
-    $productId = $request->input('product_id'); // Filter berdasarkan ID produk
+    $priceProduct = $request->input('price_product'); // Filter berdasarkan harga produk
+    $statusOrder = $request->input('status_order'); // Filter berdasarkan status order
+    $createdAt = $request->input('created_at'); // Filter berdasarkan tanggal
     $search = $request->input('search'); // Filter berdasarkan pencarian
 
-    // Mengambil semua pesanan, dengan filter berdasarkan product_id dan search jika ada
+    // Mengambil semua pesanan, dengan filter berdasarkan price_product, status_order, created_at, dan search jika ada
     $orders = Order::with('user', 'productOrders.product', 'addresses', 'postage', 'promoCode', 'payment')
-                   ->when($productId, function ($query) use ($productId) {
-                       return $query->whereHas('productOrders', function ($query) use ($productId) {
-                           $query->where('product_id', $productId);
-                       });
-                   })
-                   ->when($search, function ($query, $search) {
-                       return $query->whereHas('productOrders.product', function ($query) use ($search) {
-                           $query->where('name_product', 'like', '%' . $search . '%');
-                       });
-                   })
-                   ->latest()
-                   ->get();
+        ->when($priceProduct, function ($query) use ($priceProduct) {
+            return $query->orderBy('price', $priceProduct);
+        })
+        ->when($statusOrder, function ($query) use ($statusOrder) {
+            return $query->where('status_order', $statusOrder);
+        })
+        ->when($createdAt, function ($query) use ($createdAt) {
+            return $query->orderBy('created_at', $createdAt);
+        })
+        ->when($search, function ($query, $search) {
+            return $query->whereHas('productOrders.product', function ($query) use ($search) {
+                $query->where('name_product', 'like', '%' . $search . '%');
+            });
+        })
+        ->latest()
+        ->paginate(5);  // Added pagination to limit results per page
 
-    // Mengambil semua produk yang tersedia
+    // Mengambil semua produk yang tersedia (if needed for other purposes, not for brand filter anymore)
     $products = Product::all();
 
     // Mengembalikan tampilan dengan data orders dan products

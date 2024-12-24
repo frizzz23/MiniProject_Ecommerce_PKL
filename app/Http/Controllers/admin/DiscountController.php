@@ -14,6 +14,7 @@ class DiscountController extends Controller
     public function index()
     {
         $codes = PromoCode::all();
+        
         return view('admin.discount.index', compact('codes'));
     }
 
