@@ -88,7 +88,7 @@
         <div class="absolute bottom-0 start-48 md:z-50 ">
             <img src="{{ asset('img/img-auth/3.png') }}" class="w-48 md:w-72 animate-pulse" />
         </div>
-        <div class="absolute bottom-0 end-28 hidden mb:block">
+        <div class="absolute bottom-0 end-28 hidden md:block">
             <img src="{{ asset('img/img-auth/1.png') }}" class="w-48 md:w-48 animate-pulse" />
         </div>
         <div class="absolute bottom-32 end-56 hidden md:block">
