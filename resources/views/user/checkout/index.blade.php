@@ -163,7 +163,7 @@
                         <p class="text-sm text-slate-700 mb-1">
                             masukkan kode voucher jika ada
                             <br />
-                            <span class="text-red-500 text-[10px]"> 
+                            <span class="text-red-500 text-[10px]">
                                 opsional </span>
                         </p>
 
@@ -909,33 +909,45 @@
                                 showAlert('success', 'Pembayaran berhasil!')
                                 // console.log(result)
                                 const finish_redirect_url = result.finish_redirect_url
-                                if (finish_redirect_url) {
-                                    window.location.href = finish_redirect_url
-                                } else {
+                                @if (config('app.debug'))
                                     window.location.href = "{{ route('user.orders.index') }}";
-                                }
+                                @else
+                                    if (finish_redirect_url) {
+                                        window.location.href = finish_redirect_url
+                                    } else {
+                                        window.location.href = "{{ route('user.orders.index') }}";
+                                    }
+                                @endif
                             },
                             onPending: function(result) {
                                 // Tangani jika pembayaran pending
                                 showAlert('warning', 'Pembayaran sedang dalam proses!')
                                 // console.log(result)
                                 const finish_redirect_url = result.finish_redirect_url
-                                if (finish_redirect_url) {
-                                    window.location.href = finish_redirect_url
-                                } else {
+                                @if (config('app.debug'))
                                     window.location.href = "{{ route('user.orders.index') }}";
-                                }
+                                @else
+                                    if (finish_redirect_url) {
+                                        window.location.href = finish_redirect_url
+                                    } else {
+                                        window.location.href = "{{ route('user.orders.index') }}";
+                                    }
+                                @endif
                             },
                             onError: function(result) {
                                 // Tangani jika pembayaran gagal
                                 showAlert('error', 'Pembayaran gagal!')
                                 // console.log(result)
                                 const finish_redirect_url = result.finish_redirect_url
-                                if (finish_redirect_url) {
-                                    window.location.href = finish_redirect_url
-                                } else {
+                                @if (config('app.debug'))
                                     window.location.href = "{{ route('user.orders.index') }}";
-                                }
+                                @else
+                                    if (finish_redirect_url) {
+                                        window.location.href = finish_redirect_url
+                                    } else {
+                                        window.location.href = "{{ route('user.orders.index') }}";
+                                    }
+                                @endif
                             }
                         });
                     } else {
