@@ -19,7 +19,7 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         // Ambil data pesanan milik user yang sedang login
-        $userOrders = Order::where('user_id', Auth::id())->with('productOrders.product', 'addresses')->get();
+        $userOrders = Order::where('user_id', Auth::id())->with('productOrders.product.reviews', 'addresses')->get();
         // dd($userOrders->toArray());
         // Tampilkan view untuk user
         return view('user.orders.index', compact('userOrders',));

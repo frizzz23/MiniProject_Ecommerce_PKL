@@ -48,7 +48,7 @@ class ProductPageController extends Controller
         $minPrice = $request->input('min_price');
         $maxPrice = $request->input('max_price');
         // Validasi untuk min_price dan max_price
-        
+
 
         // Ambil filter pengurutan (terlama/terbaru)
         $sortOrder = $request->input('sort_order', 'terbaru');
@@ -169,12 +169,14 @@ class ProductPageController extends Controller
             'comment' => $request->comment,
         ]);
 
-        // Ambil slug produk
-        $product = Product::findOrFail($request->product_id);
+        return redirect()->back()->with('success', 'Ulasan berhasil ditambahkan.');
 
-        // Redirect kembali ke halaman produk berdasarkan slug
-        return redirect()->route('page.productshow', $product->slug)
-            ->with('success', 'Ulasan berhasil ditambahkan.');
+        // Ambil slug produk
+        // $product = Product::findOrFail($request->product_id);
+
+        // // Redirect kembali ke halaman produk berdasarkan slug
+        // return redirect()->route('page.productshow', $product->slug)
+        //     ->with('success', 'Ulasan berhasil ditambahkan.');
     }
 
 
