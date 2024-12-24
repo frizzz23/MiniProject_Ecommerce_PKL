@@ -112,33 +112,30 @@
                         </g>
                     </svg>
                     <!-- Jika pengguna belum login -->
-                    <a href="{{ route('login') }}" class="text-sm text-white hover:text-blue-400">Sign in</a>
+                    <a href="{{ route('login') }}" class="text-sm text-white hover:text-blue-400">Masuk</a>
                     <span class="text-white">/</span>
-                    <a href="{{ route('register') }}" class="text-sm text-white hover:text-blue-400">Sign up</a>
+                    <a href="{{ route('register') }}" class="text-sm text-white hover:text-blue-400">Daftar</a>
                 @endguest
 
                 @auth
                     @if (auth()->user()->hasRole('user'))
-                        <!-- Cek jika peran user -->
+                        <!-- Dropdown untuk user -->
                         <div class="relative">
-                            <!-- Profil dropdown -->
-                            <button id="profileDropdownButton"
-                                class="flex items-center gap-1 text-md py-2 bg-gray-200 text-slate-800 px-2 rounded-full">
-                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                    class="w-5 h-5">
-                                    <circle cx="12" cy="8" r="4" stroke="#1C274C" stroke-width="1.5"
-                                        stroke-linecap="round" stroke-linejoin="round"></circle>
-                                    <path d="M4 20C4 16 8 14 12 14C16 14 20 16 20 20" stroke="#1C274C" stroke-width="1.5"
-                                        stroke-linecap="round" stroke-linejoin="round"></path>
-                                </svg>
+                            <!-- Tombol dropdown profil -->
+                            <button id="profileDropdownButton">
+                                <!-- Tampilkan gambar profil -->
+                                <div class="w-12 h-12 rounded-full overflow-hidden">
+                                    <img src="{{ Auth::user()->image ? asset('storage/' . Auth::user()->image) : asset('style/src/assets/images/profile/user-1.jpg') }}"
+                                        alt="Profile Picture" class="w-full h-full object-cover">
+                                </div>
                             </button>
-                            <!-- Dropdown content -->
+                            <!-- Menu dropdown -->
                             <div id="profileDropdownMenu"
-                                class="hidden absolute right-0 bg-white shadow-md rounded-lg mt-2 py-2 w-48">
+                                class="hidden absolute right-0 mt-2 bg-white shadow-md rounded-lg py-2 w-48 z-10">
                                 <a href="{{ route('user.profile.profile') }}"
-                                    class="block px-4 py-2 text-gray-800 hover:bg-gray-100">My Account</a>
+                                    class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Akun Saya</a>
                                 <a href="{{ route('user.orders.index') }}"
-                                    class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Pesanan</a>
+                                    class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Pesanan Saya</a>
                                 <a href="{{ route('logout') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100"
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
@@ -147,10 +144,10 @@
                             </div>
                         </div>
                     @elseif(auth()->user()->hasRole('admin'))
-                        <!-- Cek jika peran admin -->
+                        <!-- Link ke dashboard untuk admin -->
                         <div class="tooltip">
                             <a href="{{ route('dashboard.index') }}"
-                                class="flex justify-start items-center gap-1 text-md py-2 bg-gray-200 text-slate-800 w-auto px-2 rounded-full">
+                                class="flex justify-start items-center gap-2 p-2 bg-gray-200 text-slate-800 rounded-full">
                                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                                     class="w-5 h-5">
                                     <circle cx="12" cy="8" r="4" stroke="#1C274C" stroke-width="1.5"
@@ -158,12 +155,13 @@
                                     <path d="M4 20C4 16 8 14 12 14C16 14 20 16 20 20" stroke="#1C274C" stroke-width="1.5"
                                         stroke-linecap="round" stroke-linejoin="round"></path>
                                 </svg>
-                                <span class="tooltiptext">Dashboard</span>
+                                <span>Dashboard</span>
                             </a>
                         </div>
                     @endif
-
                 @endauth
+
+
             </div>
         </div>
 
@@ -738,14 +736,12 @@
                                     </path>
                                 </svg>
                             @else
-
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                     class="w-4 h-4 text-gray-300" viewBox="0 0 24 24">
                                     <path
                                         d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
                                     </path>
                                 </svg>
-
                             @endif
                         @endfor
                         <span
