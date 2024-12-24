@@ -16,29 +16,18 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $categories = Category::all();
-        $brands = Brand::all();
+        $categories = Category::when($request->input('search'), function ($query, $search) {
+            $query->where('name_category', 'like', '%' . $search . '%');
+        })
+        ->when($request->input('sort_order'), function ($query, $sortOrder) {
+            if ($sortOrder === 'terlama') {
+                return $query->orderBy('created_at', 'asc');
+            }
+            return $query->orderBy('created_at', 'desc');
+        })
+        ->get();
 
-        $products = Product::with('category', 'brand', 'reviews')
-            ->when($request->input('search'), function ($query, $search) {
-                $query->where('name_product', 'like', '%' . $search . '%');
-            })
-            ->when($request->input('category_id'), function ($query, $category_id) {
-                $query->where('category_id', $category_id);
-            })
-            ->when($request->input('stock_product'), function ($query, $stock_product) {
-                if (in_array($stock_product, ['1', '0'], true)) {
-                    $query->where('stock_product', $stock_product);
-                }
-            })
-            ->when($request->input('price_product'), function ($query, $price_product) {
-                if (in_array($price_product, ['asc', 'desc'], true)) {
-                    $query->orderBy('price_product', $price_product);
-                }
-            })
-            ->get();
-
-        return view('admin.categories.index', compact('categories', 'brands', 'products'));
+        return view('admin.categories.index', compact('categories'));
     }
 
     /**
