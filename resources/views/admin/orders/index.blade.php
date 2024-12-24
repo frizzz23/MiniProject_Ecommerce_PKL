@@ -46,17 +46,17 @@
                                 </form>
                             </div>
                         </div>
-                        <form action="{{ route('admin.products.index') }}" method="GET">
+                        <form action="{{ route('admin.orders.index') }}" method="GET">
                             <div class="grid grid-cols-3 gap-3 text-white border-t border-gray-600 pt-4 mb-4">
                                 <div>
-                                    <select name="price_product"
+                                    <select name="price"
                                         class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
                                         onchange="this.form.submit()">
                                         <option value="">Harga</option>
-                                        <option value="asc" {{ request('price_product') == 'asc' ? 'selected' : '' }}>
+                                        <option value="asc" {{ request('price') == 'asc' ? 'selected' : '' }}>
                                             Terendah ke Tertinggi
                                         </option>
-                                        <option value="desc" {{ request('price_product') == 'desc' ? 'selected' : '' }}>
+                                        <option value="desc" {{ request('price') == 'desc' ? 'selected' : '' }}>
                                             Tertinggi ke Terendah
                                         </option>
                                     </select>
@@ -182,7 +182,7 @@
                                                     <form action="{{ route('admin.orders.destroy', $order->id) }}" method="POST" style="display: inline;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="button" class="bg-red-500 text-white px-3 py-1 rounded flex items-center" 
+                                                        <button type="button" class="bg-red-500 text-white px-3 py-1 rounded flex items-center"
                                                             data-bs-toggle="modal" data-bs-target="#hapusmodal{{ $order->id }}">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                                                 <path fill-rule="evenodd" d="M6 4a1 1 0 000 2h8a1 1 0 100-2H6zM3 6a1 1 0 011-1h12a1 1 0 011 1v11a2 2 0 01-2 2H5a2 2 0 01-2-2V6zm4 9a1 1 0 102 0V8a1 1 0 00-2 0v7zm5-1a1 1 0 10-2 0V8a1 1 0 112 0v6z" clip-rule="evenodd" />
@@ -453,7 +453,7 @@
                                                 data-bs-target="#editOrderModal{{ $order->id }}">
                                                 Edit
                                             </button>
-    
+
                                             <!-- Form Hapus Pesanan -->
                                             <form action="{{ route('admin.orders.destroy', $order->id) }}" method="POST"
                                                 style="display: inline;">
