@@ -11,7 +11,7 @@
                             <i class="fas fa-dollar-sign fa-3x text-success"></i>
                         </div>
                         <div>
-                            <h5 class="card-title">Total Pendapatan Bulan Ini</h5>
+                            <h5 class="card-title">Total Pendapatan</h5>
                             <p class="card-text">Rp. {{ number_format($Revenue, 0, ',', '.') }}</p>
                         </div>
                     </div>
@@ -29,7 +29,7 @@
                         </div>
                         <!-- Teks Konten -->
                         <div>
-                            <h5 class="card-title">Total Penjualan Bulan Ini</h5>
+                            <h5 class="card-title">Total Penjualan</h5>
                             @if ($totalItemsSold > 0)
                                 <p class="card-text">{{ $totalItemsSold }} Pesanan Selesai</p>
                             @else
@@ -60,239 +60,91 @@
                 </div>
             </div>
         </div>
-        <!-- Card for Sales Chart -->
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Penjualan Chart</h5>
-                <div class="d-flex justify-content-end mb-3">
-                    <!-- Dropdown for period selection -->
-                    <div class="relative inline-block text-left">
-                        <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Pilih Periode
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#" onclick="changePeriod('daily')">Harian</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="changePeriod('weekly')">Mingguan</a>
-                            </li>
-                            <li><a class="dropdown-item" href="#" onclick="changePeriod('monthly')">Bulanan</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
 
-                <!-- Canvas for chart display -->
-                <canvas id="salesChart"></canvas>
+    </div>
+
+    <!-- Card for Top 10 Produk Terlaris -->
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Top 10 Produk Terlaris</h5>
+            <div class="d-flex justify-content-end mb-3">
+                <form id="filterForm" class="d-flex align-items-center">
+                    @csrf
+                    <label for="month" class="me-2 small">Bulan</label>
+                    <select id="month" name="month" class="form-select form-select-sm me-2">
+                        @for ($i = 1; $i <= 12; $i++)
+                            <option value="{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}"
+                                {{ $i == request('month', now()->format('m')) ? 'selected' : '' }}>
+                                {{ date('F', mktime(0, 0, 0, $i, 1)) }}
+                            </option>
+                        @endfor
+                    </select>
+
+                    <label for="year" class="me-2 small">Tahun</label>
+                    <select id="year" name="year" class="form-select form-select-sm me-2">
+                        @for ($i = now()->year; $i >= 2000; $i--)
+                            <option value="{{ $i }}"
+                                {{ $i == request('year', now()->format('Y')) ? 'selected' : '' }}>
+                                {{ $i }}
+                            </option>
+                        @endfor
+                    </select>
+
+                    <button type="submit" class="btn btn-sm btn-primary">Tampilkan</button>
+                </form>
             </div>
+            <canvas id="mostOrderedProductsChart"></canvas>
         </div>
+    </div>
 
-        <!-- Card for Top 10 Barang Paling Banyak Diorder -->
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Top 10 Barang Paling Banyak Diorder</h5>
-                <div class="d-flex justify-content-end mb-3">
-                    <form id="filterForm" class="d-flex align-items-center">
-                        @csrf
-                        <label for="month" class="me-2 small">Bulan</label>
-                        <select id="month" name="month" class="form-select form-select-sm me-2">
-                            @for ($i = 1; $i <= 12; $i++)
-                                <option value="{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}"
-                                    {{ $i == request('month', now()->format('m')) ? 'selected' : '' }}>
-                                    {{ date('F', mktime(0, 0, 0, $i, 1)) }}
-                                </option>
-                            @endfor
-                        </select>
+    <!-- Card for Top 10 Kategori Terlaris -->
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Top 10 Kategori Produk Terlaris</h5>
+            <div class="d-flex justify-content-end mb-3">
+                <form id="categoryForm" class="d-flex align-items-center">
+                    @csrf
+                    <label for="month" class="me-2 small">Bulan</label>
+                    <select id="month" name="month" class="form-select form-select-sm me-2">
+                        @for ($i = 1; $i <= 12; $i++)
+                            <option value="{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}"
+                                {{ $i == request('month', now()->format('m')) ? 'selected' : '' }}>
+                                {{ date('F', mktime(0, 0, 0, $i, 1)) }}
+                            </option>
+                        @endfor
+                    </select>
 
-                        <label for="year" class="me-2 small">Tahun</label>
-                        <select id="year" name="year" class="form-select form-select-sm me-2">
-                            @for ($i = now()->year; $i >= 2000; $i--)
-                                <option value="{{ $i }}"
-                                    {{ $i == request('year', now()->format('Y')) ? 'selected' : '' }}>
-                                    {{ $i }}
-                                </option>
-                            @endfor
-                        </select>
+                    <label for="year" class="me-2 small">Tahun</label>
+                    <select id="year" name="year" class="form-select form-select-sm me-2">
+                        @for ($i = now()->year; $i >= 2000; $i--)
+                            <option value="{{ $i }}"
+                                {{ $i == request('year', now()->format('Y')) ? 'selected' : '' }}>
+                                {{ $i }}
+                            </option>
+                        @endfor
+                    </select>
 
-                        <button type="submit" class="btn btn-sm btn-primary">Tampilkan</button>
-                    </form>
-                </div>
-                <canvas id="mostOrderedProductsChart"></canvas>
+                    <button type="submit" class="btn btn-sm btn-primary">Tampilkan</button>
+                </form>
             </div>
-        </div>
 
-        <!-- Card for Top 10 Kategori Terlaris -->
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Top 10 Kategori Produk Terlaris</h5>
-                <div class="d-flex justify-content-end mb-3">
-                    <form id="categoryForm" class="d-flex align-items-center">
-                        @csrf
-                        <label for="month" class="me-2 small">Bulan</label>
-                        <select id="month" name="month" class="form-select form-select-sm me-2">
-                            @for ($i = 1; $i <= 12; $i++)
-                                <option value="{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}"
-                                    {{ $i == request('month', now()->format('m')) ? 'selected' : '' }}>
-                                    {{ date('F', mktime(0, 0, 0, $i, 1)) }}
-                                </option>
-                            @endfor
-                        </select>
-
-                        <label for="year" class="me-2 small">Tahun</label>
-                        <select id="year" name="year" class="form-select form-select-sm me-2">
-                            @for ($i = now()->year; $i >= 2000; $i--)
-                                <option value="{{ $i }}"
-                                    {{ $i == request('year', now()->format('Y')) ? 'selected' : '' }}>
-                                    {{ $i }}
-                                </option>
-                            @endfor
-                        </select>
-
-                        <button type="submit" class="btn btn-sm btn-primary">Tampilkan</button>
-                    </form>
+            <div class="chart-container" style="position: relative; height: 400px;">
+                <canvas id="topCategoriesChart"></canvas>
+                <div id="chartLoading" class="chart-loading d-none">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
                 </div>
-
-                <div class="chart-container" style="position: relative; height: 400px;">
-                    <canvas id="topCategoriesChart"></canvas>
-                    <div id="chartLoading" class="chart-loading d-none">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                    </div>
-                    <div id="chartMessage" class="d-none text-center text-muted mt-3">
-                        Tidak ada data penjualan untuk periode yang dipilih.
-                    </div>
+                <div id="chartMessage" class="d-none text-center text-muted mt-3">
+                    Tidak ada data penjualan untuk periode yang dipilih.
                 </div>
             </div>
         </div>
     </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <script>
-        // Mengambil bulan dan tahun dari variabel Blade
-        let month = "{{ $month }}"; // Ini akan diparsing dari variabel PHP
-        let year = "{{ $year }}"; // Ini juga akan diparsing dari variabel PHP
-
-        // Fungsi untuk mengubah periode chart
-        function changePeriod(period) {
-            // Mengirim permintaan AJAX untuk mengambil data berdasarkan periode yang dipilih
-            fetch("{{ route('sales.chart') }}?period=" + period + "&month=" + month + "&year=" + year, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    // Memperbarui chart dengan data yang diterima dari server
-                    updateChart(data);
-                })
-                .catch(error => console.error('Error fetching data:', error));
-        }
-
-        // Fungsi untuk memperbarui chart
-        function updateChart(data) {
-            let ctx = document.getElementById('salesChart').getContext('2d');
-            let chart = new Chart(ctx, {
-                type: 'line', // Jenis chart yang digunakan
-                data: {
-                    labels: data.labels, // Misalnya tanggal, minggu, atau bulan
-                    datasets: [{
-                        label: 'Total Penjualan',
-                        data: data.total_sales, // Data penjualan
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        fill: false
-                    }]
-                }
-            });
-        }
-    </script>
-
-    <script>
-        var chart = null;
-
-        // Fungsi untuk memperbarui grafik berdasarkan periode
-        function changePeriod(period) {
-            // Mengirim request AJAX
-            $.ajax({
-                url: "{{ route('sales.chart') }}", // Gantilah dengan URL yang sesuai
-                method: "GET",
-                data: {
-                    period: period
-                },
-                success: function(data) {
-                    // Memperbarui grafik dengan data baru
-                    updateChart(data, period);
-                }
-            });
-        }
-
-        // Fungsi untuk memperbarui grafik
-        function updateChart(salesData, period) {
-            // Memastikan grafik tidak digambar lebih dari sekali
-            if (chart) {
-                chart.destroy(); // Menghancurkan grafik lama
-            }
-
-            // Menyiapkan data untuk chart
-            var labels = salesData.map(function(item) {
-                if ('date' in item) return item.date; // For daily
-                if ('week' in item) return 'Minggu ' + item.week; // For weekly
-                if ('month' in item) return 'Bulan ' + item.month; // For monthly
-            });
-
-            var data = salesData.map(function(item) {
-                return item.total_sales;
-            });
-
-            // Membuat grafik baru
-            var ctx = document.getElementById('salesChart').getContext('2d');
-            chart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Total Penjualan',
-                        data: data,
-                        borderColor: 'rgb(75, 192, 192)',
-                        fill: false,
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        },
-                    },
-                    interaction: {
-                        mode: 'index',
-                        intersect: false,
-                    },
-                    scales: {
-                        x: {
-                            title: {
-                                display: true,
-                                text: period.charAt(0).toUpperCase() + period.slice(1)
-                            }
-                        },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'Total Penjualan'
-                            },
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        }
-
-        // Memuat grafik pertama kali dengan data harian
-        changePeriod('daily');
-    </script>
 
     <script>
         $(document).ready(function() {
@@ -486,7 +338,7 @@
             });
         });
     </script>
-    
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             let categoryChart = null;
@@ -575,6 +427,12 @@
                 const year = formData.get('year');
                 const month = formData.get('month');
 
+                // Add loading spinner to the button
+                const submitButton = this.querySelector('button[type="submit"]');
+                submitButton.innerHTML =
+                    '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...';
+                submitButton.disabled = true;
+
                 fetch(`{{ route('dashboard.index') }}?year=${year}&month=${month}`, {
                         headers: {
                             'X-Requested-With': 'XMLHttpRequest'
@@ -592,6 +450,11 @@
                         console.error('Error:', error);
                         // Show error message to user
                         alert('Gagal memuat data. Silakan coba lagi.');
+                    })
+                    .finally(() => {
+                        // Reset button state after data is loaded
+                        submitButton.innerHTML = 'Tampilkan';
+                        submitButton.disabled = false;
                     });
             });
         });
