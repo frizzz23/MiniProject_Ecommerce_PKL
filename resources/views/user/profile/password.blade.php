@@ -91,17 +91,28 @@
 
                 <div class="d-flex align-items-center gap-3">
                     <button type="submit" class="btn btn-primary">
-                        {{ __('Save') }}
+                        {{ __('Simpan') }}
                     </button>
 
-                    @if (session('status') === 'password-updated')
-                        <div x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)"
-                            class="text-success">
-                            {{ __('Saved.') }}
-                        </div>
-                    @endif
+                    
                 </div>
             </form>
         </div>
     </div>
+    @if (session('success'))
+        <script>
+            // Toast Notification
+            Swal.fire({
+                toast: true,
+                position: 'top-end', // Pojok kanan atas
+                icon: 'success',
+                iconColor: '#3b82f6', // Biru-500 dari Tailwind CSS
+                title: '{{ session('success') }}',
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true,
+                background: '#eff6ff', // Warna latar belakang biru muda
+            });
+        </script>
+    @endif
 @endsection

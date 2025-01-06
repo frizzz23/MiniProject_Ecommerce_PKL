@@ -21,8 +21,8 @@
             </li>
             <li>
                 <div class="flex items-center">
-                    <svg class=" h-4 w-4 text-gray-400 rtl:rotate-180" aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <svg class=" h-4 w-4 text-gray-400 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                        width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
                             d="m9 5 7 7-7 7" />
                     </svg>
@@ -34,8 +34,8 @@
             </li>
             <li>
                 <div class="flex items-center">
-                    <svg class=" h-4 w-4 text-gray-400 rtl:rotate-180" aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <svg class=" h-4 w-4 text-gray-400 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                        width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
                             d="m9 5 7 7-7 7" />
                     </svg>
@@ -96,7 +96,7 @@
         </div> --}}
     </div>
     <div class="flex flex-col justify-center items-start bg-white py-3 px-4 rounded-lg mb-1 shadow-sm">
-        <h2 class=" text-xl font-semibold text-gray-800 ">Profile Saya </h2>
+        <h2 class=" text-xl font-semibold text-gray-800 ">Profil Saya </h2>
         <p class="text-muted small">
             Kelola informasi profil Anda untuk mengontrol, melindungi dan mengamankan akun
         </p>
@@ -114,8 +114,8 @@
                     <div class="mb-3">
                         <label for="name" class="form-label">{{ __('Name') }}</label>
                         <input type="text" id="name" name="name"
-                            class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $user->name) }}"
-                            required autofocus autocomplete="name">
+                            class="form-control @error('name') is-invalid @enderror"
+                            value="{{ old('name', $user->name) }}" required autofocus autocomplete="name">
                         @error('name')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -184,6 +184,22 @@
             </form>
         </div>
     </div>
+    @if (session('success'))
+        <script>
+            // Toast Notification
+            Swal.fire({
+                toast: true,
+                position: 'top-end', // Pojok kanan atas
+                icon: 'success',
+                iconColor: '#3b82f6', // Biru-500 dari Tailwind CSS
+                title: '{{ session('success') }}',
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true,
+                background: '#eff6ff', // Warna latar belakang biru muda
+            });
+        </script>
+    @endif
     <script>
         // Mendapatkan elemen HTML
         const previewImage = document.getElementById('previewImage');

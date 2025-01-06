@@ -205,7 +205,7 @@
                                 <div class="relative">
                                     <input type="number" name="min_price" id="min_price"
                                         class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                        placeholder=" " value="{{ request()->old('min_price') ?? 0}}" >
+                                        placeholder=" " value="{{ request()->old('min_price', $minPrice ?? 0) }}" >
                                     <label for="min_price"
                                         class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">
                                         Min Harga
@@ -222,7 +222,7 @@
                                 <div class="relative ">
                                     <input type="number" name="max_price" id="max_price"
                                         class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                        placeholder=" " value="{{ request()->old('max_price') ?? 0 }}">
+                                        placeholder=" " value="{{ request()->old('max_price', $maxPrice ?? 0) }}">
                                     <label for="max_price"
                                         class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">
                                         Max Harga
@@ -251,10 +251,10 @@
             </div>
         </div>
         <div class="px-5">
-            <div class="flex w-full justify-between gap-5 mb-5 sticky top-0 z-10 bg-white py-3 md:pe-5">
+            <div class=" flex w-full justify-between gap-5 mb-5 sticky top-0 z-10 bg-white py-3 md:pe-5">
 
-                <div class="py-2 rounded-[20px] hidden gap-4 items-center md:w-auto hidden gap-1 items-center xl:flex">
-                    <div class="hidden md:flex gap-4">
+                <div class="py-2 rounded-[20px] hidden gap-4 items-center md:w-auto hidden xl:gap-10 items-center xl:flex">
+                    <div class="hidden md:flex gap-10">
                         <a href="{{ route('landing-page') }}"
                             class="text-sm text-gray-800 hover:text-[#5D87FF] hover:font-semibold relative after:content-[''] after:block after:h-[2px] after:w-0 after:bg-[#5D87FF] after:mt-1 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full">
                             Beranda
@@ -358,7 +358,7 @@
                                 <div id="profileDropdownMenu"
                                     class="hidden absolute right-0 bg-white shadow-md rounded-lg mt-2 py-2 w-48">
                                     <a href="{{ route('user.profile.profile') }}"
-                                        class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Aun Saya</a>
+                                        class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Akun Saya</a>
                                     <a href="{{ route('user.orders.index') }}"
                                         class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Pesanan Saya</a>
                                     <a href="{{ route('logout') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100"
@@ -454,10 +454,10 @@
 
             <div class="flex justify-start items-center mt-4 ">
                 <form method="GET" action="{{ route('page.product') }}"
-                    class="flex justify-start items-center gap-2">
+                    class="flex justify-start items-center gap-4">
 
                     <div class="">
-                        <label for="sort_order" class="block text-sm text-slate-700 mb-1">Sort Order</label>
+                        <label for="sort_order" class="block text-sm text-slate-700 mb-1">Urutan Penyortiran</label>
                         <select name="sort_order" 
                             class="border border-slate-300
                             text-sm px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-md" onchange="this.form.submit();" id="sort_order">
@@ -469,7 +469,7 @@
                         </select>
                     </div>
                     <div class="">
-                        <label for="sort_price" class="block text-sm text-slate-700 mb-1">Sort Price</label>
+                        <label for="sort_price" class="block text-sm text-slate-700 mb-1">Urutan Harga</label>
                         <select name="sort_price" id="sort_price"
                             class="border border-slate-300 text-sm px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-md"
                             onchange="this.form.submit();">
