@@ -51,12 +51,15 @@
         <div class="bg-white p-4 rounded-lg text-center shadow-sm">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                 style="fill: rgba(102, 110, 241, 1);" class="w-12 h-12 mb-3 inline-block">
+                <circle cx="10.5" cy="19.5" r="1.5"></circle>
+                <circle cx="17.5" cy="19.5" r="1.5"></circle>
+                <path d="m14 13.99 4-5h-3v-4h-2v4h-3l4 5z"></path>
                 <path
-                    d="M20.205 4.791a5.938 5.938 0 0 0-4.209-1.754A5.906 5.906 0 0 0 12 4.595a5.904 5.904 0 0 0-3.996-1.558 5.942 5.942 0 0 0-4.213 1.758c-2.353 2.363-2.352 6.059.002 8.412L12 21.414l8.207-8.207c2.354-2.353 2.355-6.049-.002-8.416z">
+                    d="M17.31 15h-6.64L6.18 4.23A2 2 0 0 0 4.33 3H2v2h2.33l4.75 11.38A1 1 0 0 0 10 17h8a1 1 0 0 0 .93-.64L21.76 9h-2.14z">
                 </path>
             </svg>
-            <h3 class="text-lg font-semibold text-gray-700">Favorite products</h3>
-            <p class="text-2xl font-bold text-gray-900">455</p>
+            <h3 class="text-lg font-semibold text-gray-700">Total Keranjang</h3>
+        <p class="text-2xl font-bold text-gray-900">{{ $totalKeranjang }}</p>
         </div>
         <div class="bg-white p-4 rounded-lg text-center shadow-sm">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -65,11 +68,11 @@
                 <circle cx="17.5" cy="19.5" r="1.5"></circle>
                 <path d="m14 13.99 4-5h-3v-4h-2v4h-3l4 5z"></path>
                 <path
-                    d="M17.31 15h-6.64L6.18 4.23A2 2 0 0 0 4.33 3H2v2h2.33l4.75 11.38A1 1 0 0 0 10 17h8a1 1 0 0 0 .93-.64L21.76 9h-2.14z">
+                    d="M6 2C5.447 2 5 2.447 5 3v18c0 .553.447 1 1 1h12c.553 0 1-.447 1-1V3c0-.553-.447-1-1-1H6zm10 2H8v-.5C8 3.224 8.224 3 8.5 3h7c.276 0 .5.224.5.5V4z">
                 </path>
             </svg>
-            <h3 class="text-lg font-semibold text-gray-700">Total orders</h3>
-            <p class="text-2xl font-bold text-gray-900">124</p>
+            <h3 class="text-lg font-semibold text-gray-700">Total Pesanan</h3>
+        <p class="text-2xl font-bold text-gray-900">{{ $totalOrders }}</p>
         </div>
         <div class="bg-white p-4 rounded-lg text-center shadow-sm">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -78,10 +81,10 @@
                     d="M21.947 9.179a1.001 1.001 0 0 0-.868-.676l-5.701-.453-2.467-5.461a.998.998 0 0 0-1.822-.001L8.622 8.05l-5.701.453a1 1 0 0 0-.619 1.713l4.213 4.107-1.49 6.452a1 1 0 0 0 1.53 1.057L12 18.202l5.445 3.63a1.001 1.001 0 0 0 1.517-1.106l-1.829-6.4 4.536-4.082c.297-.268.406-.686.278-1.065z">
                 </path>
             </svg>
-            <h3 class="text-lg font-semibold text-gray-700">Reviews added</h3>
-            <p class="text-2xl font-bold text-gray-900">1,285</p>
+            <h3 class="text-lg font-semibold text-gray-700">Review ditambahkan</h3>
+            <p class="text-2xl font-bold text-gray-900">{{ $totalReviews }}</p>
         </div>
-        <div class="bg-white p-4 rounded-lg text-center shadow-sm">
+        {{-- <div class="bg-white p-4 rounded-lg text-center shadow-sm">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                 style="fill: rgba(102, 110, 241, 1);" class="w-12 h-12 mb-3 inline-block">
                 <path
@@ -90,7 +93,7 @@
             </svg>
             <h3 class="text-lg font-semibold text-gray-700">Product returns</h3>
             <p class="text-2xl font-bold text-gray-900">2</p>
-        </div>
+        </div> --}}
     </div>
     <div class="flex flex-col justify-center items-start bg-white py-3 px-4 rounded-lg mb-1 shadow-sm">
         <h2 class=" text-xl font-semibold text-gray-800 ">Profile Saya </h2>

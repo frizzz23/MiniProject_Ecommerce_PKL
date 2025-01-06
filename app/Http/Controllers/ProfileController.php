@@ -9,24 +9,37 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Cart; // Pastikan ini sudah ada di model Keranjang
+use App\Models\Order; // Pastikan ini sudah ada di model Order
+use App\Models\Review; // Pastikan ini sudah ada di model Review
 
 class ProfileController extends Controller
 {
     /**
-     * Display the user's profile form.
+     * Display the user's profile form with additional data like total cart and orders.
      */
     public function profile(Request $request): View
     {
+        // Ambil total keranjang dan total orders untuk pengguna
+        $totalKeranjang = Cart::where('user_id', $request->user()->id)->count(); // Sesuaikan dengan logika Anda
+        $totalOrders = Order::where('user_id', $request->user()->id)->count(); // Sesuaikan dengan logika Anda
+        $totalReviews = Review::where('user_id', $request->user()->id)->count(); // Sesuaikan dengan logika Anda
+
         return view('user.profile.profile', [
             'user' => $request->user(),
+            'totalKeranjang' => $totalKeranjang,
+            'totalOrders' => $totalOrders,
+            'totalReviews' => $totalReviews
         ]);
     }
+
     public function password(Request $request): View
     {
         return view('user.profile.password', [
             'user' => $request->user(),
         ]);
     }
+
     public function delete(Request $request): View
     {
         return view('user.profile.delete', [
@@ -69,7 +82,6 @@ class ProfileController extends Controller
 
         return Redirect::route('user.profile.profile')->with('status', 'profile-updated');
     }
-
 
     /**
      * Delete the user's account.

@@ -132,52 +132,68 @@
     }
 
     @if (auth()->user()->hasRole('user'))
-        async function addToCart(id_product, el) {
-            el.disabled = true;
-            try {
-                setTimeout(() => {
-                    // Toast Notification
-                    Swal.fire({
-                        toast: true,
-                        position: 'top-end', // Pojok kanan atas
-                        icon: 'success',
-                        title: 'Produk berhasil ditambahkan ke keranjang!',
-                        showConfirmButton: false,
-                        timer: 1000,
-                        timerProgressBar: true
-                    });
-                }, 500);
+    async function addToCart(id_product, el) {
+    el.disabled = true;
+    try {
+        const api = await fetch('/api/cart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                id_product: id_product
+            })
+        });
 
-                const api = await fetch('/api/cart', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
-                            'content')
-                    },
-                    body: JSON.stringify({
-                        id_product: id_product
-                    })
-                });
+        const response = await api.json();
+        console.log(response);
 
-                const response = await api.json();
-                console.log(response)
-                if (response.status == 'success') {
-                    const data = await response.data;
-                    listCart(data);
-                    el.disabled = false;
-                } else if (response.status == 'warning') {
-                    alert(response.message)
-                    el.disabled = false;
-                } else {
-                    showAlert('error', response.message)
-                    el.disabled = false;
-                }
-            } catch (e) {
-                console.log(e)
-                el.disabled = false;
-            }
+        if (response.status == 'success') {
+            const data = await response.data;
+            listCart(data);
+
+            // Tampilkan alert sukses
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: 'Produk berhasil ditambahkan ke keranjang!',
+                showConfirmButton: false,
+                timer: 1000,
+                timerProgressBar: true
+            });
+        } else {
+            // Tampilkan alert error dengan gaya yang sama
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'error',
+                title: response.message, // Pesan error dari API
+                showConfirmButton: false,
+                timer: 1500, // Timer lebih lama untuk error
+                timerProgressBar: true
+            });
         }
+    } catch (e) {
+        console.log(e);
+
+        // Tampilkan alert error untuk kesalahan jaringan/server
+        Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'error',
+            title: 'Terjadi kesalahan, coba lagi nanti.',
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true
+        });
+    } finally {
+        el.disabled = false; // Aktifkan kembali tombol dalam semua kasus
+    }
+}
+
+
 
         async function deleteCart(id_cart) {
             Swal.fire({
