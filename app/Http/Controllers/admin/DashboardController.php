@@ -18,50 +18,43 @@ class DashboardController extends Controller
      */
     public function index(Request $request)
     {
+        // Mendapatkan input bulan dan tahun
         $month = $request->input('month', now()->format('m'));
         $year = $request->input('year', now()->format('Y'));
 
-        $newuser = User::whereYear('created_at', $year)
+        // Menghitung jumlah pengguna baru dengan peran 'user' pada bulan dan tahun tertentu
+        $newuser = User::role('user') // Hanya pengguna dengan peran 'user'
+            ->whereYear('created_at', $year)
             ->whereMonth('created_at', $month)
             ->count();
 
+        // Menghitung jumlah pesanan dengan status 'pending'
         $neworder = Order::where('status_order', 'pending')->count();
 
+        // Menghitung total pendapatan dari pesanan yang selesai
         $Revenue = Order::whereYear('created_at', $year)
             ->whereMonth('created_at', $month)
             ->where('status_order', 'completed')
             ->sum('grand_total_amount');
 
+        // Menghitung total barang terjual dari pesanan yang selesai
         $totalItemsSold = ProductOrder::whereHas('order', function ($query) use ($year, $month) {
             $query->whereYear('created_at', $year)
                 ->whereMonth('created_at', $month)
                 ->where('status_order', 'completed');
         })->sum('quantity');
 
-        $period = $request->input('period', 'daily');
-
-        // Data penjualan berdasarkan periode
-        switch ($period) {
-            case 'weekly':
-                $salesData = $this->getWeeklySalesData($year, $month);
-                break;
-            case 'monthly':
-                $salesData = $this->getMonthlySalesData($year, $month);
-                break;
-            default:
-                $salesData = $this->getDailySalesData($year, $month);
-                break;
-        }
-
-        // Mendapatkan data produk paling laris
         $mostOrderedProducts = ProductOrder::select('product_id', DB::raw('SUM(quantity) as total_quantity'))
-            ->whereYear('created_at', $year)
-            ->whereMonth('created_at', $month)
+            ->join('orders', 'product_orders.order_id', '=', 'orders.id')  // Menambahkan join dengan tabel orders
+            ->whereYear('orders.created_at', $year)  // Pastikan mengambil data berdasarkan tahun pesanan
+            ->whereMonth('orders.created_at', $month)  // Pastikan mengambil data berdasarkan bulan pesanan
+            ->where('orders.status_order', 'completed')  // Pastikan menggunakan kolom status_order
             ->groupBy('product_id')
             ->orderBy('total_quantity', 'DESC')
-            ->with('product')
+            ->with('product')  // Menambahkan relasi ke produk
             ->take(10)
             ->get();
+
 
         // Mendapatkan kategori produk terlaris
         $topCategories = Category::select('name_category', DB::raw('SUM(product_orders.quantity) as total_quantity'))
@@ -86,7 +79,6 @@ class DashboardController extends Controller
                 'neworder' => $neworder,
                 'Revenue' => $Revenue,
                 'totalItemsSold' => $totalItemsSold,
-                'salesData' => $salesData
             ]);
         }
 
@@ -97,71 +89,11 @@ class DashboardController extends Controller
             'Revenue',
             'totalItemsSold',
             'mostOrderedProducts',
-            'salesData',
-            'period',
             'month',
             'year',
             'topCategories'
         ));
     }
-
-    // Mendapatkan data penjualan harian
-    private function getDailySalesData($year, $month)
-    {
-        return Order::select(DB::raw('DATE(created_at) as date'), DB::raw('SUM(grand_total_amount) as total_sales'))
-            ->whereYear('created_at', $year)
-            ->whereMonth('created_at', $month)
-            ->groupBy(DB::raw('DATE(created_at)'))
-            ->orderBy(DB::raw('DATE(created_at)')) // Ubah ini untuk memastikan urutan yang valid
-            ->get();
-    }
-
-    // Mendapatkan data penjualan mingguan
-    private function getWeeklySalesData($year, $month)
-    {
-        return Order::select(DB::raw('WEEK(created_at) as week'), DB::raw('SUM(grand_total_amount) as total_sales'))
-            ->whereYear('created_at', $year)
-            ->whereMonth('created_at', $month)
-            ->groupBy(DB::raw('WEEK(created_at)'))
-            ->orderBy(DB::raw('WEEK(created_at)')) // Ubah ini untuk memastikan urutan yang valid
-            ->get();
-    }
-
-
-    // Mendapatkan data penjualan bulanan
-    private function getMonthlySalesData($year, $month)
-    {
-        return Order::select(DB::raw('MONTH(created_at) as month'), DB::raw('SUM(grand_total_amount) as total_sales'))
-            ->whereYear('created_at', $year)
-            ->whereMonth('created_at', $month)
-            ->groupBy(DB::raw('MONTH(created_at)'))
-            ->orderBy(DB::raw('MONTH(created_at)')) // Ubah ini untuk memastikan urutan yang valid
-            ->get();
-    }
-
-    public function salesChart(Request $request)
-    {
-        $period = $request->input('period', 'daily');
-        $month = $request->input('month', now()->format('m'));
-        $year = $request->input('year', now()->format('Y'));
-
-        // Periksa periode dan ambil data sesuai
-        switch ($period) {
-            case 'weekly':
-                $salesData = $this->getWeeklySalesData($year, $month);
-                break;
-            case 'monthly':
-                $salesData = $this->getMonthlySalesData($year, $month);
-                break;
-            default:
-                $salesData = $this->getDailySalesData($year, $month);
-                break;
-        }
-
-        return response()->json($salesData);
-    }
-
-
 
     /**
      * Show the form for creating a new resource.

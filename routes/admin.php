@@ -14,7 +14,6 @@ use App\Http\Controllers\admin\ReviewController as AdminReviewController;
 
 Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     
-    Route::get('/sales-chart', [AdminDashboardController::class, 'salesChart'])->name('sales.chart');
     Route::resource('dashboard', AdminDashboardController::class);
     Route::resource('categories', AdminCategoryController::class)->names([
         'index' => 'admin.categories.index',
