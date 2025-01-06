@@ -67,7 +67,7 @@ class ProfileController extends Controller
         // Simpan perubahan ke database
         $user->save();
 
-        return Redirect::route('user.profile.profile')->with('status', 'profile-updated');
+        return Redirect::route('user.profile.profile')->with('success', 'Akun berhasil diperbarui');
     }
 
 

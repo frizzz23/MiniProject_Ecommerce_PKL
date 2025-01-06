@@ -56,7 +56,7 @@
         </button>
     </div>
     <div class="bg-white p-6 rounded-lg shadow-sm">
-        @foreach ($addresses as $address)
+        @forelse ($addresses as $address)
             <div class="w-full flex flex-col space-y-6">
                 <!-- Section Alamat -->
                 <div
@@ -65,7 +65,7 @@
                     <div class="flex-1">
                         <div class="flex items-center gap-2 mb-2">
                             <p class="font-bold text-gray-800">{{ $address->user->name }}</p>
-                            <span class="text-gray-500">|</span>
+                            <p class="text-gray-500">|</p>
                             <p class="text-gray-600">{{ $address->no_telepon }}</p>
                         </div>
                         <p class="text-gray-600 text-sm mb-2">
@@ -81,7 +81,7 @@
                     <div
                         class="flex gap-2 xl:flex-col md:flex-col sm:flex-row justify-between md:items-end sm:space-x-2 md:space-x-0 md:space-y-2">
                         <!-- Tombol Edit -->
-                        <button type="button" class="btn btn-warning btn-sm w-full sm:flex-1 text-center"
+                        <button type="button" class="btn btn-warning btn-sm w-full text-white font-semibold sm:flex-1 text-center"
                             data-bs-toggle="modal" data-bs-target="#editAddressModal{{ $address->id }}">
                             Edit
                         </button>
@@ -90,7 +90,7 @@
                             class="w-full sm:flex-1">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm w-full sm:flex-1 text-center"
+                            <button type="submit" class="btn btn-danger btn-sm w-full text-white font-semibold sm:flex-1 text-center"
                                 onclick="return confirm('Yakin ingin menghapus?')">
                                 Hapus
                             </button>
@@ -102,7 +102,8 @@
                 <!-- Garis Pembatas -->
                 <hr class="bg-gray-100 w-[98%] h-[2px] mb-4">
             </div>
-            <div class="modal fade" id="editAddressModal{{ $address->id }}" tabindex="-1" aria-labelledby="editAddressModalLabel{{ $address->id }}" aria-hidden="true">
+            <div class="modal fade" id="editAddressModal{{ $address->id }}" tabindex="-1"
+                aria-labelledby="editAddressModalLabel{{ $address->id }}" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -115,26 +116,41 @@
                                 @method('PUT')
                                 <div class="mb-3">
                                     <label for="mark">Tandai Sebagai</label>
-                                    <input type="text" name="mark" id="mark" class="form-control" placeholder="cth rumah/kantor/gedung/dll" value="{{ $address->mark }}" required>
+                                    <input type="text" name="mark" id="mark" class="form-control"
+                                        placeholder="cth rumah/kantor/gedung/dll" value="{{ $address->mark }}">
+                                    @error('mark')
+                                        <div class="text-danger mt-1">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label for="address">Alamat</label>
-                                    <textarea name="address" id="address" class="form-control" rows="3" required>{{ $address->address }}</textarea>
+                                    <textarea name="address" id="address" class="form-control" rows="3">{{ $address->address }}</textarea>
+                                    @error('address')
+                                        <div class="text-danger mt-1">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label for="city_id">Kota</label>
-                                    <select name="city_id" id="city_id" class="form-control" required>
+                                    <select name="city_id" id="city_id" class="form-control">
                                         <option value="">Pilih Kota</option>
                                         @foreach ($cities as $city)
-                                            <option value="{{ $city['city_id'] }}" {{ $address->city_id == $city['city_id'] ? 'selected' : '' }}>
+                                            <option value="{{ $city['city_id'] }}"
+                                                {{ $address->city_id == $city['city_id'] ? 'selected' : '' }}>
                                                 {{ $city['city_name'] }}
                                             </option>
                                         @endforeach
                                     </select>
+                                    @error('city_id')
+                                        <div class="text-danger mt-1">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label for="no_telepon">No Telepon</label>
-                                    <input type="text" name="no_telepon" id="no_telepon" class="form-control" value="{{ $address->no_telepon }}" required>
+                                    <input type="text" name="no_telepon" id="no_telepon" class="form-control"
+                                        value="{{ $address->no_telepon }}">
+                                    @error('no_telepon')
+                                        <div class="text-danger mt-1">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
@@ -143,85 +159,98 @@
                     </div>
                 </div>
             </div>
-        @endforeach
+        @empty
+            <div class=" rounded-lg p-4 text-center flex flex-col justify-center items-center">
+                <img src="{{ asset('img/empty-data.png') }}" alt="Produk Tidak Ditemukan" class="w-64 h-64">
+                <p class="text-lg text-gray-600 font-medium">Alamat Kosong</p>
+            </div>
+        @endforelse
 
     </div>
 
     </div>
 
     <!-- Modal Tambah Alamat -->
-<div class="modal fade" id="addAddressModal" tabindex="-1" aria-labelledby="addAddressModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addAddressModalLabel">Tambah Alamat</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="{{ route('user.addresses.store') }}" method="POST">
-                    @csrf
-                    <!-- Tandai Sebagai -->
-                    <div class="mb-3">
-                        <label for="mark">Tandai Sebagai</label>
-                        <input type="text" name="mark" id="mark" class="form-control"
-                            placeholder="cth rumah/kantor/gedung/dll" value="{{ old('mark') }}">
-                        @error('mark')
-                            <div class="text-danger mt-1">{{ $message }}</div>
-                        @enderror
-                    </div>
+    <div class="modal fade" id="addAddressModal" tabindex="-1" aria-labelledby="addAddressModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addAddressModalLabel">Tambah Alamat</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('user.addresses.store') }}" method="POST">
+                        @csrf
+                        <!-- Tandai Sebagai -->
+                        <div class="mb-3">
+                            <label for="mark">Tandai Sebagai</label>
+                            <input type="text" name="mark" id="mark" class="form-control"
+                                placeholder="cth rumah/kantor/gedung/dll" value="{{ old('mark') }}">
+                            @error('mark')
+                                <div class="text-danger mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
 
-                    <!-- Kota -->
-                    <div class="mb-3">
-                        <label for="city_id">Kota</label>
-                        <select name="city_id" id="city_id" class="form-control">
-                            <option value="">Pilih Kota</option>
-                            @foreach ($cities as $city)
-                                <option value="{{ $city['city_id'] }}" {{ old('city_id') == $city['city_id'] ? 'selected' : '' }}>
-                                    {{ $city['city_name'] }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('city_id')
-                            <div class="text-danger mt-1">{{ $message }}</div>
-                        @enderror
-                    </div>
+                        <!-- Kota -->
+                        <div class="mb-3">
+                            <label for="city_id">Kota</label>
+                            <select name="city_id" id="city_id" class="form-control">
+                                <option value="">Pilih Kota</option>
+                                @foreach ($cities as $city)
+                                    <option value="{{ $city['city_id'] }}"
+                                        {{ old('city_id') == $city['city_id'] ? 'selected' : '' }}>
+                                        {{ $city['city_name'] }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('city_id')
+                                <div class="text-danger mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
 
-                    <!-- Alamat -->
-                    <div class="mb-3">
-                        <label for="address">Alamat</label>
-                        <textarea name="address" id="address" class="form-control" rows="3">{{ old('address') }}</textarea>
-                        @error('address')
-                            <div class="text-danger mt-1">{{ $message }}</div>
-                        @enderror
-                    </div>
+                        <!-- Alamat -->
+                        <div class="mb-3">
+                            <label for="address">Alamat</label>
+                            <textarea name="address" id="address" class="form-control" rows="3">{{ old('address') }}</textarea>
+                            @error('address')
+                                <div class="text-danger mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
 
-                    <!-- No Telepon -->
-                    <div class="mb-3">
-                        <label for="no_telepon">No Telepon</label>
-                        <input type="text" name="no_telepon" id="no_telepon" class="form-control"
-                            placeholder="+62-8000-0000-000" value="{{ old('no_telepon') }}">
-                        @error('no_telepon')
-                            <div class="text-danger mt-1">{{ $message }}</div>
-                        @enderror
-                    </div>
+                        <!-- No Telepon -->
+                        <div class="mb-3">
+                            <label for="no_telepon">No Telepon</label>
+                            <input type="text" name="no_telepon" id="no_telepon" class="form-control"
+                                placeholder="080-000-000-000" value="{{ old('no_telepon') }}">
+                            @error('no_telepon')
+                                <div class="text-danger mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
 
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                </form>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
-<!-- JavaScript untuk Membuka Modal Jika Ada Error -->
-@if ($errors->any())
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var addAddressModal = new bootstrap.Modal(document.getElementById('addAddressModal'));
-            addAddressModal.show();
-        });
-    </script>
-@endif
+    @if (session('success'))
+        <script>
+            // Toast Notification
+            Swal.fire({
+                toast: true,
+                position: 'top-end', // Pojok kanan atas
+                icon: 'success',
+                iconColor: '#3b82f6', // Biru-500 dari Tailwind CSS
+                title: '{{ session('success') }}',
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true,
+                background: '#eff6ff', // Warna latar belakang biru muda
+            });
+        </script>
+    @endif
 
 
 
@@ -242,59 +271,3 @@
         </script>
     @endpush
 @endsection
- {{-- <div class="container-fluid">
-        <div class="container">
-            <div class="card w-100">
-                @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
-                <div class="card-body p-4">
-                    <h5 class="card-title fw-semibold mb-4">Alamat Saya</h5>
-                    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addAddressModal">
-                        Tambah Alamat
-                    </button>
-                    <div class="table-responsive">
-                        <table class="table text-nowrap mb-0 align-middle">
-                            <thead class="text-dark fs-4">
-                                <tr>
-                                    <th class="border-bottom-0">No</th>
-                                    <th class="border-bottom-0">Pengguna</th>
-                                    <th class="border-bottom-0">Sebagai</th>
-                                    <th class="border-bottom-0">Alamat</th>
-                                    <th class="border-bottom-0">Kota</th>
-                                    <th class="border-bottom-0">No Telepon</th>
-                                    <th class="border-bottom-0">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($addresses as $address)
-                                    <tr>
-                                        <td class="border-bottom-0">{{ $loop->iteration }}</td>
-                                        <td class="border-bottom-0">{{ $address->user->name }}</td>
-                                        <td class="border-bottom-0">{{ $address->mark }}</td>
-                                        <td class="border-bottom-0">{{ $address->address }}</td>
-                                        <td class="border-bottom-0">{{ $address->city['city_name'] }}</td>
-                                        <td class="border-bottom-0">{{ $address->no_telepon }}</td>
-                                        <td class="border-bottom-0">
-                                            <!-- Tombol untuk membuka modal Edit Alamat -->
-                                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editAddressModal{{ $address->id }}">
-                                                Edit
-                                            </button>
-                                            <!-- Form untuk menghapus alamat -->
-                                            <form action="{{ route('user.addresses.destroy', $address->id) }}" method="POST" style="display: inline-block;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> --}}

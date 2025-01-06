@@ -163,17 +163,20 @@
                             <form action="{{ route('user.carts.destroy', $cart->id) }}" method="post">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="text-red-500 text-xs"
-                                    onclick="confirmDelete(event, '{{ $cart->id }}')">
+                                <button type="submit" id="delete" class="text-red-500 text-xs"
+                                    onclick="confirmDelete(event, '{{ $cart->id }}', this)"
+                                    disabled>
                                     Hapus
                                 </button>
+
                             </form>
                         </div>
                     </div>
                 </div>
             @empty
-                <div class="bg-white shadow rounded-lg p-4 text-center">
-                    <span class="text-slate-700 text-sm">Tidak Ada Produk</span>
+                <div class="bg-white shadow-sm rounded-lg p-4 text-center flex flex-col justify-center items-center">
+                    <img src="{{ asset('img/empty-data.png') }}" alt="Produk Tidak Ditemukan" class="w-64 h-64">
+                    <p class="text-lg text-gray-600 font-medium">Keranjang Kosong</p>
                 </div>
             @endforelse
         </div>
@@ -241,10 +244,12 @@
                         listCart.push(id); // Menambahkan id produk ke listCart
                         document.getElementById(`plus_${id}`).disabled = false;
                         document.getElementById(`minus_${id}`).disabled = false;
+                        document.getElementById(`delete`).disabled = false;
                         document.getElementById(`cart_${id}`).classList.remove("opacity-50");
                     } else {
                         document.getElementById(`plus_${id}`).disabled = true;
                         document.getElementById(`minus_${id}`).disabled = true;
+                        document.getElementById(`delete`).disabled = true;
                         document.getElementById(`cart_${id}`).classList.add("opacity-50");
                     }
                 });
@@ -428,7 +433,18 @@
                 cancelButtonText: "Batal"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    showAlert('success', 'Produk dihapus')
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end', // Pojok kanan atas
+                        icon: 'success',
+                        iconColor: '#3b82f6', // Biru-500 dari Tailwind CSS
+                        title: 'Produk dihapus dari keranjang', // Pesan yang ingin ditampilkan
+                        showConfirmButton: false,
+                        timer: 1500,
+                        timerProgressBar: true,
+                        background: '#eff6ff', // Warna latar belakang biru muda
+                    });
+
                     total.innerHTML = 'loading..';
                     document.getElementById("cart_" + id).classList.add("hidden");
                     setTimeout(() => {
