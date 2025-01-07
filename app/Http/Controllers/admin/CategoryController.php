@@ -67,11 +67,12 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Category $category)
+    public function edit($id)
     {
+        $category = Category::findOrFail($id);
+        session()->put('edit_category_id', $id); // Simpan ID kategori ke session
         return view('admin.categories.edit', compact('category'));
     }
-
     /**
      * Update the specified resource in storage.
      */
