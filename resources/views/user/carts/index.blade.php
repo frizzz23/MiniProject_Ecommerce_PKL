@@ -2,8 +2,8 @@
 
 
 @section('main')
-    <nav class="flex" aria-label="Breadcrumb">
-        <ol class="flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+    <nav class="flex mb-2" aria-label="Breadcrumb">
+        <ol class="flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse ml-[-30px]">
             <li class="flex items-center">
                 <a href="{{ route('landing-page') }}"
                     class="flex justify-center  items-end gap-1  bg-white shadow-sm text-slate-800 w-auto py-1.5 px-2 rounded-md">
@@ -48,7 +48,7 @@
             </li>
         </ol>
     </nav>
-    <div class="flex flex-col justify-center items-start bg-white py-3 px-4 rounded-lg mt-4 mb-1 shadow-sm">
+    <div class="flex flex-col justify-center items-start bg-white py-3 px-4 rounded-lg  mb-1 shadow-sm">
         <h2 class=" text-xl font-semibold text-gray-800 ">Keranjang Saya </h2>
         <p class="text-muted small">
             Lihat dan kelola produk yang Anda tambahkan ke keranjang sebelum melanjutkan ke pembayaran.

@@ -1,8 +1,8 @@
 @extends('layouts.user')
 
 @section('main')
-    <nav class="flex" aria-label="Breadcrumb">
-        <ol class="flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+    <nav class="flex mb-2" aria-label="Breadcrumb">
+        <ol class="flex items-center  space-x-1 md:space-x-2 rtl:space-x-reverse ml-[-30px]">
             <li class="flex items-center">
                 <a href="{{ route('landing-page') }}"
                     class="flex justify-center  items-end gap-1  bg-white shadow-sm text-slate-800 w-auto py-1.5 px-2 rounded-md">
@@ -47,8 +47,8 @@
             </li>
         </ol>
     </nav>
-    <div class="grid grid-cols-1 max-sm:grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6 mt-4">
-        <div class="bg-white p-4 rounded-lg text-center shadow-sm">
+    <div class="grid grid-cols-1 max-sm:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6 ">
+        <div class="bg-white p-4 rounded-lg text-center shadow-sm w-full">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                 style="fill: rgba(102, 110, 241, 1);" class="w-12 h-12 mb-3 inline-block">
                 <circle cx="10.5" cy="19.5" r="1.5"></circle>
@@ -58,10 +58,10 @@
                     d="M17.31 15h-6.64L6.18 4.23A2 2 0 0 0 4.33 3H2v2h2.33l4.75 11.38A1 1 0 0 0 10 17h8a1 1 0 0 0 .93-.64L21.76 9h-2.14z">
                 </path>
             </svg>
-            <h3 class="text-lg font-semibold text-gray-700">Total Keranjang</h3>
-        <p class="text-2xl font-bold text-gray-900">{{ $totalKeranjang }}</p>
+            <h3 class="text-lg font-semibold text-gray-700">Produk dikeranjang</h3>
+            <p class="text-2xl font-bold text-gray-900">{{ $totalKeranjang }}</p>
         </div>
-        <div class="bg-white p-4 rounded-lg text-center shadow-sm">
+        <div class="bg-white p-4 rounded-lg text-center shadow-sm w-full">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                 style="fill: rgba(102, 110, 241, 1);" class="w-12 h-12 mb-3 inline-block">
                 <circle cx="10.5" cy="19.5" r="1.5"></circle>
@@ -72,9 +72,9 @@
                 </path>
             </svg>
             <h3 class="text-lg font-semibold text-gray-700">Total Pesanan</h3>
-        <p class="text-2xl font-bold text-gray-900">{{ $totalOrders }}</p>
+            <p class="text-2xl font-bold text-gray-900">{{ $totalOrders }}</p>
         </div>
-        <div class="bg-white p-4 rounded-lg text-center shadow-sm">
+        <div class="bg-white p-4 rounded-lg text-center shadow-sm w-full">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                 style="fill: rgba(102, 110, 241, 1);" class="w-12 h-12 mb-3 inline-block">
                 <path
@@ -84,17 +84,8 @@
             <h3 class="text-lg font-semibold text-gray-700">Review ditambahkan</h3>
             <p class="text-2xl font-bold text-gray-900">{{ $totalReviews }}</p>
         </div>
-        {{-- <div class="bg-white p-4 rounded-lg text-center shadow-sm">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                style="fill: rgba(102, 110, 241, 1);" class="w-12 h-12 mb-3 inline-block">
-                <path
-                    d="M21 6h-5v2h4v9H4V8h5v3l5-4-5-4v3H3a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1z">
-                </path>
-            </svg>
-            <h3 class="text-lg font-semibold text-gray-700">Product returns</h3>
-            <p class="text-2xl font-bold text-gray-900">2</p>
-        </div> --}}
     </div>
+    
     <div class="flex flex-col justify-center items-start bg-white py-3 px-4 rounded-lg mb-1 shadow-sm">
         <h2 class=" text-xl font-semibold text-gray-800 ">Profil Saya </h2>
         <p class="text-muted small">

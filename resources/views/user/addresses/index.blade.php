@@ -1,8 +1,8 @@
 @extends('layouts.user')
 
 @section('main')
-    <nav class="flex mb-6" aria-label="Breadcrumb">
-        <ol class="flex items-center  rtl:space-x-reverse">
+    <nav class="flex mb-2" aria-label="Breadcrumb">
+        <ol class="flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse ml-[-30px]">
             <li class="flex items-center">
                 <a href="{{ route('landing-page') }}"
                     class="flex justify-center items-end gap-1 bg-white shadow-sm text-slate-800 w-auto py-1.5 px-2 rounded-md">
@@ -16,7 +16,7 @@
                                 stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                         </g>
                     </svg>
-                    <span class="font-semibold text-xs"> Home</span>
+                    <span class="font-semibold text-xs"> Beranda</span>
                 </a>
             </li>
             <li>
@@ -28,7 +28,7 @@
                     </svg>
                     <a href=""
                         class="flex justify-center items-end gap-1 bg-white shadow-sm text-slate-800  w-auto py-2 px-2 rounded-md">
-                        <span class="font-semibold text-xs">Account</span>
+                        <span class="font-semibold text-xs">Akun</span>
                     </a>
                 </div>
             </li>

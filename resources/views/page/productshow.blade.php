@@ -25,7 +25,7 @@
     </style>
 </head>
 
-<body class="px-5">
+<body class="">
 
     <!-- start menu-->
     <div id="list-menu"
@@ -125,10 +125,10 @@
     <x-list-cart-modal />
 
     <div>
-        <div class="px-5">
-            <div class="flex w-full justify-between gap-5 mb-5 sticky top-0 z-10 bg-white py-3 md:pe-5">
+        <div class="">
+            <div id="header" class="px-5 flex w-full justify-between gap-5 mb-5 sticky top-0 z-10 bg-white py-3 md:pe-5">
                 <a href="{{ route('landing-page') }}">
-                    <img src="{{ asset('img/logo&text.svg') }}" alt="logo" class="w-32">
+                    <img src="{{ asset('img/logo&text.svg') }}" alt="logo" class=" w-32">
                 </a>
                 <div class="py-2 rounded-[20px] hidden gap-4 items-center md:w-auto hidden gap-1 items-center xl:flex">
                     <div class="hidden md:flex gap-4">
@@ -214,7 +214,7 @@
                                 <!-- Profil dropdown -->
                                 <button id="profileDropdownButton">
                                     <!-- Tampilkan gambar profil -->
-                                    <div class="w-12 h-12 rounded-full overflow-hidden">
+                                    <div class="w-10 h-10 rounded-full overflow-hidden">
                                         <img src="{{ Auth::user()->image ? asset('storage/' . Auth::user()->image) : asset('style/src/assets/images/profile/user-1.jpg') }}"
                                             alt="Profile Picture" class="w-full h-full object-cover">
                                     </div>
@@ -256,7 +256,7 @@
 
             </div>
 
-            <div class="flex justify-between items md:pe-5">
+            <div class="flex justify-between items md:pe-5 px-5">
                 <nav class="flex" aria-label="Breadcrumb">
                     <ol class="flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
                         <li class="flex items-center">
@@ -311,7 +311,7 @@
                 </nav>
             </div>
 
-            <div class="mt-10 grid md:grid-cols-[2fr_1.5fr] grid-cols-1 gap-5 pe-5 md:mb-10 mb-5">
+            <div class="mt-10 grid md:grid-cols-[2fr_1.5fr] grid-cols-1 gap-5 pe-5 md:mb-10 mb-5 px-5">
                 <div class="border-2 w-full h-96 md:h-96 overflow-hidden bg-center">
                     @if ($product->image_product)
                         <img src="{{ asset('storage/' . $product->image_product) }}"
@@ -430,7 +430,7 @@
                 </div>
             </div>
 
-            <div class="pe-5">
+            <div class="pe-5 px-5">
                 <div class="border md:mb-10 mb-5 p-5">
                     <h5 class="text-md font-semibold text-slate-800">Description</h5>
                     <p class="tracking-tighter text-sm text-slate-700">
@@ -581,6 +581,18 @@
     </div>
 
     <x-list-cart-script />
+
+    <script>
+        const header = document.getElementById('header');
+    
+        window.addEventListener('scroll', function () {
+            if (window.scrollY > 10) {
+                header.classList.add('shadow-md');
+            } else {
+                header.classList.remove('shadow-md');
+            }
+        });
+    </script>
 
     <script>
         const carts = document.getElementById("carts");

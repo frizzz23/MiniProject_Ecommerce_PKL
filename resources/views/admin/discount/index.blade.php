@@ -73,7 +73,7 @@
 
                     </div>
                     <div class="table-responsive">
-                        <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+                        <table class="min-w-full bg-white rounded-lg overflow-hidden">
                             <thead class="bg-[#5D87FF] text-white"> {{-- bg-gray-100 --}}
                                 <tr>
                                     <th class="px-4 py-2 text-left" style="width: 5%;">No</th>
@@ -167,37 +167,77 @@
                                     </tr>
                                     <div class="modal fade" id="usermodal{{ $code->id }}" tabindex="-1"
                                         aria-labelledby="userModalLabel{{ $code->id }}" aria-hidden="true">
-                                        <div class="modal-dialog">
+                                        <div class="modal-dialog modal-lg">
                                             <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="userModalLabel{{ $code->id }}">
-                                                        Pengguna Yang Sudah Menggunakan Voucher {{ $code->code }}
-                                                    </h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
+
+                                                <!-- Banner Section -->
+                                                <div class="p-4">
+                                                    <div class="relative ">
+                                                        <!-- Banner Image -->
+                                                        <img src="{{ asset('img/voucher.jpg') }}" alt="Voucher Banner"
+                                                            class=" w-full h-[150px] rounded-md">
+                                                        <!-- Text Overlay -->
+                                                        <div
+                                                            class="absolute top-0 left-0 right-0 bottom-0 flex flex-col justify-center items-center text-white">
+                                                            <!-- Title Text with smaller font size -->
+                                                            <p class="text-xl font-bold mb-2 border-b-2 border-white ">Kode
+                                                                Voucher</p> <!-- Title size adjusted -->
+
+                                                            <!-- Description Text with underline and dark blue color -->
+                                                            <p class="text-3xl font-bold  text-blue-700">
+                                                                ({{ $code->code }})</p>
+                                                        </div>
+
+                                                    </div>
                                                 </div>
+
+
+                                                <!-- Modal Body -->
                                                 <div class="modal-body">
+                                                    <div class="title w-full flex justify-center items-center">
+                                                        <p class="text-xl font-bold mb-2"><span class="text-blue-400 ">Pengguna</span> kode voucher</p>
+                                                    </div>
                                                     @if ($code->users->count() > 0)
-                                                        <div class="border-2 p-2 border-slate-300">
+                                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 p-3 max-h-96 overflow-y-auto">
                                                             @foreach ($code->users as $user)
-                                                                <div class="border-b py-2">
-                                                                    <div class="grid grid-cols-[1fr_0.1fr_2fr] mb-2">
-                                                                        <span>Nama</span>
-                                                                        <span>:</span>
-                                                                        <span>{{ $user->name }}</span>
-                                                                    </div>
-                                                                    <div class="grid grid-cols-[1fr_0.1fr_2fr] mb-2">
-                                                                        <span>Email</span>
-                                                                        <span>:</span>
-                                                                        <span>{{ $user->email }}</span>
+                                                                <div class="flex items-center p-3 border rounded-lg shadow-sm bg-gray-50">
+                                                                    <!-- User Avatar -->
+                                                                    @if ($user->image)
+                                                                        <img src="{{ asset('storage/' . $user->image) }}"
+                                                                             alt="Profile Picture"
+                                                                             class="rounded-full w-16 h-16 mr-4">
+                                                                    @else
+                                                                        <img src="{{ asset('style/src/assets/images/profile/user-1.jpg') }}"
+                                                                             alt="User Avatar"
+                                                                             class="rounded-full w-14 h-14 mr-4">
+                                                                    @endif
+                                                                    <!-- User Details -->
+                                                                    <div>
+                                                                        <h6 class="font-bold text-lg mb-1">
+                                                                            {{ $user->name }}</h6>
+                                                                        <p class="text-sm text-gray-600 mb-1">
+                                                                            <strong>Email:</strong> {{ $user->email }}
+                                                                        </p>
+                                                                        <p class="text-sm text-gray-600">
+                                                                            <strong>Waktu Klaim:</strong>
+                                                                            {{ $user->pivot->created_at->locale('id')->isoFormat('D MMM YYYY, HH:mm') }}
+                                                                        </p>
                                                                     </div>
                                                                 </div>
                                                             @endforeach
                                                         </div>
                                                     @else
-                                                        <p>Tidak ada pengguna yang menggunakan voucher ini.</p>
+                                                        <div class="text-center py-5">
+                                                            <img src="https://via.placeholder.com/150x100?text=No+Users"
+                                                                 alt="No Users" class="mx-auto mb-4">
+                                                            <p class="text-gray-600">Tidak ada pengguna yang menggunakan voucher ini.</p>
+                                                        </div>
                                                     @endif
                                                 </div>
+                                                
+
+
+                                                <!-- Footer -->
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary"
                                                         data-bs-dismiss="modal">Tutup</button>

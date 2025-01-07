@@ -78,7 +78,7 @@
                     class="block text-sm {{ request()->routeIs('user.profile.profile')
                         ? 'text-blue-600 font-semibold'
                         : 'text-gray-700 hover:text-blue-600' }}">
-                    Profile 
+                    Profile
                 </a>
                 <a href="{{ route('user.profile.password') }}"
                     class="block text-sm {{ request()->routeIs('user.profile.password')
@@ -133,7 +133,7 @@
         </a>
         <hr class="border-gray-700 my-4">
         <a href="#" class="flex items-center text-red-400 hover:text-red-600 space-x-2"
-            onclick="document.getElementById('logout-form').submit();">
+            onclick="confirmLogout(event)">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                 style="fill: rgba(102, 110, 241, 1);">
                 <path d="M16 13v-2H7V8l-5 4 5 4v-3z"></path>
@@ -148,8 +148,28 @@
             @csrf
             <button type="submit" class="hidden">Logout</button>
         </form>
-
-
     </nav>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function confirmLogout(event) {
+            event.preventDefault(); // Mencegah aksi default tombol
+            Swal.fire({
+                title: "Kamu Yakin?",
+                text: "Anda akan keluar dari sesi saat ini!",
+                icon: "warning",
+                iconColor: "#334155",
+                width: 400,
+                background: "#fff",
+                showCancelButton: true,
+                confirmButtonColor: "#334155",
+                cancelButtonColor: "#b91c1c",
+                confirmButtonText: "Ya, Keluar!",
+                cancelButtonText: "Batal"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('logout-form').submit();
+                }
+            });
+        }
+    </script>
 </aside>

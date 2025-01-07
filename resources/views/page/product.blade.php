@@ -349,7 +349,7 @@
                                 <!-- Profil dropdown -->
                                 <button id="profileDropdownButton">
                                     <!-- Tampilkan gambar profil -->
-                                    <div class="w-12 h-12 rounded-full overflow-hidden">
+                                    <div class="w-10 h-10 rounded-full overflow-hidden">
                                         <img src="{{ Auth::user()->image ? asset('storage/' . Auth::user()->image) : asset('style/src/assets/images/profile/user-1.jpg') }}"
                                             alt="Profile Picture" class="w-full h-full object-cover">
                                     </div>
