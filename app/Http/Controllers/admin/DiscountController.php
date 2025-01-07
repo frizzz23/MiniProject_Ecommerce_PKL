@@ -69,7 +69,7 @@ class DiscountController extends Controller
             'quantity.required' => 'Kuantitas promo wajib diisi.',
             'minimum_purchase.required' => 'Minimal pembelian promo wajib diisi.',
         ]);
-        
+
 
         // Menambahkan promo code baru ke dalam database
         PromoCode::create($input);
@@ -107,6 +107,13 @@ class DiscountController extends Controller
             'discount_amount' => 'required|numeric',
             'quantity' => 'required|integer',
             'minimum_purchase' => 'required|numeric|min:0', // Validasi untuk minimal pembelian
+            'discount_amount' => 'required|numeric|min:0|lte:minimum_purchase'
+        ],[
+            'code.required' => 'Kode promo wajib diisi.',
+            'discount_amount.required' => 'Diskon promo wajib diisi.',
+            'discount_amount.lte' => 'Jumlah diskon tidak boleh lebih besar dari minimal pembelian.',
+            'quantity.required' => 'Kuantitas promo wajib diisi.',
+            'minimum_purchase.required' => 'Minimal pembelian promo wajib diisi.',
         ]);
 
         // Update promo code
