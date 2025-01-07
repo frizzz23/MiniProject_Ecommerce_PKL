@@ -73,6 +73,7 @@ class User extends Authenticatable
     public function promoCodes()
     {
         return $this->belongsToMany(PromoCode::class, 'used_promo_codes', 'user_id', 'promo_code_id')
+            ->withPivot('created_at')
             ->withTimestamps();
     }
 

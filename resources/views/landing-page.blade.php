@@ -35,10 +35,10 @@
         <div
             class="py-2 px-5 xl:ps-10 rounded-[20px] hidden gap-4 items-center md:w-auto hidden gap-1 items-center xl:flex">
             <div class="hidden md:flex gap-4">
-                <a href="{{ route('landing-page') }}" class="text-sm text-white">Home</a>
-                <a href="{{ route('page.product') }}" class="text-sm text-white">Product</a>
-                <a href="{{ route('about-page') }}" class="text-sm text-white">About</a>
-                <a href="{{ route('contact-page') }}" class="text-sm text-white">Contact</a>
+                <a href="{{ route('landing-page') }}" class="text-sm text-white">Beranda</a>
+                <a href="{{ route('page.product') }}" class="text-sm text-white">Produk</a>
+                <a href="{{ route('about-page') }}" class="text-sm text-white">Tentang</a>
+                <a href="{{ route('contact-page') }}" class="text-sm text-white">Hubungi</a>
             </div>
 
             <form action="{{ route('page.product') }}" method="GET"
@@ -124,7 +124,7 @@
                             <!-- Tombol dropdown profil -->
                             <button id="profileDropdownButton">
                                 <!-- Tampilkan gambar profil -->
-                                <div class="w-12 h-12 rounded-full overflow-hidden">
+                                <div class="w-10 h-10 rounded-full overflow-hidden">
                                     <img src="{{ Auth::user()->image ? asset('storage/' . Auth::user()->image) : asset('style/src/assets/images/profile/user-1.jpg') }}"
                                         alt="Profile Picture" class="w-full h-full object-cover">
                                 </div>
@@ -297,11 +297,11 @@
         class="px-10 min-h-screen md:h-screen grid grid-cols-1 md:grid-cols-[1fr_1.5fr] w-ful md:ps-28 relative">
         <div class="md:order-0 order-1 md:py-0 py-10 flex flex-col justify-center ">
             <h1 class="text-4xl font-bold mb-5 text-white">
-                Technology belongs to <span style="color: #2da5f3">everyone</span>
+                Teknologi adalah milik <span style="color: #2da5f3">semua orang</span>
             </h1>
             <p class="text-justify mb-10 text-white">
-                Experience top-notch performance with the latest laptop/smartphone. Fast, stylish, and equipped with
-                advanced features to match your lifestyle.
+                Rasakan performa terbaik dengan laptop/smartphone terbaru. Cepat, bergaya, dan dilengkapi dengan
+                fitur-fitur canggih yang sesuai dengan gaya hidup Anda.
             </p>
 
             <div>
@@ -309,7 +309,7 @@
                     <span
                         style="background: linear-gradient(90deg, #2535C5 0%, #1597DC 100%); background-clip: text; -webkit-background-clip: text; color: transparent;"
                         class="font-medium">
-                        Shop Now</span>
+                        Belanja Sekarang</span>
                 </a>
             </div>
 
@@ -318,10 +318,9 @@
             <img src="{{ asset('desainmini-main/image/433808944f8d3c3eb8e8267829a874d4.png') }}" alt="banner"
                 class="md:w-5/6 ms-auto" />
             <div class="absolute bg-white p-4 px-5 backdrop-filter backdrop-opacity-50 z-10 bottom-20 left-20 rounded-lg overflow-hidden"
-                style="background-color: rgba(255, 255, 255, 0.5);width: 240px;height:103px">
-                <h6 class="text-sm text-slate-900 font-bold mb-2">Get Up to 30% Off</h6>
-                <p class="text-xs text-slate-900">You can get 30% off this product
-                    if you are buying now</p>
+                style="background-color: rgba(255, 255, 255, 0.5);width: 240px;height:auto">
+                <h6 class="text-sm text-slate-900 font-bold mb-2">Dapatkan Diskon Hingga 30%.</h6>
+                <p class="text-xs text-slate-900">Anda bisa mendapatkan diskon 30% untuk produk ini jika Anda membeli sekarang</p>
             </div>
         </div>
     </section>
@@ -683,8 +682,8 @@
     </section>
 
     <section class="md:px-28 px-5 py-5 mb-10">
-        <h1 class="text-2xl font-semibold text-slate-700 mb-10">
-            Top <span class="text-blue-500">Categories</span>
+        <h1 class="text-2xl font-semibold text-blue-500 mb-10">
+            Kategori <span class=" text-slate-700">Teratas</span>
         </h1>
         <div class="grid md:grid-cols-6 grid-cols-3 gap-4">
             @foreach ($categories as $category)
@@ -706,8 +705,8 @@
     </section>
 
     <section class="md:px-28 px-5 py-5 mb-10">
-        <h1 class="text-2xl font-semibold text-slate-700 mb-10">
-            Top Products <span class="text-blue-500">by Category</span>
+        <h1 class="text-2xl font-semibold text-blue-500 mb-10">
+            Produk Teratas <span class=" text-slate-700">berdasarkan Kategori</span>
         </h1>
         <div class="grid md:grid-cols-4 grid-cols-2 gap-4">
             @foreach ($productsByCategory as $product)

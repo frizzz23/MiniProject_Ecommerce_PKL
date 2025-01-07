@@ -24,7 +24,9 @@ class PromoCode extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'used_promo_codes', 'promo_code_id', 'user_id');
+        return $this->belongsToMany(User::class, 'used_promo_codes', 'promo_code_id', 'user_id')
+            ->withPivot('created_at')
+            ->withTimestamps();;
     }
 
     /**

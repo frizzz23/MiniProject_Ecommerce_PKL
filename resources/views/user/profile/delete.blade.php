@@ -1,8 +1,8 @@
 @extends('layouts.user')
 
 @section('main')
-    <nav class="flex" aria-label="Breadcrumb">
-        <ol class="flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+    <nav class="flex mb-2" aria-label="Breadcrumb">
+        <ol class="flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse ml-[-30px]">
             <li class="flex items-center">
                 <a href="{{ route('landing-page') }}"
                     class="flex justify-center  items-end gap-1  bg-white shadow-sm text-slate-800 w-auto py-1.5 px-2 rounded-md">
@@ -47,7 +47,7 @@
             </li>
         </ol>
     </nav>
-    <div class="bg-white rounded-lg shadow-md p-6 mb-8 flex flex-col md:flex-row items-center gap-6 mt-4">
+    <div class="bg-white rounded-lg shadow-sm p-6 mb-8 flex flex-col md:flex-row items-center gap-6 ">
         <div class="flex-shrink-0">
             <img src="https://via.placeholder.com/192x192.png?text=Delete+Account" alt="Delete Account" class="w-48 h-48">
 
