@@ -372,48 +372,53 @@
         }
 
         async function plus(id, max, price, el) {
-            el.disabled = true;
-            const input = document.getElementById(id);
-            if (input.value <= max) {
-                input.value = parseInt(input.value) + 1;
-                document.getElementById("total_" + id.split("_")[1]).innerHTML = 'loading..';
-                total.innerHTML = 'loading..';
+    el.disabled = true;
+    const input = document.getElementById(id);
+    const currentQuantity = parseInt(input.value);
+    const stock = parseInt(max);
 
-                const response = await fetch('/carts/' + id.split("_")[1], {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
-                            'content')
-                    },
-                    body: JSON.stringify({
-                        quantity: input.value
-                    })
-                });
+    if (currentQuantity < stock) {
+        const newQuantity = currentQuantity + 1;
+        if (newQuantity <= stock) {
+            input.value = newQuantity;
+            document.getElementById("total_" + id.split("_")[1]).innerHTML = 'loading..';
+            total.innerHTML = 'loading..';
 
-                // Cek jika respons JSON
-                if (response.ok) {
-                    const data = await response.json();
-                    input.value = data.quantity;
+            const response = await fetch('/carts/' + id.split("_")[1], {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    quantity: newQuantity
+                })
+            });
 
-                    total_input.value = parseInt(total_input.value) + parseInt(price);
-                    const total_input_id = parseInt(document.getElementById("total_input_" + id.split("_")[1]).value) +
-                        parseInt(price);
-                    document.getElementById("total_input_" + id.split("_")[1]).value = total_input_id
-                    document.getElementById("total_" + id.split("_")[1]).innerHTML = formatRupiah(total_input_id);
-                    total.innerHTML = formatRupiah(total_input.value);
+            // Cek jika respons JSON
+            if (response.ok) {
+                const data = await response.json();
+                input.value = data.quantity;
 
-                } else {
-                    console.error('Server error or invalid response:', response.status);
-                    const text = await response.text();
-                    console.error('Response text:', text);
-                }
+                total_input.value = parseInt(total_input.value) + parseInt(price);
+                const total_input_id = parseInt(document.getElementById("total_input_" + id.split("_")[1]).value) + parseInt(price);
+                document.getElementById("total_input_" + id.split("_")[1]).value = total_input_id
+                document.getElementById("total_" + id.split("_")[1]).innerHTML = formatRupiah(total_input_id);
+                total.innerHTML = formatRupiah(total_input.value);
 
             } else {
-                showAlert('error', 'stok product sudah habis')
+                console.error('Server error or invalid response:', response.status);
+                const text = await response.text();
+                console.error('Response text:', text);
             }
-            el.disabled = false;
+        } else {
+            showAlert('error', 'Stok produk sudah habis');
         }
+    } else {
+        showAlert('error', 'Stok produk sudah habis');
+    }
+    el.disabled = false;
+}
 
         function confirmDelete(event, id) {
             event.preventDefault();
