@@ -364,13 +364,22 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
+                        <label for="edit_name_category_{{ $category->id }}" class="form-label">Nama Kategori</label>
+                        <input type="text" name="name_category" class="form-control"  value="{{ $category->name_category }}" >
+                        @if (old('category_id') == $category->id)
+                            @error('name_category')
+                                <div class="text-danger mt-1">{{ $message }}</div>
+                            @enderror
+                        @endif
+                    </div>
+                    {{-- <div class="mb-3">
                         <label for="edit_name_category" class="form-label">Nama Kategori</label>
                         <input type="text" name="name_category" class="form-control"
                                value="{{ old('category_id') == $category->id ? old('name_category') : $category->name_category }}">
                         @error('name_category')
                             <div class="text-danger mt-1">{{ $message }}</div>
                         @enderror
-                    </div>
+                    </div> --}}
                     <div class="mb-3">
                         <label for="edit_image_category" class="form-label">Gambar</label>
                         <input type="file" name="image_category" class="form-control">
@@ -409,9 +418,11 @@
                         <label for="name_category" class="form-label">Nama Kategori</label>
                         <input type="text" name="name_category" class="form-control" id="name_category"
                                value="{{ old('name_category') }}">
-                        @error('name_category')
-                            <div class="text-danger mt-1">{{ $message }}</div>
-                        @enderror
+                        @if (!old('category_id'))
+                            @error('name_category')
+                                <div class="text-danger mt-1">{{ $message }}</div>
+                            @enderror
+                        @endif
                     </div>
 
                     <!-- Input Gambar Kategori -->
@@ -452,5 +463,7 @@
     });
 </script>
 @endif
+
+
 
 @endsection

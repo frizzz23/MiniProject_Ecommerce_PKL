@@ -234,7 +234,7 @@
                                                         </div>
                                                     @endif
                                                 </div>
-                                                
+
 
 
                                                 <!-- Footer -->
@@ -278,8 +278,9 @@
                                     </div>
 
                                     <!-- Modal Edit -->
-                                    <div class="modal fade" id="editmodal{{ $code->id }}" tabindex="-1"
-                                        aria-labelledby="editModalLabel{{ $code->id }}" aria-hidden="true">
+                                    <div class="modal fade {{ $errors->any() && old('code_id') == $code->id ? 'show' : '' }}"
+                                        id="editmodal{{ $code->id }}" tabindex="-1" aria-hidden="true"
+                                        style="{{ $errors->any() && old('code_id') == $code->id ? 'display: block;' : '' }}">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -293,35 +294,56 @@
                                                         method="POST">
                                                         @csrf
                                                         @method('PUT')
+                                                        <input type="hidden" name="code_id" value="{{ $code->id }}">
                                                         <div class="mb-3">
                                                             <label for="code{{ $code->id }}" class="form-label">Kode
                                                                 Vocher</label>
                                                             <input type="text" name="code" class="form-control"
-                                                                value="{{ old('code') ?? $code->code }}"
-                                                                id="code{{ $code->id }}" required>
+                                                               value="{{$code->code}}"
+                                                                id="code{{ $code->id }}">
+                                                                @if (old('code_id') == $code->id)
+                                                                    @error('code')
+                                                                        <div class="text-danger mt-1">{{ $message }}</div>
+                                                                    @enderror
+                                                                @endif
                                                         </div>
                                                         <div class="mb-3">
                                                             <label for="discount_amount{{ $code->id }}"
                                                                 class="form-label">Jumlah Diskon</label>
                                                             <input type="number" name="discount_amount"
                                                                 class="form-control"
-                                                                value="{{ old('discount_amount') ?? $code->discount_amount }}"
-                                                                id="discount_amount{{ $code->id }}" required>
+                                                                value="{{$code->discount_amount}}"
+                                                                id="discount_amount{{ $code->id }}">
+                                                                @if (old('code_id') == $code->id)
+                                                                    @error('discount_amount')
+                                                                        <div class="text-danger mt-1">{{ $message }}</div>
+                                                                    @enderror
+                                                                @endif
                                                         </div>
                                                         <div class="mb-3">
                                                             <label for="quantity{{ $code->id }}"
                                                                 class="form-label">Kuantitas</label>
                                                             <input type="number" name="quantity" class="form-control"
-                                                                value="{{ old('quantity') ?? $code->quantity }}"
-                                                                id="quantity{{ $code->id }}" required>
+                                                                value="{{$code->quantity}}"
+                                                                id="quantity{{ $code->id }}">
+                                                                @if (old('code_id') == $code->id)
+                                                                    @error('quantity')
+                                                                        <div class="text-danger mt-1">{{ $message }}</div>
+                                                                    @enderror
+                                                                @endif
                                                         </div>
                                                         <div class="mb-3">
                                                             <label for="minimum_purchase{{ $code->id }}"
                                                                 class="form-label">Minimal Pembelian</label>
                                                             <input type="number" name="minimum_purchase"
                                                                 class="form-control"
-                                                                value="{{ old('minimum_purchase') ?? $code->minimum_purchase }}"
-                                                                id="minimum_purchase{{ $code->id }}" required>
+                                                                value="{{$code->minimum_purchase}}"
+                                                                id="minimum_purchase{{ $code->id }}">
+                                                                @if (old('code_id') == $code->id)
+                                                                    @error('minimum_purchase')
+                                                                        <div class="text-danger mt-1">{{ $message }}</div>
+                                                                    @enderror
+                                                                @endif
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary"
@@ -364,9 +386,11 @@
                             <label for="code" class="form-label">Kode Voucher</label>
                             <input type="text" name="code" class="form-control" id="code"
                                 value="{{ old('code') }}">
-                            @error('code')
-                                <div class="text-danger mt-1">{{ $message }}</div>
-                            @enderror
+                            @if (!old('code_id'))
+                                @error('code')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            @endif
                         </div>
 
                         <!-- Jumlah Diskon -->
@@ -374,9 +398,11 @@
                             <label for="discount_amount" class="form-label">Jumlah Diskon</label>
                             <input type="number" name="discount_amount" class="form-control" id="discount_amount"
                                 value="{{ old('discount_amount') }}">
-                            @error('discount_amount')
-                                <div class="text-danger mt-1">{{ $message }}</div>
-                            @enderror
+                            @if (!old('code_id'))
+                                @error('discount_amount')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            @endif
                         </div>
 
                         <!-- Kuantitas -->
@@ -384,9 +410,11 @@
                             <label for="quantity" class="form-label">Kuantitas</label>
                             <input type="number" name="quantity" class="form-control" id="quantity"
                                 value="{{ old('quantity') }}">
-                            @error('quantity')
-                                <div class="text-danger mt-1">{{ $message }}</div>
-                            @enderror
+                            @if (!old('code_id'))
+                                @error('quantity')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            @endif
                         </div>
 
                         <!-- Minimal Pembelian -->
@@ -394,9 +422,11 @@
                             <label for="minimum_purchase" class="form-label">Minimal Pembelian</label>
                             <input type="number" name="minimum_purchase" class="form-control" id="minimum_purchase"
                                 value="{{ old('minimum_purchase') }}">
-                            @error('minimum_purchase')
-                                <div class="text-danger mt-1">{{ $message }}</div>
-                            @enderror
+                            @if (!old('code_id'))
+                                @error('minimum_purchase')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            @endif
                         </div>
 
                         <div class="modal-footer">
@@ -411,13 +441,21 @@
 
     <!-- Script untuk Menampilkan Modal Jika Ada Error -->
     @if ($errors->any())
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            @if (old('code_id'))
+                // Jika terdapat error pada modal edit
+                var editModalId = 'editmodal{{ old('code_id') }}';
+                var editModal = new bootstrap.Modal(document.getElementById(editModalId));
+                editModal.show();
+            @else
+                // Jika terdapat error pada modal tambah
                 var tambahModal = new bootstrap.Modal(document.getElementById('tambahmodal'));
                 tambahModal.show();
-            });
-        </script>
-    @endif
+            @endif
+        });
+    </script>
+@endif
 @endsection
 
 
