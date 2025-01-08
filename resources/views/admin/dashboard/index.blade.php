@@ -4,61 +4,61 @@
     <div class="container-fluid">
         <div class="row">
             <!-- Card 1: Total Pendapatan -->
+            <!-- Card 1: Total Pendapatan -->
             <div class="col-md-4 col-sm-6 mb-4">
-                <div class="card h-100">
+                <div class="card h-100 bg-gradient-to-r from-blue-800 to-blue-400">
                     <div class="card-body d-flex align-items-center">
-                        <div class="me-3">
-                            <i class="fas fa-dollar-sign fa-3x text-success"></i>
+                        <!-- Icon Container with White Card and Medium Border Radius -->
+                        <div class="me-3 p-3 bg-white rounded-md">
+                            <i class="fas fa-wallet fa-3x text-primary"></i>
                         </div>
                         <div>
-                            <h5 class="card-title">Total Pendapatan</h5>
-                            <p class="card-text">Rp. {{ number_format($Revenue, 0, ',', '.') }}</p>
+                            <h5 class="card-title text-white font-semibold">Total Pendapatan</h5>
+                            <p class="card-text text-white font-normal">Rp. {{ number_format($Revenue, 0, ',', '.') }}</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-
-            <!-- Card 2: Order Terbaru -->
+            <!-- Card 2: Total Penjualan -->
             <div class="col-md-4 col-sm-6 mb-4">
-                <div class="card h-100">
+                <div class="card h-100 bg-gradient-to-r from-blue-800 to-blue-400">
                     <div class="card-body d-flex align-items-center">
-                        <!-- Ikon -->
-                        <div class="me-3">
-                            <i class="fas fa-box fa-3x text-primary"></i>
+                        <!-- Icon Container with White Card and Medium Border Radius -->
+                        <div class="me-3 p-3 bg-white rounded-md">
+                            <i class="fas fa-archive fa-3x text-primary"></i>
                         </div>
-                        <!-- Teks Konten -->
                         <div>
-                            <h5 class="card-title">Total Penjualan</h5>
+                            <h5 class="card-title text-white font-semibold">Total Penjualan</h5>
                             @if ($totalItemsSold > 0)
-                                <p class="card-text">{{ $totalItemsSold }} Pesanan Selesai</p>
+                                <p class="card-text text-white font-normal">{{ $totalItemsSold }} Pesanan Selesai</p>
                             @else
-                                <p class="card-text">Tidak ada penjualan</p>
+                                <p class="card-text text-white font-normal">Tidak ada penjualan</p>
                             @endif
-
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Card 4: Pelanggan Baru -->
+
+            <!-- Card 3: Pelanggan Baru -->
             <div class="col-md-4 col-sm-6 mb-4">
-                <div class="card h-100 shadow-sm">
+                <div class="card h-100 bg-gradient-to-r from-blue-800 to-blue-400">
                     <div class="card-body d-flex align-items-center">
-                        <!-- Ikon -->
-                        <div class="me-3">
-                            <i class="fas fa-users fa-3x text-info"></i>
+                        <!-- Icon Container with White Card and Medium Border Radius -->
+                        <div class="me-3 p-3 bg-white rounded-md">
+                            <i class="fas fa-user-plus fa-3x text-primary"></i>
                         </div>
-                        <!-- Teks Konten -->
                         <div>
-                            <h5 class="card-title mb-2">Pelanggan Baru</h5>
-                            <p class="card-text mb-0">
-                                <span class="fw-bold fs-5 text-dark">{{ $newuser }}</span>
-                                <span class="text-muted">/ dalam sebulan terakhir</span>
+                            <h5 class="card-title text-white font-semibold mb-2">Pelanggan Baru</h5>
+                            <p class="card-text text-white font-normal mb-0">
+                                <span class="fw-bold fs-5 ">{{ $newuser }}</span>
+                                <span class="text-muted text-white">/ dalam sebulan terakhir</span>
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
 
     </div>
