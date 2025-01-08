@@ -66,7 +66,7 @@
     <!-- Card for Top 10 Produk Terlaris -->
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Top 10 Produk Terlaris</h5>
+            <h5 class="card-title">Grafik Top 10 Produk Terlaris</h5>
             <div class="d-flex justify-content-end mb-3">
                 <form id="filterForm" class="d-flex align-items-center">
                     @csrf
@@ -100,7 +100,7 @@
     <!-- Card for Top 10 Kategori Terlaris -->
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Top 10 Kategori Produk Terlaris</h5>
+            <h5 class="card-title">Grafik Top 10 Kategori Produk Terlaris</h5>
             <div class="d-flex justify-content-end mb-3">
                 <form id="categoryForm" class="d-flex align-items-center">
                     @csrf
@@ -141,6 +141,28 @@
             </div>
         </div>
     </div>
+
+    <!-- Card for Pendapatan -->
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Grafik Pendapatan</h5>
+            <div class="d-flex justify-content-end mb-3">
+                <div class="d-flex align-items-center">
+                    <label for="year" class="me-2 small">Tahun</label>
+                    <select id="yearFilter" class="form-select form-select-sm me-2">
+                        @for ($i = now()->year; $i >= now()->year - 5; $i--)
+                            <option value="{{ $i }}" {{ $i == $year ? 'selected' : '' }}>{{ $i }}
+                            </option>
+                        @endfor
+                    </select>
+                    <button id="filterButton" class="btn btn-sm btn-primary">Tampilkan</button>
+                </div>
+            </div>
+            <canvas id="incomeChart"></canvas>
+            <div id="noDataMessage" class="text-center text-muted mt-3 d-none">
+                Tidak ada data yang tersedia.
+            </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -191,7 +213,17 @@
                             scales: {
                                 y: {
                                     beginAtZero: true,
-                                    max: 10
+                                    ticks: {
+                                        stepSize: 1, // Menampilkan angka bulat saja
+                                        font: {
+                                            size: 12
+                                        },
+                                        color: '#000'
+                                    },
+                                    grid: {
+                                        color: 'rgba(200, 200, 200, 0.2)',
+                                        borderColor: '#000'
+                                    }
                                 }
                             }
                         }
@@ -214,6 +246,8 @@
                             borderWidth: 2,
                             borderRadius: 10,
                             borderSkipped: false,
+                            barPercentage: 0.5,
+                            categoryPercentage: 0.5
                         }]
                     },
                     options: {
@@ -253,17 +287,18 @@
                             },
                             y: {
                                 beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1, // Pastikan angka bulat
+                                    font: {
+                                        size: 12
+                                    },
+                                    color: '#000'
+                                },
                                 title: {
                                     display: true,
                                     text: 'Jumlah Barang',
                                     font: {
                                         size: 14
-                                    },
-                                    color: '#000'
-                                },
-                                ticks: {
-                                    font: {
-                                        size: 12
                                     },
                                     color: '#000'
                                 },
@@ -455,6 +490,165 @@
                         // Reset button state after data is loaded
                         submitButton.innerHTML = 'Tampilkan';
                         submitButton.disabled = false;
+                    });
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('incomeChart').getContext('2d');
+            let incomeChart;
+
+            // Function to render the chart
+            function renderChart(data, year) {
+                if (incomeChart) {
+                    incomeChart.destroy(); // Destroy old chart if exists
+                }
+
+                // Handle empty data
+                if (!data || data.length === 0) {
+                    incomeChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Tidak ada data'],
+                            datasets: [{
+                                label: 'Pendapatan (Rp)',
+                                data: [0],
+                                backgroundColor: 'rgba(200, 200, 200, 0.2)',
+                                borderColor: 'rgba(200, 200, 200, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    text: 'Tidak ada data untuk tahun yang dipilih',
+                                    font: {
+                                        size: 16
+                                    }
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    display: false
+                                },
+                                y: {
+                                    display: false
+                                }
+                            }
+                        }
+                    });
+
+                    // Show "No Data" message
+                    document.getElementById('noDataMessage').classList.remove('d-none');
+                    return;
+                }
+
+                incomeChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus',
+                            'September', 'Oktober', 'November', 'Desember'
+                        ],
+                        datasets: [{
+                            label: `Pendapatan Tahun ${year} (Rp)`,
+                            data: data,
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            tension: 0.4,
+                            fill: true,
+                            pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+                            pointBorderWidth: 2,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top'
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `Rp ${context.raw.toLocaleString('id-ID')}`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Bulan',
+                                    font: {
+                                        size: 14
+                                    }
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Pendapatan (Rp)',
+                                    font: {
+                                        size: 14
+                                    }
+                                },
+                                ticks: {
+                                    callback: function(value) {
+                                        return `Rp ${value.toLocaleString('id-ID')}`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // Hide "No Data" message if data exists
+                document.getElementById('noDataMessage').classList.add('d-none');
+            }
+
+            // Initial chart render with available data
+            renderChart(@json($revenues), {{ $year }});
+
+            // Event listener for the "Tampilkan" button click
+            document.getElementById('filterButton').addEventListener('click', function() {
+                const selectedYear = document.getElementById('yearFilter').value;
+
+                // Show loading state
+                const filterButton = document.getElementById('filterButton');
+                filterButton.disabled = true;
+                filterButton.innerHTML =
+                    '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...';
+
+                // Send AJAX request
+                fetch(`/admin/dashboard?year=${selectedYear}`, {
+                        method: 'GET',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            renderChart(data.revenues, selectedYear);
+                        } else {
+                            // Show "No Data" message if no data available
+                            document.getElementById('noDataMessage').classList.remove('d-none');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Terjadi kesalahan saat memuat data. Silakan coba lagi.');
+                    })
+                    .finally(() => {
+                        // Reset button state after request is complete
+                        filterButton.disabled = false;
+                        filterButton.innerHTML = 'Tampilkan';
                     });
             });
         });

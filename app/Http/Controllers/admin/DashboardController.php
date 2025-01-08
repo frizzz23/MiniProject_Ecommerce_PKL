@@ -22,26 +22,17 @@ class DashboardController extends Controller
         $month = $request->input('month', now()->format('m'));
         $year = $request->input('year', now()->format('Y'));
 
-        // Menghitung jumlah pengguna baru dengan peran 'user' pada bulan dan tahun tertentu
+        // Menghitung jumlah pengguna baru dengan peran 'user' (seluruh data)
         $newuser = User::role('user') // Hanya pengguna dengan peran 'user'
-            ->whereYear('created_at', $year)
-            ->whereMonth('created_at', $month)
+            ->whereYear('created_at', $year) // Menghitung berdasarkan tahun tertentu
             ->count();
 
-        // Menghitung jumlah pesanan dengan status 'pending'
-        $neworder = Order::where('status_order', 'pending')->count();
+        // Menghitung total pendapatan dari pesanan yang selesai (seluruh data)
+        $Revenue = Order::where('status_order', 'completed')->sum('grand_total_amount');
 
-        // Menghitung total pendapatan dari pesanan yang selesai
-        $Revenue = Order::whereYear('created_at', $year)
-            ->whereMonth('created_at', $month)
-            ->where('status_order', 'completed')
-            ->sum('grand_total_amount');
-
-        // Menghitung total barang terjual dari pesanan yang selesai
-        $totalItemsSold = ProductOrder::whereHas('order', function ($query) use ($year, $month) {
-            $query->whereYear('created_at', $year)
-                ->whereMonth('created_at', $month)
-                ->where('status_order', 'completed');
+        // Menghitung total barang terjual dari pesanan yang selesai (tanpa batasan bulan atau tahun)
+        $totalItemsSold = ProductOrder::whereHas('order', function ($query) {
+            $query->where('status_order', 'completed');
         })->sum('quantity');
 
         $mostOrderedProducts = ProductOrder::select('product_id', DB::raw('SUM(quantity) as total_quantity'))
@@ -54,7 +45,6 @@ class DashboardController extends Controller
             ->with('product')  // Menambahkan relasi ke produk
             ->take(10)
             ->get();
-
 
         // Mendapatkan kategori produk terlaris
         $topCategories = Category::select('name_category', DB::raw('SUM(product_orders.quantity) as total_quantity'))
@@ -69,6 +59,16 @@ class DashboardController extends Controller
             ->take(10)
             ->get();
 
+        //Pendapatan 
+        $revenues = [];
+        for ($currentMonth = 1; $currentMonth <= 12; $currentMonth++) {
+            $monthlyRevenue = Order::whereYear('created_at', $year)
+                ->whereMonth('created_at', $currentMonth)
+                ->where('status_order', 'completed')
+                ->sum('grand_total_amount');
+            $revenues[] = $monthlyRevenue;
+        }
+
         // Jika request AJAX, kembalikan hanya data yang diperlukan
         if ($request->ajax()) {
             return response()->json([
@@ -76,22 +76,22 @@ class DashboardController extends Controller
                 'mostOrderedProducts' => $mostOrderedProducts,
                 'topCategories' => $topCategories,
                 'newuser' => $newuser,
-                'neworder' => $neworder,
                 'Revenue' => $Revenue,
                 'totalItemsSold' => $totalItemsSold,
+                'revenues' => $revenues,
             ]);
         }
 
         // Jika bukan AJAX, tampilkan view dengan semua data
         return view('admin.dashboard.index', compact(
             'newuser',
-            'neworder',
             'Revenue',
             'totalItemsSold',
             'mostOrderedProducts',
             'month',
             'year',
-            'topCategories'
+            'topCategories',
+            'revenues',
         ));
     }
 
