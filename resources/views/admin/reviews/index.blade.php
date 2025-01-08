@@ -69,7 +69,7 @@
                     </form>
 
                     <div class="table-responsive">
-                        <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+                        <table class="min-w-full bg-white rounded-lg overflow-hidden">
                             <thead class="bg-[#5D87FF] text-white">
                                 <tr>
                                     <th class="px-4 py-2 text-left">No</th>

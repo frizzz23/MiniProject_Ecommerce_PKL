@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Models\Brand;
+use App\Models\Review;
 use App\Models\Product;
 use App\Models\Category;
-use App\Models\Brand;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
@@ -15,60 +16,60 @@ class ProductController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-{
-    // Mendapatkan semua kategori dan merek untuk dropdown
-    $categories = Category::all();
-    $brands = Brand::all();
+    {
+        // Mendapatkan semua kategori dan merek untuk dropdown
+        $categories = Category::all();
+        $brands = Brand::all();
 
-    // Mulai query produk dengan relasi
-    $products = Product::with('category', 'brand')
-        ->when($request->input('search'), function ($query, $search) {
-            // Filter berdasarkan nama produk
-            $query->where('name_product', 'like', '%' . $search . '%');
-        })
-        ->when($request->input('category_id'), function ($query, $category_id) {
-            // Filter berdasarkan kategori
-            $query->where('category_id', $category_id);
-        })
-        ->when($request->input('stock_product'), function ($query, $stock_product) {
-            // Filter berdasarkan stok produk
-            if ($stock_product === '1') {
-                $query->where('stock_product', '>', 0);  // Produk yang ada stoknya
-            } elseif ($stock_product === '0') {
-                $query->where('stock_product', '=', 0);  // Produk yang stoknya habis
-            }
-        })
-        ->when($request->input('price_product'), function ($query, $price_product) {
-            // Filter berdasarkan harga (terendah ke tertinggi atau sebaliknya)
-            if ($price_product == 'asc') {
-                $query->orderBy('price_product', 'asc');  // Urutkan harga dari yang terendah ke tertinggi
-            } elseif ($price_product == 'desc') {
-                $query->orderBy('price_product', 'desc');  // Urutkan harga dari yang tertinggi ke terendah
-            }
-        })
-        ->when($request->input('brand_id'), function ($query, $brand_id) {
-            // Filter berdasarkan merek
-            $query->where('brand_id', $brand_id);
-        })
-        ->when($request->input('created_at'), function ($query, $created_at) {
-            // Filter berdasarkan tanggal (lama atau terbaru)
-            if ($created_at == 'asc') {
-                $query->orderBy('created_at', 'asc');  // Urutkan berdasarkan tanggal pembuatan yang lebih lama
-            } elseif ($created_at == 'desc') {
-                $query->orderBy('created_at', 'desc');  // Urutkan berdasarkan tanggal pembuatan yang lebih baru
-            }
-        })
-        ->when($request->input('rating'), function ($query, $rating) {
-            // Filter berdasarkan rata-rata rating
-            $query->whereHas('reviews', function ($q) use ($rating) {
-                $q->havingRaw('AVG(rating) >= ?', [$rating]);  // Filter produk dengan rata-rata rating lebih besar atau sama dengan nilai rating
-            });
-        })
-        ->paginate(5);  // Menampilkan 5 produk per halaman
+        // Mulai query produk dengan relasi
+        $products = Product::with('category', 'brand')
+            ->when($request->input('search'), function ($query, $search) {
+                // Filter berdasarkan nama produk
+                $query->where('name_product', 'like', '%' . $search . '%');
+            })
+            ->when($request->input('category_id'), function ($query, $category_id) {
+                // Filter berdasarkan kategori
+                $query->where('category_id', $category_id);
+            })
+            ->when($request->input('stock_product'), function ($query, $stock_product) {
+                // Filter berdasarkan stok produk
+                if ($stock_product === '1') {
+                    $query->where('stock_product', '>', 0);  // Produk yang ada stoknya
+                } elseif ($stock_product === '0') {
+                    $query->where('stock_product', '=', 0);  // Produk yang stoknya habis
+                }
+            })
+            ->when($request->input('price_product'), function ($query, $price_product) {
+                // Filter berdasarkan harga (terendah ke tertinggi atau sebaliknya)
+                if ($price_product == 'asc') {
+                    $query->orderBy('price_product', 'asc');  // Urutkan harga dari yang terendah ke tertinggi
+                } elseif ($price_product == 'desc') {
+                    $query->orderBy('price_product', 'desc');  // Urutkan harga dari yang tertinggi ke terendah
+                }
+            })
+            ->when($request->input('brand_id'), function ($query, $brand_id) {
+                // Filter berdasarkan merek
+                $query->where('brand_id', $brand_id);
+            })
+            ->when($request->input('created_at'), function ($query, $created_at) {
+                // Filter berdasarkan tanggal (lama atau terbaru)
+                if ($created_at == 'asc') {
+                    $query->orderBy('created_at', 'asc');  // Urutkan berdasarkan tanggal pembuatan yang lebih lama
+                } elseif ($created_at == 'desc') {
+                    $query->orderBy('created_at', 'desc');  // Urutkan berdasarkan tanggal pembuatan yang lebih baru
+                }
+            })
+            ->when($request->input('rating'), function ($query, $rating) {
+                // Filter berdasarkan rata-rata rating
+                $query->whereHas('reviews', function ($q) use ($rating) {
+                    $q->havingRaw('AVG(rating) >= ?', [$rating]);  // Filter produk dengan rata-rata rating lebih besar atau sama dengan nilai rating
+                });
+            })
+            ->paginate(5);  // Menampilkan 5 produk per halaman
 
-    // Mengirim data ke view
-    return view('admin.products.index', compact('products', 'categories', 'brands'));
-}
+        // Mengirim data ke view
+        return view('admin.products.index', compact('products', 'categories', 'brands'));
+    }
 
 
 
@@ -86,7 +87,7 @@ class ProductController extends Controller
             'price_product' => 'required|numeric|min:0',
             'category_id' => 'required|exists:categories,id',
             'brand_id' => 'required|exists:brands,id',
-        ],[
+        ], [
             'name_product.required' => 'Nama produk wajib diisi.',
             'description_product.required' => 'Deskripsi produk wajib diisi.',
             'image_product.nullable' => 'Gambar produk wajib diisi.',
@@ -121,9 +122,20 @@ class ProductController extends Controller
      */
     public function show($slug)
     {
+        // Mengambil produk dengan relasi category dan brand
         $product = Product::with(['category', 'brand'])->where('slug', $slug)->firstOrFail();
+    
+        // Menghitung rata-rata rating dan jumlah ulasan untuk produk
+        $averageRating = Review::where('product_id', $product->id)->avg('rating');
+        $reviewsCount = Review::where('product_id', $product->id)->count();
+    
+        // Menyisipkan data tambahan ke dalam objek produk
+        $product->average_rating = $averageRating;
+        $product->reviews_count = $reviewsCount;
+    
         return view('admin.products.show', compact('product'));
     }
+    
 
     /**
      * Update the specified resource in storage.
