@@ -372,9 +372,11 @@
                                         Merek</label>
                                     <input type="text" name="name_brand" class="form-control"
                                         value="{{ $brand->name_brand }}">
-                                    @error('name_brand')
-                                        <div class="text-danger mt-1">{{ $message }}</div>
-                                    @enderror
+                                        @if (old('brand_id') == $brand->id)
+                                            @error('name_brand')
+                                                <div class="text-danger mt-1">{{ $message }}</div>
+                                            @enderror
+                                        @endif
                                 </div>
                                 <div class="mb-3">
                                     <label for="edit_image_brand" class="form-label">Gambar</label>
@@ -409,8 +411,7 @@
                             <!-- Input Nama Merek -->
                             <div class="mb-3">
                                 <label for="name_brand" class="form-label">Nama Merek</label>
-                                <input type="text" name="name_brand" class="form-control" id="name_brand"
-                                    value="{{ old('name_brand') }}">
+                                <input type="text" name="name_brand" class="form-control" id="name_brand">
                                 @if (!old('brand_id'))
                                     @error('name_brand')
                                         <div class="text-danger mt-1">{{ $message }}</div>
