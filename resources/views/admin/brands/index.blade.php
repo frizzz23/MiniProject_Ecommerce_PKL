@@ -411,9 +411,11 @@
                                 <label for="name_brand" class="form-label">Nama Merek</label>
                                 <input type="text" name="name_brand" class="form-control" id="name_brand"
                                     value="{{ old('name_brand') }}">
-                                @error('name_brand')
-                                    <div class="text-danger mt-1">{{ $message }}</div>
-                                @enderror
+                                @if (!old('brand_id'))
+                                    @error('name_brand')
+                                        <div class="text-danger mt-1">{{ $message }}</div>
+                                    @enderror
+                                @endif
                             </div>
 
                             <!-- Input Gambar Merek -->

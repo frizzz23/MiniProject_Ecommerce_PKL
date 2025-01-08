@@ -317,9 +317,12 @@
     }
 </script> --}}
 
-<!-- Modal Edit Produk -->
 @foreach ($products as $product)
-    <div class="modal fade {{ old('product_id') == $product->id || ($errors->any() && old('product_id') == $product->id) ? 'show' : '' }}" id="editModal_{{ $product->id }}" tabindex="-1" aria-labelledby="editModalLabel_{{ $product->id }}" aria-hidden="true" style="{{ old('product_id') == $product->id || ($errors->any() && old('product_id') == $product->id) ? 'display: block;' : '' }}">
+    <div class="modal fade {{ old('product_id') == $product->id ? 'show' : '' }}"
+        id="editModal_{{ $product->id }}"
+        tabindex="-1"
+        aria-labelledby="editModalLabel_{{ $product->id }}" aria-hidden="true"
+        style="{{ old('product_id') == $product->id ? 'display: block;' : '' }}">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -334,27 +337,33 @@
                         <!-- Nama Produk -->
                         <div class="mb-3">
                             <label for="name_product_{{ $product->id }}" class="form-label">Nama Produk</label>
-                            <input type="text" name="name_product" class="form-control" value="{{ old('name_product') ?? $product->name_product }}">
-                            @error('name_product')
-                                <div class="text-danger mt-1">{{ $message }}</div>
-                            @enderror
+                            <input type="text" name="name_product" class="form-control" value="{{ $product->name_product }}">
+                            @if (old('product_id') == $product->id)
+                                @error('name_product')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            @endif
                         </div>
 
                         <!-- Harga dan Stok -->
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="price_product_{{ $product->id }}" class="form-label">Harga</label>
-                                <input type="number" name="price_product" class="form-control" value="{{ old('price_product') ?? $product->price_product }}">
-                                @error('price_product')
-                                    <div class="text-danger mt-1">{{ $message }}</div>
-                                @enderror
+                                <input type="number" name="price_product" class="form-control" value="{{ $product->price_product }}">
+                                @if (old('product_id') == $product->id)
+                                    @error('price_product')
+                                        <div class="text-danger mt-1">{{ $message }}</div>
+                                    @enderror
+                                @endif
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="stock_product_{{ $product->id }}" class="form-label">Stok</label>
-                                <input type="number" name="stock_product" class="form-control" value="{{ old('stock_product') ?? $product->stock_product }}">
-                                @error('stock_product')
-                                    <div class="text-danger mt-1">{{ $message }}</div>
-                                @enderror
+                                <input type="number" name="stock_product" class="form-control" value="{{ $product->stock_product }}">
+                                @if (old('product_id') == $product->id)
+                                    @error('stock_product')
+                                        <div class="text-danger mt-1">{{ $message }}</div>
+                                    @enderror
+                                @endif
                             </div>
                         </div>
 
@@ -364,42 +373,50 @@
                                 <label for="category_id_{{ $product->id }}" class="form-label">Kategori</label>
                                 <select name="category_id" class="form-select">
                                     @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}" {{ old('category_id') ?? $product->category_id == $category->id ? 'selected' : '' }}>{{ $category->name_category }}</option>
+                                        <option value="{{ $category->id }}" {{ (old('product_id') == $product->id ? old('category_id') : $product->category_id) == $category->id ? 'selected' : '' }}>{{ $category->name_category }}</option>
                                     @endforeach
                                 </select>
-                                @error('category_id')
-                                    <div class="text-danger mt-1">{{ $message }}</div>
-                                @enderror
+                                @if (old('product_id') == $product->id)
+                                    @error('category_id')
+                                        <div class="text-danger mt-1">{{ $message }}</div>
+                                    @enderror
+                                @endif
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="brand_id_{{ $product->id }}" class="form-label">Merek</label>
                                 <select name="brand_id" class="form-select">
                                     @foreach ($brands as $brand)
-                                        <option value="{{ $brand->id }}" {{ old('brand_id') ?? $product->brand_id == $brand->id ? 'selected' : '' }}>{{ $brand->name_brand }}</option>
+                                        <option value="{{ $brand->id }}" {{ (old('product_id') == $product->id ? old('brand_id') : $product->brand_id) == $brand->id ? 'selected' : '' }}>{{ $brand->name_brand }}</option>
                                     @endforeach
                                 </select>
-                                @error('brand_id')
-                                    <div class="text-danger mt-1">{{ $message }}</div>
-                                @enderror
+                                @if (old('product_id') == $product->id)
+                                    @error('brand_id')
+                                        <div class="text-danger mt-1">{{ $message }}</div>
+                                    @enderror
+                                @endif
                             </div>
                         </div>
 
                         <!-- Deskripsi Produk -->
                         <div class="mb-3">
                             <label for="description_product_{{ $product->id }}" class="form-label">Deskripsi Produk</label>
-                            <textarea name="description_product" class="form-control" rows="3">{{ old('description_product') ?? $product->description_product }}</textarea>
-                            @error('description_product')
-                                <div class="text-danger mt-1">{{ $message }}</div>
-                            @enderror
+                            <textarea name="description_product" class="form-control" rows="3">{{ old('product_id') == $product->id ? old('description_product') : $product->description_product }}</textarea>
+                            @if (old('product_id') == $product->id)
+                                @error('description_product')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            @endif
                         </div>
 
                         <!-- Gambar Produk -->
                         <div class="mb-3">
                             <label for="image_product_{{ $product->id }}" class="form-label">Gambar Produk</label>
                             <input type="file" name="image_product" class="form-control">
-                            @error('image_product')
-                                <div class="text-danger mt-1">{{ $message }}</div>
-                            @enderror
+                            @if (old('product_id') == $product->id)
+                                @error('image_product')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            @endif
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -412,7 +429,7 @@
     </div>
 @endforeach
 
-<!-- Modal Tambah Produk -->
+
 <div class="modal fade {{ old('product_id') ? '' : ($errors->any() ? 'show' : '') }}" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true" style="{{ old('product_id') ? '' : ($errors->any() ? 'display: block;' : '') }}">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -426,27 +443,33 @@
                     <!-- Nama Produk -->
                     <div class="mb-3">
                         <label for="name_product" class="form-label">Nama Produk</label>
-                        <input type="text" name="name_product" class="form-control" placeholder="Nama Produk" value="{{ old('name_product') }}">
-                        @error('name_product')
-                            <div class="text-danger mt-1">{{ $message }}</div>
-                        @enderror
+                        <input type="text" name="name_product" class="form-control" placeholder="Nama Produk">
+                        @if (!old('product_id'))
+                            @error('name_product')
+                                <div class="text-danger mt-1">{{ $message }}</div>
+                            @enderror
+                        @endif
                     </div>
 
                     <!-- Harga dan Stok -->
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="price_product" class="form-label">Harga</label>
-                            <input type="number" name="price_product" class="form-control" value="{{ old('price_product') }}">
-                            @error('price_product')
-                                <div class="text-danger mt-1">{{ $message }}</div>
-                            @enderror
+                            <input type="number" name="price_product" class="form-control" placeholder="Harga">
+                            @if (!old('product_id'))
+                                @error('price_product')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            @endif
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="stock_product" class="form-label">Stok</label>
-                            <input type="number" name="stock_product" class="form-control" value="{{ old('stock_product') }}">
-                            @error('stock_product')
-                                <div class="text-danger mt-1">{{ $message }}</div>
-                            @enderror
+                            <input type="number" name="stock_product" class="form-control" placeholder="Stok" >
+                            @if (!old('product_id'))
+                                @error('stock_product')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            @endif
                         </div>
                     </div>
 
@@ -457,43 +480,51 @@
                             <select name="category_id" class="form-select">
                                 <option value="" disabled selected>Pilih Kategori</option>
                                 @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name_category }}</option>
+                                    <option value="{{ $category->id }}" >{{ $category->name_category }}</option>
                                 @endforeach
                             </select>
-                            @error('category_id')
-                                <div class="text-danger mt-1">{{ $message }}</div>
-                            @enderror
+                            @if (!old('product_id'))
+                                @error('category_id')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            @endif
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="brand_id" class="form-label">Merek</label>
                             <select name="brand_id" class="form-select">
                                 <option value="" disabled selected>Pilih Merek</option>
                                 @foreach ($brands as $brand)
-                                    <option value="{{ $brand->id }}" {{ old('brand_id') == $brand->id ? 'selected' : '' }}>{{ $brand->name_brand }}</option>
+                                    <option value="{{ $brand->id }}" >{{ $brand->name_brand }}</option>
                                 @endforeach
                             </select>
-                            @error('brand_id')
-                                <div class="text-danger mt-1">{{ $message }}</div>
-                            @enderror
+                            @if (!old('product_id'))
+                                @error('brand_id')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            @endif
                         </div>
                     </div>
 
                     <!-- Deskripsi Produk -->
                     <div class="mb-3">
                         <label for="description_product" class="form-label">Deskripsi Produk</label>
-                        <textarea name="description_product" class="form-control" rows="3">{{ old('description_product') }}</textarea>
-                        @error('description_product')
-                            <div class="text-danger mt-1">{{ $message }}</div>
-                        @enderror
+                        <textarea name="description_product" class="form-control" rows="3"placeholder="Deskripsi Produk"></textarea>
+                        @if (!old('product_id'))
+                            @error('description_product')
+                                <div class="text-danger mt-1">{{ $message }}</div>
+                            @enderror
+                        @endif
                     </div>
 
                     <!-- Gambar Produk -->
                     <div class="mb-3">
                         <label for="image_product" class="form-label">Gambar Produk</label>
                         <input type="file" name="image_product" class="form-control">
-                        @error('image_product')
-                            <div class="text-danger mt-1">{{ $message }}</div>
-                        @enderror
+                        @if (!old('product_id'))
+                            @error('image_product')
+                                <div class="text-danger mt-1">{{ $message }}</div>
+                            @enderror
+                        @endif
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -505,19 +536,20 @@
     </div>
 </div>
 
+
 <!-- Script untuk Menampilkan Modal Jika Ada Error -->
 @if ($errors->any())
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         @if (old('product_id'))
             // Jika terdapat error pada modal edit
-            var editModalId = 'editModal_{{ old('product_id') }}';
+            var editModalId = 'editModal_' + '{{ old('product_id') }}';
             var editModal = new bootstrap.Modal(document.getElementById(editModalId));
             editModal.show();
         @else
             // Jika terdapat error pada modal tambah
-            var tambahModal = new bootstrap.Modal(document.getElementById('addModal'));
-            tambahModal.show();
+            var addModal = new bootstrap.Modal(document.getElementById('addModal'));
+            addModal.show();
         @endif
     });
 </script>
