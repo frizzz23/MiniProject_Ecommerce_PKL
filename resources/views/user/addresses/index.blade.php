@@ -184,7 +184,9 @@
     </div>
 
     <!-- Modal Tambah Alamat -->
+
     <div class="modal fade {{ old('address_id') ? '' : ($errors->any() ? 'show' : '') }}" id="addAddressModal" tabindex="-1" aria-labelledby="addAddressModalLabel" aria-hidden="true" style="{{ old('address_id') ? '' : ($errors->any() ? 'display: block;' : '') }}">
+
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -254,6 +256,24 @@
             </div>
         </div>
     </div>
+
+    <!-- Script untuk Menampilkan Modal Jika Ada Error -->
+@if ($errors->any())
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        @if (old('address_id'))
+            // Jika terdapat error pada modal edit
+            var editModalId = 'editAddressModal{{ old('address_id') }}';
+            var editAddressModal = new bootstrap.Modal(document.getElementById(editModalId));
+            editModal.show();
+        @else
+            // Jika terdapat error pada modal tambah
+            var tambahModal = new bootstrap.Modal(document.getElementById('ddAddressModal'));
+            AddAddressModal.show();
+        @endif
+    });
+</script>
+@endif
     @if (session('success'))
         <script>
             // Toast Notification

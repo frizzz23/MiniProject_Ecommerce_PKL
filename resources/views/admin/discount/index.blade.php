@@ -369,8 +369,89 @@
         </div>
     </div>
 
+    <!-- Modal Edit -->
+    @foreach ($codes as $code )
+    <div class="modal fade {{ $errors->any() && old('code_id') == $code->id ? 'show' : '' }}"
+        id="editmodal{{ $code->id }}"
+        tabindex="-1"
+        aria-hidden="true"
+        style="{{ $errors->any() && old('code_id') == $code->id ? 'display: block;' : '' }}">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel{{ $code->id }}">
+                        Edit Vocher</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('admin.discount.update', $code->id) }}"
+                        method="POST">
+                        @csrf
+                        @method('PUT')
+                        <input type="hidden" name="code_id" value="{{ $code->id }}">
+                        <div class="mb-3">
+                            <label for="code{{ $code->id }}" class="form-label">Kode
+                                Vocher</label>
+                            <input type="text" name="code" class="form-control"
+                                value="{{ old('code') ?? $code->code }}"
+                                id="code{{ $code->id }}">
+                                @error('code')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label for="discount_amount{{ $code->id }}"
+                                class="form-label">Jumlah Diskon</label>
+                            <input type="number" name="discount_amount"
+                                class="form-control"
+                                value="{{ old('discount_amount') ?? $code->discount_amount }}"
+                                id="discount_amount{{ $code->id }}">
+                                @error('discount_amount')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label for="quantity{{ $code->id }}"
+                                class="form-label">Kuantitas</label>
+                            <input type="number" name="quantity" class="form-control"
+                                value="{{ old('quantity') ?? $code->quantity }}"
+                                id="quantity{{ $code->id }}">
+                                @error('quantity')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label for="minimum_purchase{{ $code->id }}"
+                                class="form-label">Minimal Pembelian</label>
+                            <input type="number" name="minimum_purchase"
+                                class="form-control"
+                                value="{{ old('minimum_purchase') ?? $code->minimum_purchase }}"
+                                id="minimum_purchase{{ $code->id }}">
+                                @error('minimum_purchase')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary"
+                                data-bs-dismiss="modal">Kembali</button>
+                            <button type="submit" class="btn btn-primary">Simpan
+                                Perubahan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @endforeach
+
     <!-- Modal Tambah -->
-    <div class="modal fade" id="tambahmodal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
+    <div class="modal fade {{ $errors->any() && !old('code_id') ? 'show' : '' }}"
+        id="tambahmodal"
+        tabindex="-1"
+        aria-hidden="true"
+        style="{{ $errors->any() && !old('code_id') ? 'display: block;' : '' }}">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -440,6 +521,7 @@
     </div>
 
     <!-- Script untuk Menampilkan Modal Jika Ada Error -->
+
     @if ($errors->any())
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -455,6 +537,7 @@
             @endif
         });
     </script>
+
 @endif
 @endsection
 

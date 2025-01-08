@@ -112,6 +112,7 @@ class DiscountController extends Controller
             'code.required' => 'Kode promo wajib diisi.',
             'code.unique' => 'Kode promo sudah digunakan.',
             'discount_amount.required' => 'Jumlah diskon promo wajib diisi.',
+
             'discount_amount.lte' => 'Jumlah diskon tidak boleh lebih besar dari minimal pembelian.',
             'quantity.required' => 'Kuantitas promo wajib diisi.',
             'minimum_purchase.required' => 'Minimal pembelian promo wajib diisi.',
