@@ -163,7 +163,7 @@
                             <form action="{{ route('user.carts.destroy', $cart->id) }}" method="post">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" id="delete" class="text-red-500 text-xs"
+                                <button type="submit" id="delete_{{ $cart->id }}" class="text-red-500 text-xs"
                                     onclick="confirmDelete(event, '{{ $cart->id }}', this)"
                                     disabled>
                                     Hapus
@@ -244,12 +244,12 @@
                         listCart.push(id); // Menambahkan id produk ke listCart
                         document.getElementById(`plus_${id}`).disabled = false;
                         document.getElementById(`minus_${id}`).disabled = false;
-                        document.getElementById(`delete`).disabled = false;
+                        document.getElementById(`delete_${id}`).disabled = false;
                         document.getElementById(`cart_${id}`).classList.remove("opacity-50");
                     } else {
                         document.getElementById(`plus_${id}`).disabled = true;
                         document.getElementById(`minus_${id}`).disabled = true;
-                        document.getElementById(`delete`).disabled = true;
+                        document.getElementById(`delete_${id}`).disabled = true;
                         document.getElementById(`cart_${id}`).classList.add("opacity-50");
                     }
                 });
