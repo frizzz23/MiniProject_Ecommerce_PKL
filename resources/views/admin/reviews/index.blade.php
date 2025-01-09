@@ -4,11 +4,7 @@
     <div class="container-fluid">
         <div class="container p-6">
             <div class="card w-full">
-                @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
+                
                 <div class="card-body p-4">
 
                     <h5 class="card-title text-2xl font-bold mb-4">Semua Ulasan</h5>

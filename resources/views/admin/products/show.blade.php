@@ -37,14 +37,18 @@
                     <div class="bg-white p-4 rounded-lg  border lg:col-span-2">
                         <!-- Nama Produk -->
                         <h3 class="text-2xl font-extrabold text-gray-800 mb-4">{{ $product->name_product ?? '-' }}</h3>
-                        
+
                         <!-- Rating dan Reviews -->
                         <div class="flex items-center space-x-2 mb-4">
                             <!-- Bintang Rating -->
                             <div class="flex items-center space-x-1">
                                 @for ($i = 0; $i < 5; $i++)
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-5 h-5 {{ $i < round($product->average_rating) ? 'text-yellow-400' : 'text-gray-300' }}" viewBox="0 0 24 24" stroke="none">
-                                        <path d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z"></path>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                        class="w-5 h-5 {{ $i < round($product->average_rating) ? 'text-yellow-400' : 'text-gray-300' }}"
+                                        viewBox="0 0 24 24" stroke="none">
+                                        <path
+                                            d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
+                                        </path>
                                     </svg>
                                 @endfor
                             </div>
@@ -55,9 +59,10 @@
                         <div class="flex items-center space-x-2 mb-2">
                             <span class="text-lg font-semibold text-gray-800">Harga</span>
                             <span class="text-lg font-medium text-gray-700">:</span>
-                            <span class="text-xl font-bold text-blue-500">Rp {{ number_format($product->price_product, 0, ',', '.') }}</span>
+                            <span class="text-xl font-bold text-blue-500">Rp
+                                {{ number_format($product->price_product, 0, ',', '.') }}</span>
                         </div>
-                        
+
                         <!-- Kategori Brand Stok-->
                         <div class="flex space-x-8 mb-2">
                             <!-- Stok Column -->
@@ -65,49 +70,60 @@
                                 <div class="text-xs font-semibold text-gray-500 mb-1">Stok</div>
                                 <div class="flex border justify-start items-center w-full rounded-md p-3">
                                     <!-- Lingkaran warna -->
-                                    <div class="w-4 h-4 rounded-full mr-2 
-                                        {{ $product->stock_product <= 10 ? 'bg-red-600' : 
-                                        ($product->stock_product <= 50 ? 'bg-yellow-500' : 'bg-green-500') }}">
+                                    <div
+                                        class="w-4 h-4 rounded-full mr-2 
+                                    {{ $product->stock_product == 0
+                                        ? 'bg-gray-500'
+                                        : ($product->stock_product <= 10
+                                            ? 'bg-red-600'
+                                            : ($product->stock_product <= 50
+                                                ? 'bg-yellow-500'
+                                                : 'bg-green-500')) }}">
                                     </div>
                                     <!-- Jumlah stok -->
                                     <div class="text-sm font-medium text-gray-700">
-                                        <span class="font-semibold">{{ $product->stock_product }} unit</span>
+                                        <span class="font-semibold">
+                                            {{ $product->stock_product == 0 ? 'Habis' : $product->stock_product . ' unit' }}
+                                        </span>
                                     </div>
+
                                 </div>
                             </div>
-                        
+
                             <!-- Kategori Column -->
                             <div class="flex-col w-1/3">
                                 <div class="text-xs font-semibold text-gray-500 mb-1">Kategori</div>
                                 <div class="flex border justify-center items-center w-full rounded-md p-3">
-                                    <span class="text-sm font-medium text-gray-700">{{ $product->category->name_category }}</span>
+                                    <span
+                                        class="text-sm font-medium text-gray-700">{{ $product->category->name_category }}</span>
                                 </div>
                             </div>
-                        
+
                             <!-- Brand Column -->
                             <div class="flex-col w-1/3">
                                 <div class="text-xs font-semibold text-gray-500 mb-1">Brand</div>
                                 <div class="flex border justify-center items-center w-full rounded-md p-3">
-                                    <span class="text-sm font-medium text-gray-700">{{ $product->brand->name_brand }}</span>
+                                    <span
+                                        class="text-sm font-medium text-gray-700">{{ $product->brand->name_brand }}</span>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Deskripsi Produk -->
                         <div class="flex-col mb-2">
                             <div class="text-xs font-semibold text-gray-500 mb-1">Deskripsi</div>
                             <div class="flex border justify-start items-center w-full rounded-md p-3">
-                                <p class="text-sm text-gray-700">{{ $product->description_product ?? '-' }}</p>
+                                <p class="text-sm text-gray-700">{!! nl2br(e($product->description_product)) !!}</p>
                             </div>
                         </div>
-                        
-                        
+
+
                     </div>
-                    
+
 
                     <!-- Kolom Waktu Create dan Update (Card 2) dengan lebar 30% -->
                     <div
-                        class="bg-gradient-to-r from-blue-800 to-blue-400 p-4 rounded-lg shadow-sm border lg:col-span-1 flex flex-col">
+                        class="h-96 bg-gradient-to-r from-blue-800 to-blue-400 p-4 rounded-lg shadow-sm border lg:col-span-1 flex flex-col">
                         <h3 class="text-lg font-semibold my-1 text-white">Informasi</h3>
                         <div class="text-sm text-white">
                             <h4 class="font-semibold text-gray-200 my-2">Status Stok</h4>

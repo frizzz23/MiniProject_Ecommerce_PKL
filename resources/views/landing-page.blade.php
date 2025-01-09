@@ -317,7 +317,7 @@
         <div class="md:order-1 order-0  overflow-hidden relative">
             <img src="{{ asset('desainmini-main/image/433808944f8d3c3eb8e8267829a874d4.png') }}" alt="banner"
                 class="md:w-5/6 ms-auto" />
-            <div class="absolute bg-white p-4 px-5 backdrop-filter backdrop-opacity-50 z-10 bottom-20 left-20 rounded-lg overflow-hidden"
+            <div class="absolute bg-white p-4 px-5 backdrop-filter backdrop-opacity-50 z-9 bottom-20 left-20 rounded-lg overflow-hidden"
                 style="background-color: rgba(255, 255, 255, 0.5);width: 240px;height:auto">
                 <h6 class="text-sm text-slate-900 font-bold mb-2">Dapatkan Diskon Hingga 30%.</h6>
                 <p class="text-xs text-slate-900">Anda bisa mendapatkan diskon 30% untuk produk ini jika Anda membeli sekarang</p>

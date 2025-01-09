@@ -23,7 +23,7 @@
     <link rel="shortcut icon" type="image/png" href="{{ asset('img/logoo.png') }}" />
     <link rel="stylesheet" href="{{ asset('style/src/assets/css/styles.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('loading/loading.css') }}" />
-    
+
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -105,6 +105,23 @@
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @if (session('success'))
+        <script>
+            // Toast Notification
+            Swal.fire({
+                toast: true,
+                position: 'top-end', // Pojok kanan atas
+                icon: 'success',
+                iconColor: '#3b82f6', // Biru-500 dari Tailwind CSS
+                title: '{{ session('success') }}',
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true,
+                background: '#eff6ff', // Warna latar belakang biru muda
+            });
+        </script>
+    @endif
 
     <script>
         // Menambahkan event listener untuk scroll

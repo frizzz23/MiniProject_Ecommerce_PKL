@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Page;
 
 use App\Models\Brand;
+use App\Models\Order;
 use App\Models\Review;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Error;
 use Illuminate\Support\Facades\Auth;
 
 class ProductPageController extends Controller
@@ -150,8 +152,30 @@ class ProductPageController extends Controller
             $relatedReviewsCount[$relatedProduct->id] = Review::where('product_id', $relatedProduct->id)->count();
         }
 
+        $user = Auth::user();
+
+        // Memeriksa apakah user sudah login
+        if ($user) {
+            // Memeriksa apakah user sudah membeli produk ini dengan status order 'completed'
+            $order = Order::where('user_id', $user->id)
+                ->where('status_order', 'completed')
+                ->whereHas('productOrders', function ($query) use ($product) {
+                    $query->where('product_id', $product->id);
+                })->first();
+
+            // Mengecek apakah user sudah memberikan review untuk produk ini
+            $existingReview = Review::where('product_id', $product->id)
+                ->where('user_id', $user->id)
+                ->first();
+        } else {
+            // Jika user tidak login, Anda bisa menyesuaikan logika sesuai kebutuhan
+            // Misalnya, Anda bisa melewatkan proses pengecekan review atau menampilkan informasi lain
+            $order = null;
+            $existingReview = null;
+        }
+
         // Tampilkan view dengan data produk, rating, jumlah review, dan produk terkait
-        return view('page.productshow', compact('product', 'reviews', 'averageRating', 'reviewsCount', 'relatedProducts', 'relatedReviewsCount'));
+        return view('page.productshow', compact('existingReview', 'order', 'product', 'reviews', 'averageRating', 'reviewsCount', 'relatedProducts', 'relatedReviewsCount',));
     }
 
     public function addReview(Request $request)
