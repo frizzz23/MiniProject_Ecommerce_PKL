@@ -81,7 +81,8 @@
                     <div
                         class="flex gap-2 xl:flex-col md:flex-col sm:flex-row justify-between md:items-end sm:space-x-2 md:space-x-0 md:space-y-2">
                         <!-- Tombol Edit -->
-                        <button type="button" class="btn btn-warning btn-sm w-full text-white font-semibold sm:flex-1 text-center"
+                        <button type="button"
+                            class="btn btn-warning btn-sm w-full text-white font-semibold sm:flex-1 text-center"
                             data-bs-toggle="modal" data-bs-target="#editAddressModal{{ $address->id }}">
                             Edit
                         </button>
@@ -90,7 +91,8 @@
                             class="w-full sm:flex-1">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm w-full text-white font-semibold sm:flex-1 text-center"
+                            <button type="submit"
+                                class="btn btn-danger btn-sm w-full text-white font-semibold sm:flex-1 text-center"
                                 onclick="return confirm('Yakin ingin menghapus?')">
                                 Hapus
                             </button>
@@ -103,8 +105,7 @@
                 <hr class="bg-gray-100 w-[98%] h-[2px] mb-4">
             </div>
             <div class="modal fade {{ old('address_id') == $address->id ? 'show' : '' }}"
-                id="editAddressModal{{ $address->id }}"
-                tabindex="-1"
+                id="editAddressModal{{ $address->id }}" tabindex="-1"
                 aria-labelledby="editAddressModalLabel{{ $address->id }}" aria-hidden="true"
                 style="{{ old('address_id') == $address->id ? 'display: block;' : '' }}">
                 <div class="modal-dialog">
@@ -122,11 +123,11 @@
                                     <label for="mark">Tandai Sebagai</label>
                                     <input type="text" name="mark" id="mark" class="form-control"
                                         placeholder="cth rumah/kantor/gedung/dll" value="{{ $address->mark }}">
-                                        @if (old('address_id') == $address->id)
-                                            @error('mark')
-                                                <div class="text-danger mt-1">{{ $message }}</div>
-                                            @enderror
-                                        @endif
+                                    @if (old('address_id') == $address->id)
+                                        @error('mark')
+                                            <div class="text-danger mt-1">{{ $message }}</div>
+                                        @enderror
+                                    @endif
                                 </div>
                                 <div class="mb-3">
                                     <label for="city_id">Kota</label>
@@ -159,11 +160,11 @@
                                     <label for="no_telepon">No Telepon</label>
                                     <input type="text" name="no_telepon" id="no_telepon" class="form-control"
                                         value="{{ $address->no_telepon }}">
-                                        @if (old('address_id') == $address->id)
-                                            @error('no_telepon')
-                                                <div class="text-danger mt-1">{{ $message }}</div>
-                                            @enderror
-                                        @endif
+                                    @if (old('address_id') == $address->id)
+                                        @error('no_telepon')
+                                            <div class="text-danger mt-1">{{ $message }}</div>
+                                        @enderror
+                                    @endif
                                 </div>
                                 <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
@@ -185,7 +186,9 @@
 
     <!-- Modal Tambah Alamat -->
 
-    <div class="modal fade {{ old('address_id') ? '' : ($errors->any() ? 'show' : '') }}" id="addAddressModal" tabindex="-1" aria-labelledby="addAddressModalLabel" aria-hidden="true" style="{{ old('address_id') ? '' : ($errors->any() ? 'display: block;' : '') }}">
+    <div class="modal fade {{ old('address_id') ? '' : ($errors->any() ? 'show' : '') }}" id="addAddressModal"
+        tabindex="-1" aria-labelledby="addAddressModalLabel" aria-hidden="true"
+        style="{{ old('address_id') ? '' : ($errors->any() ? 'display: block;' : '') }}">
 
         <div class="modal-dialog">
             <div class="modal-content">
@@ -201,11 +204,11 @@
                             <label for="mark">Tandai Sebagai</label>
                             <input type="text" name="mark" id="mark" class="form-control"
                                 placeholder="cth rumah/kantor/gedung/dll">
-                                @if (!old('address_id'))
-                                    @error('mark')
-                                        <div class="text-danger mt-1">{{ $message }}</div>
-                                    @enderror
-                                @endif
+                            @if (!old('address_id'))
+                                @error('mark')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            @endif
                         </div>
 
                         <!-- Kota -->
@@ -241,7 +244,7 @@
                         <div class="mb-3">
                             <label for="no_telepon">No Telepon</label>
                             <input type="text" name="no_telepon" id="no_telepon" class="form-control"
-                                placeholder="080-000-000-000" >
+                                placeholder="080-000-000-000">
                             @if (!old('address_id'))
                                 @error('no_telepon')
                                     <div class="text-danger mt-1">{{ $message }}</div>
@@ -258,22 +261,22 @@
     </div>
 
     <!-- Script untuk Menampilkan Modal Jika Ada Error -->
-@if ($errors->any())
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        @if (old('address_id'))
-            // Jika terdapat error pada modal edit
-            var editModalId = 'editAddressModal{{ old('address_id') }}';
-            var editAddressModal = new bootstrap.Modal(document.getElementById(editModalId));
-            editModal.show();
-        @else
-            // Jika terdapat error pada modal tambah
-            var tambahModal = new bootstrap.Modal(document.getElementById('ddAddressModal'));
-            AddAddressModal.show();
-        @endif
-    });
-</script>
-@endif
+    @if ($errors->any())
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                @if (old('address_id'))
+                    // Jika terdapat error pada modal edit
+                    var editModalId = 'editAddressModal{{ old('address_id') }}';
+                    var editAddressModal = new bootstrap.Modal(document.getElementById(editModalId));
+                    editModal.show();
+                @else
+                    // Jika terdapat error pada modal tambah
+                    var tambahModal = new bootstrap.Modal(document.getElementById('ddAddressModal'));
+                    AddAddressModal.show();
+                @endif
+            });
+        </script>
+    @endif
     @if (session('success'))
         <script>
             // Toast Notification
@@ -311,20 +314,20 @@
     @endpush
 
     <!-- Script untuk Menampilkan Modal Jika Ada Error -->
-@if ($errors->any())
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        @if (old('address_id'))
-            // Jika terdapat error pada modal edit
-            var editModalId = 'editAddressModal' + '{{ old('address_id') }}';
-            var editModal = new bootstrap.Modal(document.getElementById(editModalId));
-            editModal.show();
-        @else
-            // Jika terdapat error pada modal tambah
-            var addModal = new bootstrap.Modal(document.getElementById('addAddressModal'));
-            addModal.show();
-        @endif
-    });
-</script>
-@endif
+    @if ($errors->any())
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                @if (old('address_id'))
+                    // Jika terdapat error pada modal edit
+                    var editModalId = 'editAddressModal' + '{{ old('address_id') }}';
+                    var editModal = new bootstrap.Modal(document.getElementById(editModalId));
+                    editModal.show();
+                @else
+                    // Jika terdapat error pada modal tambah
+                    var addModal = new bootstrap.Modal(document.getElementById('addAddressModal'));
+                    addModal.show();
+                @endif
+            });
+        </script>
+    @endif
 @endsection

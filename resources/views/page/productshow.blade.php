@@ -126,7 +126,8 @@
 
     <div>
         <div class="">
-            <div id="header" class="px-5 flex w-full justify-between gap-5 mb-5 sticky top-0 z-10 bg-white py-3 md:pe-5">
+            <div id="header"
+                class="px-5 flex w-full justify-between gap-5 mb-5 sticky top-0 z-10 bg-white py-3 md:pe-5">
                 <a href="{{ route('landing-page') }}">
                     <img src="{{ asset('img/logo&text.svg') }}" alt="logo" class=" w-32">
                 </a>
@@ -226,9 +227,11 @@
                                         class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Akun Saya</a>
                                     <a href="{{ route('user.orders.index') }}"
                                         class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Pesanan Saya</a>
-                                    <a href="{{ route('logout') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                                    <a href="{{ route('logout') }}"
+                                        class="block px-4 py-2 text-gray-800 hover:bg-gray-100"
                                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                        class="hidden">
                                         @csrf
                                     </form>
                                 </div>
@@ -434,7 +437,7 @@
                 <div class="border md:mb-10 mb-5 p-5">
                     <h5 class="text-md font-semibold text-slate-800">Description</h5>
                     <p class="tracking-tighter text-sm text-slate-700">
-                        {{ $product->description_product }}
+                        {!! nl2br(e($product->description_product)) !!}
                     </p>
                 </div>
 
@@ -444,6 +447,49 @@
                             Reviews
                         </h2>
                     </div>
+                    @if ($order && !$existingReview)
+                        <!-- Formulir Review hanya muncul jika order ada dan user belum memberikan review -->
+                        <form action="{{ route('addReview') }}" method="POST">
+                            @csrf <!-- Tambahkan CSRF token untuk keamanan -->
+
+                            <!-- Pilih Bintang -->
+                            <div class="mb-5 flex gap-1" id="star-rating">
+                                @for ($i = 1; $i <= 5; $i++)
+                                    <label for="star_{{ $i }}">
+                                        <input type="radio" name="rating" id="star_{{ $i }}"
+                                            value="{{ $i }}" class="hidden" required />
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                            class="w-5 h-5 star-icon text-gray-300" data-star="{{ $i }}"
+                                            viewBox="0 0 24 24" stroke="none">
+                                            <path
+                                                d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
+                                            </path>
+                                        </svg>
+                                    </label>
+                                @endfor
+                            </div>
+
+                            <!-- Komentar -->
+                            <div class="py-2 px-4 mb-3 bg-white rounded-lg border border-gray-200">
+                                <label for="comment" class="sr-only">Your comment</label>
+                                <textarea id="comment" name="comment" rows="6" required
+                                    class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none"
+                                    placeholder="Write a comment..."></textarea>
+                            </div>
+
+                            <!-- ID Produk -->
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+
+                            <!-- Kirim -->
+                            <div class="mb-3">
+                                <button type="submit"
+                                    class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300">
+                                    Send
+                                </button>
+                            </div>
+                        </form>
+                    @endif
+
                     {{-- <form action="{{ route('addReview') }}" method="POST">
                         @csrf <!-- Tambahkan CSRF token untuk keamanan -->
 
@@ -584,8 +630,8 @@
 
     <script>
         const header = document.getElementById('header');
-    
-        window.addEventListener('scroll', function () {
+
+        window.addEventListener('scroll', function() {
             if (window.scrollY > 10) {
                 header.classList.add('shadow-md');
             } else {

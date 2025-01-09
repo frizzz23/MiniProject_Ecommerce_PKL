@@ -187,11 +187,7 @@
     <div class="container-fluid">
         <div class="container">
             <div class="card w-100">
-                @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
+            
                 <div class="card-body p-4">
                     <h5 class="card-title text-2xl font-bold mb-4">Daftar Kategori</h5>
                     <div>
