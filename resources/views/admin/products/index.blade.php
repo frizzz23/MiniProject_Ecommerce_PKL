@@ -72,15 +72,15 @@
                                     class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
                                     onchange="this.form.submit()">
                                     <option value="">Rating</option>
-                                    <option value="5" {{ request('rating') == '5' ? 'selected' : '' }}>5 Bintang
+                                    <option value="5" {{ request('rating') == '0.5' ? 'selected' : '' }}>5 Bintang
                                     </option>
-                                    <option value="4" {{ request('rating') == '4' ? 'selected' : '' }}>4 Bintang
+                                    <option value="4" {{ request('rating') == '0.4' ? 'selected' : '' }}>4 Bintang
                                     </option>
-                                    <option value="3" {{ request('rating') == '3' ? 'selected' : '' }}>3 Bintang
+                                    <option value="3" {{ request('rating') == '0.3' ? 'selected' : '' }}>3 Bintang
                                     </option>
-                                    <option value="2" {{ request('rating') == '2' ? 'selected' : '' }}>2 Bintang
+                                    <option value="2" {{ request('rating') == '0.2' ? 'selected' : '' }}>2 Bintang
                                     </option>
-                                    <option value="1" {{ request('rating') == '1' ? 'selected' : '' }}>1 Bintang
+                                    <option value="1" {{ request('rating') == '0.1' ? 'selected' : '' }}>1 Bintang
                                     </option>
                                 </select>
                             </div>
