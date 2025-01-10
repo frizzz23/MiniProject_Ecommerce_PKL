@@ -13,7 +13,9 @@ use App\Http\Controllers\admin\DiscountController as AdminDiscountController;
 use App\Http\Controllers\admin\ReviewController as AdminReviewController;
 
 Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
-    
+
+    Route::post('/notifications/mark-as-read/{orderId}', [AdminOrderController::class, 'markAsRead'])
+        ->name('admin.notifications.mark-as-read');
     Route::resource('dashboard', AdminDashboardController::class);
     Route::resource('categories', AdminCategoryController::class)->names([
         'index' => 'admin.categories.index',
