@@ -247,8 +247,15 @@
                                             {{ $loop->iteration ?? '-' }}
                                         </td>
                                         <td class="px-4 py-2 flex items-center">
+                                            @if ($brand->image_brand)
                                             <img src="{{ asset('storage/' . $brand->image_brand) }}"
                                                 alt="{{ $brand->name_brand }}" class="w-28 h-28 rounded-full mr-3">
+                                                
+                                            @else
+                                            <img src="{{ asset('img/laptop.jpg') }}"
+                                                alt="default" class="w-28 h-28 rounded-full mr-3">
+                                                
+                                            @endif
                                         </td>
                                         <td class="px-4 py-2">
                                             {{ $brand->name_brand ?? '-' }}

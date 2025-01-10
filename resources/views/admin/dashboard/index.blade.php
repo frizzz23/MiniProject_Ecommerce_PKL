@@ -3,8 +3,6 @@
 @section('main')
     <div class="container-fluid">
         <div class="row">
-            <!-- Card 1: Total Pendapatan -->
-            <!-- Card 1: Total Pendapatan -->
             <div class="col-md-4 col-sm-6 mb-4">
                 <div class="card h-100 bg-gradient-to-r from-blue-800 to-blue-400">
                     <div class="card-body d-flex align-items-center">

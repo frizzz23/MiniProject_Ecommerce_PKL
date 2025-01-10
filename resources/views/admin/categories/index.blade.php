@@ -187,7 +187,7 @@
     <div class="container-fluid">
         <div class="container">
             <div class="card w-100">
-            
+
                 <div class="card-body p-4">
                     <h5 class="card-title text-2xl font-bold mb-4">Daftar Kategori</h5>
                     <div>
@@ -248,8 +248,14 @@
                                             {{ $loop->iteration ?? '-' }}
                                         </td>
                                         <td class="px-4 py-2 flex items-center">
-                                            <img src="{{ asset('storage/' . $category->image_category) }}"
-                                                alt="{{ $category->name_category }}" class="w-28 h-28 rounded-full mr-3">
+                                            @if ($category->image_category)
+                                                <img src="{{ asset('storage/' . $category->image_category) }}"
+                                                    alt="{{ $category->name_category }}"
+                                                    class="w-28 h-28 rounded-full mr-3">
+                                            @else
+                                                <img src="{{ asset('img/laptop.jpg') }}" alt="Default"
+                                                    class="w-28 h-28 rounded-full mr-3">
+                                            @endif
                                         </td>
                                         <td class="px-4 py-2">
                                             {{ $category->name_category ?? '-' }}
@@ -266,8 +272,8 @@
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#editmodal{{ $category->id }}">
                                                         <svg xmlns="http://www.w3.org/2000 ```blade
-                                                        .svg" class="h-5 w-5"
-                                                            viewBox="0 0 20 20" fill="currentColor">
+                                                        .svg"
+                                                            class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                                             <path
                                                                 d="M17.414 2.586a2 2 0 00-2.828 0L8 9.172 7 13l3.828-1L17.414 5.414a2 2 0 000-2.828l-1-1zM15 4l1-1L15 2l-1 1 1 1zM4 13v3h3l9-9-3-3L4 13z" />
                                                         </svg>
@@ -287,11 +293,11 @@
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#hapusmodal{{ $category->id }}">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
-                                                        viewBox="0 0 20 20" fill="currentColor">
-                                                        <path fill-rule="evenodd"
-                                                            d="M6 4a1 1 0 000 2h8a1 1 0 100-2H6zM3 6a1 1 0 011-1h12a1 1 0 011 1v11a2 2 0 01-2 2H5a2 2 0 01-2-2V6zm4 9a1 1 0 102 0V8a1 1 0 00-2 0v7zm5-1a1 1 0 10-2 0V8a1 1 0 112 0v6z"
-                                                            clip-rule="evenodd" />
-                                                    </svg>
+                                                            viewBox="0 0 20 20" fill="currentColor">
+                                                            <path fill-rule="evenodd"
+                                                                d="M6 4a1 1 0 000 2h8a1 1 0 100-2H6zM3 6a1 1 0 011-1h12a1 1 0 011 1v11a2 2 0 01-2 2H5a2 2 0 01-2-2V6zm4 9a1 1 0 102 0V8a1 1 0 00-2 0v7zm5-1a1 1 0 10-2 0V8a1 1 0 112 0v6z"
+                                                                clip-rule="evenodd" />
+                                                        </svg>
                                                     </button>
                                                     <span
                                                         class="absolute hidden group-hover:block bg-gray-800 text-white text-sm rounded px-2 py-1 mt-2 left-1/2 transform -translate-x-1/2">
@@ -305,8 +311,8 @@
                                     </tr>
 
                                     <!-- Modal Hapus -->
-                                    <div class="modal fade" id="hapusmodal{{ $category->id }}" tabindex="-1"
-                                        aria-hidden ```blade
+                                    <div class="modal fade" id="hapusmodal{{ $category->id }}" tabindex="-1" aria-hidden
+                                        ```blade
 ="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
@@ -341,34 +347,36 @@
         </div>
     </div>
 
-<!-- Modal Edit -->
-@foreach ($categories as $category)
-<div class="modal fade {{ $errors->any() && old('category_id') == $category->id ? 'show' : '' }}"
-     id="editmodal{{ $category->id }}"
-     tabindex="-1"
-     aria-hidden="true"
-     style="{{ $errors->any() && old('category_id') == $category->id ? 'display: block;' : '' }}">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form action="{{ route('admin.categories.update', $category->id) }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
-                <input type="hidden" name="category_id" value="{{ $category->id }}">
-                <div class="modal-header">
-                    <h5 class="modal-title">Edit Kategori</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="edit_name_category_{{ $category->id }}" class="form-label">Nama Kategori</label>
-                        <input type="text" name="name_category" class="form-control"  value="{{ $category->name_category }}" >
-                        @if (old('category_id') == $category->id)
-                            @error('name_category')
-                                <div class="text-danger mt-1">{{ $message }}</div>
-                            @enderror
-                        @endif
-                    </div>
-                    {{-- <div class="mb-3">
+    <!-- Modal Edit -->
+    @foreach ($categories as $category)
+        <div class="modal fade {{ $errors->any() && old('category_id') == $category->id ? 'show' : '' }}"
+            id="editmodal{{ $category->id }}" tabindex="-1" aria-hidden="true"
+            style="{{ $errors->any() && old('category_id') == $category->id ? 'display: block;' : '' }}">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="{{ route('admin.categories.update', $category->id) }}" method="POST"
+                        enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+                        <input type="hidden" name="category_id" value="{{ $category->id }}">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Edit Kategori</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="edit_name_category_{{ $category->id }}" class="form-label">Nama
+                                    Kategori</label>
+                                <input type="text" name="name_category" class="form-control"
+                                    value="{{ $category->name_category }}">
+                                @if (old('category_id') == $category->id)
+                                    @error('name_category')
+                                        <div class="text-danger mt-1">{{ $message }}</div>
+                                    @enderror
+                                @endif
+                            </div>
+                            {{-- <div class="mb-3">
                         <label for="edit_name_category" class="form-label">Nama Kategori</label>
                         <input type="text" name="name_category" class="form-control"
                                value="{{ old('category_id') == $category->id ? old('name_category') : $category->name_category }}">
@@ -376,90 +384,84 @@
                             <div class="text-danger mt-1">{{ $message }}</div>
                         @enderror
                     </div> --}}
-                    <div class="mb-3">
-                        <label for="edit_image_category" class="form-label">Gambar</label>
-                        <input type="file" name="image_category" class="form-control">
-                        <small>Biarkan kosong jika tidak ingin mengubah gambar.</small>
-                    </div>
+                            <div class="mb-3">
+                                <label for="edit_image_category" class="form-label">Gambar</label>
+                                <input type="file" name="image_category" class="form-control">
+                                <small>Biarkan kosong jika tidak ingin mengubah gambar.</small>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-@endforeach
-
-<!-- Modal Tambah -->
-<div class="modal fade {{ $errors->any() && !old('category_id') ? 'show' : '' }}"
-     id="tambahmodal"
-     tabindex="-1"
-     aria-hidden="true"
-     style="{{ $errors->any() && !old('category_id') ? 'display: block;' : '' }}">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Tambah Kategori</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <!-- Form inside modal -->
-                <form action="{{ route('admin.categories.store') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
+        </div>
+    @endforeach
 
-                    <!-- Input Nama Kategori -->
-                    <div class="mb-3">
-                        <label for="name_category" class="form-label">Nama Kategori</label>
-                        <input type="text" name="name_category" class="form-control" id="name_category"
-                               value="{{ old('name_category') }}">
-                        @if (!old('category_id'))
-                            @error('name_category')
+    <!-- Modal Tambah -->
+    <div class="modal fade {{ $errors->any() && !old('category_id') ? 'show' : '' }}" id="tambahmodal" tabindex="-1"
+        aria-hidden="true" style="{{ $errors->any() && !old('category_id') ? 'display: block;' : '' }}">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah Kategori</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form inside modal -->
+                    <form action="{{ route('admin.categories.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+
+                        <!-- Input Nama Kategori -->
+                        <div class="mb-3">
+                            <label for="name_category" class="form-label">Nama Kategori</label>
+                            <input type="text" name="name_category" class="form-control" id="name_category"
+                                value="{{ old('name_category') }}">
+                            @if (!old('category_id'))
+                                @error('name_category')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            @endif
+                        </div>
+
+                        <!-- Input Gambar Kategori -->
+                        <div class="mb-3">
+                            <label for="image_category" class="form-label">Gambar Kategori</label>
+                            <input type="file" name="image_category" class="form-control" id="image_category"
+                                accept="image/*">
+                            @error('image_category')
                                 <div class="text-danger mt-1">{{ $message }}</div>
                             @enderror
-                        @endif
-                    </div>
+                        </div>
 
-                    <!-- Input Gambar Kategori -->
-                    <div class="mb-3">
-                        <label for="image_category" class="form-label">Gambar Kategori</label>
-                        <input type="file" name="image_category" class="form-control" id="image_category"
-                               accept="image/*">
-                        @error('image_category')
-                            <div class="text-danger mt-1">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <!-- Tombol Modal -->
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
-                    </div>
-                </form>
+                        <!-- Tombol Modal -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Script untuk Menampilkan Modal Jika Ada Error -->
-@if ($errors->any())
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        @if (old('category_id'))
-            // Jika terdapat error pada modal edit
-            var editModalId = 'editmodal{{ old('category_id') }}';
-            var editModal = new bootstrap.Modal(document.getElementById(editModalId));
-            editModal.show();
-        @else
-            // Jika terdapat error pada modal tambah
-            var tambahModal = new bootstrap.Modal(document.getElementById('tambahmodal'));
-            tambahModal.show();
-        @endif
-    });
-</script>
-@endif
-
-
-
+    <!-- Script untuk Menampilkan Modal Jika Ada Error -->
+    @if ($errors->any())
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                @if (old('category_id'))
+                    // Jika terdapat error pada modal edit
+                    var editModalId = 'editmodal{{ old('category_id') }}';
+                    var editModal = new bootstrap.Modal(document.getElementById(editModalId));
+                    editModal.show();
+                @else
+                    // Jika terdapat error pada modal tambah
+                    var tambahModal = new bootstrap.Modal(document.getElementById('tambahmodal'));
+                    tambahModal.show();
+                @endif
+            });
+        </script>
+    @endif
 @endsection

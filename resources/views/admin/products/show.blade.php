@@ -12,9 +12,14 @@
                     <!-- Gambar Produk (Awalnya disembunyikan) -->
                     <div class="relative mb-4 hidden flex justify-center transition-all duration-500 opacity-0 transform scale-75"
                         id="productImageContainer">
-                        <img src="{{ asset('storage/' . $product->image_product) }}" alt="{{ $product->name_product }}"
-                            class="w-[50%] h-[50%] object-cover rounded-lg" id="productImage"
-                            data-height="{{ $product->image_product_height }}">
+                        @if ($product->image_product)
+                            <img src="{{ asset('storage/' . $product->image_product) }}" alt="{{ $product->name_product }}"
+                                class="w-[50%] h-[50%] object-cover rounded-lg" id="productImage"
+                                data-height="{{ $product->image_product_height }}">
+                        @else
+                            <img src="{{ asset('img/laptop.jpg') }}" alt="Default"
+                                class="w-[50%] h-[50%] object-cover rounded-lg" id="productImage">
+                        @endif
                     </div>
 
                     <!-- Tombol Dropdown untuk Menampilkan Gambar (Di tengah bawah card) -->
