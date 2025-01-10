@@ -23,7 +23,7 @@
     <link rel="shortcut icon" type="image/png" href="{{ asset('img/logoo.png') }}" />
     <link rel="stylesheet" href="{{ asset('style/src/assets/css/styles.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('loading/loading.css') }}" />
-    
+
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -51,9 +51,9 @@
         data-sidebar-position="fixed" data-header-position="fixed">
         @include('layouts.adminbar')
 
-        <!--  Main wrapper -->
+        <!-- Main wrapper -->
         <div class="body-wrapper">
-            <!--  Header Start -->
+            <!-- Header Start -->
             <header id="app-header" class="app-header">
                 <nav class="navbar navbar-expand-lg navbar-light">
                     <ul class="navbar-nav">
@@ -66,6 +66,55 @@
                     </ul>
                     <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
                         <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+                            <!-- Notification Icon -->
+                            <li class="nav-item dropdown me-3">
+                                <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="notificationDropdown"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <!-- SVG for Notification Icon -->
+                                    <i class="fa-regular fa-bell"></i>
+                                    
+                                    @if ($unreadNotifications->count() > 0)
+                                        <span class="relative flex h-4 w-4 -translate-y-2 -translate-x-1">
+                                            <span
+                                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                            <span
+                                                class="relative inline-flex rounded-full h-4 w-4 bg-red-500 text-white text-[10px] flex items-center justify-center">
+                                                {{ $unreadNotifications->count() }}
+                                            </span>
+                                        </span>
+                                    @endif
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
+                                    aria-labelledby="notificationDropdown">
+                                    <div class="notification-list" style="max-height: 300px; overflow-y: auto;">
+                                        @forelse($unreadNotifications as $notification)
+                                            <a href="{{ route('admin.orders.index', ['id' => $notification->order_id]) }}"
+                                                class="dropdown-item border-bottom notification-item"
+                                                data-order-id="{{ $notification->order_id }}">
+                                                <div class="d-flex align-items-center gap-2 py-2">
+                                                    <div>
+                                                        <h6 class="mb-0">
+                                                            {{ $notification->order->user->name }}</h6>
+                                                        <p class="mb-0 text-muted">
+                                                            @foreach ($notification->order->productOrders as $productOrder)
+                                                                {{ $productOrder->product->name_product }},
+                                                            @endforeach
+                                                        </p>
+                                                        <small class="text-muted">Status:
+                                                            {{ $notification->order->status_order }}</small>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        @empty
+                                            <div class="dropdown-item">
+                                                <p class="mb-0 text-muted">Tidak ada orderan baru</p>
+                                            </div>
+                                        @endforelse
+                                    </div>
+                                </div>
+                            </li>
+
+                            <!-- Profile Icon and Dropdown -->
                             <li class="nav-item dropdown">
                                 <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2"
                                     data-bs-toggle="dropdown" aria-expanded="false">
@@ -83,7 +132,6 @@
                                         </div>
                                     </div>
                                     <div class="message-body">
-
                                         <form action="{{ route('logout') }}" method="POST" class="my-2">
                                             @csrf
                                             <button type="submit"
@@ -99,7 +147,7 @@
                     </div>
                 </nav>
             </header>
-            <!--  Header End -->
+            <!-- Header End -->
             <div class="container-fluid">
                 @yield('main')
             </div>
@@ -126,6 +174,42 @@
     <script src="{{ asset('style/src/assets/libs/simplebar/dist/simplebar.js') }}"></script>
     <script src="{{ asset('style/src/assets/js/dashboard.js') }}"></script>
     <script src="{{ asset('loading/loading.js') }}"></script>
+    <script>
+        // Tambahkan di footer atau file JS terpisah
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle notification click
+            document.querySelectorAll('.notification-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const orderId = this.dataset.orderId;
+
+                    // Mark notification as read
+                    fetch(`/admin/notifications/mark-as-read/${orderId}`, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector(
+                                    'meta[name="csrf-token"]').content,
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Update badge count
+                                const badge = document.querySelector(
+                                    '#notificationDropdown .relative');
+                                const count = parseInt(badge.querySelector('span:last-child')
+                                    .textContent) - 1;
+                                if (count <= 0) {
+                                    badge.style.display = 'none';
+                                } else {
+                                    badge.querySelector('span:last-child').textContent = count;
+                                }
+                            }
+                        });
+                });
+            });
+        });
+    </script>
 
 </body>
 

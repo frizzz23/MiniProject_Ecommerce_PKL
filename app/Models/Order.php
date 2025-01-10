@@ -14,6 +14,8 @@ class Order extends Model
      * Menentukan tabel yang digunakan.
      */
     protected $table = 'orders';
+    protected $keyType = 'string';
+    public $incrementing = false;
 
     /**
      * Menentukan kolom yang dapat diisi.
@@ -59,7 +61,8 @@ class Order extends Model
     }
 
 
-    public function postage(){
+    public function postage()
+    {
         return $this->belongsTo(Postage::class, 'postage_id', 'id');
     }
 
@@ -74,5 +77,10 @@ class Order extends Model
     public function payment()
     {
         return $this->hasOne(Payment::class, 'order_id', 'id');
+    }
+
+    public function notification()
+    {
+        return $this->hasMany(OrderNotification::class, 'order_id', 'id');
     }
 }
