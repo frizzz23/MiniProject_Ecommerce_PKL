@@ -35,34 +35,50 @@ class CheckoutController extends Controller
 
 
     public function index(Request $request)
-    {
-        $product = false;
-        $carts = false;
-        if ($request->input('product')) {
-            $slug = $request->input('product');
-            $product = Product::where('slug', $slug)->first();
-            if (!$product || $product->stock_product <= 0) {
+{
+    $product = false;
+    $carts = false;
+
+    if ($request->input('product')) {
+        $slug = $request->input('product');
+        $product = Product::where('slug', $slug)->first();
+        if (!$product || $product->stock_product <= 0) {
+            return redirect()->route('page.product');
+        }
+    } else {
+        $carts = Cart::where('user_id', Auth::id())->with('product');
+        if ($request->input('cart')) {
+            $carts = $carts->whereIn('id', explode('-', $request->input('cart')))->get();
+            if (!$carts) {
                 return redirect()->route('page.product');
             }
         } else {
-            $carts = Cart::where('user_id', Auth::id())->with('product');
-            if ($request->input('cart')) {
-                $carts = $carts->whereIn('id', explode('-', $request->input('cart')))->get();
-                if (!$carts) {
-                    return redirect()->route('page.product');
-                }
-            } else {
-                $carts = $carts->get();
-            }
-            if (count($carts) <= 0) {
-                return redirect()->route('page.product');
+            $carts = $carts->get();
+        }
+
+        // Cek apakah ada produk yang stoknya habis di keranjang
+        foreach ($carts as $cart) {
+            if ($cart->product->stock_product <= 0) {
+                // Kirim nama produk yang stoknya habis ke dalam pesan error
+                return redirect()->route('user.carts.index')->with('error', 'Stok produk ' . $cart->product->name_product . ' telah habis.');
             }
         }
-        $addresses = Address::where('user_id', Auth::id())->get();
-        $provinces = Province::relatedData();
 
-        return view('user.checkout.index', compact('carts', 'product', 'addresses', 'provinces'));
+        if (count($carts) <= 0) {
+            return redirect()->route('page.product');
+        }
     }
+
+    $addresses = Address::where('user_id', Auth::id())->get();
+    $provinces = Province::relatedData();
+
+    return view('user.checkout.index', compact('carts', 'product', 'addresses', 'provinces'));
+}
+
+
+
+
+
 
     public function store(Request $request)
     {
@@ -210,6 +226,6 @@ class CheckoutController extends Controller
         return response()->json(['status' => 'success', 'snap_token' => $snapToken]);
 
         // Redirect ke halaman pesanan dengan pesan sukses
-        // return redirect()->route('user.orders.index')->with('success', 'Checkout berhasil! Pesanan Anda telah dibuat.');
+        return redirect()->route('user.orders.index')->with('success', 'Checkout berhasil! Pesanan Anda telah dibuat.');
     }
 }
