@@ -42,6 +42,7 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     ]);
     Route::resource('orders', AdminOrderController::class)->names([
         'index' => 'admin.orders.index',
+        'show' => 'admin.orders.show',
         'store' => 'admin.orders.store',
         'update' => 'admin.orders.update',
         'destroy' => 'admin.orders.destroy',
