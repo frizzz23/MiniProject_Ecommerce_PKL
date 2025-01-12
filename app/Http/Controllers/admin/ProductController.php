@@ -31,12 +31,11 @@ class ProductController extends Controller
                 // Filter berdasarkan kategori
                 $query->where('category_id', $category_id);
             })
-            ->when($request->input('stock_product'), function ($query, $stock_product) {
-                // Filter berdasarkan stok produk
-                if ($stock_product === '1') {
-                    $query->where('stock_product', '>', 0);  // Produk yang ada stoknya
-                } elseif ($stock_product === '0') {
-                    $query->where('stock_product', '=', 0);  // Produk yang stoknya habis
+            ->when(isset($request->stock_product), function ($query) use ($request) {
+                if ($request->stock_product == '1') {
+                    $query->where('stock_product', '>', 0); // Produk dengan stok ada
+                } elseif ($request->stock_product == '0') {
+                    $query->where('stock_product', '=', 0); // Produk dengan stok habis
                 }
             })
             ->when($request->input('price_product'), function ($query, $price_product) {
@@ -124,18 +123,18 @@ class ProductController extends Controller
     {
         // Mengambil produk dengan relasi category dan brand
         $product = Product::with(['category', 'brand'])->where('slug', $slug)->firstOrFail();
-    
+
         // Menghitung rata-rata rating dan jumlah ulasan untuk produk
         $averageRating = Review::where('product_id', $product->id)->avg('rating');
         $reviewsCount = Review::where('product_id', $product->id)->count();
-    
+
         // Menyisipkan data tambahan ke dalam objek produk
         $product->average_rating = $averageRating;
         $product->reviews_count = $reviewsCount;
-    
+
         return view('admin.products.show', compact('product'));
     }
-    
+
 
     /**
      * Update the specified resource in storage.
