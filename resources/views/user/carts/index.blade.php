@@ -188,6 +188,14 @@
                     <p class="text-xs text-slate-500">
                         Termasuk pajak dan Pengiriman dan pajak dihitung saat checkout.
                     </p>
+                    <p>
+                        @if (session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
+                    </p>
                 </div>
 
                 <input type="hidden" name="total_input" id="total_input" value="{{ $total }}" />

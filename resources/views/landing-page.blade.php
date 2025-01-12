@@ -402,8 +402,9 @@
                 </div>
                 <div class="flex gap-5 justify-center mt-8 pt-6">
                     @if ($mostPopularProduct1)
-                        <img src="{{ asset('storage/' . $mostPopularProduct1->image_product) }}" alt=""
-                            width="160" />
+                    <a href="{{ route('page.productshow', $mostPopularProduct1->slug) }}" class="w-32 h-32 flex justify-center items-center bg-center bg-cover overflow-hidden mx-auto">
+                        <img src="{{ asset('storage/' . $mostPopularProduct1->image_product) }}" alt="Hp" />
+                    </a>
 
                         <div class="flex flex-col justify-between">
                             {{-- <span class="text-red-500 font-semibold">Flas sale</span> --}}
@@ -432,10 +433,12 @@
                                         @endif
                                     @endfor
                                     <span class="text-sm text-slate-600">
-                                        {{ isset($reviewsCount[$mostPopularProduct1->id]) ? $reviewsCount[$mostPopularProduct1->id] : 0 }}
-                                        reviews
+                                        {{ $mostPopularProduct1->reviews_count ?? 0 }} reviews
                                     </span>
                                 </div>
+
+
+
                                 <div class="flex justify-between">
                                     <p class="text-xl text-blue-500 font-medium tracking-tight">
                                         {{ number_format($mostPopularProduct1->price_product, 0, ',', '.') }}
@@ -500,13 +503,12 @@
 
             <div class="border-2 py-3 px-5 relative">
                 @if ($mostPopularProduct2)
-                    <div class="w-32 h-32 flex justify-center items-center bg-center bg-cover overflow-hidden mx-auto">
-                        <img src="{{ asset('storage/' . $mostPopularProduct2->image_product) }}" alt="Hp" />
-                    </div>
-                    <a href="{{ route('page.productshow', $mostPopularProduct2->slug) }}"
-                        class="text-sm text-slate-700 mb-4">
-                        {{ $mostPopularProduct2->name_product }}
-                    </a>
+                <a href="{{ route('page.productshow', $mostPopularProduct2->slug) }}" class="w-32 h-32 flex justify-center items-center bg-center bg-cover overflow-hidden mx-auto">
+                    <img src="{{ asset('storage/' . $mostPopularProduct2->image_product) }}" alt="Hp" />
+                </a>
+                <a href="{{ route('page.productshow', $mostPopularProduct2->slug) }}" class="text-sm text-slate-700 mb-4">
+                    {{ $mostPopularProduct2->name_product }}
+                </a>
 
                     <div class="flex items-center space-x-1 mb-2">
                         @for ($i = 1; $i <= 5; $i++)
@@ -527,8 +529,7 @@
                             @endif
                         @endfor
                         <span class="text-sm text-slate-600">
-                            {{ isset($reviewsCount[$mostPopularProduct2->id]) ? $reviewsCount[$mostPopularProduct2->id] : 0 }}
-                            reviews
+                            {{ $mostPopularProduct2->reviews_count ?? 0 }} reviews
                         </span>
                     </div>
                     <div class="flex justify-between">
@@ -590,35 +591,27 @@
             </div>
             <div class="border-2 py-3 px-5 relative">
                 @if ($mostPopularProduct3)
-                    <div class="w-32 h-32 flex justify-center items-center bg-center bg-cover overflow-hidden mx-auto">
+                    <a href="{{ route('page.productshow', $mostPopularProduct3->slug) }}" class="w-32 h-32 flex justify-center items-center bg-center bg-cover overflow-hidden mx-auto">
                         <img src="{{ asset('storage/' . $mostPopularProduct3->image_product) }}" alt="Hp" />
-                    </div>
-                    <a href="{{ route('page.productshow', $mostPopularProduct3->slug) }}"
-                        class="text-sm text-slate-700 mb-4">
+                    </a>
+                    <a href="{{ route('page.productshow', $mostPopularProduct3->slug) }}" class="text-sm text-slate-700 mb-4">
                         {{ $mostPopularProduct3->name_product }}
                     </a>
 
                     <div class="flex items-center space-x-1 mb-2">
                         @for ($i = 1; $i <= 5; $i++)
                             @if ($i <= floor($mostPopularProduct3->average_rating ?? 0))
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                    class="w-4 h-4 text-yellow-400" viewBox="0 0 24 24">
-                                    <path
-                                        d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
-                                    </path>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 text-yellow-400" viewBox="0 0 24 24">
+                                    <path d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z"></path>
                                 </svg>
                             @else
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                    class="w-4 h-4 text-gray-300" viewBox="0 0 24 24">
-                                    <path
-                                        d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
-                                    </path>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 text-gray-300" viewBox="0 0 24 24">
+                                    <path d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z"></path>
                                 </svg>
                             @endif
                         @endfor
                         <span class="text-sm text-slate-600">
-                            {{ isset($reviewsCount[$mostPopularProduct3->id]) ? $reviewsCount[$mostPopularProduct3->id] : 0 }}
-                            reviews
+                            {{ $mostPopularProduct3->reviews_count ?? 0 }} reviews
                         </span>
                     </div>
                     <div class="flex justify-between">
@@ -626,50 +619,28 @@
                             Rp.{{ number_format($mostPopularProduct3->price_product, 0, ',', '.') }}
                         </p>
                         @auth
-                            <button onclick="addToCart({{ $mostPopularProduct3->id }}, this)" type="button"
-                                class="w-10 h-10 bg-blue-500 flex justify-center items-center rounded-md ml-auto">
-                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                    class="w-5 h-5">
+                            <button onclick="addToCart({{ $mostPopularProduct3->id }}, this)" type="button" class="w-10 h-10 bg-blue-500 flex justify-center items-center rounded-md ml-auto">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
                                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                                     <g id="SVGRepo_iconCarrier">
-                                        <path
-                                            d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H19"
-                                            stroke="#ffffff" stroke-width="1.5" stroke-linecap="round">
-                                        </path>
-                                        <path
-                                            d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z"
-                                            stroke="#ffffff" stroke-width="1.5"></path>
-                                        <path
-                                            d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z"
-                                            stroke="#ffffff" stroke-width="1.5"></path>
-                                        <path
-                                            d="M5 6H16.4504C18.5054 6 19.5328 6 19.9775 6.67426C20.4221 7.34853 20.0173 8.29294 19.2078 10.1818L18.7792 11.1818C18.4013 12.0636 18.2123 12.5045 17.8366 12.7523C17.4609 13 16.9812 13 16.0218 13H5"
-                                            stroke="#ffffff" stroke-width="1.5"></path>
+                                        <path d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H19" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
+                                        <path d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z" stroke="#ffffff" stroke-width="1.5"></path>
+                                        <path d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z" stroke="#ffffff" stroke-width="1.5"></path>
+                                        <path d="M5 6H16.4504C18.5054 6 19.5328 6 19.9775 6.67426C20.4221 7.34853 20.0173 8.29294 19.2078 10.1818L18.7792 11.1818C18.4013 12.0636 18.2123 12.5045 17.8366 12.7523C17.4609 13 16.9812 13 16.0218 13H5" stroke="#ffffff" stroke-width="1.5"></path>
                                     </g>
                                 </svg>
                             </button>
                         @else
-                            <a href="{{ route('login') }}"
-                                class="w-10 h-10 bg-blue-500 flex justify-center items-center rounded-md">
-                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                    class="w-5 h-5">
+                            <a href="{{ route('login') }}" class="w-10 h-10 bg-blue-500 flex justify-center items-center rounded-md">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
                                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                                     <g id="SVGRepo_iconCarrier">
-                                        <path
-                                            d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H19"
-                                            stroke="#ffffff" stroke-width="1.5" stroke-linecap="round">
-                                        </path>
-                                        <path
-                                            d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z"
-                                            stroke="#ffffff" stroke-width="1.5"></path>
-                                        <path
-                                            d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z"
-                                            stroke="#ffffff" stroke-width="1.5"></path>
-                                        <path
-                                            d="M5 6H16.4504C18.5054 6 19.5328 6 19.9775 6.67426C20.4221 7.34853 20.0173 8.29294 19.2078 10.1818L18.7792 11.1818C18.4013 12.0636 18.2123 12.5045 17.8366 12.7523C17.4609 13 16.9812 13 16.0218 13H5"
-                                            stroke="#ffffff" stroke-width="1.5"></path>
+                                        <path d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H19" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
+                                        <path d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z" stroke="#ffffff" stroke-width="1.5"></path>
+                                        <path d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z" stroke="#ffffff" stroke-width="1.5"></path>
+                                        <path d="M5 6H16.4504C18.5054 6 19.5328 6 19.9775 6.67426C20.4221 7.34853 20.0173 8.29294 19.2078 10.1818L18.7792 11.1818C18.4013 12.0636 18.2123 12.5045 17.8366 12.7523C17.4609 13 16.9812 13 16.0218 13H5" stroke="#ffffff" stroke-width="1.5"></path>
                                     </g>
                                 </svg>
                             </a>
@@ -678,6 +649,7 @@
 
                 @endif
             </div>
+
         </div>
     </section>
 
@@ -743,10 +715,11 @@
                                 </svg>
                             @endif
                         @endfor
-                        <span
-                            class="text-sm text-slate-600">{{ isset($reviewsCount[$product->id]) ? $reviewsCount[$product->id] : 0 }}
-                            reviews</span>
+                        <span class="text-sm text-slate-600">
+                            {{ $product->reviews_count ?? 0 }} reviews
+                        </span>
                     </div>
+
                     <div class="flex justify-between">
                         <p class="text-xl text-blue-500 font-medium tracking-tight">
                             Rp.{{ number_format($product->price_product, 0, ',', '.') }}
@@ -841,87 +814,52 @@
             </div>
             <div class="border-2 py-3 px-2 flex flex-col justify-between">
                 @if ($produkbaru1)
-                    <div class="w-32 h-32 flex justify-center items-center bg-center bg-cover overflow-hidden mx-auto">
+                    <!-- Gambar dibungkus dengan tag <a> untuk mengarah ke halaman produk -->
+                    <a href="{{ route('page.productshow', $produkbaru1->slug) }}" class="w-32 h-32 flex justify-center items-center bg-center bg-cover overflow-hidden mx-auto">
                         <img src="{{ asset('storage/' . $produkbaru1->image_product) }}" alt="Hp" />
-                    </div>
-                    <a href="{{ route('page.productshow', $produkbaru1->slug) }}"
-                        class="text-sm text-slate-700 mb-4">
+                    </a>
+
+                    <a href="{{ route('page.productshow', $produkbaru1->slug) }}" class="text-sm text-slate-700 mb-4">
                         {{ $produkbaru1->name_product }}
                     </a>
 
                     <div class="flex items-center space-x-1 mb-2">
                         @for ($i = 1; $i <= 5; $i++)
                             @if ($i <= floor($produkbaru1->average_rating ?? 0))
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                    class="w-4 h-4 text-yellow-400" viewBox="0 0 24 24">
-                                    <path
-                                        d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
-                                    </path>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 text-yellow-400" viewBox="0 0 24 24">
+                                    <path d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z"></path>
                                 </svg>
                             @else
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                    class="w-4 h-4 text-gray-300" viewBox="0 0 24 24">
-                                    <path
-                                        d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
-                                    </path>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 text-gray-300" viewBox="0 0 24 24">
+                                    <path d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z"></path>
                                 </svg>
                             @endif
                         @endfor
                         <span class="text-sm text-slate-600">
-                            {{ isset($reviewsCount[$produkbaru1->id]) ? $reviewsCount[$produkbaru1->id] : 0 }}
-                            reviews
+                            {{ $produkbaru1->reviews_count ?? 0 }} reviews
                         </span>
                     </div>
+
                     <div class="flex justify-between">
                         <p class="text-xl text-blue-500 font-medium tracking-tight">
                             Rp.{{ number_format($produkbaru1->price_product, 0, ',', '.') }}
                         </p>
                         @auth
-                            <button onclick="addToCart({{ $produkbaru1->id }}, this)" type="button"
-                                class="w-10 h-10 bg-blue-500 flex justify-center items-center rounded-md">
-                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                    class="w-5 h-5">
-                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                    <g id="SVGRepo_iconCarrier">
-                                        <path
-                                            d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H19"
-                                            stroke="#ffffff" stroke-width="1.5" stroke-linecap="round">
-                                        </path>
-                                        <path
-                                            d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z"
-                                            stroke="#ffffff" stroke-width="1.5"></path>
-                                        <path
-                                            d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z"
-                                            stroke="#ffffff" stroke-width="1.5"></path>
-                                        <path
-                                            d="M5 6H16.4504C18.5054 6 19.5328 6 19.9775 6.67426C20.4221 7.34853 20.0173 8.29294 19.2078 10.1818L18.7792 11.1818C18.4013 12.0636 18.2123 12.5045 17.8366 12.7523C17.4609 13 16.9812 13 16.0218 13H5"
-                                            stroke="#ffffff" stroke-width="1.5"></path>
-                                    </g>
+                            <button onclick="addToCart({{ $produkbaru1->id }}, this)" type="button" class="w-10 h-10 bg-blue-500 flex justify-center items-center rounded-md">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
+                                    <path d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H19" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
+                                    <path d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z" stroke="#ffffff" stroke-width="1.5"></path>
+                                    <path d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z" stroke="#ffffff" stroke-width="1.5"></path>
+                                    <path d="M5 6H16.4504C18.5054 6 19.5328 6 19.9775 6.67426C20.4221 7.34853 20.0173 8.29294 19.2078 10.1818L18.7792 11.1818C18.4013 12.0636 18.2123 12.5045 17.8366 12.7523C17.4609 13 16.9812 13 16.0218 13H5" stroke="#ffffff" stroke-width="1.5"></path>
                                 </svg>
                             </button>
                         @else
-                            <a href="{{ route('login') }}"
-                                class="w-10 h-10 bg-blue-500 flex justify-center items-center rounded-md">
-                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                    class="w-5 h-5">
-                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                    <g id="SVGRepo_iconCarrier">
-                                        <path
-                                            d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H19"
-                                            stroke="#ffffff" stroke-width="1.5" stroke-linecap="round">
-                                        </path>
-                                        <path
-                                            d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z"
-                                            stroke="#ffffff" stroke-width="1.5"></path>
-                                        <path
-                                            d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z"
-                                            stroke="#ffffff" stroke-width="1.5"></path>
-                                        <path
-                                            d="M5 6H16.4504C18.5054 6 19.5328 6 19.9775 6.67426C20.4221 7.34853 20.0173 8.29294 19.2078 10.1818L18.7792 11.1818C18.4013 12.0636 18.2123 12.5045 17.8366 12.7523C17.4609 13 16.9812 13 16.0218 13H5"
-                                            stroke="#ffffff" stroke-width="1.5"></path>
-                                    </g>
+                            <a href="{{ route('login') }}" class="w-10 h-10 bg-blue-500 flex justify-center items-center rounded-md">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
+                                    <path d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H19" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
+                                    <path d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z" stroke="#ffffff" stroke-width="1.5"></path>
+                                    <path d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z" stroke="#ffffff" stroke-width="1.5"></path>
+                                    <path d="M5 6H16.4504C18.5054 6 19.5328 6 19.9775 6.67426C20.4221 7.34853 20.0173 8.29294 19.2078 10.1818L18.7792 11.1818C18.4013 12.0636 18.2123 12.5045 17.8366 12.7523C17.4609 13 16.9812 13 16.0218 13H5" stroke="#ffffff" stroke-width="1.5"></path>
                                 </svg>
                             </a>
                         @endauth
@@ -929,15 +867,16 @@
 
                 @endif
             </div>
+
             <div class="border-2 py-3 px-2 flex flex-col justify-between">
                     @if ($produkbaru2)
-                        <div class="w-32 h-32 flex justify-center items-center bg-center bg-cover overflow-hidden mx-auto">
-                            <img src="{{ asset('storage/' . $produkbaru2->image_product) }}" alt="Hp" />
-                        </div>
-                        <a href="{{ route('page.productshow', $produkbaru2->slug) }}"
-                            class="text-sm text-slate-700 mb-4">
-                            {{ $produkbaru2->name_product }}
-                        </a>
+                    <a href="{{ route('page.productshow', $produkbaru2->slug) }}" class="w-32 h-32 flex justify-center items-center bg-center bg-cover overflow-hidden mx-auto">
+                        <img src="{{ asset('storage/' . $produkbaru2->image_product) }}" alt="Hp" />
+                    </a>
+
+                    <a href="{{ route('page.productshow', $produkbaru2->slug) }}" class="text-sm text-slate-700 mb-4">
+                        {{ $produkbaru2->name_product }}
+                    </a>
 
                         <div class="flex items-center space-x-1 mb-2">
                             @for ($i = 1; $i <= 5; $i++)
@@ -958,8 +897,7 @@
                                 @endif
                             @endfor
                             <span class="text-sm text-slate-600">
-                                {{ isset($reviewsCount[$produkbaru2->id]) ? $reviewsCount[$produkbaru2->id] : 0 }}
-                                reviews
+                                {{ $produkbaru2->reviews_count ?? 0 }} reviews
                             </span>
                         </div>
                         <div class="flex justify-between">
