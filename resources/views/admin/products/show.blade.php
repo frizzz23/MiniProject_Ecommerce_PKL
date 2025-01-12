@@ -169,7 +169,7 @@
 
                                 <!-- Card Diupdate -->
                                 <div class="bg-white shadow-md rounded-md p-3 w-full sm:w-auto">
-                                    <div class="text-xs font-semibold text-gray-500 mb-1">Diupdate</div>
+                                    <div class="text-xs font-semibold text-gray-500 mb-1">Diperbarui</div>
                                     <div class="text-sm font-medium text-gray-700">
                                         <span
                                             class="font-semibold">{{ $product->updated_at->translatedFormat('d F Y') }}</span>

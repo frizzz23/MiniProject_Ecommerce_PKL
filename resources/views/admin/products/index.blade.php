@@ -218,76 +218,6 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    <div class="modal fade" id="detailProductModal{{ $product->id }}" tabindex="-1"
-                                        aria-labelledby="detailProductModalLabel{{ $product->id }}" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title"
-                                                        id="detailProductModalLabel{{ $product->id }}">
-                                                        Detail Produk</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <!-- Form inside modal -->
-
-                                                    <!-- Form fields for editing -->
-                                                    <div class="mb-3">
-                                                        <div
-                                                            class="grid grid-cols-[1fr_0.1fr_2fr] border-b-2 py-2 border-slate-300 mb-2">
-                                                            <img src="{{ asset('storage/' . $product->image_product) }}"
-                                                                alt="{{ $product->name_product }}"
-                                                                class="w-8 h-8 rounded-full mr-3">
-
-                                                            <span>{{ $product->name_product }}</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="border-2 p-2 border-slate-300 mb-2">
-                                                        <span class="text-sm ">Infromasi Produk</span>
-                                                        <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
-                                                            <span>Kategori</span>
-                                                            <span>:</span>
-                                                            <span>{{ $product->category->name_category ?? '-' }}</span>
-                                                        </div>
-                                                        <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
-                                                            <span>Brand</span>
-                                                            <span>:</span>
-                                                            <span>{{ $product->brand->name_brand ?? '-' }}</span>
-                                                        </div>
-                                                        <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
-                                                            <span>Rating</span>
-                                                            <span>:</span>
-                                                            <span>
-                                                                {{ $product->reviews->avg('rating') ? number_format($product->reviews->avg('rating'), 1) . ' / 5' : 'Belum ada' }}</span>
-                                                        </div>
-                                                        <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
-                                                            <span>Stok</span>
-                                                            <span>:</span>
-                                                            <span>{{ $product->stock_product }} unit</span>
-                                                        </div>
-                                                        <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
-                                                            <span>Harga</span>
-                                                            <span>:</span>
-                                                            <span>Rp.
-                                                                {{ number_format($product->price_product, 0, ',', '.') }}</span>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="mb-2 text-right">
-                                                        <div class="text-xs">Dibuat :
-                                                            {{ $product->created_at->translatedFormat('d F Y') }}</div>
-                                                        <div class="text-xs">Update :
-                                                            {{ $product->updated_at->translatedFormat('d F Y') }}</div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">Kembali</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 @endforeach
                             </tbody>
                         </table>
@@ -304,17 +234,22 @@
 
     <style>
         .modal .modal-body {
-            max-height: 70vh; /* Mengatur tinggi maksimal modal */
-            overflow-y: auto; /* Mengaktifkan scroll vertikal */
+            max-height: 70vh;
+            /* Mengatur tinggi maksimal modal */
+            overflow-y: auto;
+            /* Mengaktifkan scroll vertikal */
         }
-    
+
         .modal .modal-body::-webkit-scrollbar {
-            width: 0; /* Menyembunyikan scrollbar */
+            width: 0;
+            /* Menyembunyikan scrollbar */
         }
-    
+
         .modal .modal-body {
-            -ms-overflow-style: none; /* Untuk Internet Explorer */
-            scrollbar-width: none; /* Untuk Firefox */
+            -ms-overflow-style: none;
+            /* Untuk Internet Explorer */
+            scrollbar-width: none;
+            /* Untuk Firefox */
         }
     </style>
 
@@ -565,14 +500,6 @@
         </script>
     @endif
 
-
-
-
-
-
-
-
-
     <!-- Modal Hapus Produk -->
     @foreach ($products as $product)
         <div class="modal fade" id="deleteModal_{{ $product->id }}" tabindex="-1"
@@ -607,3 +534,77 @@
         }
     </script>
 @endsection
+
+
+
+
+{{-- <div class="modal fade" id="detailProductModal{{ $product->id }}" tabindex="-1"
+                                        aria-labelledby="detailProductModalLabel{{ $product->id }}" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title"
+                                                        id="detailProductModalLabel{{ $product->id }}">
+                                                        Detail Produk</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <!-- Form inside modal -->
+
+                                                    <!-- Form fields for editing -->
+                                                    <div class="mb-3">
+                                                        <div
+                                                            class="grid grid-cols-[1fr_0.1fr_2fr] border-b-2 py-2 border-slate-300 mb-2">
+                                                            <img src="{{ asset('storage/' . $product->image_product) }}"
+                                                                alt="{{ $product->name_product }}"
+                                                                class="w-8 h-8 rounded-full mr-3">
+
+                                                            <span>{{ $product->name_product }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="border-2 p-2 border-slate-300 mb-2">
+                                                        <span class="text-sm ">Infromasi Produk</span>
+                                                        <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
+                                                            <span>Kategori</span>
+                                                            <span>:</span>
+                                                            <span>{{ $product->category->name_category ?? '-' }}</span>
+                                                        </div>
+                                                        <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
+                                                            <span>Brand</span>
+                                                            <span>:</span>
+                                                            <span>{{ $product->brand->name_brand ?? '-' }}</span>
+                                                        </div>
+                                                        <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
+                                                            <span>Rating</span>
+                                                            <span>:</span>
+                                                            <span>
+                                                                {{ $product->reviews->avg('rating') ? number_format($product->reviews->avg('rating'), 1) . ' / 5' : 'Belum ada' }}</span>
+                                                        </div>
+                                                        <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
+                                                            <span>Stok</span>
+                                                            <span>:</span>
+                                                            <span>{{ $product->stock_product }} unit</span>
+                                                        </div>
+                                                        <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
+                                                            <span>Harga</span>
+                                                            <span>:</span>
+                                                            <span>Rp.
+                                                                {{ number_format($product->price_product, 0, ',', '.') }}</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mb-2 text-right">
+                                                        <div class="text-xs">Dibuat :
+                                                            {{ $product->created_at->translatedFormat('d F Y') }}</div>
+                                                        <div class="text-xs">Diperbarui :
+                                                            {{ $product->updated_at->translatedFormat('d F Y') }}</div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Kembali</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> --}}

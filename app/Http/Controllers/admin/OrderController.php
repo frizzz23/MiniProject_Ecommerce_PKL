@@ -19,6 +19,7 @@ class OrderController extends Controller
         $createdAt = $request->input('created_at'); // Filter berdasarkan tanggal
         $search = $request->input('search'); // Filter berdasarkan pencarian
 
+
         // Ambil notifikasi yang belum dibaca
         $unreadNotifications = OrderNotification::with(['order.user', 'order.productOrders.product'])
             ->where('is_read', false)
@@ -78,10 +79,18 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        // Fetch the specific order with related data
+        $order = Order::with('user', 'productOrders.product', 'addresses', 'postage', 'promoCode', 'payment')->findOrFail($id);
+
+        // Fetch all products (this is fine if you want all products to display)
+        $products = Product::all();
+
+        // Pass only the necessary variables to the view
+        return view('admin.orders.show', compact('order', 'products'));
     }
+
 
     /**
      * Show the form for editing the specified resource.

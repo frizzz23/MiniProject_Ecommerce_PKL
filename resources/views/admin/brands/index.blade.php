@@ -187,8 +187,9 @@
 @section('main')
     <div class="container-fluid">
         <div class="container p-6">
+
             <div class="card w-full">
-               
+
                 <div class="card-body p-4">
                     <h5 class="card-title text-2xl font-bold mb-4">Daftar Merek</h5>
                     <div>
@@ -248,13 +249,11 @@
                                         </td>
                                         <td class="px-4 py-2 flex items-center">
                                             @if ($brand->image_brand)
-                                            <img src="{{ asset('storage/' . $brand->image_brand) }}"
-                                                alt="{{ $brand->name_brand }}" class="w-28 h-28 rounded-full mr-3">
-                                                
+                                                <img src="{{ asset('storage/' . $brand->image_brand) }}"
+                                                    alt="{{ $brand->name_brand }}" class="w-28 h-28 rounded-full mr-3">
                                             @else
-                                            <img src="{{ asset('img/laptop.jpg') }}"
-                                                alt="default" class="w-28 h-28 rounded-full mr-3">
-                                                
+                                                <img src="{{ asset('img/laptop.jpg') }}" alt="default"
+                                                    class="w-28 h-28 rounded-full mr-3">
                                             @endif
                                         </td>
                                         <td class="px-4 py-2">
@@ -375,11 +374,11 @@
                                         Merek</label>
                                     <input type="text" name="name_brand" class="form-control"
                                         value="{{ $brand->name_brand }}">
-                                        @if (old('brand_id') == $brand->id)
-                                            @error('name_brand')
-                                                <div class="text-danger mt-1">{{ $message }}</div>
-                                            @enderror
-                                        @endif
+                                    @if (old('brand_id') == $brand->id)
+                                        @error('name_brand')
+                                            <div class="text-danger mt-1">{{ $message }}</div>
+                                        @enderror
+                                    @endif
                                 </div>
                                 <div class="mb-3">
                                     <label for="edit_image_brand" class="form-label">Gambar</label>
