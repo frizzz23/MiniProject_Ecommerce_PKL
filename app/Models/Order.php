@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
@@ -28,8 +29,23 @@ class Order extends Model
         'sub_total_amount',
         'grand_total_amount',
         'status_order',
-        'snap_token'
+        'snap_token',
+        'order_code',
     ];
+
+    protected static function booted()
+    {
+        static::creating(function ($order) {
+            // Membuat kode acak 5 karakter
+            $randomString = Str::upper(Str::random(5));
+
+            // Mendapatkan tanggal saat ini dalam format ddmmyyyy
+            $currentDate = now()->format('dmyY'); // format DDMMYYYY
+
+            // Menggabungkan "ZT", kode acak, dan tanggal
+            $order->order_code = 'ZT_' . $randomString . $currentDate;
+        });
+    }
 
     /**
      * Relasi ke model User (Many-to-One).

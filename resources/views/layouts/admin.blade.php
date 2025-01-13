@@ -88,7 +88,7 @@
                                     aria-labelledby="notificationDropdown">
                                     <div class="notification-list" style="max-height: 300px; overflow-y: auto;">
                                         @forelse($unreadNotifications as $notification)
-                                            <a href="{{ route('admin.orders.index', ['id' => $notification->order_id]) }}"
+                                            <a href="{{ route('admin.orders.show', $notification->order->id ) }}"
                                                 class="dropdown-item border-bottom notification-item"
                                                 data-order-id="{{ $notification->order_id }}">
                                                 <div class="d-flex align-items-center gap-2 py-2">

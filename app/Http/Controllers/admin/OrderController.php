@@ -82,7 +82,7 @@ class OrderController extends Controller
     public function show($id)
     {
         // Fetch the specific order with related data
-        $order = Order::with('user', 'productOrders.product', 'addresses', 'postage', 'promoCode', 'payment')->findOrFail($id);
+        $order = Order::with('user', 'productOrders.product', 'addresses', 'postage', 'promoCode', 'payment',)->findOrFail($id);
 
         // Fetch all products (this is fine if you want all products to display)
         $products = Product::all();
@@ -125,8 +125,18 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy( $id)
     {
-        //
+        $order = Order::findOrFail($id);
+
+        $order->productOrders()->delete();
+        $order->payment()->delete(); // Misalnya jika relasi bernama payment
+        
+        // Hapus data order
+        $order->delete();
+        
+        // Redirect dengan pesan sukses
+        return redirect()->route('admin.orders.index')->with('success', 'Order berhasil dihapus beserta data yang terhubung.');
+        
     }
 }
