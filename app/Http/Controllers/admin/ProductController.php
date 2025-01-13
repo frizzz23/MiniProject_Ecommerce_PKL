@@ -59,11 +59,15 @@ class ProductController extends Controller
                 }
             })
             ->when($request->input('rating'), function ($query, $rating) {
-                // Filter berdasarkan rata-rata rating
                 $query->whereHas('reviews', function ($q) use ($rating) {
-                    $q->havingRaw('AVG(rating) >= ?', [$rating]);  // Filter produk dengan rata-rata rating lebih besar atau sama dengan nilai rating
+                    $q->selectRaw('AVG(rating) as avg_rating') // Hitung rata-rata rating
+                      ->groupBy('product_id')                // Kelompokkan per produk
+                      ->havingRaw('AVG(rating) >= ? AND AVG(rating) < ?', [$rating, $rating + 1]);
                 });
             })
+
+
+
             ->paginate(5);  // Menampilkan 5 produk per halaman
 
         // Mengirim data ke view
