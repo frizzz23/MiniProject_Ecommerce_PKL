@@ -13,10 +13,10 @@
                 <div class="bg-white p-4 rounded-lg shadow-sm border mb-3">
                     <!-- Judul -->
                     <div class=" flex justify-between items-center p-2 ">
-                        <div class="flex items-center justify-center  gap-2">
-                            <h1 class="text-2xl font-bold  ">Detail Order</h1>
-                        </div>
-
+                        <div class="flex items-center justify-center gap-2">
+                            <h1 class="text-2xl font-bold text-center">Detail Order</h1>
+                            <span class="text-lg font-normal text-gray-500 text-center">({{ $order->order_code ?? 'kosong' }})</span>
+                        </div>                        
 
                         <div class="flex items-center justify-center text-center gap-2 ">
                             <span class="text-md font-semibold">{{ $order->created_at->translatedFormat('d F Y') }}</span>
@@ -41,20 +41,20 @@
                         <!-- Card Alamat Pengiriman -->
                         <div class="card p-6 border rounded-lg shadow-md bg-blue-100 flex-1">
                             <div class="flex items-center mb-4">
-                                <svg class="w-6 h-6 text-blue-500 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M3 8l7.89 5.26c.54.36 1.25.36 1.8 0L21 8M5 19h14M8 10.8v9.2M16 10.8v9.2" />
-                                </svg>
-                                <h3 class="font-semibold text-lg text-blue-700">Alamat Pengiriman</h3>
+                                <!-- Ikon Font Awesome dengan latar belakang putih -->
+                                <div
+                                    class="bg-white border flex items-center justify-center rounded-lg w-10 h-10 shadow-md">
+                                    <i class="fas fa-map-marker-alt text-blue-500 text-lg"></i>
+                                </div>
+                                <h3 class="font-semibold text-xl text-blue-700 ml-3">Alamat Pengiriman</h3>
                             </div>
-                            <div class="mb-2">
-                                <span class="font-medium">Alamat: </span>
-                                <span>{{ $order->addresses->address }}</span>
-                            </div>
-                            <div>
-                                <span class="font-medium">No Telp: </span>
+                            <div class="flex gap-2 ml-3 text-lg">
+                                <span class="font-medium">{{ $order->user->name }}</span>
+                                <div class="h-[25px] w-[2px] bg-gray-300"></div>
                                 <span>{{ $order->addresses->no_telepon }}</span>
+                            </div>
+                            <div class="mb-2 ml-3 text-base">
+                                <span>{{ ucwords($order->addresses->address) }}</span>
                             </div>
                         </div>
                     </div>
@@ -63,16 +63,18 @@
                         <!-- Card Jasa Pengiriman -->
                         <div class="card p-6 border rounded-lg shadow-md bg-blue-100 flex-1">
                             <div class="flex items-center mb-4">
-                                <svg class="w-6 h-6 text-blue-500 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M20 13V6a1 1 0 00-.293-.707l-3-3A1 1 0 0016 2H8a1 1 0 00-1 1v18a1 1 0 001 1h8a1 1 0 001-1v-6m5-3h-6M3 13h6m-6 4h6" />
-                                </svg>
-                                <h3 class="font-semibold text-lg text-blue-700">Jasa Pengiriman</h3>
+                                <!-- Ikon Font Awesome dengan latar belakang putih -->
+                                <div
+                                    class="bg-white border flex items-center justify-center rounded-lg w-10 h-10 shadow-md">
+                                    <i class="fas fa-shipping-fast text-blue-500 text-lg"></i>
+                                </div>
+                                <h3 class="font-semibold text-xl text-blue-700 ml-3">Jasa Pengiriman</h3>
                             </div>
-                            <div>
-                                <span class="font-medium">Ongkos Kirim: </span>
-                                <span>+ Rp. {{ number_format($order->postage->ongkir_total_amount, 0, ',', '.') }}</span>
+                            <div class="mb-2 ml-3 text-lg font-medium">
+                                <span>{{ strtoupper($order->postage->code) }}</span> <!-- Nama jasa pengiriman -->
+                            </div>
+                            <div class="mb-2 ml-3 text-base">
+                                <span>{{ ucwords($order->postage->service) }}</span> <!-- Paket layanan -->
                             </div>
                         </div>
                     </div>
@@ -81,42 +83,54 @@
                         <!-- Card Metode Pembayaran -->
                         <div class="card p-6 border rounded-lg shadow-md bg-blue-100 flex-1">
                             <div class="flex items-center mb-4">
-                                <svg class="w-6 h-6 text-blue-500 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 14l6-6m0 0L9 8m6 6v8a2 2 0 01-2 2H5a2 2 0 01-2-2v-8a2 2 0 012-2h2" />
-                                </svg>
-                                <h3 class="font-semibold text-lg text-blue-700">Metode Pembayaran</h3>
+                                <!-- Wrapper untuk icon -->
+                                <div
+                                    class="bg-white border flex items-center justify-center rounded-lg w-10 h-10 shadow-md">
+                                    <!-- Icon menggunakan Font Awesome -->
+                                    <i class="fas fa-credit-card text-blue-500 text-lg"></i>
+                                </div>
+                                <h3 class="font-semibold text-xl text-blue-700 ml-3">Metode Pembayaran</h3>
                             </div>
-                            <div class="mb-2">
-                                <span class="font-medium">Metode Pembayaran: </span>
-                                <span>{{ $order->payment->payment_method }}</span>
+                            <div class="mb-2 ml-3 text-lg font-medium">
+                                <span>{{ ucwords(str_replace('_', ' ', $order->payment->payment_method)) }}</span>
                             </div>
-                            <div>
-                                <span class="font-medium">Status Pembayaran: </span>
-                                <span>{{ $order->payment->status }}</span>
+                            <div class="mb-2 ml-3">
+                                <span
+                                    class="px-3 py-1 rounded-full text-sm font-semibold
+                                        @if ($order->payment->status === 'success') bg-green-200 text-green-600 
+                                        @elseif ($order->payment->status === 'pending') 
+                                            bg-blue-200 text-blue-600 
+                                        @elseif ($order->payment->status === 'failed') 
+                                            bg-red-200 text-red-600 
+                                        @elseif ($order->payment->status === 'expired') 
+                                            bg-gray-200 text-gray-600 
+                                        @else 
+                                            bg-gray-200 text-gray-600 @endif">
+                                    {{ ucfirst($order->payment->status) }}
+                                </span>
                             </div>
                         </div>
                     </div>
+
 
                     <!-- Baris Kedua: Produk yang Dipesan dan Total Harga -->
                     <div class="col-span-1 md:col-span-8 flex flex-col gap-6">
                         <!-- Produk yang Dipesan -->
                         <div class="card p-6 border rounded-lg shadow-md bg-white">
-                            <h3 class="font-semibold text-lg mb-3">Produk yang Dipesan</h3>
-                    
+                            <h3 class="font-semibold text-lg mb-3 bg-blue-500 text-white p-2 rounded-md">Produk yang dipesan</h3>
+
                             <!-- Grid untuk menampilkan produk per dua kolom -->
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 @foreach ($order->productOrders as $productOrder)
-                                    <div class="flex items-center justify-start gap-1">
+                                    <div class="flex items-center justify-start gap-1 mx-2">
                                         <!-- Cek jika ada gambar produk -->
                                         @if ($productOrder->product->image_product)
                                             <img class="w-12 h-12 object-cover mr-4"
-                                                 src="{{ asset('storage/' . $productOrder->product->image_product) }}"
-                                                 alt="{{ $productOrder->product->name_product }}">
+                                                src="{{ asset('storage/' . $productOrder->product->image_product) }}"
+                                                alt="{{ $productOrder->product->name_product }}">
                                         @else
-                                            <img class="w-12 h-12 object-cover mr-4"
-                                                 src="{{ asset('img/laptop.jpg') }}" alt="Gambar Default">
+                                            <img class="w-12 h-12 object-cover mr-4" src="{{ asset('img/laptop.jpg') }}"
+                                                alt="Gambar Default">
                                         @endif
                                         <div class="flex flex-col">
                                             <span>{{ $productOrder->product->name_product }}</span>
@@ -127,30 +141,41 @@
                             </div>
                         </div>
                     </div>
-                    
+
 
                     <div class="col-span-1 md:col-span-4 flex flex-col gap-6">
                         <!-- Total Harga -->
                         <div class="card p-6 border rounded-lg shadow-md bg-white">
-                            <h3 class="font-semibold text-lg">Total Harga</h3>
-                            <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
-                                <span>Sub Total</span>
-                                <span>:</span>
-                                <span>Rp. {{ number_format($order->sub_total_amount, 0, ',', '.') }}</span>
-                            </div>
-                            <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
-                                <span>Diskon</span>
-                                <span>:</span>
-                                <span>- Rp.
-                                    {{ $order->promoCode?->discount_amount ? number_format($order->promoCode->discount_amount, 0, ',', '.') : '' }}</span>
-                            </div>
-                            <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
-                                <span>Total</span>
-                                <span>:</span>
-                                <span>Rp. {{ number_format($order->grand_total_amount, 0, ',', '.') }}</span>
-                            </div>
+                            <h3 class="font-semibold text-lg mb-3 bg-blue-500 text-white p-2 rounded-md">Total Harga</h3>
+                            <table class="min-w-full table-auto">
+                                <tbody>
+                                    <tr class="py-1">
+                                        <td class="px-1 py-2">Sub Total</td>
+                                        <td class="px-1 py-2">:</td>
+                                        <td class="px-1 py-2">Rp. {{ number_format($order->sub_total_amount, 0, ',', '.') }}</td>
+                                    </tr>
+                                    <tr class="py-1">
+                                        <td class="px-1 py-2">Ongkos Kirim </td>
+                                        <td class="px-1 py-2">:</td>
+                                        <td class="px-1 py-2">Rp. {{ number_format($order->postage->ongkir_total_amount, 0, ',', '.') }}</td>
+                                    </tr>
+                                    <tr class="py-1">
+                                        <td class="px-1 py-2">Diskon</td>
+                                        <td class="px-1 py-2">:</td>
+                                        <td class="px-1 py-2">- Rp. 
+                                            {{ $order->promoCode?->discount_amount ? number_format($order->promoCode->discount_amount, 0, ',', '.') : '' }}
+                                        </td>
+                                    </tr>
+                                    <tr class="py-1">
+                                        <td class="px-1 py-2">Total</td>
+                                        <td class="px-1 py-2">:</td>
+                                        <td class="px-1 py-2">Rp. {{ number_format($order->grand_total_amount, 0, ',', '.') }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
+                    
                 </div>
 
             </div>

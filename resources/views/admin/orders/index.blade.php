@@ -221,7 +221,7 @@
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
                                                     <!-- Form untuk menghapus voucher -->
-                                                    <form action="{{ route('admin.discount.destroy', $order->id) }}" method="POST">
+                                                    <form action="{{ route('admin.orders.destroy', $order->id) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger">Hapus</button>
