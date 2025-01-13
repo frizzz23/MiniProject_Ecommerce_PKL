@@ -228,7 +228,7 @@
                                         Max Harga
                                     </label>
 
-                                   
+
                                 </div>
                                 <div class="w-36">
                                     @error('max_price')
@@ -458,7 +458,7 @@
 
                     <div class="">
                         <label for="sort_order" class="block text-sm text-slate-700 mb-1">Urutan Penyortiran</label>
-                        <select name="sort_order" 
+                        <select name="sort_order"
                             class="border border-slate-300
                             text-sm px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-md" onchange="this.form.submit();" id="sort_order">
                             <option value="">Dibuat</option>
@@ -527,6 +527,13 @@
                                 @endfor
                                 <span class="text-sm text-slate-600">{{ $reviewsCount[$product->id] ?? 0 }}
                                     reviews</span>
+                            </div>
+
+                            <!-- Jumlah Terjual -->
+                            <div class="flex items-center gap-1">
+                                <span class="text-sm text-slate-600">
+                                    Terjual: {{ $product->sold_count }} unit
+                                </span>
                             </div>
 
                             <div class="md:flex justify-between">
