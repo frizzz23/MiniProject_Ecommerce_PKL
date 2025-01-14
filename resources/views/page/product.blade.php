@@ -394,6 +394,17 @@
                 </div>
 
             </div>
+
+
+            <div class="flex justify-between items md:pe-5 mb-5">
+                <marquee behavior="scroll" direction="left" class="text-black bg-blue-100 p-4 rounded-md">
+                    @foreach ($codes as $code)
+                        🎉 Diskon {{ number_format($code->discount_amount, 0, ',', '.') }}
+                        dengan minimal pembelian {{ number_format($code->minimum_purchase, 0, ',', '.') }}! Gunakan kode: {{ $code->code }} |
+                    @endforeach
+                </marquee>
+            </div>
+
             <div class="flex justify-between items md:pe-5">
                 <div class="flex gap-2 items-center">
                     <nav class="flex" aria-label="Breadcrumb">

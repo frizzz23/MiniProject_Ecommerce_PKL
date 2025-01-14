@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\Review;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\PromoCode;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Error;
@@ -99,8 +100,10 @@ class ProductPageController extends Controller
         $reviewsCount[$product->id] = Review::where('product_id', $product->id)->count();
     }
 
+    $codes = PromoCode::all();
+
     // Return ke view dengan data produk, kategori, jumlah review, dan jumlah produk terjual
-    return view('page.product', compact('products', 'categories', 'reviewsCount', 'search', 'minPrice', 'maxPrice', 'sortOrder', 'sortPrice', 'brands'));
+    return view('page.product', compact('products', 'categories', 'reviewsCount', 'search', 'minPrice', 'maxPrice', 'sortOrder', 'sortPrice', 'brands', 'codes'));
 }
 
 
