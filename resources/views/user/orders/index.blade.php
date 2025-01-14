@@ -102,76 +102,92 @@
                                 </div>
 
                                 <hr class="w-full mx-auto border-2 border-gray-500 my-4">
-                                @foreach ($order->productOrders as $productOrder)
-                                    <!-- Gambar Produk -->
-                                    <div class="flex gap-2 mb-3">
-                                        <div
-                                            class="w-20 h-20 bg-cover bg-center overflow-hidden flex justify-center items-center rounded-md border border-slate-300 shadow-sm">
-                                            <img src="{{ asset('storage/' . $productOrder->product->image_product) }}"
-                                                alt="{{ $productOrder->product->name_product }}" class="object-contain" />
-                                        </div>
-                                        <div class="flex flex-col">
-                                            <span
-                                                class="font-semibold text-slate-800">{{ $productOrder->product->name_product }}</span>
-                                            <span class="text-xs text-slate-500">x{{ $productOrder->quantity }}</span>
-                                        </div>
-                                    </div>
 
-                                    <!-- Keterangan Produk -->
-                                @endforeach
-                                <div class="text-slate-700 text-sm grid grid-cols-[0.5fr_2fr]">
-                                    <div class="flex items-end">
-                                        <a href="{{ route('order-show', ['order_id' => $order->id]) }}"
-                                            class="bg-blue-700 text-white rounded-lg px-3 py-2 text-sm">Detail
-                                        </a>
+                                @if ($order->productOrders->count() > 0)
+                                    <div class="flex justify-between items-center">
+                                        <!-- Produk Pertama -->
+                                        <div class="flex gap-2">
+                                            <div
+                                                class="w-20 h-20 bg-cover bg-center overflow-hidden flex justify-center items-center rounded-md border border-slate-300 shadow-sm">
+                                                @if ($order->productOrders->first()->product->image_product)
+                                                    <img src="{{ asset('storage/' . $order->productOrders->first()->product->image_product) }}"
+                                                        alt="{{ $order->productOrders->first()->product->name_product }}"
+                                                        class="object-contain" />
+                                                @else
+                                                    <img src="{{ asset('img/laptop.jpg') }}" alt="Default"
+                                                        class="object-contain" />
+                                                @endif
+                                            </div>
+                                            <div class="flex flex-col">
+                                                <span
+                                                    class="font-semibold text-slate-800">{{ $order->productOrders->first()->product->name_product }}</span>
+                                                <span
+                                                    class="text-xs text-slate-500">x{{ $order->productOrders->first()->quantity }}</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Perhitungan Harga -->
+                                        <div class="text-slate-700 text-sm">
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class=" text-right">Subtotal Produk</td>
+                                                        <td class=" px-2 text-center">:</td>
+                                                        <td class="text-left">Rp.
+                                                            {{ number_format($order->sub_total_amount, 0, ',', '.') }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class=" text-right">Pengiriman</td>
+                                                        <td class=" px-2 text-center">:</td>
+                                                        <td class="text-left">Rp.
+                                                            {{ number_format($order->postage->ongkir_total_amount, 0, ',', '.') }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class=" text-right">Diskon</td>
+                                                        <td class=" px-2 text-center">:</td>
+                                                        <td class="text-left">Rp.
+                                                            {{ number_format($order->promoCode?->discount_amount, 0, ',', '.') }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class=" text-right font-bold">Total</td>
+                                                        <td class=" px-2 text-center font-bold">:</td>
+                                                        <td class="text-left font-bold">Rp.
+                                                            {{ number_format($order->grand_total_amount, 0, ',', '.') }}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
-                                    <div class="flex justify-end">
-                                        <table>
-                                            <tbody>
-                                                <tr>
-                                                    <td class=" text-right">Subtotal Produk </td>
-                                                    <td class=" px-2 text-center">:</td>
-                                                    <td class="text-center"></td>
-                                                    <td class=" text-left">Rp.
-                                                        {{ number_format($order->sub_total_amount, 0, ',', '.') }}</td>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class=" text-right">Pengiriman </td>
-                                                    <td class=" px-2 text-center">:</td>
-                                                    <td class="text-center">+</td>
-                                                    <td class=" text-left">Rp.
-                                                        {{ number_format($order->postage->ongkir_total_amount, 0, ',', '.') }}
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class=" text-right">Diskon </td>
-                                                    <td class=" px-2 text-center">:</td>
-                                                    <td class="text-center">-</td>
-                                                    <td class=" text-left">Rp.
-                                                        {{ number_format($order->promoCode?->discount_amount, 0, ',', '.') }}
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class=" text-right">Total </td>
-                                                    <td class=" px-2 text-center">:</td>
-                                                    <td class="text-center"></td>
-                                                    <td class=" text-left">Rp.
-                                                        {{ number_format($order->grand_total_amount, 0, ',', '.') }}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                                @endif
 
                                 <hr class="w-full mx-auto border-2 border-gray-500 my-4">
-                                <!-- Baris ketiga (total harga) -->
-                                <div class="flex justify-end gap-2 items-center px-3">
-                                    <span class="text-slate-700 text-lg font-semibold">Total:</span>
-                                    <span class="text-lg text-[#5D87FF] font-semibold">Rp.
-                                        {{ number_format($order->grand_total_amount, 0, ',', '.') }}</span>
+
+                                <!-- Baris ketiga (total harga, tombol detail, dan produk lainnya) -->
+                                <div class="flex justify-between items-center px-3">
+                                    <div class="flex justify-center items-center gap-2 text-center">
+                                        <!-- Tombol Detail -->
+                                        <a href="{{ route('order-show', ['order_id' => $order->id]) }}"
+                                            class="bg-blue-700 text-white rounded-lg px-3 py-2 text-sm">Detail</a>
+
+                                        <!-- Informasi Produk Lainnya -->
+                                        @if ($order->productOrders->count() > 1)
+                                            <div class="text-sm text-slate-600">
+                                                {{ $order->productOrders->count() - 1 }} produk lainnya
+                                            </div>
+                                        @endif
+                                    </div>
+
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-slate-700 text-lg font-semibold">Total:</span>
+                                        <span class="text-lg text-[#5D87FF] font-semibold">Rp.
+                                            {{ number_format($order->grand_total_amount, 0, ',', '.') }}</span>
+                                    </div>
                                 </div>
                             </div>
+
                         @empty
                             <div class="bg-white px-3 rounded-md w-full">
                                 <p class="text-slate-700 text-sm font-semibold text-center py-10"> Tidak ada pesanan yang
@@ -194,75 +210,89 @@
                                 </div>
 
                                 <hr class="w-full mx-auto border-2 border-gray-500 my-4">
-                                @foreach ($order->productOrders as $productOrder)
-                                    <!-- Gambar Produk -->
-                                    <div class="flex gap-2 mb-3">
-                                        <div
-                                            class="w-20 h-20 bg-cover bg-center overflow-hidden flex justify-center items-center rounded-md border border-slate-300 shadow-sm">
-                                            <img src="{{ asset('storage/' . $productOrder->product->image_product) }}"
-                                                alt="{{ $productOrder->product->name_product }}"
-                                                class="object-contain" />
-                                        </div>
-                                        <div class="flex flex-col">
-                                            <span
-                                                class="font-semibold text-slate-800">{{ $productOrder->product->name_product }}</span>
-                                            <span class="text-xs text-slate-500">x{{ $productOrder->quantity }}</span>
-                                        </div>
-                                    </div>
 
-                                    <!-- Keterangan Produk -->
-                                @endforeach
-                                <div class="text-slate-700 text-sm grid grid-cols-[0.5fr_2fr]">
-                                    <div class="flex items-end">
-                                        <a href="{{ route('order-show', ['order_id' => $order->id]) }}"
-                                            class="bg-blue-700 text-white rounded-lg px-3 py-2 text-sm">Detail
-                                        </a>
+                                @if ($order->productOrders->count() > 0)
+                                    <div class="flex justify-between items-center">
+                                        <!-- Produk Pertama -->
+                                        <div class="flex gap-2">
+                                            <div
+                                                class="w-20 h-20 bg-cover bg-center overflow-hidden flex justify-center items-center rounded-md border border-slate-300 shadow-sm">
+                                                @if ($order->productOrders->first()->product->image_product)
+                                                    <img src="{{ asset('storage/' . $order->productOrders->first()->product->image_product) }}"
+                                                        alt="{{ $order->productOrders->first()->product->name_product }}"
+                                                        class="object-contain" />
+                                                @else
+                                                    <img src="{{ asset('img/laptop.jpg') }}" alt="Default"
+                                                        class="object-contain" />
+                                                @endif
+                                            </div>
+                                            <div class="flex flex-col">
+                                                <span
+                                                    class="font-semibold text-slate-800">{{ $order->productOrders->first()->product->name_product }}</span>
+                                                <span
+                                                    class="text-xs text-slate-500">x{{ $order->productOrders->first()->quantity }}</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Perhitungan Harga -->
+                                        <div class="text-slate-700 text-sm">
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class=" text-right">Subtotal Produk</td>
+                                                        <td class=" px-2 text-center">:</td>
+                                                        <td class="text-left">Rp.
+                                                            {{ number_format($order->sub_total_amount, 0, ',', '.') }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class=" text-right">Pengiriman</td>
+                                                        <td class=" px-2 text-center">:</td>
+                                                        <td class="text-left">Rp.
+                                                            {{ number_format($order->postage->ongkir_total_amount, 0, ',', '.') }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class=" text-right">Diskon</td>
+                                                        <td class=" px-2 text-center">:</td>
+                                                        <td class="text-left">Rp.
+                                                            {{ number_format($order->promoCode?->discount_amount, 0, ',', '.') }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class=" text-right font-bold">Total</td>
+                                                        <td class=" px-2 text-center font-bold">:</td>
+                                                        <td class="text-left font-bold">Rp.
+                                                            {{ number_format($order->grand_total_amount, 0, ',', '.') }}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
-                                    <div class="flex justify-end">
-                                        <table>
-                                            <tbody>
-                                                <tr>
-                                                    <td class=" text-right">Subtotal Produk </td>
-                                                    <td class=" px-2 text-center">:</td>
-                                                    <td class="text-center"></td>
-                                                    <td class=" text-left">Rp.
-                                                        {{ number_format($order->sub_total_amount, 0, ',', '.') }}</td>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class=" text-right">Pengiriman </td>
-                                                    <td class=" px-2 text-center">:</td>
-                                                    <td class="text-center">+</td>
-                                                    <td class=" text-left">Rp.
-                                                        {{ number_format($order->postage->ongkir_total_amount, 0, ',', '.') }}
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class=" text-right">Diskon </td>
-                                                    <td class=" px-2 text-center">:</td>
-                                                    <td class="text-center">-</td>
-                                                    <td class=" text-left">Rp.
-                                                        {{ number_format($order->promoCode?->discount_amount, 0, ',', '.') }}
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class=" text-right">Total </td>
-                                                    <td class=" px-2 text-center">:</td>
-                                                    <td class="text-center"></td>
-                                                    <td class=" text-left">Rp.
-                                                        {{ number_format($order->grand_total_amount, 0, ',', '.') }}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                                @endif
 
                                 <hr class="w-full mx-auto border-2 border-gray-500 my-4">
-                                <!-- Baris ketiga (total harga) -->
-                                <div class="flex justify-end gap-2 items-center px-3">
-                                    <span class="text-slate-700 text-lg font-semibold">Total:</span>
-                                    <span class="text-lg text-[#5D87FF] font-semibold">Rp.
-                                        {{ number_format($order->grand_total_amount, 0, ',', '.') }}</span>
+
+                                <!-- Baris ketiga (total harga, tombol detail, dan produk lainnya) -->
+                                <div class="flex justify-between items-center px-3">
+                                    <div class="flex justify-center items-center gap-2 text-center">
+                                        <!-- Tombol Detail -->
+                                        <a href="{{ route('order-show', ['order_id' => $order->id]) }}"
+                                            class="bg-blue-700 text-white rounded-lg px-3 py-2 text-sm">Detail</a>
+
+                                        <!-- Informasi Produk Lainnya -->
+                                        @if ($order->productOrders->count() > 1)
+                                            <div class="text-sm text-slate-600">
+                                                {{ $order->productOrders->count() - 1 }} produk lainnya
+                                            </div>
+                                        @endif
+                                    </div>
+
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-slate-700 text-lg font-semibold">Total:</span>
+                                        <span class="text-lg text-[#5D87FF] font-semibold">Rp.
+                                            {{ number_format($order->grand_total_amount, 0, ',', '.') }}</span>
+                                    </div>
                                 </div>
                             </div>
                         @empty
@@ -285,83 +315,89 @@
                                 </div>
 
                                 <hr class="w-full mx-auto border-2 border-gray-500 my-4">
-                                @foreach ($order->productOrders as $productOrder)
-                                    <!-- Gambar Produk -->
-                                    <div class="flex gap-2 mb-3">
-                                        <div
-                                            class="w-20 h-20 bg-cover bg-center overflow-hidden flex justify-center items-center rounded-md border border-slate-300 shadow-sm">
-                                            <img src="{{ asset('storage/' . $productOrder->product->image_product) }}"
-                                                alt="{{ $productOrder->product->name_product }}"
-                                                class="object-contain" />
-                                        </div>
-                                        <div class="flex flex-col">
-                                            <span
-                                                class="font-semibold text-slate-800">{{ $productOrder->product->name_product }}</span>
-                                            <span class="text-xs text-slate-500">x{{ $productOrder->quantity }}</span>
-                                            <div>
-                                                @if ($productOrder->product->reviews->count() <= 0)
-                                                    <button class="bg-yellow-600 text-white rounded-md px-2 py-1 text-xs"
-                                                        onclick="openReview('{{ $productOrder->product->id }}', '{{ $productOrder->product->name_product }}')">
-                                                        Nilai
-                                                    </button>
+
+                                @if ($order->productOrders->count() > 0)
+                                    <div class="flex justify-between items-center">
+                                        <!-- Produk Pertama -->
+                                        <div class="flex gap-2">
+                                            <div
+                                                class="w-20 h-20 bg-cover bg-center overflow-hidden flex justify-center items-center rounded-md border border-slate-300 shadow-sm">
+                                                @if ($order->productOrders->first()->product->image_product)
+                                                    <img src="{{ asset('storage/' . $order->productOrders->first()->product->image_product) }}"
+                                                        alt="{{ $order->productOrders->first()->product->name_product }}"
+                                                        class="object-contain" />
+                                                @else
+                                                    <img src="{{ asset('img/laptop.jpg') }}" alt="Default"
+                                                        class="object-contain" />
                                                 @endif
                                             </div>
+                                            <div class="flex flex-col">
+                                                <span
+                                                    class="font-semibold text-slate-800">{{ $order->productOrders->first()->product->name_product }}</span>
+                                                <span
+                                                    class="text-xs text-slate-500">x{{ $order->productOrders->first()->quantity }}</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Perhitungan Harga -->
+                                        <div class="text-slate-700 text-sm">
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class=" text-right">Subtotal Produk</td>
+                                                        <td class=" px-2 text-center">:</td>
+                                                        <td class="text-left">Rp.
+                                                            {{ number_format($order->sub_total_amount, 0, ',', '.') }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class=" text-right">Pengiriman</td>
+                                                        <td class=" px-2 text-center">:</td>
+                                                        <td class="text-left">Rp.
+                                                            {{ number_format($order->postage->ongkir_total_amount, 0, ',', '.') }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class=" text-right">Diskon</td>
+                                                        <td class=" px-2 text-center">:</td>
+                                                        <td class="text-left">Rp.
+                                                            {{ number_format($order->promoCode?->discount_amount, 0, ',', '.') }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class=" text-right font-bold">Total</td>
+                                                        <td class=" px-2 text-center font-bold">:</td>
+                                                        <td class="text-left font-bold">Rp.
+                                                            {{ number_format($order->grand_total_amount, 0, ',', '.') }}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
-                                    <!-- Keterangan Produk -->
-                                @endforeach
-                                <div class="text-slate-700 text-sm grid grid-cols-[0.5fr_2fr]">
-                                    <div class="flex items-end gap-2">
-
-                                        <a href="{{ route('order-show', ['order_id' => $order->id]) }}"
-                                            class="bg-blue-700 text-white rounded-lg px-3 py-2 text-sm">Detail
-                                        </a>
-                                    </div>
-                                    <div class="flex justify-end">
-                                        <table>
-                                            <tbody>
-                                                <tr>
-                                                    <td class=" text-right">Subtotal Produk </td>
-                                                    <td class=" px-2 text-center">:</td>
-                                                    <td class="text-center"></td>
-                                                    <td class=" text-left">Rp.
-                                                        {{ number_format($order->sub_total_amount, 0, ',', '.') }}</td>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class=" text-right">Pengiriman </td>
-                                                    <td class=" px-2 text-center">:</td>
-                                                    <td class="text-center">+</td>
-                                                    <td class=" text-left">Rp.
-                                                        {{ number_format($order->postage->ongkir_total_amount, 0, ',', '.') }}
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class=" text-right">Diskon </td>
-                                                    <td class=" px-2 text-center">:</td>
-                                                    <td class="text-center">-</td>
-                                                    <td class=" text-left">Rp.
-                                                        {{ number_format($order->promoCode?->discount_amount, 0, ',', '.') }}
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class=" text-right">Total </td>
-                                                    <td class=" px-2 text-center">:</td>
-                                                    <td class="text-center"></td>
-                                                    <td class=" text-left">Rp.
-                                                        {{ number_format($order->grand_total_amount, 0, ',', '.') }}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                                @endif
 
                                 <hr class="w-full mx-auto border-2 border-gray-500 my-4">
-                                <!-- Baris ketiga (total harga) -->
-                                <div class="flex justify-end gap-2 items-center px-3">
-                                    <span class="text-slate-700 text-lg font-semibold">Total:</span>
-                                    <span class="text-lg text-[#5D87FF] font-semibold">Rp.
-                                        {{ number_format($order->grand_total_amount, 0, ',', '.') }}</span>
+
+                                <!-- Baris ketiga (total harga, tombol detail, dan produk lainnya) -->
+                                <div class="flex justify-between items-center px-3">
+                                    <div class="flex justify-center items-center gap-2 text-center">
+                                        <!-- Tombol Detail -->
+                                        <a href="{{ route('order-show', ['order_id' => $order->id]) }}"
+                                            class="bg-blue-700 text-white rounded-lg px-3 py-2 text-sm">Detail</a>
+
+                                        <!-- Informasi Produk Lainnya -->
+                                        @if ($order->productOrders->count() > 1)
+                                            <div class="text-sm text-slate-600">
+                                                {{ $order->productOrders->count() - 1 }} produk lainnya
+                                            </div>
+                                        @endif
+                                    </div>
+
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-slate-700 text-lg font-semibold">Total:</span>
+                                        <span class="text-lg text-[#5D87FF] font-semibold">Rp.
+                                            {{ number_format($order->grand_total_amount, 0, ',', '.') }}</span>
+                                    </div>
                                 </div>
                             </div>
                         @empty

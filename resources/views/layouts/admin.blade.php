@@ -42,7 +42,7 @@
     </style>
 </head>
 
-<body>
+<body class="bg-gray-100">
     <div id="loader">
         <img src="{{ asset('img/logo2.png') }}" alt="Loading...">
     </div>

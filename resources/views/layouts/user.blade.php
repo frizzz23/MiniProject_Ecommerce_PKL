@@ -28,7 +28,7 @@
 
 </head>
 
-<body class="bg-gray-100 text-gray-800 font-sans">
+<body class="bg-gray-200 text-gray-800 font-sans">
     <div class="min-h-screen flex">
         <!-- Sidebar -->
         @include('layouts.userbar')
@@ -36,7 +36,7 @@
         <div class="flex-1 flex flex-col overflow-hidden">
 
             <!-- Scrollable Main Content -->
-            <main class="flex-1 overflow-y-auto p-8 bg-gray-100">
+            <main class="flex-1 overflow-y-auto p-8 ">
 
                 @yield('main')
 
