@@ -12,8 +12,20 @@ class OrderShowController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $order = Order::findOrFail($request->input('order_id'))->load(['addresses', 'productOrders.product', 'postage', 'promoCode', 'payment', 'user']);
-        // dd($order->toArray());
-        return view('user.orders.order-show', compact('order'));
+        $order = Order::findOrFail($request->input('order_id'))
+            ->load(['addresses', 'productOrders.product', 'postage', 'promoCode', 'payment', 'user']);
+
+        // Daftar status yang tersedia
+        $statuses = [
+            'pending' => 1,
+            'process' => 2,
+            'shipping' => 3,
+            'completed' => 4,
+        ];
+
+        // Tentukan status aktif berdasarkan data dari order
+        $currentStatus = $statuses[$order->status] ?? 0;
+
+        return view('user.orders.order-show', compact('order', 'statuses', 'currentStatus'));
     }
 }
