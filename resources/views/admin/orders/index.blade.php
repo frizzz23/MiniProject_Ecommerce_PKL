@@ -152,7 +152,7 @@
                                                             bg-orange-200 text-orange-600
                                                         @else 
                                                             bg-gray-200 text-gray-600 @endif">
-                                                    {{ ucfirst($order->status_order) }}
+                                                    {{ ucfirst($order->status_order_label) }}
                                                 </span>
                                             </div>
 
@@ -256,116 +256,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- modal detail -->
-                                    <div class="modal fade" id="detailOrderModal{{ $order->id }}" tabindex="-1"
-                                        aria-labelledby="detailOrderModalLabel{{ $order->id }}" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title"
-                                                        id="detailOrderModalLabel{{ $order->id }}">
-                                                        Detail Pesanan</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <!-- Form inside modal -->
-
-                                                    <!-- Form fields for editing -->
-                                                    <div class="mb-3">
-                                                        <div
-                                                            class="grid grid-cols-[1fr_0.1fr_2fr] border-b-2 py-2 border-slate-300 mb-2">
-                                                            <span>pelanggan</span>
-                                                            <span>:</span>
-                                                            <span>{{ $order->user->name }}</span>
-                                                        </div>
-                                                        <div
-                                                            class="grid grid-cols-[1fr_0.1fr_2fr] border-b-2 py-2 border-slate-300 mb-2">
-                                                            <span>Produk</span>
-                                                            <span>:</span>
-                                                            <ul class="list-disc">
-                                                                @foreach ($order->productOrders as $productOrder)
-                                                                    <li class="flex justify-between items-center">
-                                                                        <span>{{ $productOrder->product->name_product }}</span>
-                                                                        <span
-                                                                            class="text-xs text-slate-700">x{{ $productOrder->quantity }}</span>
-                                                                    </li>
-                                                                @endforeach
-                                                            </ul>
-                                                        </div>
-                                                        <div class="border-2 p-2 border-slate-300 mb-2">
-                                                            <span class="text-sm ">Pembayaran</span>
-                                                            <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
-                                                                <span>metode pembayaran</span>
-                                                                <span>:</span>
-                                                                <span>{{ $order->payment->payment_method }}</span>
-                                                                </span>
-                                                            </div>
-                                                            <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
-                                                                <span>status pembayaran</span>
-                                                                <span>:</span>
-                                                                <span>{{ $order->payment->status }}</span>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="border-2 p-2 border-slate-300 mb-2">
-                                                            <span class="text-sm ">Total</span>
-                                                            <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
-                                                                <span>sub total</span>
-                                                                <span>:</span>
-                                                                <span>
-                                                                    <span class="w-5 h-5"></span>
-                                                                    Rp.
-                                                                    {{ number_format($order->sub_total_amount, 0, ',', '.') }}
-                                                                </span>
-                                                            </div>
-                                                            <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
-                                                                <span>ongkos kirim</span>
-                                                                <span>:</span>
-                                                                <span>+ Rp.
-                                                                    {{ number_format($order->postage->ongkir_total_amount, 0, ',', '.') }}</span>
-                                                            </div>
-                                                            <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
-                                                                <span>diskon</span>
-                                                                <span>:</span>
-                                                                <span>- Rp.
-                                                                    {{ $order->promoCode?->discount_amount ? number_format($order->promoCode->discount_amount, 0, ',', '.') : '' }}</span>
-                                                            </div>
-                                                            <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
-                                                                <span>total</span>
-                                                                <span>:</span>
-                                                                <span>Rp.
-                                                                    {{ number_format($order->grand_total_amount, 0, ',', '.') }}
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="border-2 p-2 border-slate-300 mb-2">
-                                                        <span class="text-sm ">Alamat</span>
-                                                        <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
-                                                            <span>alamat</span>
-                                                            <span>:</span>
-                                                            <span>{{ $order->addresses->address }}</span>
-                                                        </div>
-                                                        <div class="grid grid-cols-[1fr_0.1fr_2fr] py-1">
-                                                            <span>no telp</span>
-                                                            <span>:</span>
-                                                            <span>{{ $order->addresses->no_telepon }}</span>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="mb-2 text-right">
-                                                        <span
-                                                            class="text-xs">{{ $order->created_at->translatedFormat('d F Y') }}</span>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">Kembali</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div class="modal fade" id="editOrderModal{{ $order->id }}" tabindex="-1"
                                         aria-labelledby="editOrderModalLabel{{ $order->id }}" aria-hidden="true">
                                         <div class="modal-dialog">
@@ -377,40 +267,37 @@
                                                         aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-
-                                                    <form method="POST"
-                                                        action="{{ route('order.updateStatus', $order->id) }}">
+                                                    <!-- Form Proses -->
+                                                    <form method="POST" action="{{ route('admin.order.updateStatus', $order->id) }}">
                                                         @csrf
                                                         <input type="hidden" name="status" value="processing">
-
+                                                
                                                         @if ($order->status_order == 'pending')
-                                                            <button type="submit" class="btn btn-primary">Proses</button>
+                                                            <button type="submit" class="btn btn-primary" onclick="confirmStatusUpdate(event, 'proses')">Proses</button>
                                                         @endif
                                                     </form>
-
-                                                    <form method="POST"
-                                                        action="{{ route('order.updateStatus', $order->id) }}">
+                                                
+                                                    <!-- Form Kirim -->
+                                                    <form method="POST" action="{{ route('admin.order.updateStatus', $order->id) }}">
                                                         @csrf
                                                         <input type="hidden" name="status" value="shipping">
-
+                                                
                                                         @if ($order->status_order == 'processing')
-                                                            <button type="submit"
-                                                                class="btn btn-secondary">Kirim</button>
+                                                            <button type="submit" class="btn btn-secondary" onclick="confirmStatusUpdate(event, 'kirim')">Kirim</button>
                                                         @endif
                                                     </form>
-
-                                                    <form method="POST"
-                                                        action="{{ route('order.updateStatus', $order->id) }}">
+                                                
+                                                    <!-- Form Selesai -->
+                                                    <form method="POST" action="{{ route('admin.order.updateStatus', $order->id) }}">
                                                         @csrf
                                                         <input type="hidden" name="status" value="completed">
-
+                                                
                                                         @if ($order->status_order == 'shipping')
-                                                            <button type="submit"
-                                                                class="btn btn-success">Selesai</button>
+                                                            <button type="submit" class="btn btn-success" onclick="confirmStatusUpdate(event, 'selesai')">Selesai</button>
                                                         @endif
                                                     </form>
-
                                                 </div>
+                                            
                                             </div>
                                         </div>
                                     </div>
@@ -427,6 +314,58 @@
     <div class="mt-4">
         {{ $orders->links() }}
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+                                                
+    <script>
+        // Fungsi konfirmasi berdasarkan status
+        function confirmStatusUpdate(event, status) {
+            event.preventDefault();  // Mencegah form untuk langsung dikirim
+            const form = event.target.closest('form');  // Ambil form terdekat
+    
+            let title, text;
+            // Menyesuaikan judul dan teks berdasarkan status
+            if (status === 'proses') {
+                title = "Kamu Yakin?";
+                text = "Pesanan akan diproses dan dikemas.";
+            } else if (status === 'kirim') {
+                title = "Kamu Yakin?";
+                text = "Pesanan akan dikirim ke alamat tujuan.";
+            } else if (status === 'selesai') {
+                title = "Kamu Yakin?";
+                text = "Pesanan ini telah selesai dan diterima oleh pelanggan.";
+            }
+    
+            Swal.fire({
+                title: title,
+                text: text,
+                icon: "warning",
+                iconColor: "#334155",
+                width: 400,
+                background: "#fff",
+                showCancelButton: true,
+                confirmButtonColor: "#334155",
+                cancelButtonColor: "#b91c1c",
+                confirmButtonText: "Ya, Lanjutkan!",
+                cancelButtonText: "Batal"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();  // Kirimkan form jika konfirmasi ya
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        iconColor: '#3b82f6', 
+                        title: 'Status berhasil diperbarui!',
+                        showConfirmButton: false,
+                        timer: 1500,
+                        timerProgressBar: true,
+                        background: '#eff6ff',
+                    });
+                }
+            });
+        }
+    </script>
 @endsection
 
 {{-- <table class="table text-nowrap mb-0 align-middle">

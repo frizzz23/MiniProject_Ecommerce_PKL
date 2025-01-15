@@ -26,10 +26,12 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     ]);
     Route::resource('orders', UserOrderController::class)->names([
         'index' => 'user.orders.index',
+        'show' => 'user.orders.show',
         'store' => 'user.orders.store',
         'update' => 'user.orders.update',
         'destroy' => 'user.orders.destroy',
     ]);
+    Route::post('user/order/update-status/{id}', [ UserOrderController::class, 'updateStatus'])->name('user.order.updateStatus');
     Route::resource('addresses', UserAddressController::class)->names([
         'index' => 'user.addresses.index',
         'store' => 'user.addresses.store',

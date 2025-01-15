@@ -9,10 +9,9 @@
         <div class="flex justify-between bg-white border rounded-lg py-4 px-10 ">
             <div class="flex">
                 <a href="{{ url()->previous() }}">
-                    < Kembali
-                </a>
+                    < Kembali </a>
             </div>
-            
+
             <div class="flex">
                 <span
                     class="px-3 py-1 rounded-full text-sm font-semibold 
@@ -25,7 +24,7 @@
                     bg-orange-200 text-orange-600
                 @else 
                     bg-gray-200 text-gray-600 @endif">
-                    {{ ucfirst($order->status_order) }}
+                    {{ ucfirst($order->status_order_label) }}
                 </span>
 
             </div>
@@ -62,11 +61,7 @@
                         @else
                             border-gray-300 text-gray-300 @endif
                         mb-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                        </svg>
+                        <i class="fas fa-shopping-cart"></i>
                     </div>
                     <div class="text-center mt-2">
                         <h4 class="text-sm font-medium">Pesanan Dibuat</h4>
@@ -89,11 +84,7 @@
                         @else
                             border-gray-300 text-gray-300 @endif
                         mb-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                        </svg>
+                        <i class="fas fa-hourglass-half"></i>
                     </div>
                     <div class="text-center mt-2">
                         <h4 class="text-sm font-medium">Menunggu Konfirmasi</h4>
@@ -112,11 +103,7 @@
                         @else
                             border-gray-300 text-gray-300 @endif
                         mb-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                        </svg>
+                        <i class="fas fa-box"></i>
                     </div>
                     <div class="text-center mt-2">
                         <h4 class="text-sm font-medium">Dikemas</h4>
@@ -135,11 +122,7 @@
                         @else
                             border-gray-300 text-gray-300 @endif
                         mb-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
-                        </svg>
+                        <i class="fas fa-truck"></i>
                     </div>
                     <div class="text-center mt-2">
                         <h4 class="text-sm font-medium">Dikirim</h4>
@@ -158,10 +141,7 @@
                         @else
                             border-gray-300 text-gray-300 @endif
                         mb-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                        </svg>
+                        <i class="fas fa-check-circle"></i>
                     </div>
                     <div class="text-center mt-2">
                         <h4 class="text-sm font-medium">Pesanan Selesai</h4>
@@ -199,11 +179,7 @@
                             $order->status_order == 'completed') border-blue-500 text-blue-500
                     @else
                     border-gray-300 text-gray-300 @endif">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                            </svg>
+                            <i class="fas fa-shopping-cart"></i>
                         </div>
                         <div class="flex flex-col">
                             <h3 class="text-black font-medium">Pesanan Dibuat</h3>
@@ -224,11 +200,7 @@
                         $order->status_order == 'completed') border-blue-500 text-blue-500
                 @else
                     border-gray-300 text-gray-300 @endif">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                            </svg>
+                            <i class="fas fa-hourglass-half"></i>
                         </div>
                         <div class="flex flex-col">
                             <h3 class="text-black font-medium">Menunggu Konfirmasi</h3>
@@ -245,11 +217,7 @@
                 @if ($order->status_order == 'processing' || $order->status_order == 'shipping' || $order->status_order == 'completed') border-blue-500 text-blue-500
                 @else
                     border-gray-300 text-gray-300 @endif">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                            </svg>
+                            <i class="fas fa-box"></i>
                         </div>
                         <div class="flex flex-col">
                             <h3 class="text-black font-medium">Dikemas</h3>
@@ -266,11 +234,7 @@
                 @if ($order->status_order == 'shipping' || $order->status_order == 'completed') border-blue-500 text-blue-500
                 @else
                     border-gray-300 text-gray-300 @endif">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
-                            </svg>
+                            <i class="fas fa-truck"></i>
                         </div>
                         <div class="flex flex-col">
                             <h3 class="text-black font-medium">Dikirim</h3>
@@ -287,11 +251,7 @@
                 @if ($order->status_order == 'completed') border-blue-500 text-blue-500
                 @else
                     border-gray-300 text-gray-300 @endif">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
+                            <i class="fas fa-check-circle"></i>
                         </div>
                         <div class="flex flex-col">
                             <h3 class="text-black font-medium">Pesanan Selesai</h3>
@@ -444,24 +404,84 @@
 
                 <!-- Button Pesanan Selesai -->
                 <div class="flex flex-col justify-between items-center md:flex">
-                    <div class="flex w-full">
-                        <a href="#"
-                            class="w-full text-center px-6 py-2 border-2 border-blue-500 text-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition duration-300 ease-in-out">
-                            Pesanan Selesai
-                        </a>
-                    </div>
+                    @if ($order->status_order === 'shipping')
+                        <div class="flex w-full">
+                            <form method="POST" action="{{ route('user.order.updateStatus', $order->id) }}"
+                                class="w-full">
+                                @csrf
+                                <input type="hidden" name="status" value="completed">
+
+                                @if ($order->status_order == 'shipping')
+                                    <button type="submit"
+                                        class="w-full text-center px-6 py-2 border-2 border-blue-500 text-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition duration-300 ease-in-out"
+                                        onclick="confirmStatusUpdate(event, 'selesai')">
+                                        Pesanan Selesai
+                                    </button>
+                                @endif
+                            </form>
+                        </div>
+                    @endif
+
+                    @if ($order->status_order === 'completed')
+                        <div class="flex w-full">
+                            <a href="#"
+                                class="w-full text-center px-6 py-2 border-2 text-white rounded-md bg-blue-500 border-blue-500 hover:bg-blue-700 hover:border-blue-700 transition duration-300 ease-in-out">
+                                Beri Ulasan
+                            </a>
+                        </div>
+                    @endif
                 </div>
-                <div class="flex w-full">
-                    <a href="#"
-                        class="w-full text-center px-6 py-2 border-2 text-white rounded-md bg-blue-500 border-blue-500 hover:bg-blue-700 hover:border-blue-700 transition duration-300 ease-in-out">
-                        Beri Ulasan
-                    </a>
-                </div>
+
             </div>
 
 
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <script>
+        // Fungsi konfirmasi untuk update status
+        function confirmStatusUpdate(event, status) {
+            event.preventDefault(); // Mencegah form untuk langsung dikirim
+            const form = event.target.closest('form'); // Ambil form terdekat
+
+            let title, text;
+            // Menyesuaikan judul dan teks berdasarkan status
+            if (status === 'selesai') {
+                title = "Kamu Yakin?";
+                text = "Pesanan ini akan menandakan bahwa kamu telah menerima barang yang dipesan";
+            }
+
+            Swal.fire({
+                title: title,
+                text: text,
+                icon: "warning",
+                iconColor: "#334155",
+                width: 400,
+                background: "#fff",
+                showCancelButton: true,
+                confirmButtonColor: "#334155",
+                cancelButtonColor: "#b91c1c",
+                confirmButtonText: "Ya, Sudah diterima!",
+                cancelButtonText: "Batal"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit(); // Kirimkan form jika konfirmasi ya
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        iconColor: '#3b82f6',
+                        title: 'Pesanan berhasil ditandai selesai!',
+                        showConfirmButton: false,
+                        timer: 1500,
+                        timerProgressBar: true,
+                        background: '#eff6ff',
+                    });
+                }
+            });
+        }
+    </script>
 @endsection
 
 {{-- <div class="grid md:grid-cols-2 grid-cols-1">

@@ -30,7 +30,7 @@
                                         bg-blue-200 text-blue-600 
                                     @else 
                                         bg-gray-200 text-gray-600 @endif">
-                                {{ ucfirst($order->status_order) }}
+                                {{ ucfirst($order->status_order_label) }}
                             </span>
                         </div>
                     </div>

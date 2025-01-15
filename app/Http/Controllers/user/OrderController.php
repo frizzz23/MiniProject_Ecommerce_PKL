@@ -71,9 +71,33 @@ class OrderController extends Controller
         return redirect()->route('orders.index')->with('success', 'Pesanan berhasil dibuat.');
     }
 
+
+
     /**
      * Show the form for editing the specified order.
      */
+    public function show($id)
+    {
+        // Ambil order beserta relasi terkait
+        $order = Order::with('addresses', 'productOrders.product', 'postage', 'promoCode', 'payment', 'user')
+            ->findOrFail($id);
+
+        // Mapping status ke dalam bahasa Indonesia
+        $statusMapping = [
+            'completed' => 'Selesai',
+            'processing' => 'Dikemas',
+            'pending' => 'Menunggu',
+            'shipping' => 'Dikirim',
+        ];
+
+        // Tambahkan properti baru untuk status dalam bahasa Indonesia
+        $order->status_order_label = $statusMapping[$order->status_order] ?? 'Tidak Diketahui';
+
+        return view('user.orders.show', compact('order'));
+    }
+
+
+
     public function edit(Order $order)
     {
         // Mendapatkan semua pengguna untuk dropdown
@@ -121,5 +145,24 @@ class OrderController extends Controller
         $order->delete();
 
         return redirect()->route('user.orders.index')->with('success', 'Pesanan berhasil dihapus.');
+    }
+    public function updateStatus(Request $request, $orderId)
+    {
+        $order = Order::find($orderId);
+
+        if ($order) {
+            // Periksa apakah status saat ini adalah 'shipping'
+            if ($order->status_order === 'shipping') {
+                $order->status_order = 'completed';
+                $order->completed_at = now(); // Catat waktu selesai
+                $order->save();
+
+                return redirect()->route('user.orders.show',$orderId)->with('success', 'Status berhasil diperbarui menjadi selesai.');
+            }
+
+            return redirect()->back()->with('error', 'Hanya pesanan dalam status "shipping" yang dapat diperbarui ke "completed".');
+        }
+
+        return redirect()->back()->with('error', 'Pesanan tidak ditemukan.');
     }
 }
