@@ -27,22 +27,9 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
                             d="m9 5 7 7-7 7" />
                     </svg>
-                    <a href=""
-                        class="flex justify-center ml-2 items-end gap-1  bg-white shadow-sm text-slate-800  w-auto py-2 px-2 rounded-md">
-                        <span class="font-semibold text-xs"> Akun</span>
-                    </a>
-                </div>
-            </li>
-            <li>
-                <div class="flex items-center">
-                    <svg class=" h-4 w-4 text-gray-400 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                        width="24" height="24" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
-                            d="m9 5 7 7-7 7" />
-                    </svg>
-                    <a href="{{ route('user.carts.index') }}"
+                    <a href="{{ route('page.product') }}"
                         class="flex justify-center ml-2 items-end gap-1  bg-white shadow-sm text-slate-800 w-auto py-2 px-2 rounded-md">
-                        <span class="font-semibold text-xs">Keranjang</span>
+                        <span class="font-semibold text-xs">Produk</span>
                     </a>
                 </div>
             </li>
@@ -164,8 +151,7 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" id="delete_{{ $cart->id }}" class="text-red-500 text-xs"
-                                    onclick="confirmDelete(event, '{{ $cart->id }}', this)"
-                                    disabled>
+                                    onclick="confirmDelete(event, '{{ $cart->id }}', this)" disabled>
                                     Hapus
                                 </button>
 
@@ -190,10 +176,10 @@
                     </p>
                     <p>
                         @if (session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
-@endif
+                            <div class="alert alert-danger">
+                                {{ session('error') }}
+                            </div>
+                        @endif
 
                     </p>
                 </div>
@@ -380,53 +366,55 @@
         }
 
         async function plus(id, max, price, el) {
-    el.disabled = true;
-    const input = document.getElementById(id);
-    const currentQuantity = parseInt(input.value);
-    const stock = parseInt(max);
+            el.disabled = true;
+            const input = document.getElementById(id);
+            const currentQuantity = parseInt(input.value);
+            const stock = parseInt(max);
 
-    if (currentQuantity < stock) {
-        const newQuantity = currentQuantity + 1;
-        if (newQuantity <= stock) {
-            input.value = newQuantity;
-            document.getElementById("total_" + id.split("_")[1]).innerHTML = 'loading..';
-            total.innerHTML = 'loading..';
+            if (currentQuantity < stock) {
+                const newQuantity = currentQuantity + 1;
+                if (newQuantity <= stock) {
+                    input.value = newQuantity;
+                    document.getElementById("total_" + id.split("_")[1]).innerHTML = 'loading..';
+                    total.innerHTML = 'loading..';
 
-            const response = await fetch('/carts/' + id.split("_")[1], {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({
-                    quantity: newQuantity
-                })
-            });
+                    const response = await fetch('/carts/' + id.split("_")[1], {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                                'content')
+                        },
+                        body: JSON.stringify({
+                            quantity: newQuantity
+                        })
+                    });
 
-            // Cek jika respons JSON
-            if (response.ok) {
-                const data = await response.json();
-                input.value = data.quantity;
+                    // Cek jika respons JSON
+                    if (response.ok) {
+                        const data = await response.json();
+                        input.value = data.quantity;
 
-                total_input.value = parseInt(total_input.value) + parseInt(price);
-                const total_input_id = parseInt(document.getElementById("total_input_" + id.split("_")[1]).value) + parseInt(price);
-                document.getElementById("total_input_" + id.split("_")[1]).value = total_input_id
-                document.getElementById("total_" + id.split("_")[1]).innerHTML = formatRupiah(total_input_id);
-                total.innerHTML = formatRupiah(total_input.value);
+                        total_input.value = parseInt(total_input.value) + parseInt(price);
+                        const total_input_id = parseInt(document.getElementById("total_input_" + id.split("_")[1])
+                            .value) + parseInt(price);
+                        document.getElementById("total_input_" + id.split("_")[1]).value = total_input_id
+                        document.getElementById("total_" + id.split("_")[1]).innerHTML = formatRupiah(total_input_id);
+                        total.innerHTML = formatRupiah(total_input.value);
 
+                    } else {
+                        console.error('Server error or invalid response:', response.status);
+                        const text = await response.text();
+                        console.error('Response text:', text);
+                    }
+                } else {
+                    showAlert('error', 'Stok produk sudah habis');
+                }
             } else {
-                console.error('Server error or invalid response:', response.status);
-                const text = await response.text();
-                console.error('Response text:', text);
+                showAlert('error', 'Stok produk sudah habis');
             }
-        } else {
-            showAlert('error', 'Stok produk sudah habis');
+            el.disabled = false;
         }
-    } else {
-        showAlert('error', 'Stok produk sudah habis');
-    }
-    el.disabled = false;
-}
 
         function confirmDelete(event, id) {
             event.preventDefault();

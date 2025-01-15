@@ -205,7 +205,7 @@
                                 <div class="relative">
                                     <input type="number" name="min_price" id="min_price"
                                         class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                        placeholder=" " value="{{ request()->old('min_price', $minPrice ?? 0) }}" >
+                                        placeholder=" " value="{{ request()->old('min_price', $minPrice ?? 0) }}">
                                     <label for="min_price"
                                         class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">
                                         Min Harga
@@ -253,7 +253,8 @@
         <div class="px-5">
             <div class=" flex w-full justify-between gap-5 mb-5 sticky top-0 z-10 bg-white py-3 md:pe-5">
 
-                <div class="py-2 rounded-[20px] hidden gap-4 items-center md:w-auto hidden xl:gap-10 items-center xl:flex">
+                <div
+                    class="py-2 rounded-[20px] hidden gap-4 items-center md:w-auto hidden xl:gap-10 items-center xl:flex">
                     <div class="hidden md:flex gap-10">
                         <a href="{{ route('landing-page') }}"
                             class="text-sm text-gray-800 hover:text-[#5D87FF] hover:font-semibold relative after:content-[''] after:block after:h-[2px] after:w-0 after:bg-[#5D87FF] after:mt-1 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full">
@@ -330,10 +331,14 @@
                             <svg viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
                                 xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" class="w-4 h-4">
                                 <g id="SVGRepo_iconCarrier">
-                                    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                        <g id="Dribbble-Light-Preview" transform="translate(-420.000000, -2159.000000)" fill="#000000">
+                                    <g id="Page-1" stroke="none" stroke-width="1" fill="none"
+                                        fill-rule="evenodd">
+                                        <g id="Dribbble-Light-Preview" transform="translate(-420.000000, -2159.000000)"
+                                            fill="#000000">
                                             <g id="icons" transform="translate(56.000000, 160.000000)">
-                                                <path d="M374,2009 C371.794,2009 370,2007.206 370,2005 C370,2002.794 371.794,2001 374,2001 C376.206,2001 378,2002.794 378,2005 C378,2007.206 376.206,2009 374,2009 M377.758,2009.673 C379.124,2008.574 380,2006.89 380,2005 C380,2001.686 377.314,1999 374,1999 C370.686,1999 368,2001.686 368,2005 C368,2006.89 368.876,2008.574 370.242,2009.673 C366.583,2011.048 364,2014.445 364,2019 L366,2019 C366,2014 369.589,2011 374,2011 C378.411,2011 382,2014 382,2019 L384,2019 C384,2014.445 381.417,2011.048 377.758,2009.673" id="profile-[#1335]"></path>
+                                                <path
+                                                    d="M374,2009 C371.794,2009 370,2007.206 370,2005 C370,2002.794 371.794,2001 374,2001 C376.206,2001 378,2002.794 378,2005 C378,2007.206 376.206,2009 374,2009 M377.758,2009.673 C379.124,2008.574 380,2006.89 380,2005 C380,2001.686 377.314,1999 374,1999 C370.686,1999 368,2001.686 368,2005 C368,2006.89 368.876,2008.574 370.242,2009.673 C366.583,2011.048 364,2014.445 364,2019 L366,2019 C366,2014 369.589,2011 374,2011 C378.411,2011 382,2014 382,2019 L384,2019 C384,2014.445 381.417,2011.048 377.758,2009.673"
+                                                    id="profile-[#1335]"></path>
                                             </g>
                                         </g>
                                     </g>
@@ -342,7 +347,8 @@
                             <!-- Jika pengguna belum login -->
                             <a href="{{ route('login') }}" class="text-sm text-slate-700 hover:text-blue-400">Masuk</a>
                             <span>/</span>
-                            <a href="{{ route('register') }}" class="text-sm text-slate-700 hover:text-blue-400">Daftar</a>
+                            <a href="{{ route('register') }}"
+                                class="text-sm text-slate-700 hover:text-blue-400">Daftar</a>
                         @endguest
                         @auth
                             <div class="relative">
@@ -361,9 +367,11 @@
                                         class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Akun Saya</a>
                                     <a href="{{ route('user.orders.index') }}"
                                         class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Pesanan Saya</a>
-                                    <a href="{{ route('logout') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                                    <a href="{{ route('logout') }}"
+                                        class="block px-4 py-2 text-gray-800 hover:bg-gray-100"
                                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                        class="hidden">
                                         @csrf
                                     </form>
                                 </div>
@@ -395,14 +403,18 @@
 
             </div>
 
-
             <div class="flex justify-between items md:pe-5 mb-5">
-                <marquee behavior="scroll" direction="left" class="text-black bg-blue-100 p-4 rounded-md">
-                    @foreach ($codes as $code)
-                        🎉 Diskon {{ number_format($code->discount_amount, 0, ',', '.') }}
-                        dengan minimal pembelian {{ number_format($code->minimum_purchase, 0, ',', '.') }}! Gunakan kode: {{ $code->code }} |
-                    @endforeach
-                </marquee>
+                @if ($codes->isEmpty()) <!-- Check if $codes is empty -->
+                    <div class="hidden"></div> <!-- Hide the marquee if there are no codes -->
+                @else
+                    <marquee behavior="scroll" direction="left" class="text-black bg-blue-100 p-4 rounded-md">
+                        @foreach ($codes as $code)
+                            🎉 Diskon {{ number_format($code->discount_amount, 0, ',', '.') }}
+                            dengan minimal pembelian {{ number_format($code->minimum_purchase, 0, ',', '.') }}! Gunakan
+                            kode: {{ $code->code }} |
+                        @endforeach
+                    </marquee>
+                @endif
             </div>
 
             <div class="flex justify-between items md:pe-5">
@@ -471,7 +483,8 @@
                         <label for="sort_order" class="block text-sm text-slate-700 mb-1">Urutan Penyortiran</label>
                         <select name="sort_order"
                             class="border border-slate-300
-                            text-sm px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-md" onchange="this.form.submit();" id="sort_order">
+                            text-sm px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-md"
+                            onchange="this.form.submit();" id="sort_order">
                             <option value="">Dibuat</option>
                             <option value="terlama" {{ request('sort_order') == 'terlama' ? 'selected' : '' }}>
                                 Terlama</option>

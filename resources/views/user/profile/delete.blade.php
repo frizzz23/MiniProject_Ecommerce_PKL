@@ -26,27 +26,15 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
                             d="m9 5 7 7-7 7" />
                     </svg>
-                    <a href=""
-                        class="flex justify-center ml-2 items-end gap-1  bg-white shadow-sm text-slate-800  w-auto py-2 px-2 rounded-md">
-                        <span class="font-semibold text-xs"> Akun</span>
-                    </a>
-                </div>
-            </li>
-            <li>
-                <div class="flex items-center">
-                    <svg class=" h-4 w-4 text-gray-400 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                        width="24" height="24" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
-                            d="m9 5 7 7-7 7" />
-                    </svg>
-                    <a href="{{ route('user.profile.delete') }}"
+                    <a href="{{ route('page.product') }}"
                         class="flex justify-center ml-2 items-end gap-1  bg-white shadow-sm text-slate-800 w-auto py-2 px-2 rounded-md">
-                        <span class="font-semibold text-xs">Hapus</span>
+                        <span class="font-semibold text-xs">Produk</span>
                     </a>
                 </div>
             </li>
         </ol>
     </nav>
+    
     <div class="bg-white rounded-lg shadow-sm p-6 mb-8 flex flex-col md:flex-row items-center gap-6 ">
         <div class="flex-shrink-0">
             <img src="https://via.placeholder.com/192x192.png?text=Delete+Account" alt="Delete Account" class="w-48 h-48">
@@ -55,7 +43,8 @@
         <div class="flex-grow">
             <h2 class="text-2xl font-bold text-gray-800 mb-2">Hapus Akun Saya</h2>
             <p class="text-gray-600 mb-4">
-                Setelah akun Anda dihapus, semua sumber daya dan datanya akan dihapus secara permanen. Sebelum menghapus akun
+                Setelah akun Anda dihapus, semua sumber daya dan datanya akan dihapus secara permanen. Sebelum menghapus
+                akun
                 Anda, harap unduh data atau informasi apa pun yang ingin Anda simpan.
             </p>
             <button class="px-6 py-3 bg-red-500 text-white font-semibold rounded-lg shadow hover:bg-red-600 transition-all"
@@ -87,7 +76,8 @@
 
                 <div class="modal-body">
                     <p class="text-gray-600 mb-4">
-                        Setelah akun Anda dihapus, semua sumber daya dan datanya akan dihapus secara permanen. Harap masukkan
+                        Setelah akun Anda dihapus, semua sumber daya dan datanya akan dihapus secara permanen. Harap
+                        masukkan
                         kata sandi Anda untuk mengonfirmasi penghapusan akun.
                     </p>
 
@@ -109,5 +99,4 @@
             </form>
         </div>
     </div>
-    
 @endsection
