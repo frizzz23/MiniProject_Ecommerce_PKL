@@ -33,6 +33,14 @@ class Order extends Model
         'order_code',
     ];
 
+    protected $dates = [
+        'processing_at',
+        'shipping_at',
+        'completed_at',
+        'created_at',
+        'updated_at'
+    ];
+
     protected static function booted()
     {
         static::creating(function ($order) {

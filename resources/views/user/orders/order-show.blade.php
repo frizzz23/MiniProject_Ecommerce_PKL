@@ -7,21 +7,27 @@
     </style>
     <div class="container-fluid mx-5 my-4">
         <div class="flex justify-between bg-white border rounded-lg py-4 px-10 ">
-            <div class="">
-                <button>kembali</button>
+            <div class="flex">
+                <a href="{{ url()->previous() }}">
+                    < Kembali
+                </a>
             </div>
+            
             <div class="flex">
                 <span
                     class="px-3 py-1 rounded-full text-sm font-semibold 
-                    @if ($order->status_order === 'completed') bg-green-200 text-green-600 
-                    @elseif ($order->status_order === 'processing') 
-                        bg-yellow-200 text-yellow-600 
-                    @elseif ($order->status_order === 'pending') 
-                        bg-blue-200 text-blue-600 
-                    @else 
-                        bg-gray-200 text-gray-600 @endif">
+                @if ($order->status_order === 'completed') bg-green-200 text-green-600 
+                @elseif ($order->status_order === 'processing') 
+                    bg-yellow-200 text-yellow-600 
+                @elseif ($order->status_order === 'pending') 
+                    bg-blue-200 text-blue-600 
+                @elseif ($order->status_order === 'shipping') 
+                    bg-orange-200 text-orange-600
+                @else 
+                    bg-gray-200 text-gray-600 @endif">
                     {{ ucfirst($order->status_order) }}
                 </span>
+
             </div>
         </div>
 
@@ -30,15 +36,32 @@
             <div class="hidden md:flex md:flex-row items-center justify-between relative">
                 <!-- Progress Line for Desktop -->
                 <div class="hidden md:block absolute left-0 right-0 top-1/2 h-0.5 bg-gray-200 -translate-y-1/2 ">
-                    <div class="h-[3px] bg-blue-500 w-full"></div>
+                    <div
+                        class="h-[3px] 
+                        @if ($order->status_order == 'pending') w-[45%] bg-blue-500
+                        @elseif($order->status_order == 'processing')
+                            w-[65%] bg-blue-500
+                        @elseif($order->status_order == 'shipping')
+                            w-[85%] bg-blue-500
+                        @elseif($order->status_order == 'completed')
+                            w-full bg-blue-500 @endif
+                    ">
+                    </div>
                 </div>
 
-                <!-- Step 1 -->
+                <!-- Step 1: Pesanan Dibuat -->
                 <div class="flex flex-col items-center relative mb-8 md:mb-0">
                     <div class="md:hidden absolute h-full w-0.5 bg-green-500 top-10 left-1/2 -translate-x-1/2"></div>
-                    <!-- Modifikasi pada elemen ikon -->
                     <div
-                        class="w-12 h-12 rounded-full flex items-center justify-center z-10 border-[3px] border-blue-500 text-blue-500 mb-3">
+                        class="w-12 h-12 rounded-full flex items-center justify-center z-10 border-[3px] 
+                        @if (
+                            $order->status_order == 'pending' ||
+                                $order->status_order == 'processing' ||
+                                $order->status_order == 'shipping' ||
+                                $order->status_order == 'completed') border-blue-500 text-blue-500
+                        @else
+                            border-gray-300 text-gray-300 @endif
+                        mb-3">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -48,16 +71,24 @@
                     <div class="text-center mt-2">
                         <h4 class="text-sm font-medium">Pesanan Dibuat</h4>
                         <p class="text-xs text-gray-500 mt-1">
-                            {{ $order->created_at->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i') }}
+                            {{ $order->created_at? \Carbon\Carbon::parse($order->created_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i'): 'kosong' }}
                         </p>
                     </div>
                 </div>
-                <!-- Step 1 -->
+
+                <!-- Step 2: Menunggu Konfirmasi -->
                 <div class="flex flex-col items-center relative mb-8 md:mb-0">
                     <div class="md:hidden absolute h-full w-0.5 bg-green-500 top-10 left-1/2 -translate-x-1/2"></div>
-                    <!-- Modifikasi pada elemen ikon -->
                     <div
-                        class="w-12 h-12 rounded-full flex items-center justify-center z-10 border-[3px] border-blue-500 text-blue-500 mb-3">
+                        class="w-12 h-12 rounded-full flex items-center justify-center z-10 border-[3px] 
+                        @if (
+                            $order->status_order == 'pending' ||
+                                $order->status_order == 'processing' ||
+                                $order->status_order == 'shipping' ||
+                                $order->status_order == 'completed') border-blue-500 text-blue-500
+                        @else
+                            border-gray-300 text-gray-300 @endif
+                        mb-3">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -65,17 +96,22 @@
                         </svg>
                     </div>
                     <div class="text-center mt-2">
-                        <h4 class="text-sm font-medium tetx-wra">Menunggu Konfirmasi</h4>
-                        <p class="text-xs text-gray-500 mt-1">07-10-2024 12:08</p>
+                        <h4 class="text-sm font-medium">Menunggu Konfirmasi</h4>
+                        <p class="text-xs text-gray-500 mt-1">
+                            {{ $order->created_at? \Carbon\Carbon::parse($order->created_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i'): 'kosong' }}
+                        </p>
                     </div>
                 </div>
 
-
-                <!-- Step 2 -->
+                <!-- Step 3: Dikemas -->
                 <div class="flex flex-col items-center relative mb-8 md:mb-0">
                     <div class="md:hidden absolute h-full w-0.5 bg-green-500 top-10 left-1/2 -translate-x-1/2"></div>
                     <div
-                        class="w-12 h-12 rounded-full flex items-center justify-center z-10 border-[3px] border-blue-500 text-blue-500  mb-3">
+                        class="w-12 h-12 rounded-full flex items-center justify-center z-10 border-[3px] 
+                        @if ($order->status_order == 'processing' || $order->status_order == 'shipping' || $order->status_order == 'completed') border-blue-500 text-blue-500
+                        @else
+                            border-gray-300 text-gray-300 @endif
+                        mb-3">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -84,15 +120,21 @@
                     </div>
                     <div class="text-center mt-2">
                         <h4 class="text-sm font-medium">Dikemas</h4>
-                        <p class="text-xs text-gray-500 mt-1">07-10-2024 12:08</p>
+                        <p class="text-xs text-gray-500 mt-1">
+                            {{ $order->processing_at? \Carbon\Carbon::parse($order->processing_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i'): 'kosong' }}
+                        </p>
                     </div>
                 </div>
 
-                <!-- Step 3 -->
+                <!-- Step 4: Dikirim -->
                 <div class="flex flex-col items-center relative mb-8 md:mb-0">
                     <div class="md:hidden absolute h-full w-0.5 bg-green-500 top-10 left-1/2 -translate-x-1/2"></div>
                     <div
-                        class="w-12 h-12 rounded-full flex items-center justify-center z-10 border-[3px] border-blue-500 text-blue-500  mb-3">
+                        class="w-12 h-12 rounded-full flex items-center justify-center z-10 border-[3px] 
+                        @if ($order->status_order == 'shipping' || $order->status_order == 'completed') border-blue-500 text-blue-500
+                        @else
+                            border-gray-300 text-gray-300 @endif
+                        mb-3">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -101,15 +143,21 @@
                     </div>
                     <div class="text-center mt-2">
                         <h4 class="text-sm font-medium">Dikirim</h4>
-                        <p class="text-xs text-gray-500 mt-1">07-10-2024 18:16</p>
+                        <p class="text-xs text-gray-500 mt-1">
+                            {{ $order->shipping_at? \Carbon\Carbon::parse($order->shipping_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i'): 'kosong' }}
+                        </p>
                     </div>
                 </div>
 
-                <!-- Step 4 -->
+                <!-- Step 5: Pesanan Selesai -->
                 <div class="flex flex-col items-center relative mb-8 md:mb-0">
                     <div class="md:hidden absolute h-full w-0.5 bg-green-500 top-10 left-1/2 -translate-x-1/2"></div>
                     <div
-                        class="w-12 h-12 rounded-full flex items-center justify-center z-10 border-[3px] border-blue-500 text-blue-500  mb-3">
+                        class="w-12 h-12 rounded-full flex items-center justify-center z-10 border-[3px] 
+                        @if ($order->status_order == 'completed') border-blue-500 text-blue-500
+                        @else
+                            border-gray-300 text-gray-300 @endif
+                        mb-3">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
@@ -117,7 +165,9 @@
                     </div>
                     <div class="text-center mt-2">
                         <h4 class="text-sm font-medium">Pesanan Selesai</h4>
-                        <p class="text-xs text-gray-500 mt-1">08-10-2024 19:32</p>
+                        <p class="text-xs text-gray-500 mt-1">
+                            {{ $order->completed_at? \Carbon\Carbon::parse($order->completed_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i'): 'kosong' }}
+                        </p>
                     </div>
                 </div>
             </div>
@@ -125,89 +175,129 @@
             <!-- Mobile Version (hidden on desktop) -->
             <div class="md:hidden relative">
                 <!-- Vertical line -->
-                <div class="absolute left-6 top-6 bottom-0 w-[3px] bg-blue-500"></div>
+                <div class="absolute left-6 top-6 bottom-0 w-[3px] bg-gray-200">
+                    <!-- Dynamic progress line -->
+                    <div
+                        class="w-full bg-blue-500
+                        @if ($order->status_order == 'pending') h-[30%]
+                        @elseif($order->status_order == 'processing') h-[50%]
+                        @elseif($order->status_order == 'shipping') h-[75%]
+                        @elseif($order->status_order == 'completed') h-full @endif">
+                    </div>
+                </div>
 
                 <!-- Timeline items -->
                 <div class="space-y-8">
-                    <!-- Item 1 -->
+                    <!-- Pesanan Dibuat -->
                     <div class="relative flex items-center gap-4">
                         <div
-                            class="flex h-12 w-12 items-center justify-center rounded-full border-[3px] bg-gray-100 border-blue-500 text-blue-500">
+                            class="flex h-12 w-12 items-center justify-center rounded-full border-[3px] bg-gray-100
+                    @if (
+                        $order->status_order == 'pending' ||
+                            $order->status_order == 'processing' ||
+                            $order->status_order == 'shipping' ||
+                            $order->status_order == 'completed') border-blue-500 text-blue-500
+                    @else
+                    border-gray-300 text-gray-300 @endif">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                             </svg>
                         </div>
                         <div class="flex flex-col">
                             <h3 class="text-black font-medium">Pesanan Dibuat</h3>
-                            <p class="text-slate-400 text-sm">Tomorrow 24 November 2023</p>
+                            <p class="text-slate-400 text-sm">
+                                {{ $order->created_at? \Carbon\Carbon::parse($order->created_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i'): 'kosong' }}
+                            </p>
                         </div>
                     </div>
+
+                    <!-- Menunggu Konfirmasi -->
                     <div class="relative flex items-center gap-4">
                         <div
-                            class="flex h-12 w-12 items-center justify-center rounded-full border-[3px] bg-gray-100 border-blue-500 text-blue-500">
+                            class="flex h-12 w-12 items-center justify-center rounded-full border-[3px] bg-gray-100
+                @if (
+                    $order->status_order == 'pending' ||
+                        $order->status_order == 'processing' ||
+                        $order->status_order == 'shipping' ||
+                        $order->status_order == 'completed') border-blue-500 text-blue-500
+                @else
+                    border-gray-300 text-gray-300 @endif">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                             </svg>
                         </div>
                         <div class="flex flex-col">
                             <h3 class="text-black font-medium">Menunggu Konfirmasi</h3>
-                            <p class="text-slate-400 text-sm">Tomorrow 24 November 2023</p>
+                            <p class="text-slate-400 text-sm">
+                                {{ $order->created_at? \Carbon\Carbon::parse($order->created_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i'): 'kosong' }}
+                            </p>
                         </div>
                     </div>
+
+                    <!-- Dikemas -->
                     <div class="relative flex items-center gap-4">
                         <div
-                            class="flex h-12 w-12 items-center justify-center rounded-full border-[3px] bg-gray-100 border-blue-500 text-blue-500">
+                            class="flex h-12 w-12 items-center justify-center rounded-full border-[3px] bg-gray-100
+                @if ($order->status_order == 'processing' || $order->status_order == 'shipping' || $order->status_order == 'completed') border-blue-500 text-blue-500
+                @else
+                    border-gray-300 text-gray-300 @endif">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                             </svg>
                         </div>
                         <div class="flex flex-col">
                             <h3 class="text-black font-medium">Dikemas</h3>
-                            <p class="text-slate-400 text-sm">Tomorrow 24 November 2023</p>
+                            <p class="text-slate-400 text-sm">
+                                {{ $order->processing_at? \Carbon\Carbon::parse($order->processing_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i'): 'kosong' }}
+                            </p>
                         </div>
                     </div>
+
+                    <!-- Dikirim -->
                     <div class="relative flex items-center gap-4">
                         <div
-                            class="flex h-12 w-12 items-center justify-center rounded-full border-[3px] bg-gray-100 border-blue-500 text-blue-500">
+                            class="flex h-12 w-12 items-center justify-center rounded-full border-[3px] bg-gray-100
+                @if ($order->status_order == 'shipping' || $order->status_order == 'completed') border-blue-500 text-blue-500
+                @else
+                    border-gray-300 text-gray-300 @endif">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
                             </svg>
                         </div>
                         <div class="flex flex-col">
                             <h3 class="text-black font-medium">Dikirim</h3>
-                            <p class="text-slate-400 text-sm">Tomorrow 24 November 2023</p>
+                            <p class="text-slate-400 text-sm">
+                                {{ $order->shipping_at? \Carbon\Carbon::parse($order->shipping_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i'): 'kosong' }}
+                            </p>
                         </div>
                     </div>
+
+                    <!-- Pesanan Selesai -->
                     <div class="relative flex items-center gap-4">
                         <div
-                            class="flex h-12 w-12 items-center justify-center rounded-full border-[3px] bg-gray-100 border-blue-500 text-blue-500">
+                            class="flex h-12 w-12 items-center justify-center rounded-full border-[3px] bg-gray-100
+                @if ($order->status_order == 'completed') border-blue-500 text-blue-500
+                @else
+                    border-gray-300 text-gray-300 @endif">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    d="M5 13l4 4L19 7" />
                             </svg>
                         </div>
                         <div class="flex flex-col">
                             <h3 class="text-black font-medium">Pesanan Selesai</h3>
-                            <p class="text-slate-400 text-sm">Tomorrow 24 November 2023</p>
+                            <p class="text-slate-400 text-sm">
+                                {{ $order->completed_at? \Carbon\Carbon::parse($order->completed_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i'): 'kosong' }}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -290,7 +380,7 @@
                 <!-- Baris kedua dengan 1 card 3 : Data Produk -->
 
                 <div class="bg-white border border-gray-300 rounded-lg p-4">
-                    <h3 class="text-gray-800 font-semibold">Produk yang Dipesan</h3>
+                    <h3 class="font-semibold text-lg mb-4 bg-blue-500 text-white p-3 rounded-md">Produk yang dipesan</h3>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         @foreach ($order->productOrders as $productOrder)
                             <div class="flex items-center justify-start gap-1 mx-2">
@@ -317,9 +407,9 @@
             </div>
 
             <!-- Pembungkus 2 (33% lebar) -->
-            <div class="grid grid-cols-1 gap-4 auto-rows-min">
+            <div class="grid grid-cols-1 gap-4 ">
                 <!-- Card 4: Data Penghitungan Harga -->
-                <div class="p-3 border rounded-lg shadow-lg bg-white">
+                <div class="p-3 border rounded-lg border-gray-300 bg-white">
                     <h3 class="font-semibold text-lg mb-4 bg-blue-500 text-white p-3 rounded-md">Total Harga</h3>
                     <table class="min-w-full table-auto border-collapse">
                         <tbody>
@@ -356,9 +446,9 @@
                 <div class="flex flex-col justify-between items-center md:flex">
                     <div class="flex w-full">
                         <a href="#"
-                        class="w-full text-center px-6 py-2 border-2 border-blue-500 text-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition duration-300 ease-in-out">
-                        Pesanan Selesai
-                    </a>
+                            class="w-full text-center px-6 py-2 border-2 border-blue-500 text-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition duration-300 ease-in-out">
+                            Pesanan Selesai
+                        </a>
                     </div>
                 </div>
                 <div class="flex w-full">
@@ -368,7 +458,7 @@
                     </a>
                 </div>
             </div>
-            
+
 
         </div>
     </div>

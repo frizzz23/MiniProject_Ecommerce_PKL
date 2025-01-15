@@ -125,18 +125,41 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy( $id)
+    public function destroy($id)
     {
         $order = Order::findOrFail($id);
 
         $order->productOrders()->delete();
         $order->payment()->delete(); // Misalnya jika relasi bernama payment
-        
+
         // Hapus data order
         $order->delete();
-        
+
         // Redirect dengan pesan sukses
         return redirect()->route('admin.orders.index')->with('success', 'Order berhasil dihapus beserta data yang terhubung.');
-        
+    }
+    public function updateStatus(Request $request, $orderId)
+    {
+        $order = Order::find($orderId);
+
+        if ($order) {
+            // Pastikan status belum diupdate lebih dari sekali dan sesuai urutannya
+            if ($order->status_order == 'pending' && $request->status == 'processing') {
+                $order->status_order = 'processing';
+                $order->processing_at = now(); // Waktu proses
+            } elseif ($order->status_order == 'processing' && $request->status == 'shipping') {
+                $order->status_order = 'shipping';
+                $order->shipping_at = now(); // Waktu pengiriman
+            } elseif ($order->status_order == 'shipping' && $request->status == 'completed') {
+                $order->status_order = 'completed';
+                $order->completed_at = now(); // Waktu selesai
+            } else {
+                return redirect()->back()->with('error', 'Status sudah diperbarui atau tidak valid.');
+            }
+
+            $order->save();
+        }
+
+        return redirect()->route('admin.orders.index');
     }
 }
