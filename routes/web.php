@@ -38,7 +38,7 @@ Route::get('/about', AboutPageController::class)->name('about-page');
 Route::get('/contact', ContactPageController::class)->name('contact-page');
 Route::get('/FAQ', [FAQPageController::class, 'index'])->name('faq-page');
 
-Route::get('/order-show', OrderShowController::class)->name('order-show');
+
 
 
 Route::fallback(function () {

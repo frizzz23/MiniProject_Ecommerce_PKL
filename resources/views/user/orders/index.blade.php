@@ -66,13 +66,22 @@
                             'border-b-2 border-transparent text-gray-700': openTab !== 2
                         }"
                         class="py-2 px-4 outline-none transition-all duration-300">
-                        Proses
+                        Dikemas
                     </button>
                     <button x-on:click="openTab = 3"
                         :class="{
                             'border-b-2 border-blue-600 text-blue-700': openTab ===
                                 3,
                             'border-b-2 border-transparent text-gray-700': openTab !== 3
+                        }"
+                        class="py-2 px-4 outline-none transition-all duration-300">
+                        Dikirim
+                    </button>
+                    <button x-on:click="openTab = 4"
+                        :class="{
+                            'border-b-2 border-blue-600 text-blue-700': openTab ===
+                                4,
+                            'border-b-2 border-transparent text-gray-700': openTab !== 4
                         }"
                         class="py-2 px-4 outline-none transition-all duration-300">
                         Selesai
@@ -157,7 +166,7 @@
                                 <div class="flex justify-between items-center px-3">
                                     <div class="flex justify-center items-center gap-2 text-center">
                                         <!-- Tombol Detail -->
-                                        <a href="{{ route('order-show', ['order_id' => $order->id]) }}"
+                                        <a href="{{ route('user.orders.show', $order->id) }}"
                                             class="bg-blue-700 text-white rounded-lg px-3 py-2 text-sm">Detail</a>
 
                                         <!-- Informasi Produk Lainnya -->
@@ -177,9 +186,11 @@
                             </div>
 
                         @empty
-                            <div class="bg-white px-3 rounded-md w-full">
-                                <p class="text-slate-700 text-sm font-semibold text-center py-10"> Tidak ada pesanan yang
-                                    sedang menunggu.</p>
+                            <div
+                                class="bg-white shadow-sm rounded-lg p-4 text-center flex flex-col justify-center items-center">
+                                <img src="{{ asset('img/empty-data.png') }}" alt="Produk Tidak Ditemukan"
+                                    class="w-64 h-64">
+                                <p class="text-lg text-gray-600 font-medium">Tidak ada pesanan yang sedang menunggu</p>
                             </div>
                         @endforelse
                     </div>
@@ -265,7 +276,7 @@
                                 <div class="flex justify-between items-center px-3">
                                     <div class="flex justify-center items-center gap-2 text-center">
                                         <!-- Tombol Detail -->
-                                        <a href="{{ route('order-show', ['order_id' => $order->id]) }}"
+                                        <a href="{{ route('user.orders.show', $order->id) }}"
                                             class="bg-blue-700 text-white rounded-lg px-3 py-2 text-sm">Detail</a>
 
                                         <!-- Informasi Produk Lainnya -->
@@ -284,16 +295,124 @@
                                 </div>
                             </div>
                         @empty
-                            <div class="bg-white px-3 rounded-md w-full">
-                                <p class="text-slate-700 text-sm font-semibold text-center py-10">Tidak ada pesanan yang
-                                    sedang diproses.</p>
+                            <div
+                                class="bg-white shadow-sm rounded-lg p-4 text-center flex flex-col justify-center items-center">
+                                <img src="{{ asset('img/empty-data.png') }}" alt="Produk Tidak Ditemukan"
+                                    class="w-64 h-64">
+                                <p class="text-lg text-gray-600 font-medium">Tidak ada pesanan yang sedang dikemas</p>
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
+                <!-- Tab 3 - Dikirim -->
+                <div x-show="openTab === 3">
+                    <div class="space-y-6">
+                        @forelse ($userOrders->where('status_order', 'shipping')->sortByDesc('created_at') as $order)
+                            <div class="bg-white shadow-sm rounded-lg p-6 flex flex-col">
+                                <!-- Baris pertama (tanggal pesanan) -->
+                                <div class="flex justify-between text-sm font-medium text-slate-600 px-3">
+                                    <span class="block">{{ $order->created_at->translatedFormat('d F Y') }}</span>
+                                </div>
+
+                                <hr class="w-full mx-auto border-2 border-gray-500 my-4">
+
+                                @if ($order->productOrders->count() > 0)
+                                    <div class="flex justify-between items-center">
+                                        <!-- Produk Pertama -->
+                                        <div class="flex gap-2">
+                                            <div
+                                                class="w-20 h-20 bg-cover bg-center overflow-hidden flex justify-center items-center rounded-md border border-slate-300 shadow-sm">
+                                                @if ($order->productOrders->first()->product->image_product)
+                                                    <img src="{{ asset('storage/' . $order->productOrders->first()->product->image_product) }}"
+                                                        alt="{{ $order->productOrders->first()->product->name_product }}"
+                                                        class="object-contain" />
+                                                @else
+                                                    <img src="{{ asset('img/laptop.jpg') }}" alt="Default"
+                                                        class="object-contain" />
+                                                @endif
+                                            </div>
+                                            <div class="flex flex-col">
+                                                <span
+                                                    class="font-semibold text-slate-800">{{ $order->productOrders->first()->product->name_product }}</span>
+                                                <span
+                                                    class="text-xs text-slate-500">x{{ $order->productOrders->first()->quantity }}</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Perhitungan Harga -->
+                                        <div class="text-slate-700 text-sm">
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class=" text-right">Subtotal Produk</td>
+                                                        <td class=" px-2 text-center">:</td>
+                                                        <td class="text-left">Rp.
+                                                            {{ number_format($order->sub_total_amount, 0, ',', '.') }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class=" text-right">Pengiriman</td>
+                                                        <td class=" px-2 text-center">:</td>
+                                                        <td class="text-left">Rp.
+                                                            {{ number_format($order->postage->ongkir_total_amount, 0, ',', '.') }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class=" text-right">Diskon</td>
+                                                        <td class=" px-2 text-center">:</td>
+                                                        <td class="text-left">Rp.
+                                                            {{ number_format($order->promoCode?->discount_amount, 0, ',', '.') }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class=" text-right font-bold">Total</td>
+                                                        <td class=" px-2 text-center font-bold">:</td>
+                                                        <td class="text-left font-bold">Rp.
+                                                            {{ number_format($order->grand_total_amount, 0, ',', '.') }}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                @endif
+
+                                <hr class="w-full mx-auto border-2 border-gray-500 my-4">
+
+                                <!-- Baris ketiga (total harga, tombol detail, dan produk lainnya) -->
+                                <div class="flex justify-between items-center px-3">
+                                    <div class="flex justify-center items-center gap-2 text-center">
+                                        <!-- Tombol Detail -->
+                                        <a href="{{ route('user.orders.show', $order->id) }}"
+                                            class="bg-blue-700 text-white rounded-lg px-3 py-2 text-sm">Detail</a>
+
+                                        <!-- Informasi Produk Lainnya -->
+                                        @if ($order->productOrders->count() > 1)
+                                            <div class="text-sm text-slate-600">
+                                                {{ $order->productOrders->count() - 1 }} produk lainnya
+                                            </div>
+                                        @endif
+                                    </div>
+
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-slate-700 text-lg font-semibold">Total:</span>
+                                        <span class="text-lg text-[#5D87FF] font-semibold">Rp.
+                                            {{ number_format($order->grand_total_amount, 0, ',', '.') }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        @empty
+                            <div
+                                class="bg-white shadow-sm rounded-lg p-4 text-center flex flex-col justify-center items-center">
+                                <img src="{{ asset('img/empty-data.png') }}" alt="Produk Tidak Ditemukan"
+                                    class="w-64 h-64">
+                                <p class="text-lg text-gray-600 font-medium">Tidak ada pesanan yang sedang dikirim</p>
                             </div>
                         @endforelse
                     </div>
                 </div>
 
-                <!-- Tab 3 - Selesai -->
-                <div x-show="openTab === 3">
+                <!-- Tab 4 - Selesai -->
+                <div x-show="openTab === 4">
                     <div class="space-y-6">
                         @forelse ($userOrders->where('status_order', 'completed')->sortByDesc('created_at') as $order)
                             <div class="bg-white shadow-sm rounded-lg p-6 flex flex-col">
@@ -370,7 +489,7 @@
                                 <div class="flex justify-between items-center px-3">
                                     <div class="flex justify-center items-center gap-2 text-center">
                                         <!-- Tombol Detail -->
-                                        <a href="{{ route('order-show', ['order_id' => $order->id]) }}"
+                                        <a href="{{ route('user.orders.show', $order->id) }}"
                                             class="bg-blue-700 text-white rounded-lg px-3 py-2 text-sm">Detail</a>
 
                                         <!-- Informasi Produk Lainnya -->
@@ -389,9 +508,11 @@
                                 </div>
                             </div>
                         @empty
-                            <div class="bg-white px-3 rounded-md w-full">
-                                <p class="text-slate-700 text-sm font-semibold text-center py-10">Tidak ada pesanan yang
-                                    sudah selesai.</p>
+                            <div
+                                class="bg-white shadow-sm rounded-lg p-4 text-center flex flex-col justify-center items-center">
+                                <img src="{{ asset('img/empty-data.png') }}" alt="Produk Tidak Ditemukan"
+                                    class="w-64 h-64">
+                                <p class="text-lg text-gray-600 font-medium">Tidak ada pesanan yang selesai</p>
                             </div>
                         @endforelse
                     </div>

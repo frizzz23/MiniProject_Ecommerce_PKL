@@ -44,9 +44,24 @@ class OrderController extends Controller
             })
             ->latest() // Mengurutkan berdasarkan yang terbaru
             ->paginate(10);  // Added pagination to limit results per page
+            
+        $statusMapping = [
+            'completed' => 'Selesai',
+            'processing' => 'Dikemas',
+            'pending' => 'Menunggu',
+            'shipping' => 'Dikirim',
+        ];
+
+        // Mengakses koleksi dengan menggunakan properti items()
+        $orders->getCollection()->transform(function ($order) use ($statusMapping) {
+            $order->status_order_label = $statusMapping[$order->status_order] ?? 'Tidak Diketahui';
+            return $order;
+        });
 
         // Mengambil semua produk yang tersedia untuk digunakan dalam form filter jika diperlukan
         $products = Product::all();
+        // Mapping status ke dalam bahasa Indonesia
+
 
         // Mengembalikan tampilan dengan data orders dan products
         return view('admin.orders.index', compact('orders', 'products', 'unreadNotifications'));
@@ -83,6 +98,17 @@ class OrderController extends Controller
     {
         // Fetch the specific order with related data
         $order = Order::with('user', 'productOrders.product', 'addresses', 'postage', 'promoCode', 'payment',)->findOrFail($id);
+
+        // Mapping status ke dalam bahasa Indonesia
+        $statusMapping = [
+            'completed' => 'Selesai',
+            'processing' => 'Dikemas',
+            'pending' => 'Menunggu',
+            'shipping' => 'Dikirim',
+        ];
+
+        // Tambahkan properti baru untuk status dalam bahasa Indonesia
+        $order->status_order_label = $statusMapping[$order->status_order] ?? 'Tidak Diketahui';
 
         // Fetch all products (this is fine if you want all products to display)
         $products = Product::all();
