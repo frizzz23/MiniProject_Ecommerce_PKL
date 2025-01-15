@@ -376,7 +376,8 @@
                             <button onclick="addToCart({{ $product->id }}, this)" type="button"
                                 class="py-3 px-4 bg-blue-500 flex justify-center items-center rounded-sm text-white text-sm gap-2">
                                 ADD TO CART
-                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                    class="w-5 h-5">
                                     <path
                                         d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H19"
                                         stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
@@ -399,7 +400,8 @@
                             <a href="{{ route('login') }}"
                                 class="py-3 px-4 bg-blue-500 flex justify-center items-center rounded-sm text-white text-sm gap-2">
                                 ADD TO CART
-                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                    class="w-5 h-5">
                                     <path
                                         d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H19"
                                         stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
@@ -439,47 +441,46 @@
                             Reviews
                         </h2>
                     </div>
-                    @if ($order && !$existingReview)
-                        <!-- Formulir Review hanya muncul jika order ada dan user belum memberikan review -->
-                        <form action="{{ route('addReview') }}" method="POST">
-                            @csrf <!-- Tambahkan CSRF token untuk keamanan -->
+                    @if ($allowedReviews->isNotEmpty())
+                        @foreach ($allowedReviews as $allowedReview)
+                            <div class="mb-6 p-4 bg-white rounded-lg shadow">
+                                <form action="{{ route('addReview') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="order_id" value="{{ $allowedReview['order']->id }}">
+                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
 
-                            <!-- Pilih Bintang -->
-                            <div class="mb-5 flex gap-1" id="star-rating">
-                                @for ($i = 1; $i <= 5; $i++)
-                                    <label for="star_{{ $i }}">
-                                        <input type="radio" name="rating" id="star_{{ $i }}"
-                                            value="{{ $i }}" class="hidden" required />
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                            class="w-5 h-5 star-icon text-gray-300" data-star="{{ $i }}"
-                                            viewBox="0 0 24 24" stroke="none">
-                                            <path
-                                                d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
-                                            </path>
-                                        </svg>
-                                    </label>
-                                @endfor
+                                    <!-- Rating stars -->
+                                    <div class="mb-5 flex gap-1" id="star-rating">
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <label for="star_{{ $i }}">
+                                                <input type="radio" name="rating" id="star_{{ $i }}"
+                                                    value="{{ $i }}" class="hidden" required />
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                    class="w-5 h-5 star-icon text-gray-300"
+                                                    data-star="{{ $i }}" viewBox="0 0 24 24"
+                                                    stroke="none">
+                                                    <path
+                                                        d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
+                                                    </path>
+                                                </svg>
+                                            </label>
+                                        @endfor
+                                    </div>
+
+                                    <!-- Comment textarea -->
+                                    <div class="mb-4">
+                                        <textarea name="comment" rows="4" required
+                                            class="w-full px-3 py-2 text-sm text-gray-700 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            placeholder="Tulis review Anda..."></textarea>
+                                    </div>
+
+                                    <button type="submit"
+                                        class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        Kirim Review
+                                    </button>
+                                </form>
                             </div>
-
-                            <!-- Komentar -->
-                            <div class="py-2 px-4 mb-3 bg-white rounded-lg border border-gray-200">
-                                <label for="comment" class="sr-only">Your comment</label>
-                                <textarea id="comment" name="comment" rows="6" required
-                                    class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none"
-                                    placeholder="Write a comment..."></textarea>
-                            </div>
-
-                            <!-- ID Produk -->
-                            <input type="hidden" name="product_id" value="{{ $product->id }}">
-
-                            <!-- Kirim -->
-                            <div class="mb-3">
-                                <button type="submit"
-                                    class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300">
-                                    Send
-                                </button>
-                            </div>
-                        </form>
+                        @endforeach
                     @endif
 
                     {{-- <form action="{{ route('addReview') }}" method="POST">
