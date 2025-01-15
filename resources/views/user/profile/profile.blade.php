@@ -2,7 +2,7 @@
 
 @section('main')
     <nav class="flex mb-2" aria-label="Breadcrumb">
-        <ol class="flex items-center  space-x-1 md:space-x-2 rtl:space-x-reverse ml-[-30px]">
+        <ol class="flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse ml-[-30px]">
             <li class="flex items-center">
                 <a href="{{ route('landing-page') }}"
                     class="flex justify-center  items-end gap-1  bg-white shadow-sm text-slate-800 w-auto py-1.5 px-2 rounded-md">
@@ -26,27 +26,15 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
                             d="m9 5 7 7-7 7" />
                     </svg>
-                    <a href=""
-                        class="flex justify-center ml-2 items-end gap-1  bg-white shadow-sm text-slate-800  w-auto py-2 px-2 rounded-md">
-                        <span class="font-semibold text-xs"> Akun</span>
-                    </a>
-                </div>
-            </li>
-            <li>
-                <div class="flex items-center">
-                    <svg class=" h-4 w-4 text-gray-400 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                        width="24" height="24" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
-                            d="m9 5 7 7-7 7" />
-                    </svg>
-                    <a href="{{ route('user.profile.profile') }}"
+                    <a href="{{ route('page.product') }}"
                         class="flex justify-center ml-2 items-end gap-1  bg-white shadow-sm text-slate-800 w-auto py-2 px-2 rounded-md">
-                        <span class="font-semibold text-xs">Profil</span>
+                        <span class="font-semibold text-xs">Produk</span>
                     </a>
                 </div>
             </li>
         </ol>
     </nav>
+    
     <div class="grid grid-cols-1 max-sm:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6 ">
         <div class="bg-white p-4 rounded-lg text-center shadow-sm w-full">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -85,7 +73,7 @@
             <p class="text-2xl font-bold text-gray-900">{{ $totalReviews }}</p>
         </div>
     </div>
-    
+
     <div class="flex flex-col justify-center items-start bg-white py-3 px-4 rounded-lg mb-1 shadow-sm">
         <h2 class=" text-xl font-semibold text-gray-800 ">Profil Saya </h2>
         <p class="text-muted small">
@@ -105,8 +93,8 @@
                     <div class="mb-3">
                         <label for="name" class="form-label">{{ __('Name') }}</label>
                         <input type="text" id="name" name="name"
-                            class="form-control @error('name') is-invalid @enderror"
-                            value="{{ old('name', $user->name) }}" required autofocus autocomplete="name">
+                            class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $user->name) }}"
+                            required autofocus autocomplete="name">
                         @error('name')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
