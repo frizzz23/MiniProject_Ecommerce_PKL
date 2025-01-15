@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,9 +18,16 @@ return new class extends Migration
             $table->foreignId('postage_id')->constrained('postages');
             $table->decimal('sub_total_amount', 15, 2);
             $table->decimal('grand_total_amount', 15, 2);
-            $table->enum('status_order', ['pending', 'processing', 'completed'])->default('pending');
+            $table->enum('status_order', ['pending', 'processing', 'shipping', 'completed'])->default('pending');
             $table->string('snap_token')->nullable();
-            $table->timestamps();
+            
+            // Kolom untuk mencatat waktu perubahan status
+            $table->timestamp('processing_at')->nullable();
+            $table->timestamp('shipping_at')->nullable();
+            $table->timestamp('completed_at')->nullable();
+
+            // Kolom default created_at dan updated_at
+            $table->timestamps(); 
         });
     }
 

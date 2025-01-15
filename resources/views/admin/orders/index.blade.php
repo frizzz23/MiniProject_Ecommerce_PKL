@@ -61,13 +61,16 @@
                                         class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
                                         onchange="this.form.submit()">
                                         <option value="">Status</option>
-                                        <option value="pending" {{ request('status_order') == 'pending' ? 'selected' : '' }}>
+                                        <option value="pending"
+                                            {{ request('status_order') == 'pending' ? 'selected' : '' }}>
                                             Pending
                                         </option>
-                                        <option value="processing" {{ request('status_order') == 'processing' ? 'selected' : '' }}>
+                                        <option value="processing"
+                                            {{ request('status_order') == 'processing' ? 'selected' : '' }}>
                                             Processing
                                         </option>
-                                        <option value="completed" {{ request('status_order') == 'completed' ? 'selected' : '' }}>
+                                        <option value="completed"
+                                            {{ request('status_order') == 'completed' ? 'selected' : '' }}>
                                             Completed
                                         </option>
                                     </select>
@@ -77,8 +80,10 @@
                                         class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
                                         onchange="this.form.submit()">
                                         <option value="">Tanggal</option>
-                                        <option value="asc" {{ request('created_at') == 'asc' ? 'selected' : '' }}>Lama</option>
-                                        <option value="desc" {{ request('created_at') == 'desc' ? 'selected' : '' }}>Terbaru</option>
+                                        <option value="asc" {{ request('created_at') == 'asc' ? 'selected' : '' }}>Lama
+                                        </option>
+                                        <option value="desc" {{ request('created_at') == 'desc' ? 'selected' : '' }}>
+                                            Terbaru</option>
                                     </select>
                                 </div>
                             </div>
@@ -112,7 +117,8 @@
                                                     @foreach ($order->productOrders->take(2) as $productOrder)
                                                         <li class="flex justify-between items-center">
                                                             <span>{{ $productOrder->product->name_product }}</span>
-                                                            <span class="text-xs text-slate-700">x{{ $productOrder->quantity }}</span>
+                                                            <span
+                                                                class="text-xs text-slate-700">x{{ $productOrder->quantity }}</span>
                                                         </li>
                                                     @endforeach
                                                     <span class="flex justify-center text-2xl font-bold">...</span>
@@ -122,7 +128,8 @@
                                                     @foreach ($order->productOrders as $productOrder)
                                                         <li class="flex justify-between items-center">
                                                             <span>{{ $productOrder->product->name_product }}</span>
-                                                            <span class="text-xs text-slate-700">x{{ $productOrder->quantity }}</span>
+                                                            <span
+                                                                class="text-xs text-slate-700">x{{ $productOrder->quantity }}</span>
                                                         </li>
                                                     @endforeach
                                                 </ul>
@@ -134,21 +141,21 @@
                                         </td>
                                         <td class="px-4 py-2">
                                             <div class="d-flex align-items-center gap-2">
-                                                <span 
+                                                <span
                                                     class="px-3 py-1 rounded-full text-sm font-semibold 
-                                                        @if ($order->status_order === 'completed') 
-                                                            bg-green-200 text-green-600 
+                                                        @if ($order->status_order === 'completed') bg-green-200 text-green-600 
                                                         @elseif ($order->status_order === 'processing') 
                                                             bg-yellow-200 text-yellow-600 
                                                         @elseif ($order->status_order === 'pending') 
                                                             bg-blue-200 text-blue-600 
+                                                        @elseif ($order->status_order === 'shipping') 
+                                                            bg-orange-200 text-orange-600
                                                         @else 
-                                                            bg-gray-200 text-gray-600 
-                                                        @endif">
+                                                            bg-gray-200 text-gray-600 @endif">
                                                     {{ ucfirst($order->status_order) }}
                                                 </span>
                                             </div>
-                                            
+
                                         </td>
                                         <td class="px-4 py-2">
                                             {{ $order->created_at->format('d F Y') ?? 'kosong' }}
@@ -156,7 +163,7 @@
                                         <td class="px-4 py-2">
                                             <div class="flex gap-2">
                                                 <div class="relative group inline-block">
-                                                    <a href="{{ route('admin.orders.show', $order->id ) }}"
+                                                    <a href="{{ route('admin.orders.show', $order->id) }}"
                                                         class="bg-blue-500 text-white px-3 py-1 rounded flex items-center">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
                                                             viewBox="0 0 24 24" fill="currentColor">
@@ -173,15 +180,20 @@
                                                 </div>
                                                 <!-- Tombol Edit -->
                                                 <div class="relative group inline-block">
-                                                    <button type="button" class="bg-yellow-500 text-white px-3 py-1 rounded flex items-center" data-bs-toggle="modal"
+                                                    <button type="button"
+                                                        class="bg-yellow-500 text-white px-3 py-1 rounded flex items-center"
+                                                        data-bs-toggle="modal"
                                                         data-bs-target="#editOrderModal{{ $order->id }}">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                            <path d="M17.414 2.586a2 2 0 00-2.828 0L8 9.172 7 13l3.828-1L17.414 5.414a2 2 0 000-2.828l-1-1zM15 4l1-1L15 2l-1 1 1 1zM4 13v3h3l9-9-3-3L4 13z" />
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
+                                                            viewBox="0 0 20 20" fill="currentColor">
+                                                            <path
+                                                                d="M17.414 2.586a2 2 0 00-2.828 0L8 9.172 7 13l3.828-1L17.414 5.414a2 2 0 000-2.828l-1-1zM15 4l1-1L15 2l-1 1 1 1zM4 13v3h3l9-9-3-3L4 13z" />
                                                         </svg>
                                                     </button>
                                                     <span
                                                         class="absolute hidden group-hover:block bg-gray-800 text-white text-sm rounded px-2 py-1 mt-2 left-1/2 transform -translate-x-1/2">
-                                                        <span class="absolute bg-gray-800 h-2 w-2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-45"></span>
+                                                        <span
+                                                            class="absolute bg-gray-800 h-2 w-2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-45"></span>
                                                         Edit
                                                     </span>
                                                 </div>
@@ -189,17 +201,25 @@
                                                 <!-- Form Hapus Pesanan -->
                                                 <div class="relative group inline-block">
                                                     <!-- Tombol Hapus yang akan membuka modal konfirmasi -->
-                                                    <form action="{{ route('admin.orders.destroy', $order->id) }}" method="POST" style="display: inline;">
+                                                    <form action="{{ route('admin.orders.destroy', $order->id) }}"
+                                                        method="POST" style="display: inline;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="button" class="bg-red-500 text-white px-3 py-1 rounded flex items-center"
-                                                            data-bs-toggle="modal" data-bs-target="#hapusmodal{{ $order->id }}">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                                <path fill-rule="evenodd" d="M6 4a1 1 0 000 2h8a1 1 0 100-2H6zM3 6a1 1 0 011-1h12a1 1 0 011 1v11a2 2 0 01-2 2H5a2 2 0 01-2-2V6zm4 9a1 1 0 102 0V8a1 1 0 00-2 0v7zm5-1a1 1 0 10-2 0V8a1 1 0 112 0v6z" clip-rule="evenodd" />
+                                                        <button type="button"
+                                                            class="bg-red-500 text-white px-3 py-1 rounded flex items-center"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#hapusmodal{{ $order->id }}">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
+                                                                viewBox="0 0 20 20" fill="currentColor">
+                                                                <path fill-rule="evenodd"
+                                                                    d="M6 4a1 1 0 000 2h8a1 1 0 100-2H6zM3 6a1 1 0 011-1h12a1 1 0 011 1v11a2 2 0 01-2 2H5a2 2 0 01-2-2V6zm4 9a1 1 0 102 0V8a1 1 0 00-2 0v7zm5-1a1 1 0 10-2 0V8a1 1 0 112 0v6z"
+                                                                    clip-rule="evenodd" />
                                                             </svg>
                                                         </button>
-                                                        <span class="absolute hidden group-hover:block bg-gray-800 text-white text-sm rounded px-2 py-1 mt-2 left-1/2 transform -translate-x-1/2">
-                                                            <span class="absolute bg-gray-800 h-2 w-2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-45"></span>
+                                                        <span
+                                                            class="absolute hidden group-hover:block bg-gray-800 text-white text-sm rounded px-2 py-1 mt-2 left-1/2 transform -translate-x-1/2">
+                                                            <span
+                                                                class="absolute bg-gray-800 h-2 w-2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-45"></span>
                                                             Hapus
                                                         </span>
                                                     </form>
@@ -208,20 +228,26 @@
                                         </td>
                                     </tr>
                                     <!-- Modal Hapus -->
-                                    <div class="modal fade" id="hapusmodal{{ $order->id }}" tabindex="-1" aria-labelledby="hapusModalLabel{{ $order->id }}" aria-hidden="true">
+                                    <div class="modal fade" id="hapusmodal{{ $order->id }}" tabindex="-1"
+                                        aria-labelledby="hapusModalLabel{{ $order->id }}" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="hapusModalLabel{{ $order->id }}">Hapus Pesanan</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    <h5 class="modal-title" id="hapusModalLabel{{ $order->id }}">Hapus
+                                                        Pesanan</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body" style="color: black;">
-                                                    Apakah Anda yakin ingin menghapus pesanan <strong>{{ $order->order }}</strong>?
+                                                    Apakah Anda yakin ingin menghapus pesanan
+                                                    <strong>{{ $order->order }}</strong>?
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Kembali</button>
                                                     <!-- Form untuk menghapus voucher -->
-                                                    <form action="{{ route('admin.orders.destroy', $order->id) }}" method="POST">
+                                                    <form action="{{ route('admin.orders.destroy', $order->id) }}"
+                                                        method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger">Hapus</button>
@@ -352,34 +378,38 @@
                                                 </div>
                                                 <div class="modal-body">
 
-                                                    <!-- Form inside modal -->
-                                                    <form action="{{ route('admin.orders.update', $order->id) }}"
-                                                        method="POST">
+                                                    <form method="POST"
+                                                        action="{{ route('order.updateStatus', $order->id) }}">
                                                         @csrf
-                                                        @method('PUT')
-                                                        <!-- Form fields for editing -->
-                                                        <div class="mb-3">
-                                                            <label for="edit_status_order" class="form-label">Status
-                                                                Order</label>
-                                                            <select name="status_order" class="form-select" required>
-                                                                <option value="pending"
-                                                                    {{ $order->status_order == 'pending' ? 'selected' : '' }}>
-                                                                    Pending</option>
-                                                                <option value="processing"
-                                                                    {{ $order->status_order == 'processing' ? 'selected' : '' }}>
-                                                                    Processing</option>
-                                                                <option value="completed"
-                                                                    {{ $order->status_order == 'completed' ? 'selected' : '' }}>
-                                                                    Completed</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-bs-dismiss="modal">Kembali</button>
-                                                            <button type="submit" class="btn btn-primary">Simpan
-                                                                Perubahan</button>
-                                                        </div>
+                                                        <input type="hidden" name="status" value="processing">
+
+                                                        @if ($order->status_order == 'pending')
+                                                            <button type="submit" class="btn btn-primary">Proses</button>
+                                                        @endif
                                                     </form>
+
+                                                    <form method="POST"
+                                                        action="{{ route('order.updateStatus', $order->id) }}">
+                                                        @csrf
+                                                        <input type="hidden" name="status" value="shipping">
+
+                                                        @if ($order->status_order == 'processing')
+                                                            <button type="submit"
+                                                                class="btn btn-secondary">Kirim</button>
+                                                        @endif
+                                                    </form>
+
+                                                    <form method="POST"
+                                                        action="{{ route('order.updateStatus', $order->id) }}">
+                                                        @csrf
+                                                        <input type="hidden" name="status" value="completed">
+
+                                                        @if ($order->status_order == 'shipping')
+                                                            <button type="submit"
+                                                                class="btn btn-success">Selesai</button>
+                                                        @endif
+                                                    </form>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -394,7 +424,7 @@
     </div>
 
     <!-- Pagination -->
-     <div class="mt-4">
+    <div class="mt-4">
         {{ $orders->links() }}
     </div>
 @endsection
