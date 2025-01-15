@@ -49,6 +49,8 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
         'update' => 'admin.orders.update',
         'destroy' => 'admin.orders.destroy',
     ]);
+    Route::post('/order/update-status/{id}', [AdminOrderController::class, 'updateStatus'])->name('order.updateStatus');
+
     Route::resource('reviews', AdminReviewController::class)->names([
         'index' => 'admin.reviews.index',
         'store' => 'admin.reviews.store',
