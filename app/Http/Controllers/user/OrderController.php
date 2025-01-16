@@ -4,9 +4,10 @@ namespace App\Http\Controllers\user;
 
 use App\Models\User;
 use App\Models\Order;
+use App\Models\Review;
 use App\Models\Product;
-use App\Models\ProductOrder;
 use App\Models\PromoCode;
+use App\Models\ProductOrder;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -19,11 +20,27 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         // Ambil data pesanan milik user yang sedang login
-        $userOrders = Order::where('user_id', Auth::id())->with('productOrders.product.reviews', 'addresses')->get();
-        // dd($userOrders->toArray());
-        // Tampilkan view untuk user
-        return view('user.orders.index', compact('userOrders',));
+        $userOrders = Order::where('user_id', Auth::id())
+            ->with('productOrders.product.reviews', 'addresses')
+            ->get();
+
+        // Mapping status order
+        $statusMapping = [
+            'completed' => 'Selesai',
+            'processing' => 'Dikemas',
+            'pending' => 'Menunggu',
+            'shipping' => 'Dikirim',
+        ];
+
+        // Menambahkan properti status_order_label untuk setiap order
+        foreach ($userOrders as $order) {
+            $order->status_order_label = $statusMapping[$order->status_order] ?? 'Tidak Diketahui';
+        }
+
+        // Kirim data pesanan dan tampilkan view untuk user
+        return view('user.orders.index', compact('userOrders'));
     }
+
 
 
 
@@ -96,6 +113,35 @@ class OrderController extends Controller
         return view('user.orders.show', compact('order'));
     }
 
+    public function addRiview(Request $request)
+    {
+        $request->validate([
+            'order_id' => 'required|exists:orders,id',
+            'product_id' => 'required|exists:products,id',
+            'rating' => 'required|in:1,2,3,4,5',
+            'comment' => 'required|string|max:500',
+        ]);
+
+        $hasReview = Review::where('order_id', $request->order_id)
+            ->where('product_id', $request->product_id)
+            ->exists();
+
+        if ($hasReview) {
+            return redirect()->back()->withErrors(['error' => 'Anda sudah memberikan ulasan untuk produk ini di order ini.']);
+        }
+
+        Review::create([
+            'order_id' => $request->order_id,
+            'product_id' => $request->product_id,
+            'user_id' => Auth::id(),
+            'rating' => $request->rating,
+            'comment' => $request->comment,
+        ]);
+
+        return redirect()->back()->with('success', 'Ulasan berhasil ditambahkan.');
+    }
+
+
 
 
     public function edit(Order $order)
@@ -157,7 +203,7 @@ class OrderController extends Controller
                 $order->completed_at = now(); // Catat waktu selesai
                 $order->save();
 
-                return redirect()->route('user.orders.show',$orderId)->with('success', 'Status berhasil diperbarui menjadi selesai.');
+                return redirect()->route('user.orders.show', $orderId)->with('success', 'Status berhasil diperbarui menjadi selesai.');
             }
 
             return redirect()->back()->with('error', 'Hanya pesanan dalam status "shipping" yang dapat diperbarui ke "completed".');

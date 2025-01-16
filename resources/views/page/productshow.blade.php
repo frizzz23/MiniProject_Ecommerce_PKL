@@ -441,7 +441,7 @@
                             Reviews
                         </h2>
                     </div>
-                    @if ($allowedReviews->isNotEmpty())
+                    {{-- @if ($allowedReviews->isNotEmpty())
                         @foreach ($allowedReviews as $allowedReview)
                             <div class="mb-6 p-4 bg-white rounded-lg shadow">
                                 <form action="{{ route('addReview') }}" method="POST">
@@ -481,7 +481,7 @@
                                 </form>
                             </div>
                         @endforeach
-                    @endif
+                    @endif --}}
 
                     {{-- <form action="{{ route('addReview') }}" method="POST">
                         @csrf <!-- Tambahkan CSRF token untuk keamanan -->
@@ -689,6 +689,46 @@
         });
     </script>
 
+    {{-- <form action="{{ route('addReview') }}" method="POST">
+        @csrf <!-- Tambahkan CSRF token untuk keamanan -->
+
+        <!-- Pilih Bintang -->
+        <div class="mb-5 flex gap-1" id="star-rating">
+            @for ($i = 1; $i <= 5; $i++)
+                <label for="star_{{ $i }}">
+                    <input type="radio" name="rating" id="star_{{ $i }}" value="{{ $i }}"
+                        class="hidden" required />
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                        class="w-5 h-5 star-icon text-gray-300" data-star="{{ $i }}" viewBox="0 0 24 24"
+                        stroke="none">
+                        <path
+                            d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
+                        </path>
+                    </svg>
+                </label>
+            @endfor
+        </div>
+
+        <!-- Komentar -->
+        <div class="py-2 px-4 mb-3 bg-white rounded-lg border border-gray-200">
+            <label for="comment" class="sr-only">Your comment</label>
+            <textarea id="comment" name="comment" rows="6" required
+                class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none"
+                placeholder="Write a comment..."></textarea>
+        </div>
+
+        <!-- ID Produk -->
+        <input type="hidden" name="product_id" value="{{ $product->id }}">
+
+        <!-- Kirim -->
+        <div class="mb-3">
+            <button type="submit"
+                class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300">
+                Send
+            </button>
+        </div>
+    </form>
+
     <script>
         const radios = document.querySelectorAll('input[name="bintang"]');
 
@@ -750,7 +790,7 @@
             transition: fill 0.2s ease;
             cursor: pointer;
         }
-    </style>
+    </style> --}}
 
 </body>
 

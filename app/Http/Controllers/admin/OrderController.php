@@ -164,6 +164,7 @@ class OrderController extends Controller
         // Redirect dengan pesan sukses
         return redirect()->route('admin.orders.index')->with('success', 'Order berhasil dihapus beserta data yang terhubung.');
     }
+    
     public function updateStatus(Request $request, $orderId)
     {
         $order = Order::find($orderId);

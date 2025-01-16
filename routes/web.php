@@ -33,6 +33,7 @@ Route::post('/addReview', [ProductPageController::class, 'addReview'])->name('ad
 
 
 
+
 Route::get('/category-page', CategoryPageController::class)->name('category-page');
 Route::get('/about', AboutPageController::class)->name('about-page');
 Route::get('/contact', ContactPageController::class)->name('contact-page');

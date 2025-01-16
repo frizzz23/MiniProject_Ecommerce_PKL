@@ -156,10 +156,6 @@
                             class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
                     </div>
                 </div>
-
-
-
-
             </form>
         </div>
     </div>

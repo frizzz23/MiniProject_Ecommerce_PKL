@@ -8,7 +8,7 @@
     <div class="container-fluid mx-5 my-4">
         <div class="flex justify-between bg-white border rounded-lg py-4 px-10 ">
             <div class="flex">
-                <a href="{{ url()->previous() }}">
+                <a href="{{ route('user.orders.index') }}">
                     < Kembali </a>
             </div>
 
@@ -344,7 +344,6 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         @foreach ($order->productOrders as $productOrder)
                             <div class="flex items-center justify-start gap-1 mx-2">
-                                <!-- Cek jika ada gambar produk -->
                                 @if ($productOrder->product->image_product)
                                     <img class="w-12 h-12 object-cover mr-4"
                                         src="{{ asset('storage/' . $productOrder->product->image_product) }}"
@@ -356,15 +355,36 @@
                                 <div class="flex flex-col">
                                     <span>{{ $productOrder->product->name_product }}</span>
                                     <span class="text-xs text-slate-700">x{{ $productOrder->quantity }}</span>
+                                    <div class="flex">
+                                        <!-- Tombol Ulasan -->
+                                        @if ($order->status_order === 'completed')
+                                            @php
+                                                $hasReview = $productOrder->product
+                                                    ->reviews()
+                                                    ->where('order_id', $order->id)
+                                                    ->exists();
+                                            @endphp
+
+                                            @if (!$hasReview)
+                                                <button
+                                                    class="btn btn-primary mt-2 bg-blue-500 text-white py-1 px-2 rounded-md text-xs"
+                                                    onclick="openModal('{{ $order->id }}', '{{ $productOrder->product->id }}')">
+                                                    Berikan Ulasan
+                                                </button>
+                                            @else
+                                                <p class="mt-2 text-green-500 text-sm">Ulasan telah ditambahkan.</p>
+                                            @endif
+                                        @endif
+                                    </div>
                                 </div>
+
                             </div>
                         @endforeach
                     </div>
                 </div>
-
-
-
             </div>
+
+
 
             <!-- Pembungkus 2 (33% lebar) -->
             <div class="grid grid-cols-1 gap-4 ">
@@ -422,21 +442,131 @@
                         </div>
                     @endif
 
-                    @if ($order->status_order === 'completed')
-                        <div class="flex w-full">
-                            <a href="#"
-                                class="w-full text-center px-6 py-2 border-2 text-white rounded-md bg-blue-500 border-blue-500 hover:bg-blue-700 hover:border-blue-700 transition duration-300 ease-in-out">
-                                Beri Ulasan
-                            </a>
-                        </div>
-                    @endif
                 </div>
-
             </div>
-
-
         </div>
     </div>
+    <div id="createReviewModal"
+        class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden z-50 flex justify-center items-center">
+        <div class="bg-white rounded-lg shadow-lg w-96 p-6">
+            <div class="modal-header flex justify-between items-center mb-4">
+                <h5 class="text-lg font-semibold">Buat Ulasan</h5>
+                <button type="button" class="text-gray-500" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="createReviewForm" method="POST" action="{{ route('user.orders.addRiview') }}">
+                @csrf
+                <input type="hidden" name="order_id" id="order_id">
+                <input type="hidden" name="product_id" id="product_id">
+
+                <!-- Rating -->
+                <div class="mb-5 flex gap-1" id="star-rating">
+                    @for ($i = 1; $i <= 5; $i++)
+                        <label for="star_{{ $i }}">
+                            <input type="radio" name="rating" id="star_{{ $i }}"
+                                value="{{ $i }}" class="hidden" required />
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                class="w-5 h-5 star-icon text-gray-300" data-star="{{ $i }}"
+                                viewBox="0 0 24 24" stroke="none">
+                                <path
+                                    d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
+                                </path>
+                            </svg>
+                        </label>
+                    @endfor
+                </div>
+
+                <!-- Komentar -->
+                <div class="mb-4">
+                    <label for="comment" class="block text-sm font-medium text-gray-700">Komentar</label>
+                    <textarea name="comment" id="comment" rows="3"
+                        class="form-control mt-1 block w-full border border-gray-300 rounded-md p-2"></textarea>
+                </div>
+
+                <div class="modal-footer flex justify-end gap-2">
+                    <button type="button" class="bg-gray-300 text-black py-2 px-4 rounded-md"
+                        onclick="closeModal()">Batal</button>
+                    <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md">Kirim</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const radios = document.querySelectorAll('input[name="bintang"]');
+
+        radios.forEach((radio) => {
+            radio.addEventListener("change", (e) => {
+                const selectedRating = parseInt(e.target.id.split("_")[1]);
+                const previousStars = document.querySelectorAll(
+                    `label[for^="start_"] svg`
+                );
+                previousStars.forEach((star, index) => {
+                    if (index < selectedRating) {
+                        star.classList.add("fill-yellow-500");
+                    } else {
+                        star.classList.remove("fill-yellow-500");
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+        document.getElementById('star-rating').addEventListener('click', function(event) {
+            // Cari elemen SVG yang diklik
+            const clickedStar = event.target.closest('svg');
+
+            if (clickedStar) {
+                // Ambil nilai bintang yang dipilih
+                const selectedStarValue = clickedStar.getAttribute('data-star');
+
+                // Dapatkan semua ikon bintang
+                const starIcons = document.querySelectorAll('.star-icon');
+
+                // Reset warna semua bintang ke gray-300
+                starIcons.forEach(icon => {
+                    icon.classList.remove('text-yellow-500');
+                    icon.classList.add('text-gray-300');
+                });
+
+                // Warnai bintang dari 1 hingga nilai yang dipilih
+                for (let i = 0; i < selectedStarValue; i++) {
+                    starIcons[i].classList.remove('text-gray-300');
+                    starIcons[i].classList.add('text-yellow-500');
+                }
+            }
+        });
+
+        // Pastikan bintang selalu dimulai dari gray-300
+        document.addEventListener('DOMContentLoaded', () => {
+            const starIcons = document.querySelectorAll('.star-icon');
+            starIcons.forEach(icon => {
+                icon.classList.remove('text-yellow-500');
+                icon.classList.add('text-gray-300');
+            });
+        });
+    </script>
+
+    <style>
+        .star-icon {
+            transition: fill 0.2s ease;
+            cursor: pointer;
+        }
+    </style>
+
+    <script>
+        // Fungsi untuk membuka modal
+        function openModal(orderId, productId) {
+            document.getElementById('order_id').value = orderId;
+            document.getElementById('product_id').value = productId;
+            document.getElementById('createReviewModal').classList.remove('hidden');
+        }
+
+        // Fungsi untuk menutup modal
+        function closeModal() {
+            document.getElementById('createReviewModal').classList.add('hidden');
+        }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
     <script>
@@ -483,6 +613,7 @@
         }
     </script>
 @endsection
+
 
 {{-- <div class="grid md:grid-cols-2 grid-cols-1">
     <div class="bg-white min-h-screen">

@@ -31,6 +31,7 @@ Route::middleware(['auth', 'role:user'])->group(function () {
         'update' => 'user.orders.update',
         'destroy' => 'user.orders.destroy',
     ]);
+    Route::post('/addRiview', [UserOrderController::class, 'addRiview'])->name('user.orders.addRiview');
     Route::post('user/order/update-status/{id}', [ UserOrderController::class, 'updateStatus'])->name('user.order.updateStatus');
     Route::resource('addresses', UserAddressController::class)->names([
         'index' => 'user.addresses.index',
