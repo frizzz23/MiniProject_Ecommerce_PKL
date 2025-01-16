@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\PromoCode;
 use Illuminate\Support\Facades\Auth;
 
 class HomePageController extends Controller
@@ -15,6 +16,11 @@ class HomePageController extends Controller
     public function index(Request $request)
     {
         $carts = Cart::where('user_id', Auth::id())->get();
+
+        // Mengambil hanya 5 voucher yang belum digunakan
+        $promoCodes = PromoCode::whereDoesntHave('usedPromoCodes') // Memastikan voucher belum digunakan
+            ->take(2)
+            ->get();
 
         $categories = Category::paginate(6);
         $allCategories = Category::all();
@@ -56,7 +62,8 @@ class HomePageController extends Controller
             'mostPopularProduct2',
             'mostPopularProduct3',
             'produkbaru1',
-            'produkbaru2'
+            'produkbaru2',
+            'promoCodes'
         ));
     }
 }

@@ -22,6 +22,41 @@
             font-family: "Poppins", sans-serif;
             /* border: 1px solid black; */
         }
+
+        @keyframes scroll-fixed {
+            0% {
+                transform: translateX(0%);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .animate-scroll-fixed {
+            animation: scroll-fixed 15s linear infinite;
+        }
+
+        /* Duplicate items for seamless loop */
+        .animate-scroll-fixed {
+            display: flex;
+            flex-wrap: nowrap;
+        }
+
+        .animate-scroll-fixed>div {
+            flex: 0 0 auto;
+        }
+
+        /* Clone elements for continuous scroll */
+        .animate-scroll-fixed {
+            content: "";
+            width: max-content;
+        }
+
+        /* Pause animation on hover */
+        .animate-scroll-fixed:hover {
+            animation-play-state: paused;
+        }
     </style>
 </head>
 
@@ -403,19 +438,46 @@
 
             </div>
 
-            <div class="flex justify-between items md:pe-5 mb-5">
-                @if ($codes->isEmpty()) <!-- Check if $codes is empty -->
-                    <div class="hidden"></div> <!-- Hide the marquee if there are no codes -->
+            {{-- <h4 class="font-bold">Kode Vocher</h4>
+
+            <div class="w-full bg-gradient-to-r from-blue-500 to-purple-600 p-1 rounded-lg shadow-lg mb-6">
+                @if ($codes->isEmpty())
+                    <div class="hidden"></div>
                 @else
-                    <marquee behavior="scroll" direction="left" class="text-black bg-blue-100 p-4 rounded-md">
-                        @foreach ($codes as $code)
-                            🎉 Diskon {{ number_format($code->discount_amount, 0, ',', '.') }}
-                            dengan minimal pembelian {{ number_format($code->minimum_purchase, 0, ',', '.') }}! Gunakan
-                            kode: {{ $code->code }} |
-                        @endforeach
-                    </marquee>
+                    <div class="bg-white rounded-lg">
+                        <div class="relative h-20 overflow-hidden">
+                            <!-- Container dengan lebar tetap -->
+                            <div class="absolute inset-0 flex items-center">
+                                <!-- Wrapper untuk animasi -->
+                                <div class="animate-scroll-fixed flex space-x-4 px-4">
+                                    @foreach ($codes as $code)
+                                        <div
+                                            class="flex-none w-96 bg-blue-50 rounded-lg border-2 border-blue-200 shadow-sm">
+                                            <div class="flex items-center h-16 px-4">
+                                                <span class="text-2xl flex-none">🎉</span>
+                                                <div class="flex flex-col mx-3 flex-grow min-w-0">
+                                                    <span class="font-bold text-blue-800 truncate">
+                                                        Hemat Rp
+                                                        {{ number_format($code->discount_amount, 0, ',', '.') }}
+                                                    </span>
+                                                    <span class="text-sm text-gray-600 truncate">
+                                                        Min. Rp
+                                                        {{ number_format($code->minimum_purchase, 0, ',', '.') }}
+                                                    </span>
+                                                </div>
+                                                <div
+                                                    class="flex-none px-3 py-1 bg-blue-600 text-white rounded-md font-mono text-sm">
+                                                    {{ $code->code }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 @endif
-            </div>
+            </div> --}}
 
             <div class="flex justify-between items md:pe-5">
                 <div class="flex gap-2 items-center">
