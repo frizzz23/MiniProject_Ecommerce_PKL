@@ -115,137 +115,143 @@ class ProductPageController extends Controller
      * Display the specified product.
      */
     public function show(Request $request, $slug)
-    {
-        // Gunakan slug untuk mencari produk
-        $product = Product::with('reviews.user')->where('slug', $slug)->firstOrFail();
+{
+    // Gunakan slug untuk mencari produk
+    $product = Product::with('reviews.user')->where('slug', $slug)->firstOrFail();
 
-        // Menghitung rata-rata rating untuk produk yang dipilih
-        $averageRating = Review::where('product_id', $product->id)
+    // Menghitung rata-rata rating untuk produk yang dipilih
+    $averageRating = Review::where('product_id', $product->id)
+        ->avg('rating') ?: 0; // Set default rating 0 jika tidak ada review
+
+    // Menghitung jumlah review untuk produk yang dipilih
+    $reviewsCount = Review::where('product_id', $product->id)->count();
+
+    // Mengambil semua review untuk produk yang dipilih
+    $reviews = Review::where('product_id', $product->id)->get();
+
+    // Mengambil produk lain dengan kategori yang sama
+    $relatedProducts = Product::where('category_id', $product->category_id)
+        ->where('id', '!=', $product->id) // Menghindari produk yang sedang dilihat
+        ->get();
+
+    // Menghitung rata-rata rating untuk setiap produk terkait
+    foreach ($relatedProducts as $relatedProduct) {
+        $relatedProduct->average_rating = Review::where('product_id', $relatedProduct->id)
             ->avg('rating') ?: 0; // Set default rating 0 jika tidak ada review
-
-        // Menghitung jumlah review untuk produk yang dipilih
-        $reviewsCount = Review::where('product_id', $product->id)->count();
-
-        // Mengambil semua review untuk produk yang dipilih
-        $reviews = Review::where('product_id', $product->id)->get();
-
-        // Mengambil produk lain dengan kategori yang sama
-        $relatedProducts = Product::where('category_id', $product->category_id)
-            ->where('id', '!=', $product->id) // Menghindari produk yang sedang dilihat
-            ->get();
-
-        // Menghitung rata-rata rating untuk setiap produk terkait
-        foreach ($relatedProducts as $relatedProduct) {
-            $relatedProduct->average_rating = Review::where('product_id', $relatedProduct->id)
-                ->avg('rating') ?: 0; // Set default rating 0 jika tidak ada review
-        }
-
-        // Menghitung jumlah review per produk terkait
-        $relatedReviewsCount = [];
-        foreach ($relatedProducts as $relatedProduct) {
-            $relatedReviewsCount[$relatedProduct->id] = Review::where('product_id', $relatedProduct->id)->count();
-        }
-
-        // Menghitung jumlah produk yang terjual
-        $productOrdersCount = $product->productOrders->sum('quantity'); // Asumsikan ada relasi 'productOrders'
-
-        $user = Auth::user();
-
-        $allowedReviews = collect();
-        $existingReviews = collect();
-
-        if ($user) {
-            // Ambil semua order completed dari user untuk produk ini
-            $completedOrders = Order::where('user_id', $user->id)
-                ->where('status_order', 'completed')
-                ->whereHas('productOrders', function ($query) use ($product) {
-                    $query->where('product_id', $product->id);
-                })
-                ->with('productOrders') // eager load product orders
-                ->get();
-
-            foreach ($completedOrders as $order) {
-                // Cek apakah review sudah ada untuk order ini
-                $review = Review::where([
-                    'product_id' => $product->id,
-                    'user_id' => $user->id,
-                    'order_id' => $order->id
-                ])->first();
-
-                if ($review) {
-                    $existingReviews->push([
-                        'review' => $review,
-                        'order' => $order
-                    ]);
-                } else {
-                    // Cek jumlah item dalam order ini
-                    $orderQuantity = $order->productOrders
-                        ->where('product_id', $product->id)
-                        ->sum('quantity');
-
-                    $allowedReviews->push([
-                        'order' => $order,
-                        'quantity' => $orderQuantity
-                    ]);
-                }
-            }
-        }
-
-        // Tampilkan view dengan data produk, rating, jumlah review, jumlah produk terjual, dan produk terkait
-        return view('page.productshow', compact(
-            'allowedReviews',    // Ubah dari existingReview
-            'existingReviews',   // Ubah dari order
-            'product',
-            'reviews',
-            'averageRating',
-            'reviewsCount',
-            'relatedProducts',
-            'relatedReviewsCount',
-            'productOrdersCount'
-        ));
     }
 
-    
+    // Menghitung jumlah review per produk terkait
+    $relatedReviewsCount = [];
+    foreach ($relatedProducts as $relatedProduct) {
+        $relatedReviewsCount[$relatedProduct->id] = Review::where('product_id', $relatedProduct->id)->count();
+    }
 
-    public function addReview(Request $request)
-    {
-        $request->validate([
-            'product_id' => 'required|exists:products,id',
-            'order_id' => 'required|exists:orders,id',
-            'rating' => 'required|in:1,2,3,4,5',
-            'comment' => 'required|string|max:1000',
-        ]);
+    // Menghitung jumlah produk yang terjual
+    $productOrdersCount = $product->productOrders->sum('quantity'); // Asumsikan ada relasi 'productOrders'
 
-        // Verifikasi order
-        $order = Order::where('id', $request->order_id)
-            ->where('user_id', Auth::id())
-            ->where('status_order', 'completed')
-            ->firstOrFail();
+    $user = Auth::user();
 
-        // Cek existing review
-        $existingReview = Review::where([
-            'order_id' => $request->order_id,
-            'product_id' => $request->product_id,
-            'user_id' => Auth::id()
+    // Controller code
+
+$allowedReviews = collect();
+$existingReviews = collect();
+
+if ($user) {
+    // Ambil semua order completed dari user untuk produk ini
+    $completedOrders = Order::where('user_id', $user->id)
+        ->where('status_order', 'completed')
+        ->whereHas('productOrders', function ($query) use ($product) {
+            $query->where('product_id', $product->id);
+        })
+        ->with('productOrders') // eager load product orders
+        ->get();
+
+    foreach ($completedOrders as $order) {
+        // Cek apakah review sudah ada untuk order ini
+        $review = Review::where([
+            'product_id' => $product->id,
+            'user_id' => $user->id,
+            'order_id' => $order->id
         ])->first();
 
-        if ($existingReview) {
-            return redirect()->back()
-                ->with('error', 'Anda sudah memberikan review untuk order ini.');
+        if ($review) {
+            $existingReviews->push([
+                'review' => $review,
+                'order' => $order,
+                'review_given' => true // Tandai bahwa review sudah diberikan
+            ]);
+        } else {
+            // Cek jumlah item dalam order ini
+            $orderQuantity = $order->productOrders
+                ->where('product_id', $product->id)
+                ->sum('quantity');
+
+            $allowedReviews->push([
+                'order' => $order,
+                'quantity' => $orderQuantity,
+                'review_given' => false // Tandai bahwa review belum diberikan
+            ]);
         }
-
-        // Buat review baru
-        Review::create([
-            'user_id' => Auth::id(),
-            'product_id' => $request->product_id,
-            'order_id' => $request->order_id,
-            'rating' => $request->rating,
-            'comment' => $request->comment,
-        ]);
-
-        return redirect()->back()
-            ->with('success', 'Review berhasil ditambahkan.');
     }
+}
+
+// Tampilkan view dengan data produk, rating, jumlah review, jumlah produk terjual, dan produk terkait
+return view('page.productshow', compact(
+    'allowedReviews',
+    'existingReviews',
+    'product',
+    'reviews',
+    'averageRating',
+    'reviewsCount',
+    'relatedProducts',
+    'relatedReviewsCount',
+    'productOrdersCount'
+));
+}
+
+
+
+
+public function addReview(Request $request)
+{
+    $request->validate([
+        'product_id' => 'required|exists:products,id',
+        'order_id' => 'required|exists:orders,id',
+        'rating' => 'required|in:1,2,3,4,5',
+        'comment' => 'required|string|max:1000',
+    ]);
+
+    // Verifikasi order
+    $order = Order::where('id', $request->order_id)
+        ->where('user_id', Auth::id())
+        ->where('status_order', 'completed')
+        ->firstOrFail();
+
+    // Cek apakah review sudah ada
+    $existingReview = Review::where([
+        'order_id' => $request->order_id,
+        'product_id' => $request->product_id,
+        'user_id' => Auth::id()
+    ])->first();
+
+    if ($existingReview) {
+        return response()->json(['success' => false, 'message' => 'Anda sudah memberikan review untuk order ini.']);
+    }
+
+    // Simpan review baru
+    $review = Review::create([
+        'user_id' => Auth::id(),
+        'product_id' => $request->product_id,
+        'order_id' => $request->order_id,
+        'rating' => $request->rating,
+        'comment' => $request->comment,
+    ]);
+
+    return response()->json(['success' => true, 'message' => 'Review berhasil ditambahkan.', 'review' => $review]);
+}
+
+
+
 
 
     /**

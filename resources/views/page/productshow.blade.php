@@ -441,6 +441,7 @@
                             Reviews
                         </h2>
                     </div>
+
                     {{-- @if ($allowedReviews->isNotEmpty())
                         @foreach ($allowedReviews as $allowedReview)
                             <div class="mb-6 p-4 bg-white rounded-lg shadow">
@@ -466,14 +467,6 @@
                                             </label>
                                         @endfor
                                     </div>
-
-                                    <!-- Comment textarea -->
-                                    <div class="mb-4">
-                                        <textarea name="comment" rows="4" required
-                                            class="w-full px-3 py-2 text-sm text-gray-700 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                            placeholder="Tulis review Anda..."></textarea>
-                                    </div>
-
                                     <button type="submit"
                                         class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
                                         Kirim Review
@@ -482,6 +475,7 @@
                             </div>
                         @endforeach
                     @endif --}}
+
 
                     {{-- <form action="{{ route('addReview') }}" method="POST">
                         @csrf <!-- Tambahkan CSRF token untuk keamanan -->

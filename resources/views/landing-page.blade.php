@@ -10,6 +10,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+    <!-- Tambahkan ini di head -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
+
     <!-- font poopins -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -21,7 +25,39 @@
             font-family: "Poppins", sans-serif;
             /* border: 1px solid black; */
         }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
+
+            70% {
+                transform: scale(0.9);
+                opacity: 0.9;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .animated {
+            animation-duration: 0.5s;
+            animation-fill-mode: both;
+        }
+
+        .bounceIn {
+            animation-name: bounceIn;
+        }
     </style>
+
 </head>
 
 <body class="overflow-x-hidden">
@@ -327,6 +363,115 @@
     </section>
 
     <section class="md:px-28 px-5 py-10 bg-white">
+        <div class="relative w-full overflow-hidden">
+            <!-- Slides -->
+            <div id="carouselSlides" class="flex transition-transform duration-700">
+                {{-- First Slide - Improved Voucher Display --}}
+            <div class="w-full flex-shrink-0 relative">
+                    <div class="relative w-full h-full bg-gradient-to-r from-blue-50 to-blue-100">
+                        {{-- Decorative Elements - Winter Theme --}}
+                        {{-- Snowflakes Top --}}
+                        <div class="absolute top-4 left-4 text-blue-200 text-5xl animate-bounce">❄</div>
+                        <div class="absolute top-8 left-1/4 text-blue-200 text-4xl animate-bounce delay-100">❄</div>
+                        <div class="absolute top-2 right-1/3 text-blue-200 text-3xl animate-bounce delay-200">❄</div>
+                        <div class="absolute top-6 right-1/4 text-blue-200 text-4xl animate-bounce delay-300">❄</div>
+                        <div class="absolute top-4 right-4 text-blue-200 text-5xl animate-bounce delay-150">❄</div>
+
+                        {{-- Snowflakes Bottom --}}
+                        <div class="absolute bottom-4 left-4 text-blue-200 text-5xl animate-bounce delay-200">❄</div>
+                        <div class="absolute bottom-8 left-1/3 text-blue-200 text-3xl animate-bounce delay-300">❄</div>
+                        <div class="absolute bottom-2 right-1/3 text-blue-200 text-4xl animate-bounce delay-100">❄
+                        </div>
+                        <div class="absolute bottom-6 right-1/4 text-blue-200 text-3xl animate-bounce delay-150">❄
+                        </div>
+                        <div class="absolute bottom-4 right-4 text-blue-200 text-5xl animate-bounce delay-250">❄</div>
+
+                        {{-- Winter Decorative Elements --}}
+                        <div class="absolute left-10 top-1/2 -translate-y-1/2 text-blue-200 text-4xl">🧊</div>
+                        <div class="absolute right-10 top-1/2 -translate-y-1/2 text-blue-200 text-4xl">🧊</div>
+                        <div class="absolute left-1/4 top-1/4 text-blue-200 text-3xl">⛄</div>
+                        <div class="absolute right-1/4 bottom-1/4 text-blue-200 text-3xl">🎿</div>
+
+                        {{-- Ice Border Effect --}}
+                        <div
+                            class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-100 via-white to-blue-100">
+                        </div>
+                        <div
+                            class="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-blue-100 via-white to-blue-100">
+                        </div>
+
+                        {{-- Main Content --}}
+                        <div class="relative z-10 max-w-3xl mx-auto py-8 px-4">
+                            <div class="space-y-4">
+                                @foreach ($promoCodes as $voucher)
+                                    <div
+                                        class="bg-white rounded-lg p-4 shadow-md hover:shadow-lg transition-all duration-700 flex justify-between items-center">
+                                        <div class="flex items-center space-x-3">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500"
+                                                viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd"
+                                                    d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                            <span class="font-mono text-lg font-semibold text-gray-700">
+                                                Kode Voucher: {{ $voucher->code }}
+                                            </span>
+                                        </div>
+                                        <button
+                                            class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors text-sm"
+                                            onclick="copyToClipboard('{{ $voucher->code }}')">
+                                            Salin Kode
+                                        </button>
+
+                                    </div>
+                                @endforeach
+                            </div>
+
+                            {{-- Call to Action Text --}}
+                            <div class="text-center mt-6 space-y-2">
+                                <p class="text-lg font-semibold text-gray-700">
+                                    Jangan lewatkan kesempatan emas!
+                                </p>
+                                <p class="text-gray-600">
+                                    Klaim voucher spesialmu sekarang sebelum habis.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Second Slide --}}
+                <div class="w-full flex-shrink-0 relative">
+                    <img src="{{ asset('img/promo3.png') }}" class="w-full" alt="Second slide">
+                </div>
+
+                {{-- Third Slide --}}
+                <div class="w-full flex-shrink-0 relative">
+                    <img src="{{ asset('img/promo4.png') }}" class="w-full" alt="Third slide">
+                </div>
+            </div>
+            <!-- Controls -->
+            <button id="prevSlide"
+                class="absolute top-1/2 left-5 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full hover:bg-gray-600">
+                &#10094;
+            </button>
+            <button id="nextSlide"
+                class="absolute top-1/2 right-5 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full hover:bg-gray-600">
+                &#10095;
+            </button>
+            <!-- Indicators -->
+            <div class="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                <button class="w-3 h-3 rounded-full bg-gray-300 focus:ring-2 focus:ring-gray-500"
+                    data-index="0"></button>
+                <button class="w-3 h-3 rounded-full bg-gray-300 focus:ring-2 focus:ring-gray-500"
+                    data-index="1"></button>
+                <button class="w-3 h-3 rounded-full bg-gray-300 focus:ring-2 focus:ring-gray-500"
+                    data-index="2"></button>
+            </div>
+        </div>
+    </section>
+
+    {{-- <section class="md:px-28 px-5 py-10 bg-white">
         <div class="grid md:grid-cols-3 grid-cols-1 gap-4 ">
             <div class="rounded-md px-5 py-5 overflow-hidden grid grid-cols-[2fr_1fr] overflow-hidden"
                 style="background: linear-gradient(261.16deg, #1A75D4 30.14%, #0AD6EB 90.71%);">
@@ -389,7 +534,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
 
     <section class="md:px-28 px-5 py-5 mb-10">
         <h1 class="text-2xl font-semibold text-slate-700 mb-10">
@@ -1140,6 +1285,87 @@
     </section>
 
     <x-list-cart-script />
+
+    <script>
+        function copyToClipboard(text) {
+            // Membuat element textarea sementara
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+
+            // Select dan copy teksnya
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                // Tampilkan SweetAlert untuk sukses
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: 'Kode voucher berhasil disalin',
+                    showConfirmButton: false,
+                    timer: 1500,
+                    customClass: {
+                        popup: 'animated bounceIn'
+                    }
+                });
+            } catch (err) {
+                console.error('Gagal menyalin teks: ', err);
+                // Tampilkan SweetAlert untuk error
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Gagal menyalin kode voucher',
+                    confirmButtonColor: '#3085d6'
+                });
+            }
+
+            // Hapus element textarea sementara
+            document.body.removeChild(textarea);
+        }
+    </script>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const slides = document.querySelectorAll("#carouselSlides > div");
+            const indicators = document.querySelectorAll("[data-index]");
+            const prevSlide = document.getElementById("prevSlide");
+            const nextSlide = document.getElementById("nextSlide");
+            let currentIndex = 0;
+
+            const showSlide = (index) => {
+                const totalSlides = slides.length;
+                const carousel = document.getElementById("carouselSlides");
+
+                if (index < 0) index = totalSlides - 1;
+                if (index >= totalSlides) index = 0;
+
+                carousel.style.transform = `translateX(-${index * 100}%)`;
+                currentIndex = index;
+
+                // Update indicators
+                indicators.forEach((indicator, idx) => {
+                    indicator.classList.toggle("bg-gray-800", idx === currentIndex);
+                    indicator.classList.toggle("bg-gray-300", idx !== currentIndex);
+                });
+            };
+
+            prevSlide.addEventListener("click", () => showSlide(currentIndex - 1));
+            nextSlide.addEventListener("click", () => showSlide(currentIndex + 1));
+
+            indicators.forEach((indicator) => {
+                indicator.addEventListener("click", () => {
+                    showSlide(Number(indicator.dataset.index));
+                });
+            });
+
+            // Auto-slide every 5 seconds
+            setInterval(() => showSlide(currentIndex + 1), 5000);
+
+            // Show the first slide
+            showSlide(currentIndex);
+        });
+    </script>
 
     <script>
         window.addEventListener("scroll", () => {
