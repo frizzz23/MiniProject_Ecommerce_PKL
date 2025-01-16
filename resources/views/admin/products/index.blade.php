@@ -142,13 +142,9 @@
                                         <td class="px-6 py-5 text-center space-x-2 flex">
                                             <!-- Edit Button with Tooltip -->
                                             <div class="relative group inline-block">
-                                                <button class="bg-yellow-500 text-white px-3 py-1 rounded flex items-center"
+                                                <button class="bg-yellow-500 rounded text-white flex items-center relative px-3 py-2 hover:bg-yellow-600 "
                                                     data-bs-toggle="modal" data-bs-target="#editModal_{{ $product->id }}">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
-                                                        viewBox="0 0 20 20" fill="currentColor">
-                                                        <path
-                                                            d="M17.414 2.586a2 2 0 00-2.828 0L8 9.172 7 13l3.828-1L17.414 5.414a2 2 0 000-2.828l-1-1zM15 4l1-1L15 2l-1 1 1 1zM4 13v3h3l9-9-3-3L4 13z" />
-                                                    </svg>
+                                                    <i class="fas fa-pen text-sm"></i>
                                                 </button>
                                                 <span
                                                     class="absolute hidden group-hover:block bg-gray-800 text-white text-sm rounded px-2 py-1 mt-2 left-1/2 transform -translate-x-1/2">
@@ -161,12 +157,8 @@
                                             <!-- Detail Button with Tooltip -->
                                             <div class="relative group inline-block">
                                                 <a href="{{ route('admin.products.show', $product->slug) }}"
-                                                    class="bg-blue-500 text-white px-3 py-1 rounded flex items-center">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
-                                                        viewBox="0 0 24 24" fill="currentColor">
-                                                        <path
-                                                            d="M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7zm0 12c-3.866 0-7-4.134-7-5s3.134-5 7-5 7 4.134 7 5-3.134 5-7 5zm0-8c-1.103 0-2 2.015-2 3s.897 3 2 3 2-2.015 2-3-.897-3-2-3z" />
-                                                    </svg>
+                                                    class="bg-blue-500 rounded text-white flex items-center relative px-3 py-2 hover:bg-blue-600 ">
+                                                    <i class="fas fa-eye text-sm"></i>
                                                 </a>
                                                 <span
                                                     class="absolute hidden group-hover:block bg-gray-800 text-white text-sm rounded px-2 py-1 mt-2 left-1/2 transform -translate-x-1/2">
@@ -180,15 +172,10 @@
 
                                             <!-- Delete Button with Tooltip -->
                                             <div class="relative group inline-block">
-                                                <button class="bg-red-500 text-white px-3 py-1 rounded flex items-center"
+                                                <button class="bg-red-500 rounded text-white flex items-center relative px-3 py-2 hover:bg-red-600 "
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#deleteModal_{{ $product->id }}">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
-                                                        viewBox="0 0 20 20" fill="currentColor">
-                                                        <path fill-rule="evenodd"
-                                                            d="M6 4a1 1 0 000 2h8a1 1 0 100-2H6zM3 6a1 1 0 011-1h12a1 1 0 011 1v11a2 2 0 01-2 2H5a2 2 0 01-2-2V6zm4 9a1 1 0 102 0V8a1 1 0 00-2 0v7zm5-1a1 1 0 10-2 0V8a1 1 0 112 0v6z"
-                                                            clip-rule="evenodd" />
-                                                    </svg>
+                                                    <i class="fas fa-trash text-sm"></i>
                                                 </button>
                                                 <span
                                                     class="absolute hidden group-hover:block bg-gray-800 text-white text-sm rounded px-2 py-1 mt-2 left-1/2 transform -translate-x-1/2">

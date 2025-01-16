@@ -2,6 +2,11 @@
 @extends('layouts.admin')
 
 @section('main')
+<style>
+    *{
+        /* border: 1px solid black; */
+    }
+</style>
     <div class="container-fluid">
         <div class="container p-6">
             <div class="card w-full">
@@ -104,7 +109,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($orders as $order)
-                                    <tr class="hover:bg-gray-100  border-b">
+                                    <tr class="hover:bg-gray-100 border-b ">
                                         <td class="px-4 py-2">
                                             {{ $loop->iteration ?? '-' }}
                                         </td>
@@ -161,15 +166,11 @@
                                             {{ $order->created_at->format('d F Y') ?? 'kosong' }}
                                         </td>
                                         <td class="px-4 py-2">
-                                            <div class="flex gap-2">
+                                            <div class="flex gap-2 py-10">
                                                 <div class="relative group inline-block">
                                                     <a href="{{ route('admin.orders.show', $order->id) }}"
-                                                        class="bg-blue-500 text-white px-3 py-1 rounded flex items-center">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
-                                                            viewBox="0 0 24 24" fill="currentColor">
-                                                            <path
-                                                                d="M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7zm0 12c-3.866 0-7-4.134-7-5s3.134-5 7-5 7 4.134 7 5-3.134 5-7 5zm0-8c-1.103 0-2 2.015-2 3s.897 3 2 3 2-2.015 2-3-.897-3-2-3z" />
-                                                        </svg>
+                                                        class="bg-blue-500 text-white px-3 py-2 rounded flex items-center">
+                                                        <i class="fas fa-eye text-sm"></i>
                                                     </a>
                                                     <span
                                                         class="absolute hidden group-hover:block bg-gray-800 text-white text-sm rounded px-2 py-1 mt-2 left-1/2 transform -translate-x-1/2">
@@ -178,26 +179,6 @@
                                                         Detail
                                                     </span>
                                                 </div>
-                                                <!-- Tombol Edit -->
-                                                <div class="relative group inline-block">
-                                                    <button type="button"
-                                                        class="bg-yellow-500 text-white px-3 py-1 rounded flex items-center"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#editOrderModal{{ $order->id }}">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
-                                                            viewBox="0 0 20 20" fill="currentColor">
-                                                            <path
-                                                                d="M17.414 2.586a2 2 0 00-2.828 0L8 9.172 7 13l3.828-1L17.414 5.414a2 2 0 000-2.828l-1-1zM15 4l1-1L15 2l-1 1 1 1zM4 13v3h3l9-9-3-3L4 13z" />
-                                                        </svg>
-                                                    </button>
-                                                    <span
-                                                        class="absolute hidden group-hover:block bg-gray-800 text-white text-sm rounded px-2 py-1 mt-2 left-1/2 transform -translate-x-1/2">
-                                                        <span
-                                                            class="absolute bg-gray-800 h-2 w-2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-45"></span>
-                                                        Edit
-                                                    </span>
-                                                </div>
-
                                                 <!-- Form Hapus Pesanan -->
                                                 <div class="relative group inline-block">
                                                     <!-- Tombol Hapus yang akan membuka modal konfirmasi -->
@@ -206,15 +187,10 @@
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="button"
-                                                            class="bg-red-500 text-white px-3 py-1 rounded flex items-center"
+                                                            class="bg-red-500 text-white px-3 py-2 rounded flex items-center"
                                                             data-bs-toggle="modal"
                                                             data-bs-target="#hapusmodal{{ $order->id }}">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
-                                                                viewBox="0 0 20 20" fill="currentColor">
-                                                                <path fill-rule="evenodd"
-                                                                    d="M6 4a1 1 0 000 2h8a1 1 0 100-2H6zM3 6a1 1 0 011-1h12a1 1 0 011 1v11a2 2 0 01-2 2H5a2 2 0 01-2-2V6zm4 9a1 1 0 102 0V8a1 1 0 00-2 0v7zm5-1a1 1 0 10-2 0V8a1 1 0 112 0v6z"
-                                                                    clip-rule="evenodd" />
-                                                            </svg>
+                                                            <i class="fas fa-trash text-sm"></i>
                                                         </button>
                                                         <span
                                                             class="absolute hidden group-hover:block bg-gray-800 text-white text-sm rounded px-2 py-1 mt-2 left-1/2 transform -translate-x-1/2">
@@ -224,6 +200,59 @@
                                                         </span>
                                                     </form>
                                                 </div>
+                                                <div class="relative group inline-block">
+                                                    <!-- Form Proses -->
+                                                    <form style="display: inline;" id="form-proses-{{ $order->id }}" method="POST" action="{{ route('admin.order.updateStatus', $order->id) }}">
+                                                        @csrf
+                                                        <input type="hidden" name="status" value="processing">
+                                                
+                                                        @if ($order->status_order == 'pending')
+                                                            <button type="button" class="bg-blue-400 rounded text-white flex items-center relative px-3 py-2" aria-label="Proses" onclick="confirmStatusUpdate('form-proses-{{ $order->id }}', 'Dikemas', 'Pesanan akan diproses dan dikemas.')">
+                                                                <i class="fas fa-cogs text-sm"></i>
+                                                            </button>
+                                                            <!-- Tooltip Kemas -->
+                                                            <span class="absolute hidden group-hover:block bg-gray-800 text-white text-sm rounded px-2 py-1 mt-2 left-1/2 transform -translate-x-1/2">
+                                                                <span class="absolute bg-gray-800 h-2 w-2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-45"></span>
+                                                                Kemas
+                                                            </span>
+                                                        @endif
+                                                    </form>
+                                                
+                                                    <!-- Form Kirim -->
+                                                    <form id="form-kirim-{{ $order->id }}" method="POST" action="{{ route('admin.order.updateStatus', $order->id) }}">
+                                                        @csrf
+                                                        <input type="hidden" name="status" value="shipping">
+                                                
+                                                        @if ($order->status_order == 'processing')
+                                                            <button type="button" class="bg-orange-500 rounded text-white flex items-center relative px-3 py-2" aria-label="Kirim" onclick="confirmStatusUpdate('form-kirim-{{ $order->id }}', 'Dikirim', 'Pesanan akan dikirim ke alamat tujuan.')">
+                                                                <i class="fas fa-truck text-sm"></i>
+                                                            </button>
+                                                            <!-- Tooltip Kirim -->
+                                                            <span class="absolute hidden group-hover:block bg-gray-800 text-white text-sm rounded px-2 py-1 mt-2 left-1/2 transform -translate-x-1/2">
+                                                                <span class="absolute bg-gray-800 h-2 w-2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-45"></span>
+                                                                Kirim
+                                                            </span>
+                                                        @endif
+                                                    </form>
+                                                
+                                                    <!-- Form Selesai -->
+                                                    <form id="form-selesai-{{ $order->id }}" method="POST" action="{{ route('admin.order.updateStatus', $order->id) }}">
+                                                        @csrf
+                                                        <input type="hidden" name="status" value="completed">
+                                                    
+                                                        @if ($order->status_order == 'shipping' && $order->created_at->diffInDays(now()) >= 14)
+                                                            <button type="button" class="bg-green-500 text-white rounded flex items-center relative px-3 py-2" aria-label="Selesai" onclick="confirmStatusUpdate('form-selesai-{{ $order->id }}', 'Selesai', 'Pesanan ini telah selesai dan diterima oleh pelanggan.')">
+                                                                <i class="fas fa-check-circle text-sm"></i>
+                                                            </button>
+                                                            <!-- Tooltip Selesai -->
+                                                            <span class="absolute hidden group-hover:block bg-gray-800 text-white text-sm rounded px-2 py-1 mt-2 left-1/2 transform -translate-x-1/2">
+                                                                <span class="absolute bg-gray-800 h-2 w-2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-45"></span>
+                                                                Selesai
+                                                            </span>
+                                                        @endif
+                                                    </form>   
+                                                </div>
+                                                
                                             </div>
                                         </td>
                                     </tr>
@@ -267,37 +296,14 @@
                                                         aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
+
                                                     <!-- Form Proses -->
-                                                    <form method="POST" action="{{ route('admin.order.updateStatus', $order->id) }}">
-                                                        @csrf
-                                                        <input type="hidden" name="status" value="processing">
-                                                
-                                                        @if ($order->status_order == 'pending')
-                                                            <button type="submit" class="btn btn-primary" onclick="confirmStatusUpdate(event, 'proses')">Proses</button>
-                                                        @endif
-                                                    </form>
-                                                
+
+
                                                     <!-- Form Kirim -->
-                                                    <form method="POST" action="{{ route('admin.order.updateStatus', $order->id) }}">
-                                                        @csrf
-                                                        <input type="hidden" name="status" value="shipping">
-                                                
-                                                        @if ($order->status_order == 'processing')
-                                                            <button type="submit" class="btn btn-secondary" onclick="confirmStatusUpdate(event, 'kirim')">Kirim</button>
-                                                        @endif
-                                                    </form>
-                                                
-                                                    <!-- Form Selesai -->
-                                                    <form method="POST" action="{{ route('admin.order.updateStatus', $order->id) }}">
-                                                        @csrf
-                                                        <input type="hidden" name="status" value="completed">
-                                                
-                                                        @if ($order->status_order == 'shipping')
-                                                            <button type="submit" class="btn btn-success" onclick="confirmStatusUpdate(event, 'selesai')">Selesai</button>
-                                                        @endif
-                                                    </form>
+
                                                 </div>
-                                            
+
                                             </div>
                                         </div>
                                     </div>
@@ -315,52 +321,46 @@
         {{ $orders->links() }}
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-                                                
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        // Fungsi konfirmasi berdasarkan status
-        function confirmStatusUpdate(event, status) {
-            event.preventDefault();  // Mencegah form untuk langsung dikirim
-            const form = event.target.closest('form');  // Ambil form terdekat
-    
-            let title, text;
-            // Menyesuaikan judul dan teks berdasarkan status
-            if (status === 'proses') {
-                title = "Kamu Yakin?";
-                text = "Pesanan akan diproses dan dikemas.";
-            } else if (status === 'kirim') {
-                title = "Kamu Yakin?";
-                text = "Pesanan akan dikirim ke alamat tujuan.";
-            } else if (status === 'selesai') {
-                title = "Kamu Yakin?";
-                text = "Pesanan ini telah selesai dan diterima oleh pelanggan.";
-            }
-    
+        /**
+         * Konfirmasi pembaruan status pesanan
+         * @param {string} formId - ID form yang akan disubmit
+         * @param {string} actionName - Nama aksi untuk ditampilkan di dialog
+         * @param {string} confirmationText - Pesan konfirmasi yang akan ditampilkan
+         */
+        function confirmStatusUpdate(formId, actionName, confirmationText) {
             Swal.fire({
-                title: title,
-                text: text,
+                title: `Konfirmasi ${actionName}`,
+                text: confirmationText,
                 icon: "warning",
-                iconColor: "#334155",
-                width: 400,
-                background: "#fff",
+                iconColor: "#334155", // Warna ikon peringatan
                 showCancelButton: true,
-                confirmButtonColor: "#334155",
-                cancelButtonColor: "#b91c1c",
-                confirmButtonText: "Ya, Lanjutkan!",
-                cancelButtonText: "Batal"
+                confirmButtonColor: "#334155", // Tombol konfirmasi berwarna biru
+                cancelButtonColor: "#d33", // Tombol batal berwarna merah
+                confirmButtonText: "Ya, Lanjutkan!", // Teks tombol konfirmasi
+                cancelButtonText: "Batal", // Teks tombol batal
+                customClass: {
+                    popup: 'swal-popup-blue', // Tambahkan kelas khusus untuk popup
+                },
+                background: "#eff6ff", // Warna latar belakang biru terang
+                width: 400, // Lebar popup
             }).then((result) => {
                 if (result.isConfirmed) {
-                    form.submit();  // Kirimkan form jika konfirmasi ya
+                    // Submit form jika konfirmasi berhasil
+                    document.getElementById(formId).submit();
+
+                    // Toast notifikasi berhasil
                     Swal.fire({
                         toast: true,
-                        position: 'top-end',
-                        icon: 'success',
-                        iconColor: '#3b82f6', 
-                        title: 'Status berhasil diperbarui!',
-                        showConfirmButton: false,
-                        timer: 1500,
-                        timerProgressBar: true,
-                        background: '#eff6ff',
+                        position: 'top-end', // Posisi di kanan atas
+                        icon: 'success', // Ikon sukses
+                        iconColor: '#3b82f6', // Warna ikon sukses
+                        title: `${actionName} berhasil!`,
+                        showConfirmButton: false, // Tidak ada tombol konfirmasi
+                        timer: 1500, // Waktu notifikasi dalam milidetik
+                        timerProgressBar: true, // Menampilkan progres waktu
+                        background: '#eff6ff', // Warna latar belakang biru terang
                     });
                 }
             });
