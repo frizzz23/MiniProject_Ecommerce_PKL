@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Models\PromoCode;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class DiscountController extends Controller
 {
@@ -127,14 +128,24 @@ class DiscountController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        try {
-            $promo = PromoCode::findOrFail($id);
-            $promo->delete();
-            return redirect()->route('admin.discount.index')->with('success', 'Promo berhasil dihapus.');
-        } catch (\Throwable $th) {
-            return redirect()->route('admin.discount.index')->with('error', 'Promo tidak dapat dihapus.');
-        }
+
+
+public function destroy(string $id)
+{
+    try {
+        // Cari data promo berdasarkan ID
+        $promo = PromoCode::findOrFail($id);
+
+        // Set promo_code_id menjadi NULL di tabel orders
+        DB::table('orders')->where('promo_code_id', $promo->id)->update(['promo_code_id' => null]);
+
+        // Hapus promo code
+        $promo->delete();
+
+        return redirect()->route('admin.discount.index')->with('success', 'Promo berhasil dihapus.');
+    } catch (\Throwable $th) {
+        return redirect()->route('admin.discount.index')->with('error', 'Promo tidak dapat dihapus.');
     }
+}
+
 }
