@@ -538,7 +538,7 @@
 
     <section class="md:px-28 px-5 py-5 mb-10">
         <h1 class="text-2xl font-semibold text-slate-700 mb-10">
-            Today <span class="text-blue-500">Best Deals</span>
+            Produk <span class="text-blue-500">Terlaris</span>
         </h1>
 
         <div class="grid md:grid-cols-[2fr_1fr_1fr] grid-cols-1 gap-4">
@@ -874,54 +874,55 @@
             Produk Teratas <span class=" text-slate-700">berdasarkan Kategori</span>
         </h1>
         <div class="grid md:grid-cols-4 grid-cols-2 gap-4">
-            @foreach ($products as $product)
-                <div class="border-2 py-3 px-2 flex flex-col justify-between">
-                    <a href="{{ route('page.productshow', $product->slug) }}"
-                        class="font-medium text-slate-800 text-sm tracking-tighter">
-                        {{ $product->name_product }} <!-- Tampilkan nama produk -->
-                    </a>
-                    <a href="{{ route('page.productshow', $product->slug) }}"
-                        class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-4">
-                        @if ($product->image_product)
-                            <img src="{{ asset('storage/' . $product->image_product) }}" alt="Product Image"
-                                class="object-cover w-32 h-32" />
-                        @else
-                            <img src="{{ asset('img/img-carousel-promo/laptop.jpg') }}" alt="Default Image"
-                                class="object-cover w-32 h-32" />
-                        @endif
-                    </a>
-                    <div class="flex items-center space-x-1 mb-2">
-                        @for ($i = 1; $i <= 5; $i++)
-                            @if ($i <= floor($product->average_rating ?? 0))
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                    class="w-4 h-4 text-yellow-400" viewBox="0 0 24 24">
-                                    <path
-                                        d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
-                                    </path>
-                                </svg>
+            @foreach ($topProducts as $product)
+                @if ($product)  <!-- Pastikan produk ada -->
+                    <div class="border-2 py-3 px-2 flex flex-col justify-between">
+                        <a href="{{ route('page.productshow', $product->slug) }}"
+                            class="font-medium text-slate-800 text-sm tracking-tighter">
+                            {{ $product->name_product }}
+                        </a>
+                        <a href="{{ route('page.productshow', $product->slug) }}"
+                            class="flex justify-center items-center bg-center bg-contain overflow-hidden mx-auto mb-4">
+                            @if ($product->image_product)
+                                <img src="{{ asset('storage/' . $product->image_product) }}" alt="Product Image"
+                                    class="object-cover w-32 h-32" />
                             @else
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                    class="w-4 h-4 text-gray-300" viewBox="0 0 24 24">
-                                    <path
-                                        d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
-                                    </path>
-                                </svg>
+                                <img src="{{ asset('img/img-carousel-promo/laptop.jpg') }}" alt="Default Image"
+                                    class="object-cover w-32 h-32" />
                             @endif
-                        @endfor
-                        <span class="text-sm text-slate-600">
-                            {{ $product->reviews_count ?? 0 }} reviews
-                        </span>
-                    </div>
-                    <div>
-                        <span class="space-x-2 text-sm text-slate-600">{{ $product->sold_count ?? 0 }}
-                            terjual</span>
-                    </div>
+                        </a>
+                        <div class="flex items-center space-x-1 mb-2">
+                            @for ($i = 1; $i <= 5; $i++)
+                                @if ($i <= floor($product->average_rating ?? 0))
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                        class="w-4 h-4 text-yellow-400" viewBox="0 0 24 24">
+                                        <path
+                                            d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
+                                        </path>
+                                    </svg>
+                                @else
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                        class="w-4 h-4 text-gray-300" viewBox="0 0 24 24">
+                                        <path
+                                            d="M12 17.75l-6.16 3.24a1 1 0 0 1-1.45-1.05l1.17-7.23L1.31 8.7a1 1 0 0 1 .56-1.72l7.29-.61L12 .25l3.03 6.12 7.29.61a1 1 0 0 1 .56 1.72l-4.74 4.24 1.17 7.23a1 1 0 0 1-1.45 1.05L12 17.75z">
+                                        </path>
+                                    </svg>
+                                @endif
+                            @endfor
+                            <span class="text-sm text-slate-600">
+                                {{ $product->reviews_count ?? 0 }} reviews
+                            </span>
+                        </div>
+                        <div>
+                            <span class="space-x-2 text-sm text-slate-600">{{ $product->sold_count ?? 0 }}
+                                terjual</span>
+                        </div>
 
-                    <div class="flex justify-between">
-                        <p class="text-xl text-blue-500 font-medium tracking-tight">
-                            Rp.{{ number_format($product->price_product, 0, ',', '.') }}
-                        </p>
-                        @auth
+                        <div class="flex justify-between">
+                            <p class="text-xl text-blue-500 font-medium tracking-tight">
+                                Rp.{{ number_format($product->price_product, 0, ',', '.') }}
+                            </p>
+                            @auth
                             <button onclick="addToCart({{ $product->id }}, this)" type="button"
                                 class="w-10 h-10 bg-blue-500 flex justify-center items-center rounded-md">
                                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -944,39 +945,40 @@
                                     </g>
                                 </svg>
                             </button>
-                        @else
+                            @else
                             <a href="{{ route('login') }}"
-                                class="w-10 h-10 bg-blue-500 flex justify-center items-center rounded-md">
-                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                    class="w-5 h-5">
-                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                    <g id="SVGRepo_iconCarrier">
-                                        <path
-                                            d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H19"
-                                            stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
-                                        <path
-                                            d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z"
-                                            stroke="#ffffff" stroke-width="1.5"></path>
-                                        <path
-                                            d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z"
-                                            stroke="#ffffff" stroke-width="1.5"></path>
-                                        <path
-                                            d="M5 6H16.4504C18.5054 6 19.5328 6 19.9775 6.67426C20.4221 7.34853 20.0173 8.29294 19.2078 10.1818L18.7792 11.1818C18.4013 12.0636 18.2123 12.5045 17.8366 12.7523C17.4609 13 16.9812 13 16.0218 13H5"
-                                            stroke="#ffffff" stroke-width="1.5"></path>
-                                    </g>
-                                </svg>
-                            </a>
-                        @endauth
+                            class="w-10 h-10 bg-blue-500 flex justify-center items-center rounded-md">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                class="w-5 h-5">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path
+                                        d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H19"
+                                        stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
+                                    <path
+                                        d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z"
+                                        stroke="#ffffff" stroke-width="1.5"></path>
+                                    <path
+                                        d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z"
+                                        stroke="#ffffff" stroke-width="1.5"></path>
+                                    <path
+                                        d="M5 6H16.4504C18.5054 6 19.5328 6 19.9775 6.67426C20.4221 7.34853 20.0173 8.29294 19.2078 10.1818L18.7792 11.1818C18.4013 12.0636 18.2123 12.5045 17.8366 12.7523C17.4609 13 16.9812 13 16.0218 13H5"
+                                        stroke="#ffffff" stroke-width="1.5"></path>
+                                </g>
+                            </svg>
+                        </a>
+                            @endauth
+                        </div>
                     </div>
-                </div>
+                @endif
             @endforeach
         </div>
     </section>
 
     <section class="md:px-28 px-5 py-5 mb-10">
         <h1 class="text-2xl font-semibold text-slate-700 mb-10">
-            Flash <span class="text-blue-500">Sale</span>
+            Produk <span class="text-blue-500">Terbaru</span>
         </h1>
 
         <div class="grid md:grid-cols-[2fr_1fr_1fr] grid-cols-1 gap-4">
@@ -990,7 +992,7 @@
                     ">
                 <div>
                     <h5 class="text-2xl font-bold mb-2 text-blue-600">
-                        Spesial Product Sale
+                        Spesial Produk Terbaru
                     </h5>
                     <div class="grid grid-cols-2">
                         <div>
