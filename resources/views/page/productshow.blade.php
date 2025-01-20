@@ -328,12 +328,41 @@
 
                 <!-- Deskripsi Produk -->
                 <div class="border-2 min-h-96 p-5 flex flex-col justify-between">
+
                     <!-- Nama Produk -->
                     <div class="flex items-center gap-1">
                         <h2 class="text-2xl font-bold text-slate-800">
                             {{ $product->name_product }}
                         </h2>
                     </div>
+
+                    <div class="flex items-center gap-1">
+                        <p class="text-lg text-slate-800 font-medium tracking-tight">
+                            Brand : {{ $product->brand->name_brand }}
+                        </p>
+                    </div>
+
+                    <div class="flex items-center gap-1">
+                        <p class="text-lg text-slate-800 font-medium tracking-tight">
+                            Categori : {{ $product->category->name_category }}
+                        </p>
+                    </div>
+
+                    <!-- Stok Produk -->
+                    <div class="flex items-center gap-1">
+                        <p class="text-lg text-slate-800 font-medium tracking-tight">
+                            Stock : {{ $product->stock_product }}
+                        </p>
+                    </div>
+
+                    <!-- Jumlah Terjual -->
+                    <div class="flex items-center gap-1">
+                        <span>
+                            Terjual: {{ $productOrdersCount }} unit
+                        </span>
+                    </div>
+
+
 
                     <!-- Rating dan Review -->
                     <div class="flex items-center gap-1">
@@ -356,19 +385,9 @@
                         </p>
                     </div>
 
-                    <!-- Jumlah Terjual -->
-                    <div class="flex items-center gap-1">
-                        <span>
-                            Terjual: {{ $productOrdersCount }} unit
-                        </span>
-                    </div>
 
-                    <!-- Stok Produk -->
-                    <div class="flex items-center gap-1">
-                        <p class="text-lg text-slate-800 font-medium tracking-tight">
-                            Stock : {{ $product->stock_product }}
-                        </p>
-                    </div>
+
+
 
                     <!-- Tombol Add to Cart dan Buy Now -->
                     <div class="flex gap-4 items-center w-full">

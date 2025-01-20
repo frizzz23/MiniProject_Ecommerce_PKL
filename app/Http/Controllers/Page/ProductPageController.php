@@ -116,6 +116,8 @@ class ProductPageController extends Controller
      */
     public function show(Request $request, $slug)
 {
+    $categories = Category::all();
+    $brands = Brand::all();
     // Gunakan slug untuk mencari produk
     $product = Product::with('reviews.user')->where('slug', $slug)->firstOrFail();
 

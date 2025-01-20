@@ -34,86 +34,86 @@ class ApiCartController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    // public function store(Request $request)
+    // {
+    //     $request->validate(['id_product' => 'required']);
+    //     $product = Product::find($request->id_product);
+    //     if (empty($product)) {
+    //         return response()->json(['status' => 'error', 'message' => 'Product tidak ditemukan'], 404);
+    //         die();
+    //     }
+    //     if ($product->stock_product <= 0) {
+    //         return response()->json(['status' => 'error', 'message' => 'stok product sudah habis']);
+    //         die();
+    //     }
+    //     $user = Auth::user();
+    //     $cart = Cart::where('user_id', $user->id)->where('product_id', $product->id)->first();
+    //     if ($cart) {
+    //         if ($cart->quantity > $product->stock_product) {
+    //             return response()->json(['status' => 'warning', 'message' => 'jumlah melebihi stok product'], 400);
+    //             die();
+    //         }
+    //         $cart->update([
+    //             'quantity' => $cart->quantity,
+    //         ]);
+    //     } else {
+    //         Cart::create([
+    //             'user_id' => $user->id,
+    //             'product_id' => $product->id,
+    //             'quantity' => 1,
+    //         ]);
+    //     }
+    //     $cart = Cart::where('user_id', $user->id)->with(['product'])->latest()->take($this->ambil)->get();
+    //     return response()->json(['status' => 'success', 'data' =>  $cart], 200);
+    // }
+
     public function store(Request $request)
-    {
-        $request->validate(['id_product' => 'required']);
-        $product = Product::find($request->id_product);
-        if (empty($product)) {
-            return response()->json(['status' => 'error', 'message' => 'Product tidak ditemukan'], 404);
-            die();
-        }
-        if ($product->stock_product <= 0) {
-            return response()->json(['status' => 'error', 'message' => 'stok product sudah habis']);
-            die();
-        }
-        $user = Auth::user();
-        $cart = Cart::where('user_id', $user->id)->where('product_id', $product->id)->first();
-        if ($cart) {
-            if ($cart->quantity > $product->stock_product) {
-                return response()->json(['status' => 'warning', 'message' => 'jumlah melebihi stok product'], 400);
-                die();
-            }
-            $cart->update([
-                'quantity' => $cart->quantity,
-            ]);
-        } else {
-            Cart::create([
-                'user_id' => $user->id,
-                'product_id' => $product->id,
-                'quantity' => 1,
-            ]);
-        }
-        $cart = Cart::where('user_id', $user->id)->with(['product'])->latest()->take($this->ambil)->get();
-        return response()->json(['status' => 'success', 'data' =>  $cart], 200);
+{
+    $request->validate(['id_product' => 'required']);
+    $product = Product::find($request->id_product);
+
+    // Cek jika produk tidak ditemukan
+    if (empty($product)) {
+        return response()->json(['status' => 'error', 'message' => 'Product tidak ditemukan'], 404);
     }
 
-//     public function store(Request $request)
-// {
-//     $request->validate(['id_product' => 'required']);
-//     $product = Product::find($request->id_product);
+    // Cek jika stok produk habis
+    if ($product->stock_product <= 0) {
+        return response()->json(['status' => 'error', 'message' => 'stok product sudah habis']);
+    }
 
-//     // Cek jika produk tidak ditemukan
-//     if (empty($product)) {
-//         return response()->json(['status' => 'error', 'message' => 'Product tidak ditemukan'], 404);
-//     }
+    // Mendapatkan user yang sedang login
+    $user = Auth::user();
 
-//     // Cek jika stok produk habis
-//     if ($product->stock_product <= 0) {
-//         return response()->json(['status' => 'error', 'message' => 'stok product sudah habis']);
-//     }
+    // Cek apakah produk sudah ada di keranjang
+    $cart = Cart::where('user_id', $user->id)->where('product_id', $product->id)->first();
 
-//     // Mendapatkan user yang sedang login
-//     $user = Auth::user();
+    if ($cart) {
+        // Cek jika jumlah produk yang ingin ditambahkan melebihi stok produk
+        $newQuantity = $cart->quantity + 1;
+        if ($newQuantity > $product->stock_product) {
+            return response()->json(['status' => 'warning', 'message' => 'Jumlah melebihi stok produk'], 400);
+        }
 
-//     // Cek apakah produk sudah ada di keranjang
-//     $cart = Cart::where('user_id', $user->id)->where('product_id', $product->id)->first();
+        // Update kuantitas produk di keranjang
+        $cart->update([
+            'quantity' => $newQuantity,
+        ]);
+    } else {
+        // Jika produk belum ada di keranjang, buat entri baru dengan kuantitas 1
+        Cart::create([
+            'user_id' => $user->id,
+            'product_id' => $product->id,
+            'quantity' => 1,
+        ]);
+    }
 
-//     if ($cart) {
-//         // Cek jika jumlah produk yang ingin ditambahkan melebihi stok produk
-//         $newQuantity = $cart->quantity + 1;
-//         if ($newQuantity > $product->stock_product) {
-//             return response()->json(['status' => 'warning', 'message' => 'Jumlah melebihi stok produk'], 400);
-//         }
+    // Mengambil data keranjang terbaru dengan relasi produk
+    $cart = Cart::where('user_id', $user->id)->with(['product'])->latest()->take($this->ambil)->get();
 
-//         // Update kuantitas produk di keranjang
-//         $cart->update([
-//             'quantity' => $newQuantity,
-//         ]);
-//     } else {
-//         // Jika produk belum ada di keranjang, buat entri baru dengan kuantitas 1
-//         Cart::create([
-//             'user_id' => $user->id,
-//             'product_id' => $product->id,
-//             'quantity' => 1,
-//         ]);
-//     }
-
-//     // Mengambil data keranjang terbaru dengan relasi produk
-//     $cart = Cart::where('user_id', $user->id)->with(['product'])->latest()->take($this->ambil)->get();
-
-//     // Mengembalikan respon dengan data keranjang terbaru
-//     return response()->json(['status' => 'success', 'data' => $cart], 200);
-// }
+    // Mengembalikan respon dengan data keranjang terbaru
+    return response()->json(['status' => 'success', 'data' => $cart], 200);
+}
 
 
     /**
