@@ -72,7 +72,7 @@
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     <!-- SVG for Notification Icon -->
                                     <i class="fa-regular fa-bell"></i>
-                                    
+
                                     @if ($unreadNotifications->count() > 0)
                                         <span class="relative flex h-4 w-4 -translate-y-2 -translate-x-1">
                                             <span
@@ -88,7 +88,7 @@
                                     aria-labelledby="notificationDropdown">
                                     <div class="notification-list" style="max-height: 300px; overflow-y: auto;">
                                         @forelse($unreadNotifications as $notification)
-                                            <a href="{{ route('admin.orders.show', $notification->order->id ) }}"
+                                            <a href="{{ route('admin.orders.show', $notification->order->id) }}"
                                                 class="dropdown-item border-bottom notification-item"
                                                 data-order-id="{{ $notification->order_id }}">
                                                 <div class="d-flex align-items-center gap-2 py-2">
@@ -96,12 +96,21 @@
                                                         <h6 class="mb-0">
                                                             {{ $notification->order->user->name }}</h6>
                                                         <p class="mb-0 text-muted">
-                                                            @foreach ($notification->order->productOrders as $productOrder)
-                                                                {{ $productOrder->product->name_product }},
-                                                            @endforeach
+                                                            @if ($notification->order->productOrders->count() > 1)
+                                                                {{ $notification->order->productOrders->first()->product->name_product }}
+                                                                <span class="text-secondary text-gray-600"
+                                                                    style="font-size: 0.85em;">dan
+                                                                    lainnya</span>
+                                                            @else
+                                                                {{ $notification->order->productOrders->first()->product->name_product }}
+                                                            @endif
                                                         </p>
-                                                        <small class="text-muted">Status:
-                                                            {{ $notification->order->status_order }}</small>
+                                                        <small class="text-muted">
+                                                            <i>Status: {{ $notification->order->status_order }}</i>
+                                                        </small>
+                                                        <p class="text-xs text-gray-500">
+                                                            {{ $notification->created_at->diffForHumans() }}
+                                                        </p>
                                                     </div>
                                                 </div>
                                             </a>

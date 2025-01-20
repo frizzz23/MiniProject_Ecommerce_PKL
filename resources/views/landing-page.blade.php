@@ -56,6 +56,50 @@
         .bounceIn {
             animation-name: bounceIn;
         }
+
+        .notification-dropdown {
+            position: relative;
+        }
+
+        #notificationDropdownMenu {
+            transform-origin: top right;
+            transition: all 0.2s ease-out;
+        }
+
+        #notificationDropdownMenu.show {
+            display: block;
+            animation: dropdownFadeIn 0.2s ease-out;
+        }
+
+        @keyframes dropdownFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* Custom scrollbar untuk daftar notifikasi */
+        .overflow-y-auto::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .overflow-y-auto::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .overflow-y-auto::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
     </style>
 
 </head>
@@ -127,6 +171,76 @@
                 </span>
             </div>
 
+            <!-- Notifikasi Icon dan Dropdown -->
+            @auth
+                @if (!auth()->user()->hasRole('admin'))
+                    <div class="relative gap-1">
+                        <button class="flex gap-1 items-center" type="button" id="userNotificationDropdown">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                class="w-6 h-6 text-white">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                                </path>
+                            </svg>
+                            <span class="text-sm text-white">Notifikasi</span>
+                            @if ($userNotifications->count() > 0)
+                                <span class="relative flex h-4 w-4 -translate-y-2 -translate-x-1">
+                                    <span
+                                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                    <span
+                                        class="relative inline-flex rounded-full h-4 w-4 bg-red-500 text-white text-[10px] flex items-center justify-center">
+                                        {{ $userNotifications->count() }}
+                                    </span>
+                                </span>
+                            @endif
+                        </button>
+
+                        <!-- Dropdown Notifikasi -->
+                        <div id="notificationDropdownMenu"
+                            class="hidden absolute right-0 w-80 max-h-[400px] bg-white rounded-lg shadow-lg mt-2 z-50 overflow-hidden">
+                            <!-- Header Dropdown -->
+                            <div class="px-4 py-3 border-b border-gray-100 bg-gray-50">
+                                <h3 class="text-sm font-semibold text-gray-800">Notifikasi</h3>
+                            </div>
+
+                            <!-- Daftar Notifikasi -->
+                            <div class="overflow-y-auto max-h-[300px]">
+                                @forelse($userNotifications as $notification)
+                                    <a href="{{ route('notifications.mark-as-read', $notification->id) }}"
+                                        class="block px-4 py-3 hover:bg-gray-50 border-b border-gray-100 transition duration-150">
+                                        <div class="d-flex align-items-center gap-2 py-2">
+                                            <div>
+                                                <p class="mb-0 text-muted">
+                                                    @if ($notification->order->productOrders->count() > 1)
+                                                        {{ $notification->order->productOrders->first()->product->name_product }}
+                                                        <span class="text-secondary text-gray-600"
+                                                            style="font-size: 0.85em;">dan
+                                                            lainnya</span>
+                                                    @else
+                                                        {{ $notification->order->productOrders->first()->product->name_product }}
+                                                    @endif
+                                                </p>
+                                                <small class="text-muted">
+                                                    <i>Status: {{ $notification->order->status_order }}</i>
+                                                </small>
+                                                <p class="text-xs text-gray-500">
+                                                    {{ $notification->created_at->diffForHumans() }}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                    </a>
+                                @empty
+                                    <div class="px-4 py-3 text-center">
+                                        <p class="text-sm text-gray-500">Tidak ada notifikasi baru</p>
+                                    </div>
+                                @endforelse
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            @endauth
+
             <div class="hidden gap-1 items-center xl:flex">
                 @guest
                     <svg viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
@@ -196,8 +310,6 @@
                         </div>
                     @endif
                 @endauth
-
-
             </div>
         </div>
 
@@ -367,7 +479,7 @@
             <!-- Slides -->
             <div id="carouselSlides" class="flex transition-transform duration-700">
                 {{-- First Slide - Improved Voucher Display --}}
-            <div class="w-full flex-shrink-0 relative">
+                <div class="w-full flex-shrink-0 relative">
                     <div class="relative w-full h-full bg-gradient-to-r from-blue-50 to-blue-100">
                         {{-- Decorative Elements - Winter Theme --}}
                         {{-- Snowflakes Top --}}
@@ -875,7 +987,8 @@
         </h1>
         <div class="grid md:grid-cols-4 grid-cols-2 gap-4">
             @foreach ($topProducts as $product)
-                @if ($product)  <!-- Pastikan produk ada -->
+                @if ($product)
+                    <!-- Pastikan produk ada -->
                     <div class="border-2 py-3 px-2 flex flex-col justify-between">
                         <a href="{{ route('page.productshow', $product->slug) }}"
                             class="font-medium text-slate-800 text-sm tracking-tighter">
@@ -923,51 +1036,51 @@
                                 Rp.{{ number_format($product->price_product, 0, ',', '.') }}
                             </p>
                             @auth
-                            <button onclick="addToCart({{ $product->id }}, this)" type="button"
-                                class="w-10 h-10 bg-blue-500 flex justify-center items-center rounded-md">
-                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                    class="w-5 h-5">
-                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                    <g id="SVGRepo_iconCarrier">
-                                        <path
-                                            d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H19"
-                                            stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
-                                        <path
-                                            d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z"
-                                            stroke="#ffffff" stroke-width="1.5"></path>
-                                        <path
-                                            d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z"
-                                            stroke="#ffffff" stroke-width="1.5"></path>
-                                        <path
-                                            d="M5 6H16.4504C18.5054 6 19.5328 6 19.9775 6.67426C20.4221 7.34853 20.0173 8.29294 19.2078 10.1818L18.7792 11.1818C18.4013 12.0636 18.2123 12.5045 17.8366 12.7523C17.4609 13 16.9812 13 16.0218 13H5"
-                                            stroke="#ffffff" stroke-width="1.5"></path>
-                                    </g>
-                                </svg>
-                            </button>
+                                <button onclick="addToCart({{ $product->id }}, this)" type="button"
+                                    class="w-10 h-10 bg-blue-500 flex justify-center items-center rounded-md">
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                        class="w-5 h-5">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path
+                                                d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H19"
+                                                stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
+                                            <path
+                                                d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z"
+                                                stroke="#ffffff" stroke-width="1.5"></path>
+                                            <path
+                                                d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z"
+                                                stroke="#ffffff" stroke-width="1.5"></path>
+                                            <path
+                                                d="M5 6H16.4504C18.5054 6 19.5328 6 19.9775 6.67426C20.4221 7.34853 20.0173 8.29294 19.2078 10.1818L18.7792 11.1818C18.4013 12.0636 18.2123 12.5045 17.8366 12.7523C17.4609 13 16.9812 13 16.0218 13H5"
+                                                stroke="#ffffff" stroke-width="1.5"></path>
+                                        </g>
+                                    </svg>
+                                </button>
                             @else
-                            <a href="{{ route('login') }}"
-                            class="w-10 h-10 bg-blue-500 flex justify-center items-center rounded-md">
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                class="w-5 h-5">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                    <path
-                                        d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H19"
-                                        stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
-                                    <path
-                                        d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z"
-                                        stroke="#ffffff" stroke-width="1.5"></path>
-                                    <path
-                                        d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z"
-                                        stroke="#ffffff" stroke-width="1.5"></path>
-                                    <path
-                                        d="M5 6H16.4504C18.5054 6 19.5328 6 19.9775 6.67426C20.4221 7.34853 20.0173 8.29294 19.2078 10.1818L18.7792 11.1818C18.4013 12.0636 18.2123 12.5045 17.8366 12.7523C17.4609 13 16.9812 13 16.0218 13H5"
-                                        stroke="#ffffff" stroke-width="1.5"></path>
-                                </g>
-                            </svg>
-                        </a>
+                                <a href="{{ route('login') }}"
+                                    class="w-10 h-10 bg-blue-500 flex justify-center items-center rounded-md">
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                        class="w-5 h-5">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path
+                                                d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H19"
+                                                stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path>
+                                            <path
+                                                d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z"
+                                                stroke="#ffffff" stroke-width="1.5"></path>
+                                            <path
+                                                d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z"
+                                                stroke="#ffffff" stroke-width="1.5"></path>
+                                            <path
+                                                d="M5 6H16.4504C18.5054 6 19.5328 6 19.9775 6.67426C20.4221 7.34853 20.0173 8.29294 19.2078 10.1818L18.7792 11.1818C18.4013 12.0636 18.2123 12.5045 17.8366 12.7523C17.4609 13 16.9812 13 16.0218 13H5"
+                                                stroke="#ffffff" stroke-width="1.5"></path>
+                                        </g>
+                                    </svg>
+                                </a>
                             @endauth
                         </div>
                     </div>
@@ -1287,6 +1400,35 @@
     </section>
 
     <x-list-cart-script />
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const notifButton = document.getElementById('userNotificationDropdown');
+            const notifMenu = document.getElementById('notificationDropdownMenu');
+
+            if (notifButton && notifMenu) {
+                // Toggle dropdown saat tombol diklik
+                notifButton.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    notifMenu.classList.toggle('hidden');
+                    notifMenu.classList.toggle('show');
+                });
+
+                // Tutup dropdown saat klik di luar
+                document.addEventListener('click', function(e) {
+                    if (!notifButton.contains(e.target) && !notifMenu.contains(e.target)) {
+                        notifMenu.classList.add('hidden');
+                        notifMenu.classList.remove('show');
+                    }
+                });
+
+                // Mencegah dropdown tertutup saat klik di dalam menu
+                notifMenu.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            }
+        });
+    </script>
 
     <script>
         function copyToClipboard(text) {
