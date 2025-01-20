@@ -17,9 +17,14 @@ use App\Http\Controllers\user\DiscountController;
 use App\Http\Controllers\user\CartController as UserCartController;
 use App\Http\Controllers\user\OrderController as UserOrderController;
 use App\Http\Controllers\user\AddressController as UserAddressController;
+use App\Http\Controllers\UserNotificationController;
 
 
 Route::middleware(['auth', 'role:user'])->group(function () {
+    // Route notifikasi
+    Route::get('/notifications/{id}/mark-as-read', [UserNotificationController::class, 'markAsRead'])
+        ->name('notifications.mark-as-read');
+        
     Route::resource('checkout', CheckoutController::class)->only(['index', 'store'])->names([
         'index' => 'user.checkout.index',
         'store' => 'user.checkout.store',
