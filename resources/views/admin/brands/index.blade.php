@@ -27,9 +27,18 @@
                     </div>
                 </div>
                  <!-- Card -->
-                 <div class="w-full md:w-1/4 bg-gradient-to-t from-blue-800 to-blue-400 p-4 rounded-lg shadow-md">
-                    <h2 class="text-xl font-medium text-white">Jumlah Merek</h2>
-                    <p class="text-2xl font-semibold text-white mt-2">120 Produk</p>
+                 <div class="w-full md:w-1/4 bg-gradient-to-t from-blue-800 to-blue-400 p-2 rounded-lg shadow-md">
+                    <div class="flex flex-col items-center">
+                        <!-- Ikon di atas dengan latar belakang putih dan tinggi penuh -->
+                        <div class="bg-white p-4 rounded-md h-16 w-16 flex justify-center items-center w-full">
+                            <i class="fa-regular fa-rectangle-list text-3xl text-blue-600"></i>
+                        </div>
+                        <!-- Keterangan di bawah ikon -->
+                        <div class="mt-4 text-center">
+                            <h2 class="text-xl font-medium text-white">Jumlah Merek</h2>
+                            <p class="text-2xl font-semibold text-white mt-2">{{ $brands->count() }}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
