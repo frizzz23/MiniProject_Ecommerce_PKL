@@ -24,7 +24,11 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     // Route notifikasi
     Route::get('/notifications/{id}/mark-as-read', [UserNotificationController::class, 'markAsRead'])
         ->name('notifications.mark-as-read');
-        
+
+    // Menandai semua notifikasi sebagai sudah baca
+    Route::get('/notifications/mark-all-as-read', [UserNotificationController::class, 'markAllAsRead'])
+        ->name('notifications.mark-all-as-read');
+
     Route::resource('checkout', CheckoutController::class)->only(['index', 'store'])->names([
         'index' => 'user.checkout.index',
         'store' => 'user.checkout.store',
@@ -37,7 +41,7 @@ Route::middleware(['auth', 'role:user'])->group(function () {
         'destroy' => 'user.orders.destroy',
     ]);
     Route::post('/addRiview', [UserOrderController::class, 'addRiview'])->name('user.orders.addRiview');
-    Route::post('user/order/update-status/{id}', [ UserOrderController::class, 'updateStatus'])->name('user.order.updateStatus');
+    Route::post('user/order/update-status/{id}', [UserOrderController::class, 'updateStatus'])->name('user.order.updateStatus');
     Route::resource('addresses', UserAddressController::class)->names([
         'index' => 'user.addresses.index',
         'store' => 'user.addresses.store',

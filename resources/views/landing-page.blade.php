@@ -194,17 +194,15 @@
                                 </span>
                             @endif
                         </button>
-
-                        <!-- Dropdown Notifikasi -->
                         <div id="notificationDropdownMenu"
-                            class="hidden absolute right-0 w-80 max-h-[400px] bg-white rounded-lg shadow-lg mt-2 z-50 overflow-hidden">
+                            class="hidden absolute right-0 w-80 max-h-[400px] bg-white rounded-lg shadow-lg mt-2 z-50 overflow-hidden flex-col">
                             <!-- Header Dropdown -->
                             <div class="px-4 py-3 border-b border-gray-100 bg-gray-50">
                                 <h3 class="text-sm font-semibold text-gray-800">Notifikasi</h3>
                             </div>
 
                             <!-- Daftar Notifikasi -->
-                            <div class="overflow-y-auto max-h-[300px]">
+                            <div class="overflow-y-auto flex-1 max-h-[210px]">
                                 @forelse($userNotifications as $notification)
                                     <a href="{{ route('notifications.mark-as-read', $notification->id) }}"
                                         class="block px-4 py-3 hover:bg-gray-50 border-b border-gray-100 transition duration-150">
@@ -214,21 +212,19 @@
                                                     @if ($notification->order->productOrders->count() > 1)
                                                         {{ $notification->order->productOrders->first()->product->name_product }}
                                                         <span class="text-secondary text-gray-600"
-                                                            style="font-size: 0.85em;">dan
-                                                            lainnya</span>
+                                                            style="font-size: 0.85em;">dan lainnya</span>
                                                     @else
                                                         {{ $notification->order->productOrders->first()->product->name_product }}
                                                     @endif
                                                 </p>
                                                 <small class="text-muted">
-                                                    <i>Status: {{ $notification->order->status_order }}</i>
+                                                    <i>Status: {{ $notification->message }}</i>
                                                 </small>
                                                 <p class="text-xs text-gray-500">
                                                     {{ $notification->created_at->diffForHumans() }}
                                                 </p>
                                             </div>
                                         </div>
-
                                     </a>
                                 @empty
                                     <div class="px-4 py-3 text-center">
@@ -236,10 +232,17 @@
                                     </div>
                                 @endforelse
                             </div>
+
+                            <!-- Link "Tandai Semua Sudah Dibaca" -->
+                            <div class="px-4 py-3 border-t border-gray-100 bg-gray-50 text-center">
+                                <a href="{{ route('notifications.mark-all-as-read') }}"
+                                    class="text-xs text-blue-500 hover:text-blue-700">Tandai Semua Sudah Dibaca</a>
+                            </div>
                         </div>
                     </div>
                 @endif
             @endauth
+
 
             <div class="hidden gap-1 items-center xl:flex">
                 @guest

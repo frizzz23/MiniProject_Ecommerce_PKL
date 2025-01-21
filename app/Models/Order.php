@@ -39,7 +39,7 @@ class Order extends Model
         'completed_at',
         'created_at',
         'updated_at'
-    ];
+];
 
     protected static function booted()
     {

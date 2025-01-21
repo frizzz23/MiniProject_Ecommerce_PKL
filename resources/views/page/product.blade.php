@@ -57,6 +57,59 @@
         .animate-scroll-fixed:hover {
             animation-play-state: paused;
         }
+
+        .animated {
+            animation-duration: 0.5s;
+            animation-fill-mode: both;
+        }
+
+        .bounceIn {
+            animation-name: bounceIn;
+        }
+
+        .notification-dropdown {
+            position: relative;
+        }
+
+        #notificationDropdownMenu {
+            transform-origin: top right;
+            transition: all 0.2s ease-out;
+        }
+
+        #notificationDropdownMenu.show {
+            display: block;
+            animation: dropdownFadeIn 0.2s ease-out;
+        }
+
+        @keyframes dropdownFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* Custom scrollbar untuk daftar notifikasi */
+        .overflow-y-auto::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .overflow-y-auto::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .overflow-y-auto::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
     </style>
 </head>
 
@@ -360,6 +413,78 @@
                                 id="cartCountItem"> 0</span>
                         </span>
                     </div>
+                    
+                    <!-- Notifikasi Icon dan Dropdown -->
+                    @auth
+                        @if (!auth()->user()->hasRole('admin'))
+                            <div class="relative gap-1">
+                                <button class="flex gap-1 items-center" type="button" id="userNotificationDropdown">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                        stroke="#1C274C" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                                        </path>
+                                    </svg>
+                                    <span class="text-sm text-slate-700">Notifikasi</span>
+                                    @if ($userNotifications->count() > 0)
+                                        <span class="relative flex h-4 w-4 -translate-y-2 -translate-x-1">
+                                            <span
+                                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                            <span
+                                                class="relative inline-flex rounded-full h-4 w-4 bg-red-500 text-white text-[10px] flex items-center justify-center">
+                                                {{ $userNotifications->count() }}
+                                            </span>
+                                        </span>
+                                    @endif
+                                </button>
+                                <div id="notificationDropdownMenu"
+                                    class="hidden absolute right-0 w-80 max-h-[400px] bg-white rounded-lg shadow-lg mt-2 z-50 overflow-hidden flex-col">
+                                    <!-- Header Dropdown -->
+                                    <div class="px-4 py-3 border-b border-gray-100 bg-gray-50">
+                                        <h3 class="text-sm font-semibold text-gray-800">Notifikasi</h3>
+                                    </div>
+
+                                    <!-- Daftar Notifikasi -->
+                                    <div class="overflow-y-auto flex-1 max-h-[210px]">
+                                        @forelse($userNotifications as $notification)
+                                            <a href="{{ route('notifications.mark-as-read', $notification->id) }}"
+                                                class="block px-4 py-3 hover:bg-gray-50 border-b border-gray-100 transition duration-150">
+                                                <div class="d-flex align-items-center gap-2 py-2">
+                                                    <div>
+                                                        <p class="mb-0 text-muted">
+                                                            @if ($notification->order->productOrders->count() > 1)
+                                                                {{ $notification->order->productOrders->first()->product->name_product }}
+                                                                <span class="text-secondary text-gray-600"
+                                                                    style="font-size: 0.85em;">dan lainnya</span>
+                                                            @else
+                                                                {{ $notification->order->productOrders->first()->product->name_product }}
+                                                            @endif
+                                                        </p>
+                                                        <small class="text-muted">
+                                                            <i>Status: {{ $notification->message }}</i>
+                                                        </small>
+                                                        <p class="text-xs text-gray-500">
+                                                            {{ $notification->created_at->diffForHumans() }}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        @empty
+                                            <div class="px-4 py-3 text-center">
+                                                <p class="text-sm text-gray-500">Tidak ada notifikasi baru</p>
+                                            </div>
+                                        @endforelse
+                                    </div>
+
+                                    <!-- Link "Tandai Semua Sudah Dibaca" -->
+                                    <div class="px-4 py-3 border-t border-gray-100 bg-gray-50 text-center">
+                                        <a href="{{ route('notifications.mark-all-as-read') }}"
+                                            class="text-xs text-blue-500 hover:text-blue-700">Tandai Semua Sudah Dibaca</a>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    @endauth
 
                     <div class="hidden gap-1 items-center xl:flex">
                         @guest
@@ -740,6 +865,35 @@
     <!-- end filter view -->
 
     <x-list-cart-script />
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const notifButton = document.getElementById('userNotificationDropdown');
+            const notifMenu = document.getElementById('notificationDropdownMenu');
+
+            if (notifButton && notifMenu) {
+                // Toggle dropdown saat tombol diklik
+                notifButton.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    notifMenu.classList.toggle('hidden');
+                    notifMenu.classList.toggle('show');
+                });
+
+                // Tutup dropdown saat klik di luar
+                document.addEventListener('click', function(e) {
+                    if (!notifButton.contains(e.target) && !notifMenu.contains(e.target)) {
+                        notifMenu.classList.add('hidden');
+                        notifMenu.classList.remove('show');
+                    }
+                });
+
+                // Mencegah dropdown tertutup saat klik di dalam menu
+                notifMenu.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            }
+        });
+    </script>
 
     <script>
         const carts = document.getElementById("carts");
