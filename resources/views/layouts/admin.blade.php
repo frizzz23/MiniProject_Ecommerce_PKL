@@ -105,9 +105,6 @@
                                                                 {{ $notification->order->productOrders->first()->product->name_product }}
                                                             @endif
                                                         </p>
-                                                        <small class="text-muted">
-                                                            <i>Status: {{ $notification->order->status_order }}</i>
-                                                        </small>
                                                         <p class="text-xs text-gray-500">
                                                             {{ $notification->created_at->diffForHumans() }}
                                                         </p>
@@ -119,6 +116,17 @@
                                                 <p class="mb-0 text-muted">Tidak ada orderan baru</p>
                                             </div>
                                         @endforelse
+                                    </div>
+
+                                    <!-- Link "Tandai Semua Sudah Dibaca" -->
+                                    <div class="px-4 py-3 border-t border-gray-100 bg-gray-50 text-center">
+                                        <form action="{{ route('admin.notifications.mark-all-as-read') }}"
+                                            method="POST">
+                                            @csrf
+                                            <button type="submit"
+                                                class="text-xs text-blue-500 hover:text-blue-700">Tandai Semua Sudah
+                                                Dibaca</button>
+                                        </form>
                                     </div>
                                 </div>
                             </li>

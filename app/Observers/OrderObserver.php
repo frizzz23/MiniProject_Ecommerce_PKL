@@ -20,7 +20,7 @@ class OrderObserver
         UserOrderNotification::create([
             'user_id' => $order->user_id,
             'order_id' => $order->id,
-            'message' => 'Pesanan anda #' . $order->order_code . ' sedang menunggu konfirmasi',
+            'message' => 'Pesanan anda' . ' sedang menunggu konfirmasi',
             'is_read' => false
         ]);
     }
@@ -28,7 +28,7 @@ class OrderObserver
     public function updated(Order $order)
     {
         if ($order->isDirty('status_order')) {
-            $message = $this->getStatusMessage($order->status_order, $order->order_code);
+            $message = $this->getStatusMessage($order->status_order,);
 
             UserOrderNotification::create([
                 'user_id' => $order->user_id,
@@ -39,13 +39,13 @@ class OrderObserver
         }
     }
 
-    private function getStatusMessage($status, $orderCode)
+    private function getStatusMessage($status,)
     {
         return match ($status) {
-            'processing' => 'Pesanan #' . $orderCode . ' sedang diproses',
-            'shipping' => 'Pesanan #' . $orderCode . ' sedang dalam pengiriman',
-            'completed' => 'Pesanan #' . $orderCode . ' telah selesai',
-            default => 'Status pesanan #' . $orderCode . 'konfirmasi',
+            'processing' => 'Pesanan anda'  . ' sedang diproses',
+            'shipping' => 'Pesanan anda'  . ' sedang dalam pengiriman',
+            'completed' => 'Pesanan anda'  . ' telah selesai',
+            default => 'Status pesanan anda menunggu'  . 'konfirmasi',
         };
     }
 }

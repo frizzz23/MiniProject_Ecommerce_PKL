@@ -67,14 +67,6 @@ class OrderController extends Controller
         return view('admin.orders.index', compact('orders', 'products', 'unreadNotifications'));
     }
 
-    public function markAsRead($orderId)
-    {
-        OrderNotification::where('order_id', $orderId)
-            ->update(['is_read' => true]);
-
-        return response()->json(['success' => true]);
-    }
-
     /**
      * Show the form for creating a new resource.
      */

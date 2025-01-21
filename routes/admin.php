@@ -11,11 +11,17 @@ use App\Http\Controllers\admin\ProductController as AdminProductController;
 use App\Http\Controllers\admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\admin\DiscountController as AdminDiscountController;
 use App\Http\Controllers\admin\ReviewController as AdminReviewController;
+use App\Http\Controllers\AdminNotificationController;
 
 Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
 
-    Route::post('/notifications/mark-as-read/{orderId}', [AdminOrderController::class, 'markAsRead'])
+    Route::post('/notifications/mark-as-read/{orderId}', [AdminNotificationController::class, 'markAsRead'])
         ->name('admin.notifications.mark-as-read');
+
+    // Pada route
+    Route::post('/notifications/mark-all-as-read', [AdminNotificationController::class, 'markAllAsRead'])
+        ->name('admin.notifications.mark-all-as-read');
+
     Route::resource('dashboard', AdminDashboardController::class);
     Route::resource('categories', AdminCategoryController::class)->names([
         'index' => 'admin.categories.index',
