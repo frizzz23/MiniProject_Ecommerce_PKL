@@ -192,7 +192,7 @@
                     <div class="flex justify-between items-center">
                         <!-- Kiri: Judul dan Breadcrumb -->
                         <div>
-                            <h1 class="text-3xl font-semibold text-gray-800">Daftar Merek</h1>
+                            <h1 class="text-3xl font-semibold text-gray-800">Daftar Kategori</h1>
                             <nav class="mt-2">
                                 <ol class="flex text-sm text-gray-600">
                                     <li><a href="{{ route('dashboard.index') }}" class="hover:text-blue-500">Dashboard</a>
@@ -211,9 +211,18 @@
                     </div>
                 </div>
                 <!-- Card -->
-                <div class="w-full md:w-1/4 bg-gradient-to-t from-blue-800 to-blue-400 p-4 rounded-lg shadow-md">
-                    <h2 class="text-xl font-medium text-white">Jumlah Kategori</h2>
-                    <p class="text-2xl font-semibold text-white mt-2">120 Produk</p>
+                <div class="w-full md:w-1/4 bg-gradient-to-r from-blue-800 to-blue-400 p-2 rounded-lg shadow-md">
+                    <div class="flex flex-col items-center">
+                        <!-- Ikon di atas dengan latar belakang putih dan tinggi penuh -->
+                        <div class="bg-white p-4 rounded-md h-16 w-16 flex justify-center items-center w-full">
+                            <i class="fa-regular fa-rectangle-list text-3xl text-blue-600"></i>
+                        </div>
+                        <!-- Keterangan di bawah ikon -->
+                        <div class="mt-4 text-center">
+                            <h2 class="text-xl font-medium text-white">Jumlah Kategori</h2>
+                            <p class="text-2xl font-semibold text-white mt-2">{{ $categories->count() }}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="card w-100">

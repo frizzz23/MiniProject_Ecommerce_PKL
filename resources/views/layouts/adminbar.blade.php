@@ -43,7 +43,7 @@
                                 <i class="fa-solid fa-shop"></i>
                             </span>
 
-                            <span class="ml-4">Product</span>
+                            <span class="ml-4">Produk</span>
                         </div>
                         <svg id="accountMenuChevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                             viewBox="0 0 24 24"
@@ -98,7 +98,7 @@
                                 <i class="fa-regular fa-circle"></i>
                             </span>
 
-                            <span class="ml-4">List Brand</span>
+                            <span class="ml-4">List Merek</span>
                         </a>
                     </div>
                 </div>
@@ -108,7 +108,7 @@
 
                             <i class="fa-solid fa-dolly"></i>
                         </span>
-                        <span class="hide-menu">Order</span>
+                        <span class="hide-menu">Pesanan</span>
                     </a>
                 </li>
                 <li class="sidebar-item my-2">
@@ -125,7 +125,7 @@
                         <span>
                             <i class="fa-solid fa-comments"></i>
                         </span>
-                        <span class="hide-menu">Review</span>
+                        <span class="hide-menu">Ulasan</span>
                     </a>
                 </li>
                 <li class="sidebar-item my-2">
@@ -133,7 +133,7 @@
                         <span>
                             <i class="fa-solid fa-users"></i>
                         </span>
-                        <span class="hide-menu">User</span>
+                        <span class="hide-menu">Pengguna</span>
                     </a>
                 </li>
 
