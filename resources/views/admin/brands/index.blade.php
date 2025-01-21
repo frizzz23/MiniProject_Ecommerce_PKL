@@ -396,7 +396,8 @@
                             <!-- Input Nama Merek -->
                             <div class="mb-3">
                                 <label for="name_brand" class="form-label">Nama Merek</label>
-                                <input type="text" name="name_brand" class="form-control" id="name_brand">
+                                <input type="text" name="name_brand" class="form-control" id="name_brand"
+                                value="{{ !old('brand_id') ? old('name_brand') : '' }}">
                                 @if (!old('brand_id'))
                                     @error('name_brand')
                                         <div class="text-danger mt-1">{{ $message }}</div>

@@ -408,7 +408,7 @@
                         <div class="mb-3">
                             <label for="name_category" class="form-label">Nama Kategori</label>
                             <input type="text" name="name_category" class="form-control" id="name_category"
-                                value="{{ old('name_category') }}">
+                            value="{{ !old('category_id') ? old('quantity') : '' }}">
                             @if (!old('category_id'))
                                 @error('name_category')
                                     <div class="text-danger mt-1">{{ $message }}</div>

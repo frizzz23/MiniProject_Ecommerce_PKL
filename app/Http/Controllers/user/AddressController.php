@@ -99,6 +99,7 @@ class AddressController extends Controller
         }
 
         $request->validate([
+            'mark' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'no_telepon' => 'required|string|max:15',
             'city_id' => 'required|integer', // Validasi city_id
