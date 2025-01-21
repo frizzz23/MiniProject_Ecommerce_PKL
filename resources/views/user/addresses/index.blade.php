@@ -34,7 +34,7 @@
             </li>
         </ol>
     </nav>
-    
+
     <div class="flex justify-between items-center bg-white py-3 px-4 rounded-lg mb-1 shadow-sm">
         <h2 class="flex text-xl justify-center font-semibold text-gray-800 ">Alamat Saya </h2>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAddressModal">
@@ -189,7 +189,7 @@
                         <div class="mb-3">
                             <label for="mark">Tandai Sebagai</label>
                             <input type="text" name="mark" id="mark" class="form-control"
-                                placeholder="cth rumah/kantor/gedung/dll">
+                                placeholder="cth rumah/kantor/gedung/dll" value="{{ !old('address_id') ? old('mark') : '' }}">
                             @if (!old('address_id'))
                                 @error('mark')
                                     <div class="text-danger mt-1">{{ $message }}</div>
@@ -200,7 +200,7 @@
                         <!-- Kota -->
                         <div class="mb-3">
                             <label for="city_id">Kota</label>
-                            <select name="city_id" id="city_id" class="form-control">
+                            <select name="city_id" id="city_id" class="form-control" value="{{ !old('address_id') ? old('city_id') : '' }}">
                                 <option value="">Pilih Kota</option>
                                 @foreach ($cities as $city)
                                     <option value="{{ $city['city_id'] }}">
@@ -218,7 +218,7 @@
                         <!-- Alamat -->
                         <div class="mb-3">
                             <label for="address">Alamat</label>
-                            <textarea name="address" id="address" class="form-control" rows="3" placeholder="Alamat"></textarea>
+                            <textarea name="address" id="address" class="form-control" rows="3" placeholder="Alamat" value="{{ !old('address_id') ? old('address') : '' }}"></textarea>
                             @if (!old('address_id'))
                                 @error('address')
                                     <div class="text-danger mt-1">{{ $message }}</div>
@@ -230,7 +230,7 @@
                         <div class="mb-3">
                             <label for="no_telepon">No Telepon</label>
                             <input type="text" name="no_telepon" id="no_telepon" class="form-control"
-                                placeholder="080-000-000-000">
+                                placeholder="080-000-000-000" value="{{ !old('address_id') ? old('no_telepon') : '' }}">
                             @if (!old('address_id'))
                                 @error('no_telepon')
                                     <div class="text-danger mt-1">{{ $message }}</div>
