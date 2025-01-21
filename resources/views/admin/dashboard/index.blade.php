@@ -1,8 +1,35 @@
 @extends('layouts.admin')
 
 @section('main')
+    <style>
+        * {
+            /* border: 1px solid black; */
+        }
+    </style>
     <div class="container-fluid">
         <div class="row">
+            <div class="flex flex-col md:flex-row mb-4 gap-4">
+                <!-- Banner -->
+                <div class="w-full bg-blue-500 bg-opacity-20 p-4 rounded-lg">
+                    <div class="flex justify-between items-center">
+                        <!-- Kiri: Judul dan Breadcrumb -->
+                        <div>
+                            <h1 class="text-3xl font-semibold text-gray-800">Selamat Datang , Admin !</h1>
+                            <nav class="mt-2">
+                                <ol class="flex text-sm text-gray-600">
+                                    <li><a href="{{ route('dashboard.index') }}" class="hover:text-blue-500">Dashboard</a>
+                                    </li>
+                                </ol>
+                            </nav>
+                        </div>
+                        <!-- Kanan: Gambar (Vector) -->
+                        <div class="hidden md:block">
+                            <img src="{{ asset('img/img-banner/dashboard.png') }}" alt="Gambar Banner"
+                                class="w-48 h-auto object-contain">
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-md-4 col-sm-6 mb-4">
                 <div class="card h-100 bg-gradient-to-r from-blue-800 to-blue-400">
                     <div class="card-body d-flex align-items-center">

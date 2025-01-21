@@ -74,6 +74,14 @@ class ProductController extends Controller
         return view('admin.products.index', compact('products', 'categories', 'brands'));
     }
 
+    public function create(){
+
+        $categories = Category::all();
+        $brands = Brand::all();
+
+        return view('admin.products.create', compact( 'categories', 'brands'));
+    }
+
 
 
 
@@ -95,7 +103,9 @@ class ProductController extends Controller
             'description_product.required' => 'Deskripsi produk wajib diisi.',
             'image_product.nullable' => 'Gambar produk wajib diisi.',
             'stock_product.required' => 'Stok produk wajib diisi.',
+            'stock_product.min' => 'Nilai stok tidak boleh kurang dari 0',
             'price_product.required' => 'Harga produk wajib diisi.',
+            'price_product.min' => 'Nilai stok tidak boleh kurang dari 0',
             'category_id.required' => 'Kategori produk wajib diisi.',
             'brand_id.required' => 'Merek produk wajib diisi.',
         ]);
@@ -106,7 +116,7 @@ class ProductController extends Controller
 
         Product::create($request->except('image_product') + ['image_product' => $imagePath]);
 
-        return redirect()->route('admin.products.index')->with('success', 'Produk berhasil ditambahkan.');
+        return redirect()->route('admin.products.create')->with('success', 'Produk berhasil ditambahkan.');
     }
 
     /**
@@ -154,6 +164,16 @@ class ProductController extends Controller
             'price_product' => 'required|numeric|min:0',
             'category_id' => 'required|exists:categories,id',
             'brand_id' => 'required|exists:brands,id',
+        ], [
+            'name_product.required' => 'Nama produk wajib diisi.',
+            'description_product.required' => 'Deskripsi produk wajib diisi.',
+            'image_product.nullable' => 'Gambar produk wajib diisi.',
+            'stock_product.required' => 'Stok produk wajib diisi.',
+            'stock_product.min' => 'Nilai stok tidak boleh kurang dari 0',
+            'price_product.required' => 'Harga produk wajib diisi.',
+            'price_product.min' => 'Nilai stok tidak boleh kurang dari 0',
+            'category_id.required' => 'Kategori produk wajib diisi.',
+            'brand_id.required' => 'Merek produk wajib diisi.',
         ]);
 
         // Jika ada file gambar baru yang diunggah
@@ -178,7 +198,7 @@ class ProductController extends Controller
         }
 
         // Redirect kembali ke halaman produk
-        return redirect()->route('admin.products.index')->with('success', 'Produk berhasil diperbarui.');
+        return redirect()->route('admin.products.edit')->with('success', 'Produk berhasil diperbarui.');
     }
 
 

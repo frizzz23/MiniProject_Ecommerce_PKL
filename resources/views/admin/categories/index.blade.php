@@ -185,11 +185,40 @@
 
 @section('main')
     <div class="container-fluid">
-        <div class="container">
+        <div class="container p-6">
+            <div class="flex flex-col md:flex-row mb-4 gap-4">
+                <!-- Banner -->
+                <div class="w-full md:w-3/4 bg-blue-500 bg-opacity-20 p-4 rounded-lg">
+                    <div class="flex justify-between items-center">
+                        <!-- Kiri: Judul dan Breadcrumb -->
+                        <div>
+                            <h1 class="text-3xl font-semibold text-gray-800">Daftar Merek</h1>
+                            <nav class="mt-2">
+                                <ol class="flex text-sm text-gray-600">
+                                    <li><a href="{{ route('dashboard.index') }}" class="hover:text-blue-500">Dashboard</a>
+                                    </li>
+                                    <li class="mx-2">/</li>
+                                    <li><a href="{{ route('admin.categories.index') }}" class="hover:text-blue-500">Kategori</a>
+                                    </li>
+                                </ol>
+                            </nav>
+                        </div>
+                        <!-- Kanan: Gambar (Vector) -->
+                        <div class="hidden md:block">
+                            <img src="{{ asset('img/img-banner/list.png') }}" alt="Gambar Banner"
+                                class="w-32 h-32 object-contain">
+                        </div>
+                    </div>
+                </div>
+                <!-- Card -->
+                <div class="w-full md:w-1/4 bg-gradient-to-t from-blue-800 to-blue-400 p-4 rounded-lg shadow-md">
+                    <h2 class="text-xl font-medium text-white">Jumlah Kategori</h2>
+                    <p class="text-2xl font-semibold text-white mt-2">120 Produk</p>
+                </div>
+            </div>
             <div class="card w-100">
 
                 <div class="card-body p-4">
-                    <h5 class="card-title text-2xl font-bold mb-4">Daftar Kategori</h5>
                     <div>
                         <div class="flex justify-between items-center mb-4">
                             <div>
