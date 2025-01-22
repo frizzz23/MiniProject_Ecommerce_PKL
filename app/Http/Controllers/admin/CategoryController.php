@@ -25,7 +25,7 @@ class CategoryController extends Controller
             }
             return $query->orderBy('created_at', 'desc');
         })
-        ->get();
+        ->paginate(1); // Menggunakan paginate dengan 10 item per halaman
 
         return view('admin.categories.index', compact('categories'));
     }

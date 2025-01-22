@@ -304,7 +304,7 @@
                         </table>
                         <!-- Pagination Links -->
                         <div class="mt-4">
-                            {{ $codes->appends(request()->query())->links() }}
+                            {{ $codes->links() }}
                         </div>
                     </div>
                 </div>

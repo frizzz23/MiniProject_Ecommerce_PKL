@@ -13,20 +13,22 @@ class BrandController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {
-        // Mendapatkan semua data brand
-        $brands = Brand::when($request->input('search'), function ($query, $search) {
+{
+    // Mendapatkan semua data brand dengan pagination
+    $brands = Brand::when($request->input('search'), function ($query, $search) {
             $query->where('name_brand', 'like', '%' . $search . '%');
         })
-            ->when($request->input('sort_order'), function ($query, $sortOrder) {
-                if ($sortOrder === 'terlama') {
-                    return $query->orderBy('created_at', 'asc');
-                }
-                return $query->orderBy('created_at', 'desc');
-            })
-            ->get();
-        return view('admin.brands.index', compact('brands'));
-    }
+        ->when($request->input('sort_order'), function ($query, $sortOrder) {
+            if ($sortOrder === 'terlama') {
+                return $query->orderBy('created_at', 'asc');
+            }
+            return $query->orderBy('created_at', 'desc');
+        })
+        ->paginate(1); // Menggunakan paginate dengan 10 item per halaman
+
+    return view('admin.brands.index', compact('brands'));
+}
+
 
     /**
      * Show the form for creating a new resource.
