@@ -186,15 +186,15 @@
                                         <td class="px-4 py-2">
                                             <div class="d-flex align-items-center gap-2">
                                                 <span
-                                                    class="px-3 py-1 rounded-full text-sm font-semibold 
-                                                        @if ($order->status_order === 'completed') bg-green-200 text-green-600 
-                                                        @elseif ($order->status_order === 'processing') 
-                                                            bg-yellow-200 text-yellow-600 
-                                                        @elseif ($order->status_order === 'pending') 
-                                                            bg-blue-200 text-blue-600 
-                                                        @elseif ($order->status_order === 'shipping') 
+                                                    class="px-3 py-1 rounded-full text-sm font-semibold
+                                                        @if ($order->status_order === 'completed') bg-green-200 text-green-600
+                                                        @elseif ($order->status_order === 'processing')
+                                                            bg-yellow-200 text-yellow-600
+                                                        @elseif ($order->status_order === 'pending')
+                                                            bg-blue-200 text-blue-600
+                                                        @elseif ($order->status_order === 'shipping')
                                                             bg-orange-200 text-orange-600
-                                                        @else 
+                                                        @else
                                                             bg-gray-200 text-gray-600 @endif">
                                                     {{ ucfirst($order->status_order_label) }}
                                                 </span>
@@ -244,7 +244,7 @@
                                                     <form style="display: inline;" id="form-proses-{{ $order->id }}" method="POST" action="{{ route('admin.order.updateStatus', $order->id) }}">
                                                         @csrf
                                                         <input type="hidden" name="status" value="processing">
-                                                
+
                                                         @if ($order->status_order == 'pending')
                                                             <button type="button" class="bg-blue-400 rounded text-white flex items-center relative px-3 py-2" aria-label="Proses" onclick="confirmStatusUpdate('form-proses-{{ $order->id }}', 'Dikemas', 'Pesanan akan diproses dan dikemas.')">
                                                                 <i class="fas fa-cogs text-sm"></i>
@@ -256,12 +256,12 @@
                                                             </span>
                                                         @endif
                                                     </form>
-                                                
+
                                                     <!-- Form Kirim -->
                                                     <form id="form-kirim-{{ $order->id }}" method="POST" action="{{ route('admin.order.updateStatus', $order->id) }}">
                                                         @csrf
                                                         <input type="hidden" name="status" value="shipping">
-                                                
+
                                                         @if ($order->status_order == 'processing')
                                                             <button type="button" class="bg-orange-500 rounded text-white flex items-center relative px-3 py-2" aria-label="Kirim" onclick="confirmStatusUpdate('form-kirim-{{ $order->id }}', 'Dikirim', 'Pesanan akan dikirim ke alamat tujuan.')">
                                                                 <i class="fas fa-truck text-sm"></i>
@@ -273,12 +273,12 @@
                                                             </span>
                                                         @endif
                                                     </form>
-                                                
+
                                                     <!-- Form Selesai -->
                                                     <form id="form-selesai-{{ $order->id }}" method="POST" action="{{ route('admin.order.updateStatus', $order->id) }}">
                                                         @csrf
                                                         <input type="hidden" name="status" value="completed">
-                                                    
+
                                                         @if ($order->status_order == 'shipping' && $order->created_at->diffInDays(now()) >= 14)
                                                             <button type="button" class="bg-green-500 text-white rounded flex items-center relative px-3 py-2" aria-label="Selesai" onclick="confirmStatusUpdate('form-selesai-{{ $order->id }}', 'Selesai', 'Pesanan ini telah selesai dan diterima oleh pelanggan.')">
                                                                 <i class="fas fa-check-circle text-sm"></i>
@@ -289,9 +289,9 @@
                                                                 Selesai
                                                             </span>
                                                         @endif
-                                                    </form>   
+                                                    </form>
                                                 </div>
-                                                
+
                                             </div>
                                         </td>
                                     </tr>
@@ -349,6 +349,9 @@
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
+                    <div class="mt-4">
+                        {{ $orders->links() }}
                     </div>
                 </div>
             </div>

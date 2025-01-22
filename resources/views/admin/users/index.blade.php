@@ -32,7 +32,7 @@
                     <div class="flex flex-col items-center">
                         <!-- Ikon di atas dengan latar belakang putih dan tinggi penuh -->
                         <div class="bg-white p-4 rounded-md h-16 w-16 flex justify-center items-center w-full">
-                            
+
                             <i class="fa-solid fa-users text-3xl text-blue-600"></i>
                         </div>
                         <!-- Keterangan di bawah ikon -->
@@ -44,7 +44,7 @@
                 </div>
             </div>
             <div class="card w-full">
-                
+
                 <div class="card-body p-4">
                     <div>
                         <div class="flex justify-between items-center mb-4">
@@ -119,7 +119,7 @@
                                         </td>
                                         <td class="px-4 py-2">
                                             @foreach ($user->roles as $role)
-                                            <span class="inline-flex items-center 
+                                            <span class="inline-flex items-center
                                                 @if($role->name === 'admin') bg-blue-200 text-primary @elseif($role->name === 'user') bg-green-200 text-green-600 @else bg-gray-100 bg-opacity-50 text-gray-800 dark:bg-gray-700 dark:text-gray-300 @endif
                                                 text-xs font-medium px-3 py-1 rounded-full">
                                                 <span class="w-2 h-2 me-1
@@ -136,6 +136,9 @@
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
+                    <div class="mt-4">
+                        {{ $users->links() }}
                     </div>
                 </div>
             </div>

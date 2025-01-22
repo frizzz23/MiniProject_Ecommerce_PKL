@@ -43,8 +43,8 @@ class OrderController extends Controller
                 });
             })
             ->latest() // Mengurutkan berdasarkan yang terbaru
-            ->paginate(10);  // Added pagination to limit results per page
-            
+            ->paginate(3);  // Added pagination to limit results per page
+
         $statusMapping = [
             'completed' => 'Selesai',
             'processing' => 'Dikemas',
@@ -156,7 +156,7 @@ class OrderController extends Controller
         // Redirect dengan pesan sukses
         return redirect()->route('admin.orders.index')->with('success', 'Order berhasil dihapus beserta data yang terhubung.');
     }
-    
+
     public function updateStatus(Request $request, $orderId)
     {
         $order = Order::find($orderId);
