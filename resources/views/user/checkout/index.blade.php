@@ -908,12 +908,12 @@
                                 // Tangani jika pembayaran success
                                 showAlert('success', 'Pembayaran berhasil!')
                                 // console.log(result)
-                                const finish_redirect_url = result.finish_redirect_url
+                                const order_id = result.order_id
                                 @if (config('app.debug'))
                                     window.location.href = "{{ route('user.orders.index') }}";
                                 @else
-                                    if (finish_redirect_url) {
-                                        window.location.href = finish_redirect_url
+                                    if (order_id) {
+                                        window.location.href = "{{ route('user.orders.show', '') }}/" + order_id;
                                     } else {
                                         window.location.href = "{{ route('user.orders.index') }}";
                                     }
@@ -923,12 +923,12 @@
                                 // Tangani jika pembayaran pending
                                 showAlert('warning', 'Pembayaran sedang dalam proses!')
                                 // console.log(result)
-                                const finish_redirect_url = result.finish_redirect_url
+                                const order_id = result.order_id
                                 @if (config('app.debug'))
                                     window.location.href = "{{ route('user.orders.index') }}";
                                 @else
-                                    if (finish_redirect_url) {
-                                        window.location.href = finish_redirect_url
+                                    if (order_id) {
+                                        window.location.href = "{{ route('user.orders.show', '') }}/" + order_id;
                                     } else {
                                         window.location.href = "{{ route('user.orders.index') }}";
                                     }
@@ -938,12 +938,12 @@
                                 // Tangani jika pembayaran gagal
                                 showAlert('error', 'Pembayaran gagal!')
                                 // console.log(result)
-                                const finish_redirect_url = result.finish_redirect_url
+                                const order_id = result.order_id
                                 @if (config('app.debug'))
                                     window.location.href = "{{ route('user.orders.index') }}";
                                 @else
-                                    if (finish_redirect_url) {
-                                        window.location.href = finish_redirect_url
+                                    if (order_id) {
+                                        window.location.href = "{{ route('user.orders.show', '') }}/" + order_id;
                                     } else {
                                         window.location.href = "{{ route('user.orders.index') }}";
                                     }
