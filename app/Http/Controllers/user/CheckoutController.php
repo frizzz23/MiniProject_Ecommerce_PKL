@@ -95,6 +95,20 @@ class CheckoutController extends Controller
             'addresses_id' => 'required|exists:addresses,id',
             'courier' => 'required',
             'cost' => 'required',
+        ],[
+            'alamat.required' => 'Alamat harus diisi',
+            'name.required' => 'Nama harus diisi',
+            'email.required' => 'Email harus diisi',
+            'total.required' => 'Total harus diisi',
+            'total.numeric' => 'Total harus berupa angka',
+            'total.min' => 'Total tidak boleh kurang dari 0',
+            'subtotal.required' => 'Subtotal harus diisi',
+            'subtotal.numeric' => 'Subtotal harus berupa angka',
+            'subtotal.min' => 'Subtotal tidak boleh kurang dari 0',
+            'addresses_id.required' => 'Alamat harus diisi',
+            'addresses_id.exists' => 'Alamat tidak ditemukan',  
+            'courier.required' => 'Kurir harus diisi',
+            'cost.required' => 'Biaya harus diisi',
         ]);
 
 
