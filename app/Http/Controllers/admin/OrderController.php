@@ -12,60 +12,68 @@ use App\Http\Controllers\Controller;
 class OrderController extends Controller
 {
     public function index(Request $request)
-    {
-        // Mengambil parameter filter dari request
-        $priceProduct = $request->input('price'); // Filter berdasarkan harga produk
-        $statusOrder = $request->input('status_order'); // Filter berdasarkan status order
-        $createdAt = $request->input('created_at'); // Filter berdasarkan tanggal
-        $search = $request->input('search'); // Filter berdasarkan pencarian
+{
+    // Mengambil parameter filter dari request
+    $priceProduct = $request->input('price'); // Filter berdasarkan harga produk
+    $statusOrder = $request->input('status_order'); // Filter berdasarkan status order
+    $createdAt = $request->input('created_at'); // Filter berdasarkan tanggal
+    $search = $request->input('search'); // Filter berdasarkan pencarian
+    $paymentStatus = $request->input('payment_status'); // Filter berdasarkan status pembayaran
 
+    // Ambil notifikasi yang belum dibaca
+    $unreadNotifications = OrderNotification::with(['order.user', 'order.productOrders.product'])
+        ->where('is_read', false)
+        ->latest()
+        ->get();
 
-        // Ambil notifikasi yang belum dibaca
-        $unreadNotifications = OrderNotification::with(['order.user', 'order.productOrders.product'])
-            ->where('is_read', false)
-            ->latest()
-            ->get();
+    // Mengambil semua pesanan, dengan filter berdasarkan price, status_order, created_at, search, dan payment_status jika ada
+    $orders = Order::with('user', 'productOrders.product', 'addresses', 'postage', 'promoCode', 'payment')
+        ->when($priceProduct, function ($query) use ($priceProduct) {
+            return $query->orderBy('grand_total_amount', $priceProduct); // Filter harga berdasarkan grand_total_amount
+        })
+        ->when($statusOrder, function ($query) use ($statusOrder) {
+            return $query->where('status_order', $statusOrder);
+        })
+        ->when($createdAt, function ($query) use ($createdAt) {
+            return $query->orderBy('created_at', $createdAt);
+        })
+        ->when($search, function ($query) use ($search) {
+            return $query->whereHas('productOrders.product', function ($query) use ($search) {
+                $query->where('name_product', 'like', '%' . $search . '%');
+            });
+        })
+        ->when($paymentStatus, function ($query) use ($paymentStatus) {
+            return $query->whereHas('payment', function ($query) use ($paymentStatus) {
+                $query->where('status', $paymentStatus);
+            });
+        })
+        ->latest() // Mengurutkan berdasarkan yang terbaru
+        ->paginate(3);  // Added pagination to limit results per page
 
-        // Mengambil semua pesanan, dengan filter berdasarkan price, status_order, created_at, dan search jika ada
-        $orders = Order::with('user', 'productOrders.product', 'addresses', 'postage', 'promoCode', 'payment')
-            ->when($priceProduct, function ($query) use ($priceProduct) {
-                return $query->orderBy('grand_total_amount', $priceProduct); // Filter harga berdasarkan grand_total_amount
-            })
-            ->when($statusOrder, function ($query) use ($statusOrder) {
-                return $query->where('status_order', $statusOrder);
-            })
-            ->when($createdAt, function ($query) use ($createdAt) {
-                return $query->orderBy('created_at', $createdAt);
-            })
-            ->when($search, function ($query) use ($search) {
-                return $query->whereHas('productOrders.product', function ($query) use ($search) {
-                    $query->where('name_product', 'like', '%' . $search . '%');
-                });
-            })
-            ->latest() // Mengurutkan berdasarkan yang terbaru
-            ->paginate(3);  // Added pagination to limit results per page
+    // Mapping status order ke dalam bahasa Indonesia
+    $statusMapping = [
+        'completed' => 'Selesai',
+        'processing' => 'Dikemas',
+        'pending' => 'Menunggu',
+        'shipping' => 'Dikirim',
+    ];
 
-        $statusMapping = [
-            'completed' => 'Selesai',
-            'processing' => 'Dikemas',
-            'pending' => 'Menunggu',
-            'shipping' => 'Dikirim',
-        ];
+    // Mengakses koleksi dengan menggunakan properti items()
+    $orders->getCollection()->transform(function ($order) use ($statusMapping) {
+        $order->status_order_label = $statusMapping[$order->status_order] ?? 'Tidak Diketahui';
+        return $order;
+    });
 
-        // Mengakses koleksi dengan menggunakan properti items()
-        $orders->getCollection()->transform(function ($order) use ($statusMapping) {
-            $order->status_order_label = $statusMapping[$order->status_order] ?? 'Tidak Diketahui';
-            return $order;
-        });
+    // Mengambil semua produk yang tersedia untuk digunakan dalam form filter jika diperlukan
+    $products = Product::all();
 
-        // Mengambil semua produk yang tersedia untuk digunakan dalam form filter jika diperlukan
-        $products = Product::all();
-        // Mapping status ke dalam bahasa Indonesia
+    // Mengambil semua status pembayaran yang tersedia untuk digunakan dalam filter
+    $paymentStatuses = ['failed', 'pending', 'expired', 'success'];
 
+    // Mengembalikan tampilan dengan data orders, products, paymentStatuses, dan unreadNotifications
+    return view('admin.orders.index', compact('orders', 'products', 'paymentStatuses', 'unreadNotifications'));
+}
 
-        // Mengembalikan tampilan dengan data orders dan products
-        return view('admin.orders.index', compact('orders', 'products', 'unreadNotifications'));
-    }
 
     /**
      * Show the form for creating a new resource.
