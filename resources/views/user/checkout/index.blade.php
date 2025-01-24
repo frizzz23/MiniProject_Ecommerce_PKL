@@ -29,7 +29,7 @@
 
 <body>
 
-    @if ($errors->any())
+    {{-- @if ($errors->any())
         <div class="bg-red-500 text-white p-5 text-sm">
             <ul class="list-disc list-inside">
                 @foreach ($errors->all() as $error)
@@ -38,7 +38,7 @@
             </ul>
         </div>
 
-    @endif
+    @endif --}}
 
     <form action="{{ route('user.checkout.store') }}" method="post" enctype="multipart/form-data">
         @csrf
@@ -335,9 +335,9 @@
                         <div class="px-10 h-96 overflow-y-auto">
                             <table class="table-auto w-full">
                                 <tr class="sticky top-0 z-10">
-                                    <th class="text-slate-700 text-sm font-medium">Image</th>
-                                    <td class="text-slate-700 text-sm font-medium">Product</td>
-                                    <td class="text-slate-700 text-sm font-medium">Price</td>
+                                    <th class="text-slate-700 text-sm font-medium">Gambar</th>
+                                    <td class="text-slate-700 text-sm font-medium">Produk</td>
+                                    <td class="text-slate-700 text-sm font-medium">Harga</td>
                                 </tr>
                                 <tr class="border-b-2 border-slate-300">
                                     <th>
@@ -374,7 +374,7 @@
                             </table>
                         </div>
 
-                        <div class="py-4 flex justify-between items-center mt-5 px-20 ">
+                        <div class="py-6 flex justify-between items-center shadow-md m-6 px-6 bg-white rounded-lg">
                             <table class="table-auto w-full">
                                 <tr>
                                     <td class="text-xs text-slate-600 w-full">Subtotal</td>
@@ -383,13 +383,13 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="text-xs text-slate-600">Postage</td>
+                                    <td class="text-xs text-slate-600">Ongkos kirim</td>
                                     <td class="text-xs text-slate-800 text-right text-nowrap">
                                         <div id="ongkir-cek">+</div>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="text-xs text-slate-600">Discount</td>
+                                    <td class="text-xs text-slate-600">Diskon</td>
                                     <td class="text-xs text-slate-800 text-right text-nowrap">
                                         <div id="discount">-</div>
                                     </td>

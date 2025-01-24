@@ -86,7 +86,7 @@
                             </div>
                         </div>
                         <form action="{{ route('admin.orders.index') }}" method="GET">
-                            <div class="grid grid-cols-3 gap-3 text-white border-t border-gray-600 pt-4 mb-4">
+                            <div class="grid grid-cols-4  gap-3 text-white border-t border-gray-600 pt-4 mb-4">
                                 <div>
                                     <select name="price"
                                         class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
@@ -104,20 +104,38 @@
                                     <select name="status_order"
                                         class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
                                         onchange="this.form.submit()">
-                                        <option value="">Status</option>
+                                        <option value="">Status Pesanan</option>
                                         <option value="pending"
                                             {{ request('status_order') == 'pending' ? 'selected' : '' }}>
-                                            Pending
+                                            Menunggu
                                         </option>
                                         <option value="processing"
                                             {{ request('status_order') == 'processing' ? 'selected' : '' }}>
-                                            Processing
+                                            Dikemas
+                                        </option>
+                                        <option value="shipping"
+                                            {{ request('status_order') == 'shipping' ? 'selected' : '' }}>
+                                            Dikirim
                                         </option>
                                         <option value="completed"
                                             {{ request('status_order') == 'completed' ? 'selected' : '' }}>
-                                            Completed
+                                            Selesai
                                         </option>
+
                                     </select>
+                                </div>
+                                <div>
+                                    <form method="GET" action="{{ route('admin.orders.index') }}" id="filter-form">
+                                        <div class="flex items-center gap-2">
+                                            <select name="payment_status" id="payment_status" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full" onchange="this.form.submit()">
+                                                <option value="">Status Pembayaran</option>
+                                                <option value="failed" {{ request('payment_status') == 'failed' ? 'selected' : '' }}>Gagal</option>
+                                                <option value="pending" {{ request('payment_status') == 'pending' ? 'selected' : '' }}>Menunggu</option>
+                                                <option value="expired" {{ request('payment_status') == 'expired' ? 'selected' : '' }}>Kedaluwarsa</option>
+                                                <option value="success" {{ request('payment_status') == 'success' ? 'selected' : '' }}>Berhasil</option>
+                                            </select>
+                                        </div>
+                                    </form>
                                 </div>
                                 <div>
                                     <select name="created_at"
@@ -137,13 +155,14 @@
                         <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
                             <thead class="bg-[#5D87FF] text-white"> {{-- bg-gray-100 --}}
                                 <tr>
-                                    <th style="width: 5%;" class="px-4 py-2 text-left">No</th>
-                                    <th style="width: 10%;" class="px-4 py-2 text-left">Pelanggan</th>
-                                    <th style="width: 15%;" class="px-4 py-2 text-left">Produk</th>
-                                    <th style="width: 15%;" class="px-4 py-2 text-left">Total</th>
-                                    <th style="width: 15%;" class="px-4 py-2 text-left">Status</th>
-                                    <th style="width: 15%;" class="px-4 py-2 text-left">Dibuat</th>
-                                    <th style="width: 10%;" class="px-4 py-2 text-left">Aksi</th>
+                                    <th style="width: 5%;" class="px-4 py-2 text-left whitespace-nowrap">No</th>
+                                    <th style="width: 10%;" class="px-4 py-2 text-left whitespace-nowrap">Pelanggan</th>
+                                    <th style="width: 15%;" class="px-4 py-2 text-left ">Produk</th>
+                                    <th style="width: 15%;" class="px-4 py-2 text-left whitespace-nowrap">Total</th>
+                                    <th style="width: 15%;" class="px-4 py-2 text-left whitespace-nowrap">Status Pesanan</th>
+                                    <th style="width: 15%;" class="px-4 py-2 text-left whitespace-nowrap">Status Pembayaran</th>
+                                    <th style="width: 15%;" class="px-4 py-2 text-left whitespace-nowrap">Dibuat</th>
+                                    <th style="width: 10%;" class="px-4 py-2 text-left whitespace-nowrap">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -152,17 +171,17 @@
                                         <td class="px-4 py-2">
                                             {{ $loop->iteration ?? '-' }}
                                         </td>
-                                        <td class="px-4 py-2">
+                                        <td class="px-4 py-2 whitespace-nowrap">
                                             {{ $order->user->name }}
                                         </td>
-                                        <td class="px-4 py-2">
+                                        <td class="px-4 py-2 " >
                                             @if ($order->productOrders->count() > 2)
                                                 <ul class="list-disc">
                                                     @foreach ($order->productOrders->take(2) as $productOrder)
                                                         <li class="flex justify-between items-center">
                                                             <span>{{ $productOrder->product->name_product }}</span>
                                                             <span
-                                                                class="text-xs text-slate-700">x{{ $productOrder->quantity }}</span>
+                                                                class="text-xs text-slate-700">(x{{ $productOrder->quantity }})</span>
                                                         </li>
                                                     @endforeach
                                                     <span class="flex justify-center text-2xl font-bold">...</span>
@@ -173,17 +192,17 @@
                                                         <li class="flex justify-between items-center">
                                                             <span>{{ $productOrder->product->name_product }}</span>
                                                             <span
-                                                                class="text-xs text-slate-700">x{{ $productOrder->quantity }}</span>
+                                                                class="text-xs text-slate-700">(x{{ $productOrder->quantity }})</span>
                                                         </li>
                                                     @endforeach
                                                 </ul>
                                             @endif
                                         </td>
-                                        <td class="px-4 py-2">
+                                        <td class="px-4 py-2 whitespace-nowrap">
                                             Rp.
                                             {{ number_format($order->grand_total_amount, 0, '.', '.') }}
                                         </td>
-                                        <td class="px-4 py-2">
+                                        <td class="px-4 py-2 whitespace-nowrap">
                                             <div class="d-flex align-items-center gap-2">
                                                 <span
                                                     class="px-3 py-1 rounded-full text-sm font-semibold
@@ -201,7 +220,28 @@
                                             </div>
 
                                         </td>
-                                        <td class="px-4 py-2">
+                                        <td class="px-4 py-2 whitespace-nowrap">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span
+                                                    class="px-3 py-1 rounded-full text-sm font-semibold
+                                                        @if ($order->payment->status === 'failed')
+                                                            bg-yellow-200 text-red-600
+                                                        @elseif ($order->payment->status === 'pending')
+                                                            bg-blue-200 text-blue-600
+                                                        @elseif ($order->payment->status === 'expired')
+                                                            bg-gray-200 text-gray-600
+                                                        @elseif ($order->payment->status === 'success')
+                                                            bg-green-200 text-green-600
+                                                        @else
+                                                            bg-gray-100 text-gray-600
+                                                        @endif">
+                                                    {{ ucfirst($order->payment->status) }}
+                                                </span>
+                                            </div>
+                                        </td>
+
+
+                                        <td class="px-4 py-2 whitespace-nowrap">
                                             {{ $order->created_at->format('d F Y') ?? 'kosong' }}
                                         </td>
                                         <td class="px-4 py-2">
@@ -240,57 +280,62 @@
                                                     </form>
                                                 </div>
                                                 <div class="relative group inline-block">
-                                                    <!-- Form Proses -->
-                                                    <form style="display: inline;" id="form-proses-{{ $order->id }}" method="POST" action="{{ route('admin.order.updateStatus', $order->id) }}">
-                                                        @csrf
-                                                        <input type="hidden" name="status" value="processing">
+                                                    @if ($order->payment && $order->payment->status != 'pending')
+                                                        <!-- Form Proses -->
+                                                        <form style="display: inline;" id="form-proses-{{ $order->id }}" method="POST" action="{{ route('admin.order.updateStatus', $order->id) }}">
+                                                            @csrf
+                                                            <input type="hidden" name="status" value="processing">
 
-                                                        @if ($order->status_order == 'pending')
-                                                            <button type="button" class="bg-blue-400 rounded text-white flex items-center relative px-3 py-2" aria-label="Proses" onclick="confirmStatusUpdate('form-proses-{{ $order->id }}', 'Dikemas', 'Pesanan akan diproses dan dikemas.')">
-                                                                <i class="fas fa-cogs text-sm"></i>
-                                                            </button>
-                                                            <!-- Tooltip Kemas -->
-                                                            <span class="absolute hidden group-hover:block bg-gray-800 text-white text-sm rounded px-2 py-1 mt-2 left-1/2 transform -translate-x-1/2">
-                                                                <span class="absolute bg-gray-800 h-2 w-2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-45"></span>
-                                                                Kemas
-                                                            </span>
-                                                        @endif
-                                                    </form>
+                                                            @if ($order->status_order == 'pending')
+                                                                <button type="button" class="bg-blue-400 rounded text-white flex items-center relative px-3 py-2" aria-label="Proses" onclick="confirmStatusUpdate('form-proses-{{ $order->id }}', 'Dikemas', 'Pesanan akan diproses dan dikemas.')">
+                                                                    <i class="fas fa-cogs text-sm"></i>
+                                                                </button>
+                                                                <!-- Tooltip Kemas -->
+                                                                <span class="absolute hidden group-hover:block bg-gray-800 text-white text-sm rounded px-2 py-1 mt-2 left-1/2 transform -translate-x-1/2">
+                                                                    <span class="absolute bg-gray-800 h-2 w-2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-45"></span>
+                                                                    Kemas
+                                                                </span>
+                                                            @endif
+                                                        </form>
 
-                                                    <!-- Form Kirim -->
-                                                    <form id="form-kirim-{{ $order->id }}" method="POST" action="{{ route('admin.order.updateStatus', $order->id) }}">
-                                                        @csrf
-                                                        <input type="hidden" name="status" value="shipping">
+                                                        <!-- Form Kirim -->
+                                                        <form id="form-kirim-{{ $order->id }}" method="POST" action="{{ route('admin.order.updateStatus', $order->id) }}">
+                                                            @csrf
+                                                            <input type="hidden" name="status" value="shipping">
 
-                                                        @if ($order->status_order == 'processing')
-                                                            <button type="button" class="bg-orange-500 rounded text-white flex items-center relative px-3 py-2" aria-label="Kirim" onclick="confirmStatusUpdate('form-kirim-{{ $order->id }}', 'Dikirim', 'Pesanan akan dikirim ke alamat tujuan.')">
-                                                                <i class="fas fa-truck text-sm"></i>
-                                                            </button>
-                                                            <!-- Tooltip Kirim -->
-                                                            <span class="absolute hidden group-hover:block bg-gray-800 text-white text-sm rounded px-2 py-1 mt-2 left-1/2 transform -translate-x-1/2">
-                                                                <span class="absolute bg-gray-800 h-2 w-2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-45"></span>
-                                                                Kirim
-                                                            </span>
-                                                        @endif
-                                                    </form>
+                                                            @if ($order->status_order == 'processing')
+                                                                <button type="button" class="bg-orange-500 rounded text-white flex items-center relative px-3 py-2" aria-label="Kirim" onclick="confirmStatusUpdate('form-kirim-{{ $order->id }}', 'Dikirim', 'Pesanan akan dikirim ke alamat tujuan.')">
+                                                                    <i class="fas fa-truck text-sm"></i>
+                                                                </button>
+                                                                <!-- Tooltip Kirim -->
+                                                                <span class="absolute hidden group-hover:block bg-gray-800 text-white text-sm rounded px-2 py-1 mt-2 left-1/2 transform -translate-x-1/2">
+                                                                    <span class="absolute bg-gray-800 h-2 w-2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-45"></span>
+                                                                    Kirim
+                                                                </span>
+                                                            @endif
+                                                        </form>
 
-                                                    <!-- Form Selesai -->
-                                                    <form id="form-selesai-{{ $order->id }}" method="POST" action="{{ route('admin.order.updateStatus', $order->id) }}">
-                                                        @csrf
-                                                        <input type="hidden" name="status" value="completed">
+                                                        <!-- Form Selesai -->
+                                                        <form id="form-selesai-{{ $order->id }}" method="POST" action="{{ route('admin.order.updateStatus', $order->id) }}">
+                                                            @csrf
+                                                            <input type="hidden" name="status" value="completed">
 
-                                                        @if ($order->status_order == 'shipping' && $order->created_at->diffInDays(now()) >= 14)
-                                                            <button type="button" class="bg-green-500 text-white rounded flex items-center relative px-3 py-2" aria-label="Selesai" onclick="confirmStatusUpdate('form-selesai-{{ $order->id }}', 'Selesai', 'Pesanan ini telah selesai dan diterima oleh pelanggan.')">
-                                                                <i class="fas fa-check-circle text-sm"></i>
-                                                            </button>
-                                                            <!-- Tooltip Selesai -->
-                                                            <span class="absolute hidden group-hover:block bg-gray-800 text-white text-sm rounded px-2 py-1 mt-2 left-1/2 transform -translate-x-1/2">
-                                                                <span class="absolute bg-gray-800 h-2 w-2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-45"></span>
-                                                                Selesai
-                                                            </span>
-                                                        @endif
-                                                    </form>
+                                                            @if ($order->status_order == 'shipping' && $order->created_at->diffInDays(now()) >= 14)
+                                                                <button type="button" class="bg-green-500 text-white rounded flex items-center relative px-3 py-2" aria-label="Selesai" onclick="confirmStatusUpdate('form-selesai-{{ $order->id }}', 'Selesai', 'Pesanan ini telah selesai dan diterima oleh pelanggan.')">
+                                                                    <i class="fas fa-check-circle text-sm"></i>
+                                                                </button>
+                                                                <!-- Tooltip Selesai -->
+                                                                <span class="absolute hidden group-hover:block bg-gray-800 text-white text-sm rounded px-2 py-1 mt-2 left-1/2 transform -translate-x-1/2">
+                                                                    <span class="absolute bg-gray-800 h-2 w-2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-45"></span>
+                                                                    Selesai
+                                                                </span>
+                                                            @endif
+                                                        </form>
+                                                    @else
+
+                                                    @endif
                                                 </div>
+
 
                                             </div>
                                         </td>
@@ -358,10 +403,6 @@
         </div>
     </div>
 
-    <!-- Pagination -->
-    <div class="mt-4">
-        {{ $orders->links() }}
-    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
