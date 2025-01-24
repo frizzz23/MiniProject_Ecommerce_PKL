@@ -84,23 +84,26 @@
                                         </span>
                                     @endif
                                 </a>
-                                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
+                                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up rounded-lg shadow-lg bg-white border border-gray-200 w-96"
                                     aria-labelledby="notificationDropdown">
-                                    <div class="notification-list" style="max-height: 300px; overflow-y: auto;">
+                                    <div class="notification-list max-h-80 overflow-y-auto p-4">
                                         @forelse($unreadNotifications as $notification)
                                             <a href="{{ route('admin.orders.show', $notification->order->id) }}"
-                                                class="dropdown-item border-bottom notification-item"
+                                                class="dropdown-item border-b last:border-0 py-3 px-2 hover:bg-gray-100 rounded-lg transition-all duration-200"
                                                 data-order-id="{{ $notification->order_id }}">
-                                                <div class="d-flex align-items-center gap-2 py-2">
-                                                    <div>
-                                                        <h6 class="mb-0">
+                                                <div class="d-flex align-items-center gap-3">
+                                                    <div class="flex-shrink-0">
+                                                        <!-- Icon or Avatar for the User (optional) -->
+                                                        <i class="fa-solid fa-user-circle text-2xl text-gray-500"></i>
+                                                    </div>
+                                                    <div class="flex-grow">
+                                                        <h6 class="mb-1 text-sm font-medium text-gray-800">
                                                             {{ $notification->order->user->name }}</h6>
-                                                        <p class="mb-0 text-muted">
+                                                        <p class="mb-1 text-xs text-gray-600">
                                                             @if ($notification->order->productOrders->count() > 1)
                                                                 {{ $notification->order->productOrders->first()->product->name_product }}
                                                                 <span class="text-secondary text-gray-600"
-                                                                    style="font-size: 0.85em;">dan
-                                                                    lainnya</span>
+                                                                    style="font-size: 0.85em;">dan lainnya</span>
                                                             @else
                                                                 {{ $notification->order->productOrders->first()->product->name_product }}
                                                             @endif
@@ -112,8 +115,8 @@
                                                 </div>
                                             </a>
                                         @empty
-                                            <div class="dropdown-item">
-                                                <p class="mb-0 text-muted">Tidak ada orderan baru</p>
+                                            <div class="dropdown-item px-4 py-2">
+                                                <p class="mb-0 text-muted text-center">Tidak ada orderan baru</p>
                                             </div>
                                         @endforelse
                                     </div>
@@ -124,8 +127,8 @@
                                             method="POST">
                                             @csrf
                                             <button type="submit"
-                                                class="text-xs text-blue-500 hover:text-blue-700">Tandai Semua Sudah
-                                                Dibaca</button>
+                                                class="text-xs text-blue-500 hover:text-blue-700 font-medium">Tandai
+                                                Semua Sudah Dibaca</button>
                                         </form>
                                     </div>
                                 </div>
