@@ -46,6 +46,14 @@
 
                 <div class="card-body p-4">
                     <div>
+                        @if (session()->has('error'))
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                {{ session('error') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endif
                         <div class="flex justify-between items-center mb-4">
                             <div>
                                 <!-- Pencarian -->

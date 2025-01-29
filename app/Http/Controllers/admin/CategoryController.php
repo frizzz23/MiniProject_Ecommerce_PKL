@@ -19,13 +19,13 @@ class CategoryController extends Controller
         $categories = Category::when($request->input('search'), function ($query, $search) {
             $query->where('name_category', 'like', '%' . $search . '%');
         })
-        ->when($request->input('sort_order'), function ($query, $sortOrder) {
-            if ($sortOrder === 'terlama') {
-                return $query->orderBy('created_at', 'asc');
-            }
-            return $query->orderBy('created_at', 'desc');
-        })
-        ->paginate(1); // Menggunakan paginate dengan 10 item per halaman
+            ->when($request->input('sort_order'), function ($query, $sortOrder) {
+                if ($sortOrder === 'terlama') {
+                    return $query->orderBy('created_at', 'asc');
+                }
+                return $query->orderBy('created_at', 'desc');
+            })
+            ->paginate(5); // Menggunakan paginate dengan 10 item per halaman
 
         return view('admin.categories.index', compact('categories'));
     }
@@ -109,10 +109,17 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
+        // Cek apakah kategori masih memiliki produk terkait
+        if ($category->products()->exists()) {
+            return redirect()->route('admin.categories.index')->with('error', 'Kategori tidak bisa dihapus karena masih memiliki produk terkait.');
+        }
+
+        // Hapus gambar kategori jika ada
         if ($category->image_category && Storage::disk('public')->exists($category->image_category)) {
             Storage::disk('public')->delete($category->image_category);
         }
 
+        // Hapus kategori
         $category->delete();
 
         return redirect()->route('admin.categories.index')->with('success', 'Kategori berhasil dihapus.');
