@@ -124,16 +124,22 @@ class AddressController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(Address $address)
-    {
-        // Pastikan alamat yang dihapus milik user yang sedang login
-        if ($address->user_id !== Auth::id()) {
-            abort(403, 'Anda tidak diizinkan untuk menghapus alamat ini.');
-        }
-
-        $address->delete();
-
-        return redirect()->route('user.addresses.index')->with('success', 'Alamat berhasil dihapus.');
+{
+    // Pastikan alamat yang dihapus milik user yang sedang login
+    if ($address->user_id !== Auth::id()) {
+        abort(403, 'Anda tidak diizinkan untuk menghapus alamat ini.');
     }
+
+    // Periksa apakah alamat digunakan di tabel orders
+    if ($address->orders()->exists()) {
+        return redirect()->route('user.addresses.index')->with('error', 'Alamat tidak bisa dihapus karena masih digunakan dalam pesanan.');
+    }
+
+    $address->delete();
+
+    return redirect()->route('user.addresses.index')->with('success', 'Alamat berhasil dihapus.');
+}
+
 
     /**
      * Mendapatkan daftar provinsi dari RajaOngkirController

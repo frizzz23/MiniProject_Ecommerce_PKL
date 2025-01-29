@@ -31,12 +31,14 @@ class Address extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function order()
+    public function orders()
     {
-        return $this->hasMany(Order::class,);
+        return $this->hasMany(Order::class, 'addresses_id');
     }
 
-    public function getCityAttribute(){
+
+    public function getCityAttribute()
+    {
         return City::findByCityId($this->city_id);
     }
 }

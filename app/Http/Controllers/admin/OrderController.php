@@ -48,7 +48,7 @@ class OrderController extends Controller
             });
         })
         ->latest() // Mengurutkan berdasarkan yang terbaru
-        ->paginate(3);  // Added pagination to limit results per page
+        ->paginate(5);  // Added pagination to limit results per page
 
     // Mapping status order ke dalam bahasa Indonesia
     $statusMapping = [

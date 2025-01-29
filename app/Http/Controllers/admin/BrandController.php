@@ -24,7 +24,7 @@ class BrandController extends Controller
             }
             return $query->orderBy('created_at', 'desc');
         })
-        ->paginate(1); // Menggunakan paginate dengan 10 item per halaman
+        ->paginate(5); // Menggunakan paginate dengan 10 item per halaman
 
     return view('admin.brands.index', compact('brands'));
 }
@@ -119,10 +119,16 @@ class BrandController extends Controller
      */
     public function destroy(Brand $brand)
     {
-        // Hapus kategori dari database
+        // Cek apakah brand masih memiliki produk terkait
+        if ($brand->products()->exists()) {
+            return redirect()->route('admin.brands.index')->with('error', 'Brand tidak bisa dihapus karena masih memiliki produk terkait.');
+        }
+
+        // Hapus brand dari database
         $brand->delete();
 
         // Redirect dengan pesan sukses
         return redirect()->route('admin.brands.index')->with('success', 'Brand berhasil dihapus.');
     }
+
 }

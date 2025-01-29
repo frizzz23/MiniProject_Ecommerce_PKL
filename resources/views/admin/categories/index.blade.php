@@ -198,7 +198,8 @@
                                     <li><a href="{{ route('dashboard.index') }}" class="hover:text-blue-500">Dashboard</a>
                                     </li>
                                     <li class="mx-2">/</li>
-                                    <li><a href="{{ route('admin.categories.index') }}" class="hover:text-blue-500">Kategori</a>
+                                    <li><a href="{{ route('admin.categories.index') }}"
+                                            class="hover:text-blue-500">Kategori</a>
                                     </li>
                                 </ol>
                             </nav>
@@ -229,6 +230,14 @@
 
                 <div class="card-body p-4">
                     <div>
+                        @if (session()->has('error'))
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                {{ session('error') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endif
                         <div class="flex justify-between items-center mb-4">
                             <div>
                                 <!-- Pencarian -->
@@ -339,8 +348,8 @@
                                     </tr>
 
                                     <!-- Modal Hapus -->
-                                    <div class="modal fade" id="hapusmodal{{ $category->id }}" tabindex="-1" aria-hidden
-                                        ```blade
+                                    <div class="modal fade" id="hapusmodal{{ $category->id }}" tabindex="-1"
+                                        aria-hidden ```blade
 ="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
@@ -449,7 +458,7 @@
                         <div class="mb-3">
                             <label for="name_category" class="form-label">Nama Kategori</label>
                             <input type="text" name="name_category" class="form-control" id="name_category"
-                            value="{{ !old('category_id') ? old('quantity') : '' }}">
+                                value="{{ !old('category_id') ? old('quantity') : '' }}">
                             @if (!old('category_id'))
                                 @error('name_category')
                                     <div class="text-danger mt-1">{{ $message }}</div>

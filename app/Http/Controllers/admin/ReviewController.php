@@ -41,7 +41,7 @@ class ReviewController extends Controller
             $query->orderBy('created_at', $direction);
         })
         ->latest()
-        ->paginate(1); // Pagination
+        ->paginate(25); // Pagination
 
     // Mengambil semua produk untuk dropdown
     $products = Product::all();
