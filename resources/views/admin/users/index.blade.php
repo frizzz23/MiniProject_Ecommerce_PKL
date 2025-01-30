@@ -62,7 +62,7 @@
                             <div class="flex items-center gap-4">
                                 <button class="btn btn-primary text-white py-2 px-4 rounded-lg" data-bs-toggle="modal"
                                     data-bs-target="#tambahModal">
-                                    + Tambahkan pengguna baru
+                                    + Tambahkan admin baru
                                 </button>
                                 <!-- Filter Kategori -->
                                 <form id="filterForm" action="{{ route('admin.users.index') }}" method="GET">
@@ -99,7 +99,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($users as $user)
+                                @forelse ($users as $user)
                                     <tr onclick="toggleDropdown(this)" class="hover:bg-gray-50 border-b">
                                         <td class="px-4 py-2">
                                             @if ($user->image)
@@ -133,7 +133,18 @@
                                             {{ $user->joinDate }}
                                         </td>
                                     </tr>
-                                @endforeach
+                                    @empty
+                                    <tr>
+                                        <td colspan="5" class="h-64">
+                                            <div
+                                                class="bg-white shadow-sm rounded-lg p-4 text-center flex flex-col justify-center items-center">
+                                                <img src="{{ asset('img/empty-data.png') }}" alt=" Tidak Ditemukan"
+                                                    class="w-64 h-64">
+                                                <p class="text-lg text-gray-600 font-medium">Tidak ada produk</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>

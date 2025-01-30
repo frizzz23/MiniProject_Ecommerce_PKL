@@ -1330,17 +1330,14 @@
 
             <!-- Top Category Section -->
             <div>
-                <h6 class="text-sm text-slate-800 font-semibold mb-5">Top Category</h6>
+                <h6 class="text-sm text-slate-800 font-semibold mb-5">Kategori Teratas</h6>
                 <ul class="space-y-2">
-                    <li><a href="#" class="text-sm text-slate-600 hover:text-slate-800">Computer & Laptop</a>
-                    </li>
-                    <li><a href="#" class="text-sm text-slate-600 hover:text-slate-800">Smartphone</a></li>
-                    <li><a href="#" class="text-sm text-slate-600 hover:text-slate-800">Headphone</a></li>
-                    <li><a href="#" class="text-sm text-slate-600 hover:text-slate-800">Accessories</a></li>
-                    <li><a href="#" class="text-sm text-slate-600 hover:text-slate-800">TV & Homes</a></li>
+                    @foreach ($categories as $category)
+                        <li><p  class="text-sm text-slate-600">{{ $category->name_category }}</p>
+                    @endforeach
                     <li>
-                        <a href="#" class="text-sm text-blue-500 hover:underline">
-                            Browse All Product →
+                        <a href="{{ 'page.product' }}" class="text-sm text-blue-500 hover:underline">
+                            Cari semua produk →
                         </a>
                     </li>
                 </ul>
@@ -1348,15 +1345,13 @@
 
             <!-- Quick Links Section -->
             <div>
-                <h6 class="text-sm text-slate-800 font-semibold mb-5">Quick Links</h6>
+                <h6 class="text-sm text-slate-800 font-semibold mb-5">Menu Cepat</h6>
                 <ul class="space-y-2">
-                    <li><a href="#" class="text-sm text-slate-600 hover:text-slate-800">Shop Product</a></li>
-                    <li><a href="#" class="text-sm text-slate-600 hover:text-slate-800">Shopping Cart</a></li>
-                    <li><a href="#" class="text-sm text-slate-600 hover:text-slate-800">Wishlist</a></li>
-                    <li><a href="#" class="text-sm text-slate-600 hover:text-slate-800">Compare</a></li>
-                    <li><a href="#" class="text-sm text-slate-600 hover:text-slate-800">Track Order</a></li>
-                    <li><a href="#" class="text-sm text-slate-600 hover:text-slate-800">Customer Help</a></li>
-                    <li><a href="#" class="text-sm text-slate-600 hover:text-slate-800">About Us</a></li>
+                    <li><a href="{{ route('page.product') }}" class="text-sm text-slate-600 hover:text-slate-800">Semua Produk</a></li>
+                    <li><a href="{{ route('about-page') }}" class="text-sm text-slate-600 hover:text-slate-800">Tentang Kami</a></li>
+                    <li><a href="{{ route('contact-page') }}" class="text-sm text-slate-600 hover:text-slate-800">Hubungi Kami</a></li>
+                    <li><a href="{{ route('user.orders.index') }}" class="text-sm text-slate-600 hover:text-slate-800">Pesanan</a></li>
+                    <li><a href="{{ route('user.carts.index') }}" class="text-sm text-slate-600 hover:text-slate-800">Keranjang</a></li>
                 </ul>
             </div>
 
@@ -1376,29 +1371,7 @@
                 </div>
             </div>
 
-            <!-- Popular Tags Section -->
-            <div>
-                <h6 class="text-sm text-slate-800 font-semibold mb-5">Popular Tag</h6>
-                <div class="flex flex-wrap gap-2">
-                    <a href="#"
-                        class="text-sm px-3 py-1 bg-white border border-gray-300 rounded hover:bg-blue-500 hover:text-white">
-                        Game
-                    </a>
-                    <a href="#"
-                        class="text-sm px-3 py-1 bg-white border border-gray-300 rounded hover:bg-blue-500 hover:text-white">
-                        iPhone
-                    </a>
-                    <a href="#"
-                        class="text-sm px-3 py-1 bg-white border border-gray-300 rounded hover:bg-blue-500 hover:text-white">
-                        TV
-                    </a>
-                    <a href="#"
-                        class="text-sm px-3 py-1 bg-white border border-gray-300 rounded hover:bg-blue-500 hover:text-white">
-                        Asus Laptops
-                    </a>
-                    <!-- Add more tags here -->
-                </div>
-            </div>
+            
         </div>
     </section>
 

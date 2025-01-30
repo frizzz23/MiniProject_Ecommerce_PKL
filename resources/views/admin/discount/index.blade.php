@@ -121,7 +121,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($codes as $code)
+                                @forelse ($codes as $code)
                                     <tr class="hover:bg-gray-100  border-b">
                                         <td class="px-6 py-5">
                                             {{ $loop->iteration ?? '-' }}
@@ -299,7 +299,18 @@
                                             </div>
                                         </div>
                                     </div>
-                                @endforeach
+                                @empty
+                                    <tr>
+                                        <td colspan="7" class="h-64">
+                                            <div
+                                                class="bg-white shadow-sm rounded-lg p-4 text-center flex flex-col justify-center items-center">
+                                                <img src="{{ asset('img/empty-data.png') }}" alt=" Tidak Ditemukan"
+                                                    class="w-64 h-64">
+                                                <p class="text-lg text-gray-600 font-medium">Tidak ada voucher</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                         <!-- Pagination Links -->

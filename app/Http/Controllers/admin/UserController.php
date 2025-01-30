@@ -25,7 +25,7 @@ class UserController extends Controller
             return $query->role($selectedRole);
         })->when($search, function ($query, $search) {
             return $query->where('name', 'like', '%' . $search . '%');
-        })->paginate(15);
+        })->paginate(10);
         // Iterasi untuk menambahkan 'joinDate' ke setiap pengguna
         $users->each(function ($user) {
             $user->joinDate = Carbon::parse($user->created_at)->diffForHumans();
