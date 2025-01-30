@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>landing page</title>
+    <title>Zen Tech</title>
     <link href="{{ asset('desainmini-main/dist/output.css') }}" rel="stylesheet" />
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -1315,37 +1315,37 @@
         </div>
     </section>
 
-    <section class="md:px-28 px-5 py-10 bg-[#EAF6FE]">
-        <div class="grid md:grid-cols-5 grid-cols-1 gap-5">
+    <section class="px-5 sm:px-10 md:px-20 lg:px-28 py-10 bg-[#EAF6FE]">
+        <div class="grid grid-cols-2 sm:grid-cols-2 gap-8">
             <!-- Customer Support Section -->
             <div>
-                <h6 class="text-sm text-slate-800 font-semibold mb-5">Customer Supports:</h6>
+                <h6 class="text-sm text-slate-800 font-semibold mb-4">Customer Support:</h6>
                 <h4 class="text-lg font-semibold text-slate-700 mb-3">(629) 555-0129</h4>
-                <p class="text-sm text-slate-600 mb-5">
+                <p class="text-sm text-slate-600 mb-4">
                     4517 Washington Ave. <br />
                     Manchester, Kentucky 39495
                 </p>
-                <p class="text-md text-slate-700">info@zentech.com</p>
+                <p class="text-sm text-slate-700">info@zentech.com</p>
             </div>
-
+    
             <!-- Top Category Section -->
             <div>
-                <h6 class="text-sm text-slate-800 font-semibold mb-5">Kategori Teratas</h6>
+                <h6 class="text-sm text-slate-800 font-semibold mb-4">Kategori Teratas</h6>
                 <ul class="space-y-2">
                     @foreach ($categories as $category)
-                        <li><p  class="text-sm text-slate-600">{{ $category->name_category }}</p>
+                        <li><p class="text-sm text-slate-600">{{ $category->name_category }}</p></li>
                     @endforeach
                     <li>
-                        <a href="{{ 'page.product' }}" class="text-sm text-blue-500 hover:underline">
+                        <a href="{{ route('page.product') }}" class="text-sm text-blue-500 hover:underline">
                             Cari semua produk →
                         </a>
                     </li>
                 </ul>
             </div>
-
+    
             <!-- Quick Links Section -->
             <div>
-                <h6 class="text-sm text-slate-800 font-semibold mb-5">Menu Cepat</h6>
+                <h6 class="text-sm text-slate-800 font-semibold mb-4">Menu Cepat</h6>
                 <ul class="space-y-2">
                     <li><a href="{{ route('page.product') }}" class="text-sm text-slate-600 hover:text-slate-800">Semua Produk</a></li>
                     <li><a href="{{ route('about-page') }}" class="text-sm text-slate-600 hover:text-slate-800">Tentang Kami</a></li>
@@ -1354,26 +1354,24 @@
                     <li><a href="{{ route('user.carts.index') }}" class="text-sm text-slate-600 hover:text-slate-800">Keranjang</a></li>
                 </ul>
             </div>
-
+    
             <!-- Download App Section -->
-            <div class="gap-3">
-                <h6 class="text-sm text-slate-800 font-semibold mb-5">Download App</h6>
-                <div class="space-y-3">
-                    <a href="#" class="block  w-28 xl:max-w-xs xl:w-full">
+            <div>
+                <h6 class="text-sm text-slate-800 font-semibold mb-4">Download App</h6>
+                <div class="flex flex-col sm:flex-row md:flex-col gap-3">
+                    <a href="#" class="block w-28 sm:w-36 md:w-32">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
                             alt="Google Play" class="w-full" />
                     </a>
-                    <a href="#" class="block  w-28 xl:max-w-xs xl:w-full">
-                        <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg
-  "
+                    <a href="#" class="block w-28 sm:w-36 md:w-32">
+                        <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
                             alt="App Store" class="w-full" />
                     </a>
                 </div>
             </div>
-
-            
         </div>
     </section>
+    
 
     <x-list-cart-script />
 
