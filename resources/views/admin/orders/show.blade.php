@@ -14,8 +14,8 @@
                     <!-- Judul -->
                     <div class=" flex justify-between items-center p-2 ">
                         <div class="flex items-center justify-center gap-2">
-                            <h1 class="text-2xl font-bold text-center">Detail Order</h1>
-                            <span class="text-lg font-normal text-gray-500 text-center">({{ $order->order_code ?? 'kosong' }})</span>
+                            <h1 class="text-2xl font-bold text-center">Detail Pesanan</h1>
+                            {{-- <span class="text-lg font-normal text-gray-500 text-center">({{ $order->order_code ?? 'kosong' }})</span> --}}
                         </div>                        
 
                         <div class="flex items-center justify-center text-center gap-2 ">

@@ -468,123 +468,104 @@
         <div class="md:order-1 order-0  overflow-hidden relative">
             <img src="{{ asset('desainmini-main/image/433808944f8d3c3eb8e8267829a874d4.png') }}" alt="banner"
                 class="md:w-5/6 ms-auto" />
-            <div class="absolute bg-white p-4 px-5 backdrop-filter backdrop-opacity-50 z-9 bottom-20 left-20 rounded-lg overflow-hidden"
+            {{-- <div class="absolute bg-white p-4 px-5 backdrop-filter backdrop-opacity-50 z-9 bottom-20 left-20 rounded-lg overflow-hidden"
                 style="background-color: rgba(255, 255, 255, 0.5);width: 240px;height:auto">
                 <h6 class="text-sm text-slate-900 font-bold mb-2">Dapatkan Diskon Hingga 30%.</h6>
                 <p class="text-xs text-slate-900">Anda bisa mendapatkan diskon 30% untuk produk ini jika Anda membeli
                     sekarang</p>
-            </div>
+            </div> --}}
         </div>
     </section>
 
-    <section class="md:px-28 px-5 py-10 bg-white">
+    <section class="px-5 py-10 bg-white relative md:px-28">
         <div class="relative w-full overflow-hidden">
             <!-- Slides -->
             <div id="carouselSlides" class="flex transition-transform duration-700">
-                {{-- First Slide - Improved Voucher Display --}}
-                <div class="w-full flex-shrink-0 relative">
-                    <div class="relative w-full h-full bg-gradient-to-r from-blue-50 to-blue-100">
-                        {{-- Decorative Elements - Winter Theme --}}
-                        {{-- Snowflakes Top --}}
-                        <div class="absolute top-4 left-4 text-blue-200 text-5xl animate-bounce">❄</div>
-                        <div class="absolute top-8 left-1/4 text-blue-200 text-4xl animate-bounce delay-100">❄</div>
-                        <div class="absolute top-2 right-1/3 text-blue-200 text-3xl animate-bounce delay-200">❄</div>
-                        <div class="absolute top-6 right-1/4 text-blue-200 text-4xl animate-bounce delay-300">❄</div>
-                        <div class="absolute top-4 right-4 text-blue-200 text-5xl animate-bounce delay-150">❄</div>
-
-                        {{-- Snowflakes Bottom --}}
-                        <div class="absolute bottom-4 left-4 text-blue-200 text-5xl animate-bounce delay-200">❄</div>
-                        <div class="absolute bottom-8 left-1/3 text-blue-200 text-3xl animate-bounce delay-300">❄</div>
-                        <div class="absolute bottom-2 right-1/3 text-blue-200 text-4xl animate-bounce delay-100">❄
-                        </div>
-                        <div class="absolute bottom-6 right-1/4 text-blue-200 text-3xl animate-bounce delay-150">❄
-                        </div>
-                        <div class="absolute bottom-4 right-4 text-blue-200 text-5xl animate-bounce delay-250">❄</div>
-
-                        {{-- Winter Decorative Elements --}}
-                        <div class="absolute left-10 top-1/2 -translate-y-1/2 text-blue-200 text-4xl">🧊</div>
-                        <div class="absolute right-10 top-1/2 -translate-y-1/2 text-blue-200 text-4xl">🧊</div>
-                        <div class="absolute left-1/4 top-1/4 text-blue-200 text-3xl">⛄</div>
-                        <div class="absolute right-1/4 bottom-1/4 text-blue-200 text-3xl">🎿</div>
-
-                        {{-- Ice Border Effect --}}
+                @if ($hasPromoCodes)
+                    <!-- First Slide - Voucher Display -->
+                    <div class="w-full flex-shrink-0 relative">
                         <div
-                            class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-100 via-white to-blue-100">
-                        </div>
-                        <div
-                            class="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-blue-100 via-white to-blue-100">
-                        </div>
-
-                        {{-- Main Content --}}
-                        <div class="relative z-10 max-w-3xl mx-auto py-8 px-4">
-                            <div class="space-y-4">
-                                @foreach ($promoCodes as $voucher)
-                                    <div
-                                        class="bg-white rounded-lg p-4 shadow-md hover:shadow-lg transition-all duration-700 flex justify-between items-center">
-                                        <div class="flex items-center space-x-3">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500"
-                                                viewBox="0 0 20 20" fill="currentColor">
-                                                <path fill-rule="evenodd"
-                                                    d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                            <span class="font-mono text-lg font-semibold text-gray-700">
-                                                Kode Voucher: {{ $voucher->code }}
-                                            </span>
-                                        </div>
-                                        <button
-                                            class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors text-sm"
-                                            onclick="copyToClipboard('{{ $voucher->code }}')">
-                                            Salin Kode
-                                        </button>
-
-                                    </div>
-                                @endforeach
+                            class="relative w-full h-full bg-gradient-to-r from-blue-50 to-blue-100 p-6 md:p-8 rounded-lg shadow-md">
+                            <!-- Decorative Elements - Winter Theme -->
+                            <div class="absolute inset-0 flex justify-between items-center px-4 md:px-10">
+                                <span class="text-blue-200 text-2xl md:text-4xl">❄</span>
+                                <span class="text-blue-200 text-2xl md:text-3xl">⛄</span>
+                                <span class="text-blue-200 text-2xl md:text-4xl">🎿</span>
+                                <span class="text-blue-200 text-2xl md:text-4xl">🧊</span>
                             </div>
 
-                            {{-- Call to Action Text --}}
-                            <div class="text-center mt-6 space-y-2">
-                                <p class="text-lg font-semibold text-gray-700">
-                                    Jangan lewatkan kesempatan emas!
-                                </p>
-                                <p class="text-gray-600">
-                                    Klaim voucher spesialmu sekarang sebelum habis.
-                                </p>
+                            <!-- Main Content -->
+                            <div class="relative z-10 max-w-3xl mx-auto text-center">
+                                <h2 class="text-lg md:text-xl font-semibold text-gray-800">Voucher Promo Tersedia</h2>
+                                <div class="space-y-4 mt-4">
+                                    @foreach ($promoCodes as $voucher)
+                                        <div
+                                            class="bg-white rounded-lg p-3 md:p-4 shadow-md hover:shadow-lg flex flex-col md:flex-row justify-between items-center">
+                                            <div class="flex items-center space-x-3">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500"
+                                                    viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd"
+                                                        d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z"
+                                                        clip-rule="evenodd" />
+                                                </svg>
+                                                <span
+                                                    class="font-mono text-sm md:text-lg font-semibold text-gray-700">Kode:
+                                                    {{ $voucher->code }}</span>
+                                            </div>
+                                            <button
+                                                class="px-3 py-1 md:px-4 md:py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors text-xs md:text-sm"
+                                                onclick="copyToClipboard('{{ $voucher->code }}')">
+                                                Salin
+                                            </button>
+                                        </div>
+                                    @endforeach
+                                </div>
+
+                                <!-- Call to Action -->
+                                <div class="text-center mt-6">
+                                    <p class="text-md md:text-lg font-semibold text-gray-700">Jangan lewatkan
+                                        kesempatan emas!</p>
+                                    <p class="text-gray-600 text-sm md:text-base">Klaim voucher spesialmu sekarang
+                                        sebelum habis.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
+                @endif
+
+                <!-- Second Slide -->
+                <div class="w-full flex-shrink-0 relative">
+                    <picture>
+                        <source srcset="{{ asset('img/Mobile1.png') }}" media="(max-width: 768px)">
+                        <source srcset="{{ asset('img/Tablet.png') }}" media="(max-width: 1024px)">
+                        <img src="{{ asset('img/Desktop1.png') }}" class="w-full h-auto object-cover"
+                            alt="Promo 3">
+                    </picture>
                 </div>
 
-                {{-- Second Slide --}}
+                <!-- Third Slide -->
                 <div class="w-full flex-shrink-0 relative">
-                    <img src="{{ asset('img/promo3.png') }}" class="w-full" alt="Second slide">
-                </div>
-
-                {{-- Third Slide --}}
-                <div class="w-full flex-shrink-0 relative">
-                    <img src="{{ asset('img/promo4.png') }}" class="w-full" alt="Third slide">
+                    <picture>
+                        <source srcset="{{ asset('img/Mobile2.png') }}" media="(max-width: 768px)">
+                        <source srcset="{{ asset('img/Tablet2.png') }}" media="(max-width: 1024px)">
+                        <img src="{{ asset('img/Desktop2.png') }}" class="w-full h-auto object-cover"
+                            alt="Promo 3">
+                    </picture>
                 </div>
             </div>
+
             <!-- Controls -->
             <button id="prevSlide"
-                class="absolute top-1/2 left-5 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full hover:bg-gray-600">
+                class="absolute top-1/2 left-3 md:left-5 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full hover:bg-gray-600">
                 &#10094;
             </button>
             <button id="nextSlide"
-                class="absolute top-1/2 right-5 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full hover:bg-gray-600">
+                class="absolute top-1/2 right-3 md:right-5 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full hover:bg-gray-600">
                 &#10095;
             </button>
-            <!-- Indicators -->
-            <div class="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                <button class="w-3 h-3 rounded-full bg-gray-300 focus:ring-2 focus:ring-gray-500"
-                    data-index="0"></button>
-                <button class="w-3 h-3 rounded-full bg-gray-300 focus:ring-2 focus:ring-gray-500"
-                    data-index="1"></button>
-                <button class="w-3 h-3 rounded-full bg-gray-300 focus:ring-2 focus:ring-gray-500"
-                    data-index="2"></button>
-            </div>
         </div>
     </section>
+
 
     {{-- <section class="md:px-28 px-5 py-10 bg-white">
         <div class="grid md:grid-cols-3 grid-cols-1 gap-4 ">
@@ -1347,11 +1328,16 @@
             <div>
                 <h6 class="text-sm text-slate-800 font-semibold mb-4">Menu Cepat</h6>
                 <ul class="space-y-2">
-                    <li><a href="{{ route('page.product') }}" class="text-sm text-slate-600 hover:text-slate-800">Semua Produk</a></li>
-                    <li><a href="{{ route('about-page') }}" class="text-sm text-slate-600 hover:text-slate-800">Tentang Kami</a></li>
-                    <li><a href="{{ route('contact-page') }}" class="text-sm text-slate-600 hover:text-slate-800">Hubungi Kami</a></li>
-                    <li><a href="{{ route('user.orders.index') }}" class="text-sm text-slate-600 hover:text-slate-800">Pesanan</a></li>
-                    <li><a href="{{ route('user.carts.index') }}" class="text-sm text-slate-600 hover:text-slate-800">Keranjang</a></li>
+                    <li><a href="{{ route('page.product') }}"
+                            class="text-sm text-slate-600 hover:text-slate-800">Semua Produk</a></li>
+                    <li><a href="{{ route('about-page') }}"
+                            class="text-sm text-slate-600 hover:text-slate-800">Tentang Kami</a></li>
+                    <li><a href="{{ route('contact-page') }}"
+                            class="text-sm text-slate-600 hover:text-slate-800">Hubungi Kami</a></li>
+                    <li><a href="{{ route('user.orders.index') }}"
+                            class="text-sm text-slate-600 hover:text-slate-800">Pesanan</a></li>
+                    <li><a href="{{ route('user.carts.index') }}"
+                            class="text-sm text-slate-600 hover:text-slate-800">Keranjang</a></li>
                 </ul>
             </div>
     
