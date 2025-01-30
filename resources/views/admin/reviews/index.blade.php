@@ -123,9 +123,16 @@
                                         <td class="px-4 py-2">{{ $review->created_at->format('d F Y') ?? 'kosong' }}</td>
                                     </tr>
                                 @empty
-                                    <tr>
-                                        <td colspan="6" class="px-4 py-2 text-center text-gray-500">Tidak ada review yang ditemukan</td>
-                                    </tr>
+                                <tr>
+                                    <td colspan="6" class="h-64">
+                                        <div
+                                            class="bg-white shadow-sm rounded-lg p-4 text-center flex flex-col justify-center items-center">
+                                            <img src="{{ asset('img/empty-data.png') }}" alt=" Tidak Ditemukan"
+                                                class="w-64 h-64">
+                                            <p class="text-lg text-gray-600 font-medium">Tidak ada ulasan</p>
+                                        </div>
+                                    </td>
+                                </tr>
                                 @endforelse
                             </tbody>
                         </table>

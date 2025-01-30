@@ -289,7 +289,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($categories as $category)
+                                @forelse ($categories as $category)
                                     <tr class="hover:bg-gray-100  border-b">
                                         <td class="px-4 py-2">
                                             {{ $loop->iteration ?? '-' }}
@@ -349,8 +349,7 @@
 
                                     <!-- Modal Hapus -->
                                     <div class="modal fade" id="hapusmodal{{ $category->id }}" tabindex="-1"
-                                        aria-hidden ```blade
-="true">
+                                        aria-hidden ```blade="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <form action="{{ route('admin.categories.destroy', $category->id) }}"
@@ -375,7 +374,18 @@
                                             </div>
                                         </div>
                                     </div>
-                                @endforeach
+                                    @empty
+                                    <tr>
+                                        <td colspan="5" class="h-64">
+                                            <div
+                                                class="bg-white shadow-sm rounded-lg p-4 text-center flex flex-col justify-center items-center">
+                                                <img src="{{ asset('img/empty-data.png') }}" alt=" Tidak Ditemukan"
+                                                    class="w-64 h-64">
+                                                <p class="text-lg text-gray-600 font-medium">Tidak ada kategori</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>

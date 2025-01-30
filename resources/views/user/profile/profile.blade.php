@@ -26,9 +26,22 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
                             d="m9 5 7 7-7 7" />
                     </svg>
-                    <a href="{{ route('page.product') }}"
+                    <div
                         class="flex justify-center ml-2 items-end gap-1  bg-white shadow-sm text-slate-800 w-auto py-2 px-2 rounded-md">
-                        <span class="font-semibold text-xs">Produk</span>
+                        <span class="font-semibold text-xs">Akun</span>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <svg class=" h-4 w-4 text-gray-400 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                        width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                            d="m9 5 7 7-7 7" />
+                    </svg>
+                    <a href="{{ route('user.profile.profile') }}"
+                        class="flex justify-center ml-2 items-end gap-1  bg-white shadow-sm text-slate-800 w-auto py-2 px-2 rounded-md">
+                        <span class="font-semibold text-xs">Profil</span>
                     </a>
                 </div>
             </li>
@@ -142,7 +155,7 @@
 
 
                 <div class="flex flex-col items-center">
-                    <label for="image" class="block text-sm font-medium text-gray-700 mb-2">Profile Picture</label>
+                    <label for="image" class="block text-sm font-medium text-gray-700 mb-2">Foto Profil</label>
                     <img id="previewImage" class="w-32 h-32 rounded-full border-2 border-gray-300 object-cover mb-4"
                         src="https://via.placeholder.com/150" alt="Preview">
 
@@ -150,7 +163,7 @@
                     <div class="relative">
                         <label for="image"
                             class="cursor-pointer inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md shadow-sm hover:bg-blue-500">
-                            Upload Profile
+                            Unggah Foto Profil
                         </label>
                         <input type="file" name="image" id="image" accept="image/*"
                             class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">

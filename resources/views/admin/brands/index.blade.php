@@ -22,12 +22,13 @@
                         </div>
                         <!-- Kanan: Gambar (Vector) -->
                         <div class="hidden md:block">
-                            <img src="{{ asset('img/img-banner/list.png') }}" alt="Gambar Banner" class="w-32 h-32 object-contain">
+                            <img src="{{ asset('img/img-banner/list.png') }}" alt="Gambar Banner"
+                                class="w-32 h-32 object-contain">
                         </div>
                     </div>
                 </div>
-                 <!-- Card -->
-                 <div class="w-full md:w-1/4 bg-gradient-to-t from-blue-800 to-blue-400 p-2 rounded-lg shadow-md">
+                <!-- Card -->
+                <div class="w-full md:w-1/4 bg-gradient-to-t from-blue-800 to-blue-400 p-2 rounded-lg shadow-md">
                     <div class="flex flex-col items-center">
                         <!-- Ikon di atas dengan latar belakang putih dan tinggi penuh -->
                         <div class="bg-white p-4 rounded-md h-16 w-16 flex justify-center items-center w-full">
@@ -103,7 +104,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($brands as $brand)
+                                @forelse ($brands as $brand)
                                     <tr class="hover:bg-gray-100  border-b">
                                         <td class="px-4 py-2">
                                             {{ $loop->iteration ?? '-' }}
@@ -187,7 +188,18 @@
                                             </div>
                                         </div>
                                     </div>
-                                @endforeach
+                                    @empty
+                                    <tr>
+                                        <td colspan="5" class="h-64">
+                                            <div
+                                                class="bg-white shadow-sm rounded-lg p-4 text-center flex flex-col justify-center items-center">
+                                                <img src="{{ asset('img/empty-data.png') }}" alt=" Tidak Ditemukan"
+                                                    class="w-64 h-64">
+                                                <p class="text-lg text-gray-600 font-medium">Tidak ada Merek</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -261,7 +273,7 @@
                             <div class="mb-3">
                                 <label for="name_brand" class="form-label">Nama Merek</label>
                                 <input type="text" name="name_brand" class="form-control" id="name_brand"
-                                value="{{ !old('brand_id') ? old('name_brand') : '' }}">
+                                    value="{{ !old('brand_id') ? old('name_brand') : '' }}">
                                 @if (!old('brand_id'))
                                     @error('name_brand')
                                         <div class="text-danger mt-1">{{ $message }}</div>

@@ -32,7 +32,7 @@
                         </div>
                     </div>
                 </div>
-              
+
                 <div class="w-full md:w-1/4 bg-gradient-to-r from-blue-800 to-blue-400 p-2 rounded-lg shadow-md">
                     <div class="flex flex-col items-center">
                         <!-- Ikon di atas dengan latar belakang putih dan tinggi penuh -->
@@ -185,7 +185,7 @@
                         </thead>
                         <!-- Table Body -->
                         <tbody>
-                            @foreach ($products as $product)
+                            @forelse ($products as $product)
                                 <tr class="hover:bg-gray-50 cursor-pointer border-b">
                                     <td class="px-6 py-6 flex items-center">
                                         <img src="{{ asset('storage/' . $product->image_product) }}"
@@ -266,7 +266,18 @@
                                         </div>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                                <tr>
+                                    <td colspan="8" class="h-64">
+                                        <div
+                                            class="bg-white shadow-sm rounded-lg p-4 text-center flex flex-col justify-center items-center">
+                                            <img src="{{ asset('img/empty-data.png') }}" alt=" Tidak Ditemukan"
+                                                class="w-64 h-64">
+                                            <p class="text-lg text-gray-600 font-medium">Tidak ada produk</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
