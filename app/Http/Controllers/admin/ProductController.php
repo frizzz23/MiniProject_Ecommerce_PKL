@@ -116,7 +116,7 @@ class ProductController extends Controller
 
         Product::create($request->except('image_product') + ['image_product' => $imagePath]);
 
-        return redirect()->route('admin.products.create')->with('success', 'Produk berhasil ditambahkan.');
+        return redirect()->route('admin.products.index')->with('success', 'Produk berhasil ditambahkan.');
     }
 
     /**
@@ -198,7 +198,7 @@ class ProductController extends Controller
         }
 
         // Redirect kembali ke halaman produk
-        return redirect()->route('admin.products.edit')->with('success', 'Produk berhasil diperbarui.');
+        return redirect()->route('admin.products.index')->with('success', 'Produk berhasil diperbarui.');
     }
 
 
