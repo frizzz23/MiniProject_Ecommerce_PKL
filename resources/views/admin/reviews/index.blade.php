@@ -43,62 +43,71 @@
                 </div>
             </div>
             <div class="card w-full">
-                
+
                 <div class="card-body p-4">
-                    <div class="flex justify-between items-center mb-4">
-                        <div>
-                            <!-- Pencarian -->
-                            <form action="{{ route('admin.reviews.index') }}" method="GET" class="d-inline-block">
+                    <div>
+                        <form action="{{ route('admin.reviews.index') }}" method="GET" id="filterForm">
+                            <div class="flex justify-between items-center mb-4">
                                 <div class="d-flex align-items-center">
+                                    <!-- Pencarian -->
                                     <input type="text" name="search" class="form-control me-2 border-lg border-[#5d85fa]" placeholder="Cari produk atau komentar"
                                         value="{{ request('search') }}" style="width: 200px;">
                                     <button type="submit" class="btn btn-primary">Cari</button>
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+
+                            <!-- Filter Form -->
+                            <div class="grid grid-cols-5 gap-4 text-white border-t border-gray-600 pt-4 mb-4">
+                                <!-- Filter Produk -->
+                                <div>
+                                    <select name="product_id" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
+                                        onchange="document.getElementById('filterForm').submit();">
+                                        <option value="">Semua Produk</option>
+                                        @foreach ($products as $product)
+                                            <option value="{{ $product->id }}" {{ request('product_id') == $product->id ? 'selected' : '' }}>
+                                                {{ $product->name_product }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <!-- Filter Rating -->
+                                <div>
+                                    <select name="rating" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
+                                        onchange="document.getElementById('filterForm').submit();">
+                                        <option value="">Rating</option>
+                                        <option value="5" {{ request('rating') == '5' ? 'selected' : '' }}>5 Bintang</option>
+                                        <option value="4" {{ request('rating') == '4' ? 'selected' : '' }}>4 Bintang</option>
+                                        <option value="3" {{ request('rating') == '3' ? 'selected' : '' }}>3 Bintang</option>
+                                        <option value="2" {{ request('rating') == '2' ? 'selected' : '' }}>2 Bintang</option>
+                                        <option value="1" {{ request('rating') == '1' ? 'selected' : '' }}>1 Bintang</option>
+                                    </select>
+                                </div>
+
+                                <!-- Filter Urutkan -->
+                                <div>
+                                    <select name="created_at" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
+                                        onchange="document.getElementById('filterForm').submit();">
+                                        <option value="">Urutkan</option>
+                                        <option value="asc" {{ request('created_at') == 'asc' ? 'selected' : '' }}>Lama</option>
+                                        <option value="desc" {{ request('created_at') == 'desc' ? 'selected' : '' }}>Terbaru</option>
+                                    </select>
+                                </div>
+
+                                <!-- Filter Tanggal Awal dan Akhir -->
+                                <div class="flex items-center">
+                                    <input type="date" name="start_date" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
+                                        value="{{ request('start_date') }}">
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="date" name="end_date" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
+                                        value="{{ request('end_date') }}">
+                                </div>
+                            </div>
+                        </form>
                     </div>
 
 
-                    <!-- Filter Form -->
-                    <form action="{{ route('admin.reviews.index') }}" method="GET" id="filterForm">
-                        <div class="grid grid-cols-3 gap-4 text-white border-t border-gray-600 pt-4 mb-4">
-                            <!-- Filter Produk -->
-                            <div>
-                                <select name="product_id" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                    onchange="document.getElementById('filterForm').submit();">
-                                    <option value="">Semua Produk</option>
-                                    @foreach ($products as $product)
-                                        <option value="{{ $product->id }}" {{ request('product_id') == $product->id ? 'selected' : '' }}>
-                                            {{ $product->name_product }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <!-- Filter Rating -->
-                            <div>
-                                <select name="rating" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                    onchange="document.getElementById('filterForm').submit();">
-                                    <option value="">Rating</option>
-                                    <option value="5" {{ request('rating') == '5' ? 'selected' : '' }}>5 Bintang</option>
-                                    <option value="4" {{ request('rating') == '4' ? 'selected' : '' }}>4 Bintang</option>
-                                    <option value="3" {{ request('rating') == '3' ? 'selected' : '' }}>3 Bintang</option>
-                                    <option value="2" {{ request('rating') == '2' ? 'selected' : '' }}>2 Bintang</option>
-                                    <option value="1" {{ request('rating') == '1' ? 'selected' : '' }}>1 Bintang</option>
-                                </select>
-                            </div>
-
-                            <!-- Filter Tanggal -->
-                            <div>
-                                <select name="created_at" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                    onchange="document.getElementById('filterForm').submit();">
-                                    <option value="">Tanggal</option>
-                                    <option value="asc" {{ request('created_at') == 'asc' ? 'selected' : '' }}>Lama</option>
-                                    <option value="desc" {{ request('created_at') == 'desc' ? 'selected' : '' }}>Terbaru</option>
-                                </select>
-                            </div>
-                        </div>
-                    </form>
 
                     <div class="table-responsive">
                         <table class="min-w-full bg-white rounded-lg overflow-hidden">

@@ -47,66 +47,47 @@
             <div class="card w-full">
                 <div class="card-body p-4">
                     <div>
-                        <div class="flex justify-between items-center mb-4">
-                            <div>
-                                <!-- Pencarian -->
-                                <form action="{{ route('admin.products.index') }}" method="GET" class="d-inline-block">
-                                    <div class="d-flex align-items-center">
-                                        <input type="text" name="search"
-                                            class="form-control me-2 border-lg border-[#5d85fa]" placeholder="Cari produk"
-                                            value="{{ request('search') }}" style="width: 200px;">
-                                        <button type="submit" class="btn btn-primary">Cari</button>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="flex items-center gap-4">
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#tambahmodal">
-                                    + Tambah Vocher
-                                </button>
-                            </div>
-                        </div>
                         <form action="{{ route('admin.discount.index') }}" method="GET">
+                            <div class="flex justify-between items-center mb-4">
+                                <div class="d-flex align-items-center">
+                                    <!-- Pencarian -->
+                                    <input type="text" name="search" class="form-control me-2 border-lg border-[#5d85fa]" placeholder="Cari produk"
+                                        value="{{ request('search') }}" style="width: 200px;">
+                                    <button type="submit" class="btn btn-primary">Cari</button>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahmodal">
+                                        + Tambah Vocher
+                                    </button>
+                                </div>
+                            </div>
+
                             <div class="grid grid-cols-3 gap-3 text-white border-t border-gray-600 pt-4 mb-4">
                                 <div>
-                                    <select name="price_discount"
-                                        class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                        onchange="this.form.submit()">
+                                    <select name="price_discount" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full" onchange="this.form.submit()">
                                         <option value="">Diskon</option>
-                                        <option value="asc" {{ request('price_discount') == 'asc' ? 'selected' : '' }}>
-                                            Terendah ke Tertinggi</option>
-                                        <option value="desc" {{ request('price_discount') == 'desc' ? 'selected' : '' }}>
-                                            Tertinggi ke Terendah</option>
+                                        <option value="asc" {{ request('price_discount') == 'asc' ? 'selected' : '' }}>Terendah ke Tertinggi</option>
+                                        <option value="desc" {{ request('price_discount') == 'desc' ? 'selected' : '' }}>Tertinggi ke Terendah</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <select name="kuantitas"
-                                        class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                        onchange="this.form.submit()">
+                                    <select name="kuantitas" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full" onchange="this.form.submit()">
                                         <option value="">Kuantitas</option>
-                                        <option value="asc" {{ request('kuantitas') == 'asc' ? 'selected' : '' }}>
-                                            Sedikit Ke Terbanyak</option>
-                                        <option value="desc" {{ request('kuantitas') == 'desc' ? 'selected' : '' }}>
-                                            Terbanyak Ke Sedikit</option>
+                                        <option value="asc" {{ request('kuantitas') == 'asc' ? 'selected' : '' }}>Sedikit Ke Terbanyak</option>
+                                        <option value="desc" {{ request('kuantitas') == 'desc' ? 'selected' : '' }}>Terbanyak Ke Sedikit</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <select name="minimal_pembelian"
-                                        class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                        onchange="this.form.submit()">
+                                    <select name="minimal_pembelian" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full" onchange="this.form.submit()">
                                         <option value="">Minimal Pembelian</option>
-                                        <option value="asc"
-                                            {{ request('minimal_pembelian') == 'asc' ? 'selected' : '' }}>
-                                            Terendah ke Tertinggi</option>
-                                        <option value="desc"
-                                            {{ request('minimal_pembelian') == 'desc' ? 'selected' : '' }}>
-                                            Tertinggi ke Terendah</option>
+                                        <option value="asc" {{ request('minimal_pembelian') == 'asc' ? 'selected' : '' }}>Terendah ke Tertinggi</option>
+                                        <option value="desc" {{ request('minimal_pembelian') == 'desc' ? 'selected' : '' }}>Tertinggi ke Terendah</option>
                                     </select>
                                 </div>
                             </div>
                         </form>
-
                     </div>
+
                     <div class="table-responsive">
                         <table class="min-w-full bg-white rounded-lg overflow-hidden">
                             <thead class="bg-[#5D87FF] text-white"> {{-- bg-gray-100 --}}
