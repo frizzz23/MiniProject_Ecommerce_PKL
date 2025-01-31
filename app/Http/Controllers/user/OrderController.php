@@ -99,6 +99,7 @@ class OrderController extends Controller
         // Ambil order beserta relasi terkait
         $order = Order::with('addresses', 'productOrders.product', 'postage', 'promoCode', 'payment', 'user')
             ->findOrFail($id);
+        $clientKey = env('MIDTRANS_CLIENT_KEY');
 
         // Mapping status ke dalam bahasa Indonesia
         $statusMapping = [
@@ -111,7 +112,7 @@ class OrderController extends Controller
         // Tambahkan properti baru untuk status dalam bahasa Indonesia
         $order->status_order_label = $statusMapping[$order->status_order] ?? 'Tidak Diketahui';
 
-        return view('user.orders.show', compact('order'));
+        return view('user.orders.show', compact('order','clientKey'));
     }
 
     public function addRiview(Request $request)

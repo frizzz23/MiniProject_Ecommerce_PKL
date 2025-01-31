@@ -13,31 +13,38 @@ class DiscountController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-{
-    // Mulai query untuk PromoCode
-    $query = PromoCode::query();
+    {
+        // Mulai query untuk PromoCode
+        $query = PromoCode::query();
 
-    // Filter berdasarkan diskon
-    if ($request->has('price_discount') && in_array($request->price_discount, ['asc', 'desc'])) {
-        $query->orderBy('discount_amount', $request->price_discount);
+        // Filter pencarian berdasarkan kode promo (pastikan kolom ini ada di tabel Anda)
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where('code', 'like', '%' . $search . '%');
+        }
+
+        // Filter berdasarkan diskon
+        if ($request->has('price_discount') && in_array($request->price_discount, ['asc', 'desc'])) {
+            $query->orderBy('discount_amount', $request->price_discount);
+        }
+
+        // Filter berdasarkan kuantitas
+        if ($request->has('kuantitas') && in_array($request->kuantitas, ['asc', 'desc'])) {
+            $query->orderBy('quantity', $request->kuantitas);
+        }
+
+        // Filter berdasarkan minimal pembelian
+        if ($request->has('minimal_pembelian') && in_array($request->minimal_pembelian, ['asc', 'desc'])) {
+            $query->orderByRaw('CAST(minimum_purchase AS DECIMAL) ' . $request->minimal_pembelian);
+        }
+
+        // Ambil data dengan pagination (misalnya 5 data per halaman)
+        $codes = $query->paginate(5);
+
+        // Kirim data ke view
+        return view('admin.discount.index', compact('codes'));
     }
 
-    // Filter berdasarkan kuantitas
-    if ($request->has('kuantitas') && in_array($request->kuantitas, ['asc', 'desc'])) {
-        $query->orderBy('quantity', $request->kuantitas);
-    }
-
-    // Filter berdasarkan minimal pembelian
-    if ($request->has('minimal_pembelian') && in_array($request->minimal_pembelian, ['asc', 'desc'])) {
-        $query->orderByRaw('CAST(minimum_purchase AS DECIMAL) ' . $request->minimal_pembelian);
-    }
-
-    // Ambil data dengan pagination (misalnya 10 data per halaman)
-    $codes = $query->paginate(5);
-
-    // Kirim data ke view
-    return view('admin.discount.index', compact('codes'));
-}
 
 
 

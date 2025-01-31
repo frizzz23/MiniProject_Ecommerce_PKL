@@ -12,67 +12,117 @@ use App\Http\Controllers\Controller;
 class OrderController extends Controller
 {
     public function index(Request $request)
-    {
-        // Mengambil parameter filter dari request
-        $priceProduct = $request->input('price'); // Filter berdasarkan harga produk
-        $statusOrder = $request->input('status_order'); // Filter berdasarkan status order
-        $createdAt = $request->input('created_at'); // Filter berdasarkan tanggal
-        $search = $request->input('search'); // Filter berdasarkan pencarian
-        $paymentStatus = $request->input('payment_status'); // Filter berdasarkan status pembayaran
+{
+    // Mengambil parameter filter dari request
+    $priceProduct = $request->input('price'); // Filter harga
+    $statusOrder = $request->input('status_order'); // Filter status order
+    $startDate = $request->input('start_date'); // Tanggal mulai
+    $endDate = $request->input('end_date'); // Tanggal akhir
+    $search = $request->input('search'); // Filter pencarian nama produk
+    $paymentStatus = $request->input('payment_status'); // Filter status pembayaran
+    $productId = $request->input('product_id'); // Filter berdasarkan produk
+    $sortBy = $request->input('sort_by', 'created_at'); // Kolom yang digunakan untuk sorting
+    $sortDirection = $request->input('sort_direction', 'desc'); // Arah sorting (asc/desc)
+    $createdAtSort = $request->input('created_at_sort'); // Filter sortir berdasarkan tanggal
 
-        // Ambil notifikasi yang belum dibaca
-        $unreadNotifications = OrderNotification::with(['order.user', 'order.productOrders.product'])
-            ->where('is_read', false)
-            ->latest()
-            ->get();
+    // Ambil notifikasi yang belum dibaca
+    $unreadNotifications = OrderNotification::with(['order.user', 'order.productOrders.product'])
+        ->where('is_read', false)
+        ->latest()
+        ->get();
 
-        // Mengambil semua pesanan, dengan filter berdasarkan price, status_order, created_at, search, dan payment_status jika ada
-        $orders = Order::with('user', 'productOrders.product', 'addresses', 'postage', 'promoCode', 'payment')
-            ->when($priceProduct, function ($query) use ($priceProduct) {
-                return $query->orderBy('grand_total_amount', $priceProduct); // Filter harga berdasarkan grand_total_amount
-            })
-            ->when($statusOrder, function ($query) use ($statusOrder) {
-                return $query->where('status_order', $statusOrder);
-            })
-            ->when($createdAt, function ($query) use ($createdAt) {
-                return $query->orderBy('created_at', $createdAt);
-            })
-            ->when($search, function ($query) use ($search) {
-                return $query->whereHas('productOrders.product', function ($query) use ($search) {
-                    $query->where('name_product', 'like', '%' . $search . '%');
-                });
-            })
-            ->when($paymentStatus, function ($query) use ($paymentStatus) {
-                return $query->whereHas('payment', function ($query) use ($paymentStatus) {
-                    $query->where('status', $paymentStatus);
-                });
-            })
-            ->latest() // Mengurutkan berdasarkan yang terbaru
-            ->paginate(5);  // Added pagination to limit results per page
+    // Query dasar pesanan
+    $ordersQuery = Order::with('user', 'productOrders.product', 'addresses', 'postage', 'promoCode', 'payment');
 
-        // Mapping status order ke dalam bahasa Indonesia
-        $statusMapping = [
-            'completed' => 'Selesai',
-            'processing' => 'Dikemas',
-            'pending' => 'Menunggu',
-            'shipping' => 'Dikirim',
-        ];
-
-        // Mengakses koleksi dengan menggunakan properti items()
-        $orders->getCollection()->transform(function ($order) use ($statusMapping) {
-            $order->status_order_label = $statusMapping[$order->status_order] ?? 'Tidak Diketahui';
-            return $order;
+    // Filter berdasarkan produk
+    if ($productId) {
+        $ordersQuery->whereHas('productOrders.product', function ($query) use ($productId) {
+            $query->where('id', $productId);
         });
-
-        // Mengambil semua produk yang tersedia untuk digunakan dalam form filter jika diperlukan
-        $products = Product::all();
-
-        // Mengambil semua status pembayaran yang tersedia untuk digunakan dalam filter
-        $paymentStatuses = ['failed', 'pending', 'expired', 'success'];
-
-        // Mengembalikan tampilan dengan data orders, products, paymentStatuses, dan unreadNotifications
-        return view('admin.orders.index', compact('orders', 'products', 'paymentStatuses', 'unreadNotifications'));
     }
+
+    // Filter berdasarkan pencarian produk
+    if ($search) {
+        $ordersQuery->whereHas('productOrders.product', function ($query) use ($search) {
+            $query->where('name_product', 'like', '%' . $search . '%');
+        });
+    }
+
+    // Filter berdasarkan status order
+    if ($statusOrder) {
+        $ordersQuery->where('status_order', $statusOrder);
+    }
+
+    // Filter berdasarkan status pembayaran
+    if ($paymentStatus) {
+        $ordersQuery->whereHas('payment', function ($query) use ($paymentStatus) {
+            $query->where('status', $paymentStatus);
+        });
+    }
+
+    // Filter berdasarkan rentang tanggal
+    if ($startDate && $endDate) {
+        $ordersQuery->whereBetween('created_at', [$startDate . " 00:00:00", $endDate . " 23:59:59"]);
+    } elseif ($startDate) {
+        $ordersQuery->whereDate('created_at', '>=', $startDate);
+    } elseif ($endDate) {
+        $ordersQuery->whereDate('created_at', '<=', $endDate);
+    }
+
+    // Filter berdasarkan harga (Terendah ke Tertinggi / Tertinggi ke Terendah)
+    if ($priceProduct) {
+        if ($priceProduct == 'asc') {
+            $ordersQuery->orderBy('grand_total_amount', 'asc'); // Terendah ke Tertinggi
+        } elseif ($priceProduct == 'desc') {
+            $ordersQuery->orderBy('grand_total_amount', 'desc'); // Tertinggi ke Terendah
+        }
+    }
+
+    // Sortir berdasarkan created_at_sort jika tersedia
+    if ($createdAtSort) {
+        if ($createdAtSort == 'asc') {
+            $ordersQuery->orderBy('created_at', 'asc');
+        } else {
+            $ordersQuery->orderBy('created_at', 'desc');
+        }
+    } else {
+        // Default sorting berdasarkan kolom dan arah yang ada
+        if ($sortBy && in_array($sortBy, ['created_at', 'grand_total_amount'])) {
+            $ordersQuery->orderBy($sortBy, $sortDirection);
+        }
+    }
+
+    // Mengambil hasil dengan pagination
+    $orders = $ordersQuery->paginate(5);
+
+    // Mapping status order ke dalam bahasa Indonesia
+    $statusMapping = [
+        'completed' => 'Selesai',
+        'processing' => 'Dikemas',
+        'pending' => 'Menunggu',
+        'shipping' => 'Dikirim',
+    ];
+
+    $orders->getCollection()->transform(function ($order) use ($statusMapping) {
+        $order->status_order_label = $statusMapping[$order->status_order] ?? 'Tidak Diketahui';
+        return $order;
+    });
+
+    // Mengambil semua produk untuk filter
+    $products = Product::all();
+
+    // Status pembayaran yang tersedia
+    $paymentStatuses = ['failed', 'pending', 'expired', 'success'];
+
+    // Mengembalikan tampilan
+    return view('admin.orders.index', compact('orders', 'products', 'paymentStatuses', 'unreadNotifications', 'sortBy', 'sortDirection'));
+}
+
+
+
+
+
+
 
 
     /**
