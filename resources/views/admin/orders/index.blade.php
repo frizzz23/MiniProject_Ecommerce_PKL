@@ -52,115 +52,85 @@
                 <div class="card-body p-4">
                     <h5 class="card-title text-2xl font-bold mb-4">Semua Order</h5>
                     <div>
-                        <div class="flex justify-between items-center mb-4">
-                            <div>
-                                <!-- Pencarian -->
-                                <form action="{{ route('admin.orders.index') }}" method="GET" class="d-inline-block">
-                                    <div class="d-flex align-items-center">
-                                        <input type="text" name="search"
-                                            class="form-control me-2 border-lg border-[#5d85fa]" placeholder="Cari produk"
-                                            value="{{ request('search') }}" style="width: 200px;">
-                                        <button type="submit" class="btn btn-primary">Cari</button>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="flex items-center gap-4">
-                                <!-- Filter Kategori -->
-                                <form id="filterForm" method="{{ route('admin.orders.index') }}" method="GET">
-                                    <div class="d-flex align-items-center ">
-                                        <select name="product_id"
-                                            class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                            style="width: 200px;"
-                                            onchange="document.getElementById('filterForm').submit();">
-                                            <option value="">Semua Produk</option>
-                                            @foreach ($products as $product)
-                                                <option value="{{ $product->id }}"
-                                                    {{ request('product_id') == $product->id ? 'selected' : '' }}>
-                                                    {{ $product->name_product }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </form>
-                                </form>
-                            </div>
-                        </div>
-                        <form action="{{ route('admin.orders.index') }}" method="GET">
-                            <div class="grid grid-cols-4  gap-3 text-white border-t border-gray-600 pt-4 mb-4">
-                                <div>
-                                    <select name="price"
-                                        class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                        onchange="this.form.submit()">
-                                        <option value="">Harga</option>
-                                        <option value="asc" {{ request('price') == 'asc' ? 'selected' : '' }}>
-                                            Terendah ke Tertinggi
-                                        </option>
-                                        <option value="desc" {{ request('price') == 'desc' ? 'selected' : '' }}>
-                                            Tertinggi ke Terendah
-                                        </option>
+                        <form action="{{ route('admin.orders.index') }}" method="GET" id="filterForm">
+                            <div class="flex justify-between items-center mb-4">
+                                <div class="d-flex align-items-center">
+                                    <!-- Pencarian -->
+                                    <input type="text" name="search" class="form-control me-2 border-lg border-[#5d85fa]" placeholder="Cari produk" value="{{ request('search') }}" style="width: 200px;">
+                                    <button type="submit" class="btn btn-primary">Cari</button>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <!-- Filter Kategori -->
+                                    <select name="product_id" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full" style="width: 200px;" onchange="submitForm()">
+                                        <option value="">Semua Produk</option>
+                                        @foreach ($products as $product)
+                                            <option value="{{ $product->id }}" {{ request('product_id') == $product->id ? 'selected' : '' }}>
+                                                {{ $product->name_product }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
-                                <div>
-                                    <select name="status_order"
-                                        class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                        onchange="this.form.submit()">
-                                        <option value="">Status Pesanan</option>
-                                        <option value="pending"
-                                            {{ request('status_order') == 'pending' ? 'selected' : '' }}>
-                                            Menunggu
-                                        </option>
-                                        <option value="processing"
-                                            {{ request('status_order') == 'processing' ? 'selected' : '' }}>
-                                            Dikemas
-                                        </option>
-                                        <option value="shipping"
-                                            {{ request('status_order') == 'shipping' ? 'selected' : '' }}>
-                                            Dikirim
-                                        </option>
-                                        <option value="completed"
-                                            {{ request('status_order') == 'completed' ? 'selected' : '' }}>
-                                            Selesai
-                                        </option>
+                            </div>
 
+                            <div class="grid grid-cols-6 gap-3 text-white border-t border-gray-600 pt-4 mb-4">
+
+                                <!-- Filter Harga -->
+                                <div>
+                                    <select name="price" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full" onchange="submitForm()">
+                                        <option value="">Harga</option>
+                                        <option value="asc" {{ request('price') == 'asc' ? 'selected' : '' }}>Terendah ke Tertinggi</option>
+                                        <option value="desc" {{ request('price') == 'desc' ? 'selected' : '' }}>Tertinggi ke Terendah</option>
                                     </select>
                                 </div>
+
+                                <!-- Filter Status Pesanan -->
                                 <div>
-                                    <form method="GET" action="{{ route('admin.orders.index') }}" id="filter-form">
-                                        <div class="flex items-center gap-2">
-                                            <select name="payment_status" id="payment_status"
-                                                class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                                onchange="this.form.submit()">
-                                                <option value="">Status Pembayaran</option>
-                                                <option value="failed"
-                                                    {{ request('payment_status') == 'failed' ? 'selected' : '' }}>Gagal
-                                                </option>
-                                                <option value="pending"
-                                                    {{ request('payment_status') == 'pending' ? 'selected' : '' }}>Menunggu
-                                                </option>
-                                                <option value="expired"
-                                                    {{ request('payment_status') == 'expired' ? 'selected' : '' }}>
-                                                    Kedaluwarsa</option>
-                                                <option value="success"
-                                                    {{ request('payment_status') == 'success' ? 'selected' : '' }}>Berhasil
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </form>
+                                    <select name="status_order" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full" onchange="submitForm()">
+                                        <option value="">Status Pesanan</option>
+                                        <option value="pending" {{ request('status_order') == 'pending' ? 'selected' : '' }}>Menunggu</option>
+                                        <option value="processing" {{ request('status_order') == 'processing' ? 'selected' : '' }}>Dikemas</option>
+                                        <option value="shipping" {{ request('status_order') == 'shipping' ? 'selected' : '' }}>Dikirim</option>
+                                        <option value="completed" {{ request('status_order') == 'completed' ? 'selected' : '' }}>Selesai</option>
+                                    </select>
+                                </div>
+
+                                <!-- Filter Status Pembayaran -->
+                                <div>
+                                    <select name="payment_status" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full" onchange="submitForm()">
+                                        <option value="">Status Pembayaran</option>
+                                        <option value="failed" {{ request('payment_status') == 'failed' ? 'selected' : '' }}>Gagal</option>
+                                        <option value="pending" {{ request('payment_status') == 'pending' ? 'selected' : '' }}>Menunggu</option>
+                                        <option value="expired" {{ request('payment_status') == 'expired' ? 'selected' : '' }}>Kedaluwarsa</option>
+                                        <option value="success" {{ request('payment_status') == 'success' ? 'selected' : '' }}>Berhasil</option>
+                                    </select>
+                                </div>
+                                <!-- Sortir berdasarkan tanggal -->
+                                <div>
+                                    <select name="created_at_sort" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full" onchange="submitForm()">
+                                        <option value="">Urutkan</option>
+                                        <option value="asc" {{ request('created_at_sort') == 'asc' ? 'selected' : '' }}>Lama</option>
+                                        <option value="desc" {{ request('created_at_sort') == 'desc' ? 'selected' : '' }}>Terbaru</option>
+                                    </select>
+                                </div>
+
+                                <!-- Filter Tanggal -->
+                                <div>
+                                    <input type="date" name="start_date" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full" value="{{ request('start_date') }}" onchange="submitForm()">
                                 </div>
                                 <div>
-                                    <select name="created_at"
-                                        class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                        onchange="this.form.submit()">
-                                        <option value="">Tanggal</option>
-                                        <option value="asc" {{ request('created_at') == 'asc' ? 'selected' : '' }}>Lama
-                                        </option>
-                                        <option value="desc" {{ request('created_at') == 'desc' ? 'selected' : '' }}>
-                                            Terbaru</option>
-                                    </select>
+                                    <input type="date" name="end_date" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full" value="{{ request('end_date') }}" onchange="submitForm()">
                                 </div>
                             </div>
                         </form>
                     </div>
+
+                    <script>
+                        function submitForm() {
+                            document.getElementById('filterForm').submit();
+                        }
+                    </script>
+
+
                     <div class="table-responsive">
                         <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
                             <thead class="bg-[#5D87FF] text-white"> {{-- bg-gray-100 --}}

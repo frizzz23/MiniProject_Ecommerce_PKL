@@ -61,25 +61,32 @@ class ProductController extends Controller
             ->when($request->input('rating'), function ($query, $rating) {
                 $query->whereHas('reviews', function ($q) use ($rating) {
                     $q->selectRaw('AVG(rating) as avg_rating') // Hitung rata-rata rating
-                      ->groupBy('product_id')                // Kelompokkan per produk
-                      ->havingRaw('AVG(rating) >= ? AND AVG(rating) < ?', [$rating, $rating + 1]);
+                        ->groupBy('product_id')                // Kelompokkan per produk
+                        ->havingRaw('AVG(rating) >= ? AND AVG(rating) < ?', [$rating, $rating + 1]);
                 });
             })
-
-
-
+            // Filter berdasarkan tanggal mulai dan tanggal akhir
+            ->when($request->input('start_date'), function ($query, $start_date) {
+                $query->whereDate('created_at', '>=', $start_date);
+            })
+            ->when($request->input('end_date'), function ($query, $end_date) {
+                $query->whereDate('created_at', '<=', $end_date);
+            })
             ->paginate(5);  // Menampilkan 5 produk per halaman
 
         // Mengirim data ke view
         return view('admin.products.index', compact('products', 'categories', 'brands'));
     }
 
-    public function create(){
+
+
+    public function create()
+    {
 
         $categories = Category::all();
         $brands = Brand::all();
 
-        return view('admin.products.create', compact( 'categories', 'brands'));
+        return view('admin.products.create', compact('categories', 'brands'));
     }
 
 

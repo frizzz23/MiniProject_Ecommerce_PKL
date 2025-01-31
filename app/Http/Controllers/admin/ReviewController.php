@@ -15,40 +15,49 @@ class ReviewController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-{
-    // Ambil parameter pencarian dan filter produk
-    $search = $request->input('search');
-    $productId = $request->input('product_id');
-    $rating = $request->input('rating');
-    $createdAt = $request->input('created_at');
+    {
+        // Ambil parameter pencarian dan filter produk
+        $search = $request->input('search');
+        $productId = $request->input('product_id');
+        $rating = $request->input('rating');
+        $createdAt = $request->input('created_at');
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
 
-    // Mengambil semua ulasan dengan filter pencarian dan produk
-    $reviews = Review::with(['product', 'user'])
-        ->when($search, function ($query, $search) {
-            $query->whereHas('product', function ($query) use ($search) {
-                $query->where('name_product', 'like', '%' . $search . '%');
+        // Mengambil semua ulasan dengan filter pencarian, produk, rating, dan tanggal
+        $reviews = Review::with(['product', 'user'])
+            ->when($search, function ($query, $search) {
+                $query->whereHas('product', function ($query) use ($search) {
+                    $query->where('name_product', 'like', '%' . $search . '%');
+                })
+                    ->orWhere('comment', 'like', '%' . $search . '%'); // Mencari di kolom komentar
             })
-            ->orWhere('comment', 'like', '%' . $search . '%'); // Mencari di kolom komentar
-        })
-        ->when($productId, function ($query, $productId) {
-            $query->where('product_id', $productId);
-        })
-        ->when($rating, function ($query, $rating) {
-            $query->where('rating', $rating);
-        })
-        ->when($createdAt, function ($query, $createdAt) {
-            $direction = $createdAt === 'desc' ? 'desc' : 'asc';
-            $query->orderBy('created_at', $direction);
-        })
-        ->latest()
-        ->paginate(25); // Pagination
+            ->when($productId, function ($query, $productId) {
+                $query->where('product_id', $productId);
+            })
+            ->when($rating, function ($query, $rating) {
+                $query->where('rating', $rating);
+            })
+            ->when($createdAt, function ($query, $createdAt) {
+                $direction = $createdAt === 'desc' ? 'desc' : 'asc';
+                $query->orderBy('created_at', $direction);
+            })
+            ->when($startDate, function ($query, $startDate) {
+                $query->whereDate('created_at', '>=', $startDate);
+            })
+            ->when($endDate, function ($query, $endDate) {
+                $query->whereDate('created_at', '<=', $endDate);
+            })
+            ->latest()
+            ->paginate(25); // Pagination
 
-    // Mengambil semua produk untuk dropdown
-    $products = Product::all();
+        // Mengambil semua produk untuk dropdown
+        $products = Product::all();
 
-    // Mengembalikan view dengan data
-    return view('admin.reviews.index', compact('reviews', 'products'));
-}
+        // Mengembalikan view dengan data
+        return view('admin.reviews.index', compact('reviews', 'products'));
+    }
+
 
 
 
