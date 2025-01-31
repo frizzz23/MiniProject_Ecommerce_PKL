@@ -491,7 +491,7 @@
 
                 </div>
 
-                {{-- @if ($order->payment && $order->payment->status === 'success') --}}
+                @if ($order->payment && $order->payment->status === 'success')
                     <!-- Invoice -->
                     <div class="mt-4">
                         <a href="{{ route('user.orders.download-invoice', $order->id) }}"
@@ -500,7 +500,7 @@
                             Unduh Invoice
                         </a>
                     </div>
-                {{-- @endif --}}
+                @endif
             </div>
         </div>
     </div>
