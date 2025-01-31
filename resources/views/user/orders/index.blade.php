@@ -131,7 +131,7 @@
                                             bg-orange-200 text-orange-600
                                         @else 
                                             bg-gray-200 text-gray-600 @endif">
-                                            {{ ucfirst($order->status_order_label) }}
+                                            {{ ucfirst($order->status_order_label ) ? 'kosong' }}
                                         </span>
 
                                     </div>

@@ -268,7 +268,7 @@
                                                         Detail
                                                     </span>
                                                 </div>
-                                                <!-- Form Hapus Pesanan -->
+                                                {{-- <!-- Form Hapus Pesanan -->
                                                 <div class="relative group inline-block">
                                                     <!-- Tombol Hapus yang akan membuka modal konfirmasi -->
                                                     <form action="{{ route('admin.orders.destroy', $order->id) }}"
@@ -288,7 +288,7 @@
                                                             Hapus
                                                         </span>
                                                     </form>
-                                                </div>
+                                                </div> --}}
                                                 <div class="relative group inline-block">
                                                     @if ($order->payment && $order->payment->status != 'pending')
                                                         <!-- Form Proses -->
@@ -368,7 +368,7 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    <!-- Modal Hapus -->
+                                    {{-- <!-- Modal Hapus -->
                                     <div class="modal fade" id="hapusmodal{{ $order->id }}" tabindex="-1"
                                         aria-labelledby="hapusModalLabel{{ $order->id }}" aria-hidden="true">
                                         <div class="modal-dialog">
@@ -396,7 +396,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 @empty
                                     <tr>
                                         <td colspan="8" class="h-64">
