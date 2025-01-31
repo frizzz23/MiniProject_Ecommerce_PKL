@@ -66,7 +66,7 @@
                     <div class="text-center mt-2">
                         <h4 class="text-sm font-medium">Pesanan Dibuat</h4>
                         <p class="text-xs text-gray-500 mt-1">
-                            {{ $order->created_at? \Carbon\Carbon::parse($order->created_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i'): 'kosong' }}
+                            {{ $order->created_at ? \Carbon\Carbon::parse($order->created_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i') : 'kosong' }}
                         </p>
                     </div>
                 </div>
@@ -89,7 +89,7 @@
                     <div class="text-center mt-2">
                         <h4 class="text-sm font-medium">Menunggu Konfirmasi</h4>
                         <p class="text-xs text-gray-500 mt-1">
-                            {{ $order->created_at? \Carbon\Carbon::parse($order->created_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i'): 'kosong' }}
+                            {{ $order->created_at ? \Carbon\Carbon::parse($order->created_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i') : 'kosong' }}
                         </p>
                     </div>
                 </div>
@@ -108,7 +108,7 @@
                     <div class="text-center mt-2">
                         <h4 class="text-sm font-medium">Dikemas</h4>
                         <p class="text-xs text-gray-500 mt-1">
-                            {{ $order->processing_at? \Carbon\Carbon::parse($order->processing_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i'): 'kosong' }}
+                            {{ $order->processing_at ? \Carbon\Carbon::parse($order->processing_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i') : 'kosong' }}
                         </p>
                     </div>
                 </div>
@@ -127,7 +127,7 @@
                     <div class="text-center mt-2">
                         <h4 class="text-sm font-medium">Dikirim</h4>
                         <p class="text-xs text-gray-500 mt-1">
-                            {{ $order->shipping_at? \Carbon\Carbon::parse($order->shipping_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i'): 'kosong' }}
+                            {{ $order->shipping_at ? \Carbon\Carbon::parse($order->shipping_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i') : 'kosong' }}
                         </p>
                     </div>
                 </div>
@@ -146,7 +146,7 @@
                     <div class="text-center mt-2">
                         <h4 class="text-sm font-medium">Pesanan Selesai</h4>
                         <p class="text-xs text-gray-500 mt-1">
-                            {{ $order->completed_at? \Carbon\Carbon::parse($order->completed_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i'): 'kosong' }}
+                            {{ $order->completed_at ? \Carbon\Carbon::parse($order->completed_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i') : 'kosong' }}
                         </p>
                     </div>
                 </div>
@@ -184,7 +184,7 @@
                         <div class="flex flex-col">
                             <h3 class="text-black font-medium">Pesanan Dibuat</h3>
                             <p class="text-slate-400 text-sm">
-                                {{ $order->created_at? \Carbon\Carbon::parse($order->created_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i'): 'kosong' }}
+                                {{ $order->created_at ? \Carbon\Carbon::parse($order->created_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i') : 'kosong' }}
                             </p>
                         </div>
                     </div>
@@ -205,7 +205,7 @@
                         <div class="flex flex-col">
                             <h3 class="text-black font-medium">Menunggu Konfirmasi</h3>
                             <p class="text-slate-400 text-sm">
-                                {{ $order->created_at? \Carbon\Carbon::parse($order->created_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i'): 'kosong' }}
+                                {{ $order->created_at ? \Carbon\Carbon::parse($order->created_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i') : 'kosong' }}
                             </p>
                         </div>
                     </div>
@@ -222,7 +222,7 @@
                         <div class="flex flex-col">
                             <h3 class="text-black font-medium">Dikemas</h3>
                             <p class="text-slate-400 text-sm">
-                                {{ $order->processing_at? \Carbon\Carbon::parse($order->processing_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i'): 'kosong' }}
+                                {{ $order->processing_at ? \Carbon\Carbon::parse($order->processing_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i') : 'kosong' }}
                             </p>
                         </div>
                     </div>
@@ -239,7 +239,7 @@
                         <div class="flex flex-col">
                             <h3 class="text-black font-medium">Dikirim</h3>
                             <p class="text-slate-400 text-sm">
-                                {{ $order->shipping_at? \Carbon\Carbon::parse($order->shipping_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i'): 'kosong' }}
+                                {{ $order->shipping_at ? \Carbon\Carbon::parse($order->shipping_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i') : 'kosong' }}
                             </p>
                         </div>
                     </div>
@@ -256,7 +256,7 @@
                         <div class="flex flex-col">
                             <h3 class="text-black font-medium">Pesanan Selesai</h3>
                             <p class="text-slate-400 text-sm">
-                                {{ $order->completed_at? \Carbon\Carbon::parse($order->completed_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i'): 'kosong' }}
+                                {{ $order->completed_at ? \Carbon\Carbon::parse($order->completed_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i') : 'kosong' }}
                             </p>
                         </div>
                     </div>
@@ -327,7 +327,7 @@
                                 <i class="fas fa-truck text-blue-500 text-xl"></i>
                             </div>
                             <div>
-                                <h3 class="text-gray-800 font-semibold">Jasa Kurir</h3>
+                                <h3 class="text-gray-800 font-semibold">Jasa Kirim</h3>
                                 <p class="text-gray-600">
                                     {{ strtoupper($order->postage->code) }},
                                     <span>{{ ucwords($order->postage->service) }}</span>
@@ -441,8 +441,18 @@
                             </form>
                         </div>
                     @endif
-
                 </div>
+
+                {{-- @if ($order->payment && $order->payment->status === 'success') --}}
+                    <!-- Invoice -->
+                    <div class="mt-4">
+                        <a href="{{ route('user.orders.download-invoice', $order->id) }}"
+                            class="w-full text-center px-6 py-2 border-2 border-blue-500 text-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition duration-300 ease-in-out flex items-center justify-center gap-2">
+                            <i class="fas fa-download"></i>
+                            Unduh Invoice
+                        </a>
+                    </div>
+                {{-- @endif --}}
             </div>
         </div>
     </div>

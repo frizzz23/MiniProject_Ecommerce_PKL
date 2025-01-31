@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\user;
 
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Order;
 use App\Models\Review;
 use App\Models\Product;
@@ -210,5 +211,32 @@ class OrderController extends Controller
         }
 
         return redirect()->back()->with('error', 'Pesanan tidak ditemukan.');
+    }
+
+    public function downloadInvoice(Order $order)
+    {
+        // Pastikan user hanya bisa mengakses invoice pesanannya sendiri
+        if ($order->user_id !== auth()->id()) {
+            abort(403, 'Anda tidak memiliki akses ke invoice ini');
+        }
+
+        // Generate nomor invoice tanpa karakter '/'
+        $invoiceNumber = 'INV-' . date('Ymd') . '-' . str_pad($order->id, 4, '0', STR_PAD_LEFT);
+
+        // Format tanggal ke Indonesia
+        $tanggal = \Carbon\Carbon::parse($order->created_at)
+            ->timezone('Asia/Jakarta')
+            ->translatedFormat('d F Y H:i');
+
+        $pdf = PDF::loadView('user.orders.invoice', [
+            'order' => $order,
+            'invoiceNumber' => $invoiceNumber,
+            'tanggal' => $tanggal
+        ]);
+
+        // Atur paper size dan orientation
+        $pdf->setPaper('a4');
+
+        return $pdf->download("Invoice-{$invoiceNumber}.pdf");
     }
 }
