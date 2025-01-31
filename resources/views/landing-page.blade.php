@@ -1297,7 +1297,7 @@
     </section>
 
     <section class="px-5 sm:px-10 md:px-20 lg:px-28 py-10 bg-[#EAF6FE]">
-        <div class="grid grid-cols-2 sm:grid-cols-2 gap-8">
+        <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             <!-- Customer Support Section -->
             <div>
                 <h6 class="text-sm text-slate-800 font-semibold mb-4">Customer Support:</h6>
