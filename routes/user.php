@@ -2,22 +2,23 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\AkunController;
+
+
 use App\Http\Controllers\ReviewController;
 
 
 use App\Http\Controllers\PaymentController;
-
-
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RajaOngkirController;
 use App\Http\Controllers\ProductOrderController;
 use App\Http\Controllers\user\ApiCartController;
 use App\Http\Controllers\user\CheckoutController;
 use App\Http\Controllers\user\DiscountController;
+use App\Http\Controllers\UserNotificationController;
 use App\Http\Controllers\user\CartController as UserCartController;
 use App\Http\Controllers\user\OrderController as UserOrderController;
 use App\Http\Controllers\user\AddressController as UserAddressController;
-use App\Http\Controllers\UserNotificationController;
 
 
 Route::middleware(['auth', 'role:user'])->group(function () {

@@ -1,16 +1,16 @@
 <?php
 
-use App\Http\Controllers\OrderShowController;
-use App\Http\Controllers\Page\AboutPageController;
-use App\Http\Controllers\Page\CategoryPageController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AkunController;
 
 
 use App\Http\Controllers\Page\ContactController;
-use App\Http\Controllers\Page\ContactPageController;
 use App\Http\Controllers\Page\FAQPageController;
 use App\Http\Controllers\Page\HomePageController;
+use App\Http\Controllers\Page\AboutPageController;
+use App\Http\Controllers\Page\ContactPageController;
 use App\Http\Controllers\Page\ProductPageController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Page\CategoryPageController;
 
 
 Route::get('/', [HomePageController::class, 'index'])->name('landing-page');
@@ -21,9 +21,9 @@ Route::get('/', [HomePageController::class, 'index'])->name('landing-page');
 // })->name('home');
 
 
-Route::get('/account', function () {
-    return view('account');
-})->name('account');
+// Route::get('/account', function () {
+//     return view('account');
+// })->name('account');
 
 
 
