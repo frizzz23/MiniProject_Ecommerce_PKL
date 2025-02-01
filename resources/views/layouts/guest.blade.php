@@ -34,6 +34,10 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    {{-- midtrans --}}
+    <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
+        data-client-key="{{ config('services.midtrans.clientKey') }}"></script>
+    </script>
 </head>
 
 

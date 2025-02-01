@@ -47,6 +47,7 @@ class AddressController extends Controller
      */
     public function store(Request $request)
     {
+        // Validate the request
         $request->validate([
             'mark' => 'required|string|max:255',
             'address' => 'required|string|max:255',
@@ -58,8 +59,17 @@ class AddressController extends Controller
             'no_telepon.required' => 'Nomor telepon wajib diisi.',
             'city_id.required' => 'Kota wajib diisi.',
         ]);
-
-        // Buat alamat baru untuk user yang sedang login
+    
+        // Debug the data before storing it
+        // dd([
+        //     'user_id' => Auth::id(),
+        //     'mark' => $request->mark,
+        //     'address' => $request->address,
+        //     'no_telepon' => $request->no_telepon,
+        //     'city_id' => $request->city_id,
+        // ]);
+    
+        // Create the address
         Address::create([
             'user_id' => Auth::id(),
             'mark' => $request->mark,
@@ -67,10 +77,10 @@ class AddressController extends Controller
             'no_telepon' => $request->no_telepon,
             'city_id' => $request->city_id,
         ]);
-
+    
         return redirect()->back()->with('success', 'Alamat berhasil ditambahkan.');
     }
-
+    
     /**
      * Show the form for editing the specified resource.
      */
