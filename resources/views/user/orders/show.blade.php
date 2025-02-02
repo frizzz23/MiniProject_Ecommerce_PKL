@@ -66,7 +66,7 @@
                     <div class="text-center mt-2">
                         <h4 class="text-sm font-medium">Pesanan Dibuat</h4>
                         <p class="text-xs text-gray-500 mt-1">
-                        
+
                             {{ $order->created_at ? \Carbon\Carbon::parse($order->created_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i') : '-' }}
                         </p>
                     </div>
@@ -92,7 +92,7 @@
                         <p class="text-xs text-gray-500 mt-1">
 
                             {{ $order->created_at ? \Carbon\Carbon::parse($order->created_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i') : '-' }}
-                            
+
                         </p>
                     </div>
                 </div>
@@ -113,7 +113,7 @@
                         <p class="text-xs text-gray-500 mt-1">
 
                             {{ $order->processing_at ? \Carbon\Carbon::parse($order->processing_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i') : '-' }}
-                            
+
                         </p>
                     </div>
                 </div>
@@ -132,9 +132,9 @@
                     <div class="text-center mt-2">
                         <h4 class="text-sm font-medium">Dikirim</h4>
                         <p class="text-xs text-gray-500 mt-1">
-                        
+
                             {{ $order->shipping_at ? \Carbon\Carbon::parse($order->shipping_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i') : '-' }}
-                            
+
                         </p>
                     </div>
                 </div>
@@ -195,7 +195,7 @@
                             <p class="text-slate-400 text-sm">
 
                                 {{ $order->created_at ? \Carbon\Carbon::parse($order->created_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i') : '-' }}
-                                
+
                             </p>
                         </div>
                     </div>
@@ -218,7 +218,7 @@
                             <p class="text-slate-400 text-sm">
 
                                 {{ $order->created_at ? \Carbon\Carbon::parse($order->created_at)->timezone('Asia/Jakarta')->translatedFormat('d-m-Y H:i') : '-' }}
-                                
+
                             </p>
                         </div>
                     </div>
@@ -467,8 +467,7 @@
                                 Sekarang</button>
                         @endif
 
-                        <script src="https://app.sandbox.midtrans.com/snap/snap.js" 
-                        data-client-key="{{ $clientKey }}"></script>
+                        <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ $clientKey }}"></script>
                         <script>
                             document.getElementById('pay-button').addEventListener('click', function() {
                                 snap.pay("{{ $order->snap_token }}", {
@@ -488,19 +487,17 @@
 
 
                     </div>
-
+                    @if ($order->status_order === 'completed')
+                        <!-- Invoice -->
+                        <div class="mt-4">
+                            <a href="{{ route('user.orders.download-invoice', $order->id) }}"
+                                class="w-full text-center px-6 py-2 border-2 border-blue-500 text-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition duration-300 ease-in-out flex items-center justify-center gap-2">
+                                <i class="fas fa-download"></i>
+                                Unduh Invoice
+                            </a>
+                        </div>
+                    @endif
                 </div>
-
-                @if ($order->payment && $order->payment->status === 'success')
-                    <!-- Invoice -->
-                    <div class="mt-4">
-                        <a href="{{ route('user.orders.download-invoice', $order->id) }}"
-                            class="w-full text-center px-6 py-2 border-2 border-blue-500 text-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition duration-300 ease-in-out flex items-center justify-center gap-2">
-                            <i class="fas fa-download"></i>
-                            Unduh Invoice
-                        </a>
-                    </div>
-                @endif
             </div>
         </div>
     </div>

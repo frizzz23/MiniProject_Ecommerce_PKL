@@ -1,4 +1,3 @@
-
 @extends('layouts.guest')
 
 @section('content')
@@ -43,7 +42,7 @@
                 <div class="flex gap-[2px]">
 
                     {{-- left side --}}
-                    <div class="w-1/2 flex-col justify-center items-center py-3 px-14 bg-white">
+                    <div class="w-1/2 flex-col justify-center items-center py-3 px-14 bg-white max-h-[700px] overflow-y-auto">
                         <div class="flec-col justify-center items-center">
                             <div class="flex items-center gap-4 mt-2 mb-2 py-2">
                                 <div class="w-14 h-14 flex items-center justify-center">
@@ -134,10 +133,6 @@
                         </div>
                         <div class="flec-col justify-center items-center">
                             <div class="flex items-center gap-4 my-4 ">
-                                <div class="w-14 h-14 flex items-center justify-center">
-
-                                    <i class="fas fa-map text-4xl text-gray-600"></i>
-                                </div>
                                 <div>
                                     <h1 class="text-xl font-semibold text-gray-700">Informasi Pengiriman</h1>
                                     <p class="text-gray-600 text-sm">Berikut adalah daftar jasa kirim yang bisa anda pilih.
@@ -841,56 +836,106 @@
         }
 
         async function setCity() {
-
             ongkir.innerHTML = `+ Rp. 0`;
 
-            const costs_document = document.getElementById('costs')
+            const costs_document = document.getElementById('costs');
+            costs_document.innerHTML = `<p class="text-gray-700 font-medium text-md">Loading...</p>`;
 
-            costs_document.innerHTML = `<p class="text-gray-700 font-medium text-md">Loading...</p>`
-            const response = await fetch('/api/raja-ongkir/cost', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
-                        'content')
-                },
-                body: JSON.stringify({
-                    destination: city_id,
-                    weight: 97,
-                    courier: courier
-                })
-            });
-            const data = await response.json();
-            const rajaongkir = await data.rajaongkir;
-            if (rajaongkir.status.code === 200) {
-
-                const costs = rajaongkir.results[0].costs;
-
-                let elementChild =
-                    '<label for="courier" class="text-gray-700 font-medium text-sm">Courier & Cost</label><div class="w-full border border-gray-300 rounded-lg overflow-hidden">';
-                costs.forEach(cost => {
-                    elementChild += `<div class="flex gap-5 border-b-2 py-2 px-3">
-                    <input onchange="setService('${cost.service}')" type="radio" name="cost" id="courier_${cost.service}" value="${(cost.cost[0].value)}"  />
-                    <label for="courier_${cost.service}" class="w-full">
-                            <h6 class="text-md text-gray-700 font-semibold">${cost.service}</h6>
-                            <p class="text-sm text-gray-600 mb-3">${cost.description}</p>
-                            <p class="text-lg font-medium text-gray-800">Rp. ${(cost.cost[0].value).toLocaleString("id-ID")}</p>
-                    </label>
-                    </div>`
-                });
-                elementChild += '</div>'
-                costs_document.innerHTML = elementChild
-
-            } else {
+            // Cek apakah city_id dan courier sudah ada
+            if (!city_id || !courier) {
                 Swal.fire({
                     icon: 'warning',
                     title: 'Perhatian!',
-                    text: 'Pastikan anda sudah mengisikan alamat anda terlebih dahulu',
+                    text: 'Pastikan anda sudah memilih kota tujuan dan kurir!',
                     confirmButtonText: 'Ok',
-                    confirmButtonColor: '#334155', // Ubah warna tombol menjadi putih
-                    background: '#fff', // Mengubah latar belakang menjadi merah muda pucat
-                    iconColor: '#d32f2f', // Mengubah warna ikon menjadi merah
+                    confirmButtonColor: '#334155',
+                    background: '#fff',
+                    iconColor: '#d32f2f',
                 });
+                costs_document.innerHTML =
+                    `<p class="text-red-600 font-medium text-md">Gagal memuat ongkir. Pastikan alamat sudah diisi.</p>`;
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/raja-ongkir/cost', {
+                    method: "POST", // Tambahkan metode POST
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            'content')
+                    },
+                    body: JSON.stringify({
+                        destination: city_id,
+                        weight: 97,
+                        courier: courier
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP Error! Status: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                // Cek apakah data valid
+                if (!data || !data.rajaongkir || !data.rajaongkir.results.length) {
+                    throw new Error("Data ongkir tidak ditemukan");
+                }
+
+                const rajaongkir = data.rajaongkir;
+                const costs = rajaongkir.results[0].costs;
+
+                let elementChild =
+                    '<label for="courier" class="text-gray-700 font-medium text-sm">Layanan Jasa Kirim</label><div class="w-full border border-gray-300 rounded-lg overflow-hidden">';
+
+                costs.forEach(cost => {
+                    elementChild += `<div class="flex gap-5 border-b-2 py-2 px-3 items-center">
+                <input onchange="setService('${cost.service}')" type="radio" name="cost" id="courier_${cost.service}" value="${cost.cost[0].value}" data-service="${cost.service}" />
+                <label for="courier_${cost.service}" class="w-full flex items-center gap-3">
+                    <i class="fa-solid fa-truck text-3xl text-gray-600 icon-service" data-icon-id="${cost.service}"></i>
+                    <div>
+                        <h6 class="text-md text-gray-700 font-semibold">${cost.service}</h6>
+                        <p class="text-sm text-gray-600 mb-3">${cost.description}</p>
+                        <p class="text-lg font-medium text-gray-800">Rp. ${(cost.cost[0].value).toLocaleString("id-ID")}</p>
+                    </div>
+                </label>
+            </div>`;
+                });
+
+                elementChild += '</div>';
+                costs_document.innerHTML = elementChild;
+
+                // Tambahkan event listener setelah elemen di-render
+                document.querySelectorAll('input[name="cost"]').forEach(radio => {
+                    radio.addEventListener("change", updateServiceIcons);
+                });
+
+                updateServiceIcons(); // Set ikon default
+
+            } catch (error) {
+                console.error("Error saat mengambil data ongkir:", error);
+                costs_document.innerHTML =
+                    `<p class="text-red-600 font-medium text-md">Gagal memuat ongkir. Coba lagi nanti.</p>`;
+            }
+        }
+
+
+        // Fungsi untuk mengubah warna ikon saat radio button dipilih
+        function updateServiceIcons() {
+            document.querySelectorAll(".icon-service").forEach(icon => {
+                icon.classList.remove("text-blue-500");
+                icon.classList.add("text-gray-600");
+            });
+
+            const checkedRadio = document.querySelector('input[name="cost"]:checked');
+            if (checkedRadio) {
+                const iconId = checkedRadio.getAttribute("data-service");
+                const icon = document.querySelector(`.icon-service[data-icon-id="${iconId}"]`);
+                if (icon) {
+                    icon.classList.remove("text-gray-600");
+                    icon.classList.add("text-blue-500"); // Ubah warna ikon menjadi biru
+                }
             }
         }
 
