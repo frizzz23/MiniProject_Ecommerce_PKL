@@ -1,6 +1,25 @@
-@extends('layouts.guest')
+<!DOCTYPE html>
+<html>
 
-@section('content')
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <!-- font poopins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet" />
+    <style>
+        * {
+            font-family: "Poppins", sans-serif;
+        }
+    </style>
     <style>
         * {
             /* border: 1px solid black; */
@@ -18,6 +37,15 @@
             /* Untuk Firefox */
         }
     </style>
+
+
+    {{-- midtrans --}}
+    <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
+        data-client-key="{{ config('services.midtrans.clientKey') }}"></script>
+    </script>
+</head>
+
+<body class="bg-gray-200">
     <section class="w-full min-h-screen py-1 px-7">
         <div class="my-2 mx-10 ">
             <header class="py-2 bg-white mb-[2px]">
@@ -42,7 +70,8 @@
                 <div class="flex gap-[2px]">
 
                     {{-- left side --}}
-                    <div class="w-1/2 flex-col justify-center items-center py-3 px-14 bg-white max-h-[700px] overflow-y-auto">
+                    <div
+                        class="w-1/2 flex-col justify-center items-center py-3 px-14 bg-white max-h-[700px] overflow-y-auto">
                         <div class="flec-col justify-center items-center">
                             <div class="flex items-center gap-4 mt-2 mb-2 py-2">
                                 <div class="w-14 h-14 flex items-center justify-center">
@@ -51,7 +80,8 @@
 
                                 <div>
                                     <h1 class="text-xl font-semibold text-gray-700">Informasi Profil</h1>
-                                    <p class="text-gray-600 text-sm">Berikut adalah informasi terkait dengan nama dan email
+                                    <p class="text-gray-600 text-sm">Berikut adalah informasi terkait dengan nama dan
+                                        email
                                         anda.</p>
                                 </div>
                             </div>
@@ -135,7 +165,8 @@
                             <div class="flex items-center gap-4 my-4 ">
                                 <div>
                                     <h1 class="text-xl font-semibold text-gray-700">Informasi Pengiriman</h1>
-                                    <p class="text-gray-600 text-sm">Berikut adalah daftar jasa kirim yang bisa anda pilih.
+                                    <p class="text-gray-600 text-sm">Berikut adalah daftar jasa kirim yang bisa anda
+                                        pilih.
                                     </p>
                                 </div>
                             </div>
@@ -174,7 +205,8 @@
                                     </div>
                                     <div>
                                         <h1 class="text-xl font-semibold text-gray-700">Produk yang dipesan <span
-                                                class="text-lg font-normal  text-gray-500"> ( {{ count($carts) }} produk)
+                                                class="text-lg font-normal  text-gray-500"> ( {{ count($carts) }}
+                                                produk)
                                             </span></h1>
                                         <p class="text-gray-600 text-sm">Berikut adalah beberapa produk yang ingin anda
                                             pesan.
@@ -187,7 +219,8 @@
                                             $total += $cart->product->price_product * $cart->quantity;
                                         @endphp
                                         <input type="hidden" name="product_id_quantity[{{ $cart->product->id }}]"
-                                            id="product_id_quantity_{{ $cart->id }}" value="{{ $cart->quantity }}">
+                                            id="product_id_quantity_{{ $cart->id }}"
+                                            value="{{ $cart->quantity }}">
                                         <div class="flex gap-3">
                                             <div
                                                 class="w-24 h-24 border border-gray-300 bg-cover bg-center overflow-hidden flex justify-center items-center p-1 rounded-md">
@@ -277,7 +310,8 @@
                                     </tr>
                                 </table>
                             </div>
-                            <input type="hidden" name="subtotal" id="subtotal_input" value="{{ $total }}" />
+                            <input type="hidden" name="subtotal" id="subtotal_input"
+                                value="{{ $total }}" />
                             <input type="hidden" name="discount" id="discount_input" value="0" />
                             <input type="hidden" name="total" id="total_input" value="{{ $total }}" />
                             <input type="hidden" name="weight" id="weight_input" value="{{ $weight ?? 100 }}" />
@@ -319,7 +353,8 @@
                                                 <h1 class="text-md font-medium text-gray-600">
                                                     {{ $product->name_product }}
                                                 </h1>
-                                                <div class="w-24 bg-white flex border-2 border-blue-200 rounded-md mb-4">
+                                                <div
+                                                    class="w-24 bg-white flex border-2 border-blue-200 rounded-md mb-4">
                                                     <button type="button" class="px-2 py-1 text-slate-800"
                                                         onclick="minus('quantity_checkout', '{{ $product->price_product }}', 'input_quantity_checkout')">
                                                         -
@@ -387,13 +422,15 @@
                                     </tr>
                                 </table>
                             </div>
-                            <input type="hidden" name="subtotal" id="subtotal_input" value="{{ $total }}" />
+                            <input type="hidden" name="subtotal" id="subtotal_input"
+                                value="{{ $total }}" />
                             <input type="hidden" name="discount" id="discount_input" value="0" />
                             <input type="hidden" name="total" id="total_input" value="{{ $total }}" />
                             <input type="hidden" name="weight" id="weight_input" value="{{ $weight ?? 100 }}" />
                             <input type="hidden" name="order_form" id="order_form" value="product">
                             <input type="hidden" name="product_id" value="{{ $product->id }}">
-                            <input type="hidden" name="quantity_checkout" id="input_quantity_checkout" value="1">
+                            <input type="hidden" name="quantity_checkout" id="input_quantity_checkout"
+                                value="1">
                         @endif
                         <button type="submit" onclick="checkoutButton(event, this)"
                             class=" py-2 px-5 w-full bg-blue-600 text-white rounded-md my-2">
@@ -1153,4 +1190,7 @@
 
         }
     </script>
-@endsection
+
+</body>
+
+</html>

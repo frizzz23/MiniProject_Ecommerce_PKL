@@ -459,6 +459,15 @@
                             </form>
                         </div>
                     @endif
+                    <div class="w-full flex items-center justify-center gap-2">
+                        @if ($order->status_order === 'completed')
+                            <a href="{{ route('user.orders.download-invoice', $order->id) }}"
+                                class="w-full text-center px-6 py-2 border-2 border-blue-500 text-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition duration-300 ease-in-out ">
+                                <i class="fas fa-download"></i>
+                                Unduh Invoice
+                            </a>
+                        @endif
+                    </div>
 
                     <div class="w-full">
                         @if ($order->payment->status == 'pending')
@@ -466,37 +475,7 @@
                                 class="w-full text-center px-6 py-2 border-2 border-blue-500 text-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition duration-300 ease-in-out">Bayar
                                 Sekarang</button>
                         @endif
-
-                        <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ $clientKey }}"></script>
-                        <script>
-                            document.getElementById('pay-button').addEventListener('click', function() {
-                                snap.pay("{{ $order->snap_token }}", {
-                                    onSuccess: function(result) {
-                                        // Redirect ke halaman detail order setelah sukses
-                                        window.location.href = "{{ route('user.orders.show', $order->id) }}";
-                                    },
-                                    onPending: function(result) {
-                                        alert("Pembayaran sedang diproses!");
-                                    },
-                                    onError: function(result) {
-                                        alert("Pembayaran gagal! Silakan coba lagi.");
-                                    }
-                                });
-                            });
-                        </script>
-
-
                     </div>
-                    @if ($order->status_order === 'completed')
-                        <!-- Invoice -->
-                        <div class="mt-4">
-                            <a href="{{ route('user.orders.download-invoice', $order->id) }}"
-                                class="w-full text-center px-6 py-2 border-2 border-blue-500 text-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition duration-300 ease-in-out flex items-center justify-center gap-2">
-                                <i class="fas fa-download"></i>
-                                Unduh Invoice
-                            </a>
-                        </div>
-                    @endif
                 </div>
             </div>
         </div>
@@ -545,6 +524,26 @@
             </form>
         </div>
     </div>
+
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ $clientKey }}"></script>
+
+    <script>
+        document.getElementById('pay-button').addEventListener('click', function() {
+            snap.pay("{{ $order->snap_token }}", {
+                onSuccess: function(result) {
+                    // Redirect ke halaman detail order setelah sukses
+                    window.location.href = "{{ route('user.orders.show', $order->id) }}";
+                },
+                onPending: function(result) {
+                    alert("Pembayaran sedang diproses!");
+                },
+                onError: function(result) {
+                    alert("Pembayaran gagal! Silakan coba lagi.");
+                }
+            });
+        });
+    </script>
+
 
     <script>
         const radios = document.querySelectorAll('input[name="bintang"]');
