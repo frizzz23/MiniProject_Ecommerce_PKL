@@ -306,7 +306,7 @@
                                                     </span>
                                                 </div>
                                                 <!-- Form Hapus Pesanan -->
-                                                <div class="relative group inline-block">
+                                                {{-- <div class="relative group inline-block">
                                                     <!-- Tombol Hapus yang akan membuka modal konfirmasi -->
                                                     <form action="{{ route('admin.orders.destroy', $order->id) }}"
                                                         method="POST" style="display: inline;">
@@ -325,7 +325,7 @@
                                                             Hapus
                                                         </span>
                                                     </form>
-                                                </div>
+                                                </div> --}}
                                                 <div class="relative group inline-block">
                                                     @if ($order->payment && $order->payment->status != 'pending')
                                                         <!-- Form Proses -->
