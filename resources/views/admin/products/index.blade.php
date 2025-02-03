@@ -51,106 +51,134 @@
 
         <div class="card w-full">
             <div class="card-body p-4">
-                <!-- Pencarian dan Filter -->
-                <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
-                    <!-- Pencarian -->
-                    <div class="w-full md:w-auto">
-                        <form action="{{ route('admin.products.index') }}" method="GET" class="w-full">
-                            <div class="flex items-center w-full">
-                                <input type="text" name="search"
-                                    class="form-control me-2 border-lg border-[#5d85fa] w-full" placeholder="Cari produk"
-                                    value="{{ request('search') }}">
-                                <button type="submit"
-                                    class="btn btn-primary md:mt-0 md:ml-2 px-4 py-2  md:w-auto">Cari</button>
-                            </div>
-                        </form>
-                    </div>
+               <!-- Pencarian dan Filter -->
+<div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
+    <form action="{{ route('admin.products.index') }}" method="GET" class="w-full" id="filterForm">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4 w-full">
+            <!-- Pencarian -->
+            <div class="w-full md:w-auto">
+                <div class="flex items-center w-full">
+                    <input type="text" name="search" class="form-control me-2 border-lg border-[#5d85fa] w-full" placeholder="Cari produk" value="{{ request('search') }}">
+                    <button type="submit" class="btn btn-primary md:mt-0 md:ml-2 px-4 py-2 md:w-auto">Cari</button>
+                </div>
+            </div>
 
-                    <!-- Tombol Tambah Produk -->
-                    <div class="flex items-center gap-4 w-full md:w-auto">
-                        <a href="{{ route('admin.products.create') }}"
-                            class="btn btn-primary text-white font-medium py-2 px-4 rounded-lg w-full md:w-auto">
-                            + Tambahkan produk baru
-                        </a>
+            <!-- Tombol Filter & Tambah Produk -->
+            <div class="flex items-center gap-4 w-full md:w-auto">
+                <!-- Tombol Filter -->
+                <button type="button" class="btn btn-secondary text-white py-2 px-4 rounded-lg w-full md:w-auto" data-bs-toggle="modal" data-bs-target="#filterModal">
+                    Filter Produk
+                </button>
+
+                <!-- Tombol Tambah Produk -->
+                <a href="{{ route('admin.products.create') }}" class="btn btn-primary text-white font-medium py-2 px-4 rounded-lg w-full md:w-auto">
+                    + Tambahkan produk baru
+                </a>
+            </div>
+        </div>
+
+        <!-- Modal Filter -->
+        <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header bg-[#5d85fa] text-white">
+                        <h5 class="modal-title" id="filterModalLabel">Filter Produk</h5>
+                        <button type="button" class="close text-white" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            <!-- Kategori -->
+                            <div>
+                                <label for="category_id" class="block font-medium">Kategori</label>
+                                <select name="category_id" class="form-select">
+                                    <option value="">Pilih Kategori</option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                                            {{ $category->name_category }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <!-- Merek -->
+                            <div>
+                                <label for="brand_id" class="block font-medium">Merek</label>
+                                <select name="brand_id" class="form-select">
+                                    <option value="">Pilih Merek</option>
+                                    @foreach ($brands as $brand)
+                                        <option value="{{ $brand->id }}" {{ request('brand_id') == $brand->id ? 'selected' : '' }}>
+                                            {{ $brand->name_brand }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <!-- Harga -->
+                            <div>
+                                <label for="price_product" class="block font-medium">Harga</label>
+                                <select name="price_product" class="form-select">
+                                    <option value="">Pilih</option>
+                                    <option value="asc" {{ request('price_product') == 'asc' ? 'selected' : '' }}>Termurah</option>
+                                    <option value="desc" {{ request('price_product') == 'desc' ? 'selected' : '' }}>Termahal</option>
+                                </select>
+                            </div>
+
+                            <!-- Rating -->
+                            <div>
+                                <label for="rating" class="block font-medium">Rating</label>
+                                <select name="rating" class="form-select">
+                                    <option value="">Pilih</option>
+                                    <option value="5" {{ request('rating') == '5' ? 'selected' : '' }}>5 Bintang</option>
+                                    <option value="4" {{ request('rating') == '4' ? 'selected' : '' }}>4 Bintang</option>
+                                    <option value="3" {{ request('rating') == '3' ? 'selected' : '' }}>3 Bintang</option>
+                                    <option value="2" {{ request('rating') == '2' ? 'selected' : '' }}>2 Bintang</option>
+                                    <option value="1" {{ request('rating') == '1' ? 'selected' : '' }}>1 Bintang</option>
+                                </select>
+                            </div>
+
+                            <!-- Stok -->
+                            <div>
+                                <label for="stock_product" class="block font-medium">Stok</label>
+                                <select name="stock_product" class="form-select">
+                                    <option value="">Pilih</option>
+                                    <option value="1" {{ request('stock_product') == '1' ? 'selected' : '' }}>Tersedia</option>
+                                    <option value="0" {{ request('stock_product') == '0' ? 'selected' : '' }}>Habis</option>
+                                </select>
+                            </div>
+
+                            <!-- Urutkan -->
+                            <div>
+                                <label for="created_at" class="block font-medium">Urutkan</label>
+                                <select name="created_at" class="form-select">
+                                    <option value="">Pilih</option>
+                                    <option value="asc" {{ request('created_at') == 'asc' ? 'selected' : '' }}>Lama ke Baru</option>
+                                    <option value="desc" {{ request('created_at') == 'desc' ? 'selected' : '' }}>Baru ke Lama</option>
+                                </select>
+                            </div>
+
+                            <!-- Tanggal Awal -->
+                            <div>
+                                <label for="start_date" class="block font-medium">Tanggal Awal</label>
+                                <input type="date" name="start_date" value="{{ request('start_date') }}" class="form-control">
+                            </div>
+
+                            <!-- Tanggal Akhir -->
+                            <div>
+                                <label for="end_date" class="block font-medium">Tanggal Akhir</label>
+                                <input type="date" name="end_date" value="{{ request('end_date') }}" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Terapkan Filter</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     </div>
                 </div>
+            </div>
+        </div>
+    </form>
+</div>
 
-                <form action="{{ route('admin.products.index') }}" method="GET">
-                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-8 gap-4 text-white border-t border-gray-600 pt-4 mb-4">
-                        <!-- Kategori Filter -->
-                        <div class="col-span-1">
-                            <select name="category_id" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full" onchange="this.form.submit()">
-                                <option value="">Kategori</option>
-                                @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
-                                        {{ $category->name_category }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <!-- Merek Filter -->
-                        <div class="col-span-1">
-                            <select name="brand_id" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full" onchange="this.form.submit()">
-                                <option value="">Merek</option>
-                                @foreach ($brands as $brand)
-                                    <option value="{{ $brand->id }}" {{ request('brand_id') == $brand->id ? 'selected' : '' }}>
-                                        {{ $brand->name_brand }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <!-- Harga Filter -->
-                        <div class="col-span-1">
-                            <select name="price_product" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full" onchange="this.form.submit()">
-                                <option value="">Harga</option>
-                                <option value="asc" {{ request('price_product') == 'asc' ? 'selected' : '' }}>Terendah ke Tertinggi</option>
-                                <option value="desc" {{ request('price_product') == 'desc' ? 'selected' : '' }}>Tertinggi ke Terendah</option>
-                            </select>
-                        </div>
-
-                        <!-- Rating Filter -->
-                        <div class="col-span-1">
-                            <select name="rating" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full" onchange="this.form.submit()">
-                                <option value="">Rating</option>
-                                <option value="5" {{ request('rating') == '5' ? 'selected' : '' }}>5 Bintang</option>
-                                <option value="4" {{ request('rating') == '4' ? 'selected' : '' }}>4 Bintang</option>
-                                <option value="3" {{ request('rating') == '3' ? 'selected' : '' }}>3 Bintang</option>
-                                <option value="2" {{ request('rating') == '2' ? 'selected' : '' }}>2 Bintang</option>
-                                <option value="1" {{ request('rating') == '1' ? 'selected' : '' }}>1 Bintang</option>
-                            </select>
-                        </div>
-
-                        <!-- Stok Filter -->
-                        <div class="col-span-1">
-                            <select name="stock_product" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full" onchange="this.form.submit()">
-                                <option value="">Stok</option>
-                                <option value="1" {{ request('stock_product') == '1' ? 'selected' : '' }}>Ada</option>
-                                <option value="0" {{ request('stock_product') == '0' ? 'selected' : '' }}>Habis</option>
-                            </select>
-                        </div>
-
-                        <!-- Tanggal Filter -->
-                        <div class="col-span-1">
-                            <select name="created_at" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full" onchange="this.form.submit()">
-                                <option value="">Urutkan</option>
-                                <option value="asc" {{ request('created_at') == 'asc' ? 'selected' : '' }}>Lama</option>
-                                <option value="desc" {{ request('created_at') == 'desc' ? 'selected' : '' }}>Terbaru</option>
-                            </select>
-                        </div>
-
-                        <!-- Tanggal Awal Filter -->
-                        <div class="col-span-1">
-                            <input type="date" name="start_date" value="{{ request('start_date') }}" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full" onchange="this.form.submit()">
-                        </div>
-
-                        <!-- Tanggal Akhir Filter -->
-                        <div class="col-span-1">
-                            <input type="date" name="end_date" value="{{ request('end_date') }}" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full" onchange="this.form.submit()">
-                        </div>
-                    </div>
-                </form>
 
 
 

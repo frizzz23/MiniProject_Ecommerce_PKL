@@ -50,62 +50,106 @@
                             <div class="flex justify-between items-center mb-4">
                                 <div class="d-flex align-items-center">
                                     <!-- Pencarian -->
-                                    <input type="text" name="search" class="form-control me-2 border-lg border-[#5d85fa]" placeholder="Cari produk atau komentar"
-                                        value="{{ request('search') }}" style="width: 200px;">
+                                    <input type="text" name="search"
+                                        class="form-control me-2 border-lg border-[#5d85fa]"
+                                        placeholder="Cari produk atau komentar" value="{{ request('search') }}"
+                                        style="width: 200px;">
                                     <button type="submit" class="btn btn-primary">Cari</button>
                                 </div>
+                                <!-- Trigger Modal Filter -->
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#filterModal">Filter</button>
                             </div>
 
-                            <!-- Filter Form -->
-                            <div class="grid grid-cols-5 gap-4 text-white border-t border-gray-600 pt-4 mb-4">
-                                <!-- Filter Produk -->
-                                <div>
-                                    <select name="product_id" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                        onchange="document.getElementById('filterForm').submit();">
-                                        <option value="">Semua Produk</option>
-                                        @foreach ($products as $product)
-                                            <option value="{{ $product->id }}" {{ request('product_id') == $product->id ? 'selected' : '' }}>
-                                                {{ $product->name_product }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                            <!-- Modal Filter -->
+                            <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-[#5d85fa] text-white">
+                                            <h5 class="modal-title" id="filterModalLabel">Filter Review</h5>
+                                            <button type="button" class="close text-white" data-bs-dismiss="modal"
+                                                aria-label="Close">&times;</button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <!-- Filter Produk -->
+                                                <div>
+                                                    <label for="product_id" class="block">Produk</label>
+                                                    <select name="product_id" class="form-select">
+                                                        <option value="">Pilih</option>
+                                                        @foreach ($products as $product)
+                                                            <option value="{{ $product->id }}"
+                                                                {{ request('product_id') == $product->id ? 'selected' : '' }}>
+                                                                {{ $product->name_product }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
 
-                                <!-- Filter Rating -->
-                                <div>
-                                    <select name="rating" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                        onchange="document.getElementById('filterForm').submit();">
-                                        <option value="">Rating</option>
-                                        <option value="5" {{ request('rating') == '5' ? 'selected' : '' }}>5 Bintang</option>
-                                        <option value="4" {{ request('rating') == '4' ? 'selected' : '' }}>4 Bintang</option>
-                                        <option value="3" {{ request('rating') == '3' ? 'selected' : '' }}>3 Bintang</option>
-                                        <option value="2" {{ request('rating') == '2' ? 'selected' : '' }}>2 Bintang</option>
-                                        <option value="1" {{ request('rating') == '1' ? 'selected' : '' }}>1 Bintang</option>
-                                    </select>
-                                </div>
+                                                <!-- Filter Rating -->
+                                                <div>
+                                                    <label for="rating" class="block">Rating</label>
+                                                    <select name="rating" class="form-select">
+                                                        <option value="">Pilih</option>
+                                                        <option value="5"
+                                                            {{ request('rating') == '5' ? 'selected' : '' }}>5 Bintang
+                                                        </option>
+                                                        <option value="4"
+                                                            {{ request('rating') == '4' ? 'selected' : '' }}>4 Bintang
+                                                        </option>
+                                                        <option value="3"
+                                                            {{ request('rating') == '3' ? 'selected' : '' }}>3 Bintang
+                                                        </option>
+                                                        <option value="2"
+                                                            {{ request('rating') == '2' ? 'selected' : '' }}>2 Bintang
+                                                        </option>
+                                                        <option value="1"
+                                                            {{ request('rating') == '1' ? 'selected' : '' }}>1 Bintang
+                                                        </option>
+                                                    </select>
+                                                </div>
 
-                                <!-- Filter Urutkan -->
-                                <div>
-                                    <select name="created_at" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                        onchange="document.getElementById('filterForm').submit();">
-                                        <option value="">Urutkan</option>
-                                        <option value="asc" {{ request('created_at') == 'asc' ? 'selected' : '' }}>Lama</option>
-                                        <option value="desc" {{ request('created_at') == 'desc' ? 'selected' : '' }}>Terbaru</option>
-                                    </select>
-                                </div>
+                                                <!-- Filter Urutkan -->
+                                                <div>
+                                                    <label for="created_at" class="block">Urutkan</label>
+                                                    <select name="created_at" class="form-select">
+                                                        <option value="">Pilih</option>
+                                                        <option value="asc"
+                                                            {{ request('created_at') == 'asc' ? 'selected' : '' }}>Lama
+                                                        </option>
+                                                        <option value="desc"
+                                                            {{ request('created_at') == 'desc' ? 'selected' : '' }}>Terbaru
+                                                        </option>
+                                                    </select>
+                                                </div>
 
-                                <!-- Filter Tanggal Awal dan Akhir -->
-                                <div class="flex items-center">
-                                    <input type="date" name="start_date" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                        value="{{ request('start_date') }}">
-                                </div>
-                                <div class="flex items-center">
-                                    <input type="date" name="end_date" class="bg-[#5d85fa] text-white border border-gray-600 rounded-lg py-2 px-3 w-full"
-                                        value="{{ request('end_date') }}">
+                                                <!-- Tanggal Awal -->
+                                                <div>
+                                                    <label for="start_date" class="block font-medium">Tanggal Awal</label>
+                                                    <input type="date" name="start_date"
+                                                        value="{{ request('start_date') }}" class="form-control">
+                                                </div>
+
+                                                <!-- Tanggal Akhir -->
+                                                <div>
+                                                    <label for="end_date" class="block font-medium">Tanggal Akhir</label>
+                                                    <input type="date" name="end_date" value="{{ request('end_date') }}"
+                                                        class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Terapkan Filter</button>
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Batal</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </form>
                     </div>
+
 
 
 
@@ -132,16 +176,16 @@
                                         <td class="px-4 py-2">{{ $review->created_at->format('d F Y') ?? 'kosong' }}</td>
                                     </tr>
                                 @empty
-                                <tr>
-                                    <td colspan="6" class="h-64">
-                                        <div
-                                            class="bg-white shadow-sm rounded-lg p-4 text-center flex flex-col justify-center items-center">
-                                            <img src="{{ asset('img/empty-data.png') }}" alt=" Tidak Ditemukan"
-                                                class="w-64 h-64">
-                                            <p class="text-lg text-gray-600 font-medium">Tidak ada ulasan</p>
-                                        </div>
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <td colspan="6" class="h-64">
+                                            <div
+                                                class="bg-white shadow-sm rounded-lg p-4 text-center flex flex-col justify-center items-center">
+                                                <img src="{{ asset('img/empty-data.png') }}" alt=" Tidak Ditemukan"
+                                                    class="w-64 h-64">
+                                                <p class="text-lg text-gray-600 font-medium">Tidak ada ulasan</p>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 @endforelse
                             </tbody>
                         </table>
