@@ -481,77 +481,78 @@
         <div class="relative w-full overflow-hidden">
             <!-- Slides -->
             <div id="carouselSlides" class="flex transition-transform duration-700">
-                @if ($hasPromoCodes)
-                    <!-- First Slide - Voucher Display -->
-                    <div class="w-full flex-shrink-0 relative">
-                        <div
-                            class="relative w-full h-full bg-gradient-to-r from-blue-50 to-blue-100 p-6 md:p-8 rounded-lg shadow-md">
-                            <!-- Decorative Elements - Winter Theme -->
-                            <div class="absolute inset-0 flex justify-between items-center px-4 md:px-10">
-                                <span class="text-blue-200 text-2xl md:text-4xl">❄</span>
-                                <span class="text-blue-200 text-2xl md:text-3xl">⛄</span>
-                                <span class="text-blue-200 text-2xl md:text-4xl">🎿</span>
-                                <span class="text-blue-200 text-2xl md:text-4xl">🧊</span>
+                <!-- First Slide - Voucher Display -->
+                <div class="w-full flex-shrink-0 relative">
+                    <div
+                        class="relative w-full h-full bg-gradient-to-r from-blue-50 to-blue-100 p-6 md:p-8 rounded-lg shadow-md">
+                        <div class="absolute inset-0 flex justify-between items-center px-4 md:px-10">
+                            <span class="text-blue-200 text-2xl md:text-4xl">❄</span>
+                            <span class="text-blue-200 text-2xl md:text-3xl">⛄</span>
+                            <span class="text-blue-200 text-2xl md:text-4xl">🎿</span>
+                            <span class="text-blue-200 text-2xl md:text-4xl">🧊</span>
+                        </div>
+
+                        <div class="relative z-10 max-w-3xl mx-auto text-center">
+                            <h2 class="text-lg md:text-xl font-semibold text-gray-800">Voucher Promo Tersedia</h2>
+                            <div class="space-y-4 mt-4">
+                                @foreach ($promoCodes as $voucher)
+                                    <div
+                                        class="bg-white rounded-lg p-3 md:p-4 shadow-md hover:shadow-lg flex flex-col md:flex-row justify-between items-center">
+                                        <div class="flex items-center space-x-3">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500"
+                                                viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd"
+                                                    d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                            <span
+                                                class="font-mono text-sm md:text-lg font-semibold text-gray-700">Kode:
+                                                {{ $voucher->code }}</span>
+                                        </div>
+                                        <button
+                                            class="px-3 py-1 md:px-4 md:py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors text-xs md:text-sm"
+                                            onclick="copyToClipboard('{{ $voucher->code }}')">Salin</button>
+                                    </div>
+                                @endforeach
                             </div>
 
-                            <!-- Main Content -->
-                            <div class="relative z-10 max-w-3xl mx-auto text-center">
-                                <h2 class="text-lg md:text-xl font-semibold text-gray-800">Voucher Promo Tersedia</h2>
-                                <div class="space-y-4 mt-4">
-                                    @foreach ($promoCodes as $voucher)
-                                        <div
-                                            class="bg-white rounded-lg p-3 md:p-4 shadow-md hover:shadow-lg flex flex-col md:flex-row justify-between items-center">
-                                            <div class="flex items-center space-x-3">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500"
-                                                    viewBox="0 0 20 20" fill="currentColor">
-                                                    <path fill-rule="evenodd"
-                                                        d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z"
-                                                        clip-rule="evenodd" />
-                                                </svg>
-                                                <span
-                                                    class="font-mono text-sm md:text-lg font-semibold text-gray-700">Kode:
-                                                    {{ $voucher->code }}</span>
-                                            </div>
-                                            <button
-                                                class="px-3 py-1 md:px-4 md:py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors text-xs md:text-sm"
-                                                onclick="copyToClipboard('{{ $voucher->code }}')">
-                                                Salin
-                                            </button>
-                                        </div>
-                                    @endforeach
-                                </div>
-
-                                <!-- Call to Action -->
-                                <div class="text-center mt-6">
-                                    <p class="text-md md:text-lg font-semibold text-gray-700">Jangan lewatkan
-                                        kesempatan emas!</p>
-                                    <p class="text-gray-600 text-sm md:text-base">Klaim voucher spesialmu sekarang
-                                        sebelum habis.</p>
-                                </div>
+                            <div class="text-center mt-6">
+                                <p class="text-md md:text-lg font-semibold text-gray-700">Jangan lewatkan kesempatan
+                                    emas!</p>
+                                <p class="text-gray-600 text-sm md:text-base">Klaim voucher spesialmu sekarang sebelum
+                                    habis.</p>
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <!-- Second Slide - Carousel Images -->
+                @if ($carousel->isNotEmpty())
+                    <div class="w-full flex-shrink-0 relative">
+                        <picture>
+                            <source srcset="{{ asset('storage/' . $carousel[0]->mobile_image) }}"
+                                media="(max-width: 768px)">
+                            <source srcset="{{ asset('storage/' . $carousel[0]->tablet_image) }}"
+                                media="(max-width: 1024px)">
+                            <img src="{{ asset('storage/' . $carousel[0]->desktop_image) }}"
+                                class="w-full h-auto object-cover" alt="Promo 1">
+                        </picture>
+                    </div>
                 @endif
 
-                <!-- Second Slide -->
-                <div class="w-full flex-shrink-0 relative">
-                    <picture>
-                        <source srcset="{{ asset('img/Mobile1.png') }}" media="(max-width: 768px)">
-                        <source srcset="{{ asset('img/Tablet.png') }}" media="(max-width: 1024px)">
-                        <img src="{{ asset('img/Desktop1.png') }}" class="w-full h-auto object-cover"
-                            alt="Promo 3">
-                    </picture>
-                </div>
-
-                <!-- Third Slide -->
-                <div class="w-full flex-shrink-0 relative">
-                    <picture>
-                        <source srcset="{{ asset('img/Mobile2.png') }}" media="(max-width: 768px)">
-                        <source srcset="{{ asset('img/Tablet2.png') }}" media="(max-width: 1024px)">
-                        <img src="{{ asset('img/Desktop2.png') }}" class="w-full h-auto object-cover"
-                            alt="Promo 3">
-                    </picture>
-                </div>
+                <!-- Third Slide - Carousel Images -->
+                @if (isset($carousel[1]))
+                    <div class="w-full flex-shrink-0 relative">
+                        <picture>
+                            <source srcset="{{ asset('storage/' . $carousel[1]->mobile_image) }}"
+                                media="(max-width: 768px)">
+                            <source srcset="{{ asset('storage/' . $carousel[1]->tablet_image) }}"
+                                media="(max-width: 1024px)">
+                            <img src="{{ asset('storage/' . $carousel[1]->desktop_image) }}"
+                                class="w-full h-auto object-cover" alt="Promo 2">
+                        </picture>
+                    </div>
+                @endif
             </div>
 
             <!-- Controls -->
@@ -565,6 +566,8 @@
             </button>
         </div>
     </section>
+
+
 
 
     {{-- <section class="md:px-28 px-5 py-10 bg-white">
@@ -1308,13 +1311,15 @@
                 </p>
                 <p class="text-sm text-slate-700">info@zentech.com</p>
             </div>
-    
+
             <!-- Top Category Section -->
             <div>
                 <h6 class="text-sm text-slate-800 font-semibold mb-4">Kategori Teratas</h6>
                 <ul class="space-y-2">
                     @foreach ($categories as $category)
-                        <li><p class="text-sm text-slate-600">{{ $category->name_category }}</p></li>
+                        <li>
+                            <p class="text-sm text-slate-600">{{ $category->name_category }}</p>
+                        </li>
                     @endforeach
                     <li>
                         <a href="{{ route('page.product') }}" class="text-sm text-blue-500 hover:underline">
@@ -1323,7 +1328,7 @@
                     </li>
                 </ul>
             </div>
-    
+
             <!-- Quick Links Section -->
             <div>
                 <h6 class="text-sm text-slate-800 font-semibold mb-4">Menu Cepat</h6>
@@ -1340,7 +1345,7 @@
                             class="text-sm text-slate-600 hover:text-slate-800">Keranjang</a></li>
                 </ul>
             </div>
-    
+
             <!-- Download App Section -->
             <div>
                 <h6 class="text-sm text-slate-800 font-semibold mb-4">Download App</h6>
@@ -1357,7 +1362,7 @@
             </div>
         </div>
     </section>
-    
+
 
     <x-list-cart-script />
 

@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Carousel;
 use App\Models\PromoCode;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,6 +16,7 @@ class HomePageController extends Controller
     public function index(Request $request)
     {
         $carts = Cart::where('user_id', Auth::id())->get();
+        $carousel = Carousel::all();
 
         // Mengambil hanya 5 voucher yang belum digunakan
         $promoCodes = PromoCode::whereDoesntHave('usedPromoCodes') // Memastikan voucher belum digunakan
@@ -79,7 +81,8 @@ class HomePageController extends Controller
             'produkbaru1',
             'produkbaru2',
             'promoCodes',
-            'hasPromoCodes'
+            'hasPromoCodes',
+            'carousel'  // Pastikan carousel juga diteruskan ke tampilan
         ));
     }
 }
