@@ -98,6 +98,16 @@
                                 <i class="fa-regular fa-circle"></i>
                             </span>
 
+                            <span class="ml-4">Banner Carousel</span>
+                        </a>
+                        <a href="{{ route('admin.carousel.index') }}"
+                            class="block text-sm  p-2 {{ request()->routeIs('admin.carousel.index')
+                                ? 'text-[#5D87FF] font-semibold  bg-[rgba(219,234,254,0.5)] rounded-md'
+                                : 'text-gray-700 hover:text-[#5D87FF]' }}">
+                             <span>
+                                <i class="fa-regular fa-circle"></i>
+                            </span>
+
                             <span class="ml-4">List Merek</span>
                         </a>
                     </div>
@@ -118,8 +128,7 @@
                         </span>
                         <span class="hide-menu">Voucher</span>
                     </a>
-                </li>
-                
+                </li>            
                 <li class="sidebar-item my-2">
                     <a class="sidebar-link" href="{{ route('admin.reviews.index') }}" aria-expanded="false">
                         <span>
